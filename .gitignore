@@ -1,6 +1,4 @@
 *.RDS
-*.Rmd
-*.RMD
 *.txt
 *.mat
 *.mgz
