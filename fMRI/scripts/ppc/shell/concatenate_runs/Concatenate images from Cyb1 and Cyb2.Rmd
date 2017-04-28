@@ -1,0 +1,79 @@
+---
+title: "Untitled"
+author: "Nandi"
+date: "31 August 2016"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+
+require(stringr)
+```
+
+```{r, echo=FALSE}
+# LOAD FILES
+rm(list=ls())
+
+#define folder locations & get subject list
+tds_folder<-'/Volumes/research/tds/fMRI/subjects/'
+setwd(tds_folder)
+subjList <- (list.dirs(tds_folder, full.names = FALSE, recursive = FALSE))
+subjList <- as.data.frame(subjList)
+subjList <- subjList[grepl("^t1", subjList$subjList), ]
+
+```
+
+```{r}
+#calculate length of images in run1
+for(i in 1:length(subjList)){ 
+  concat_directory <- (paste(tds_folder,subjList[i],"/ppc/cyb_concat",sep=""))
+  if (file.exists(concat_directory)){
+    setwd(concat_directory)
+    listRun1Images <- list.files(concat_directory,pattern='^sworucyb1_*')
+    lastImage <- tail(listRun1Images, n=1)
+    lastNum <- as.numeric(substring(lastImage, 11, 14))
+    
+  #go into concat directory and rename files from run2
+    listRun2Images <- list.files(concat_directory,pattern='^sworucyb2_*')
+    for(j in 1:length(listRun2Images)) {
+      oldNum <- as.numeric(substring(listRun2Images[j], 11, 14)) 
+      newNum <- as.numeric(oldNum + lastNum)
+      newNum <- sprintf("%04d", newNum)
+      oldNum <- sprintf("%04d", oldNum)
+      setwd(concat_directory)
+      file.rename(from = listRun2Images[j], to = (paste("sworucyb1_",newNum,".nii",sep="")))}
+    }
+else {}}
+
+
