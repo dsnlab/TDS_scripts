@@ -1,0 +1,254 @@
+---
+title: "stoplight_beh"
+author: "TC NV"
+date: "May 2, 2016"
+output: html_document
+---
+
+# LOAD PACKAGES
+```{r, warning=FALSE}
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+if(!require(knitr)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(knitr)
+if(!require(PerformanceAnalytics)){
+  install.packages('PerformanceAnalytics')
+}
+library(PerformanceAnalytics)
+library(psych)
+library(ggplot2)
+```
+
+```{r, warning=FALSE, echo=FALSE, eval=FALSE} 
+# LOAD FILES
+rm(list=ls())
+
+# Demographic data
+setwd("/Users/Marge/Dropbox (PfeiBer Lab)/TDS/TDS-II/data/Qualtrics/Scored_Qualtrics/Session_2")
+
+demo_df<-as.data.frame(read.csv("TDS2_S2_Qualtrics_2015.10.03.csv", header=TRUE))
+demo_df<-demo_df[,c("SID","Age","Gender")]
+
+setwd("/Users/Marge/Dropbox (PfeiBer Lab)/TDS/TDS-II/data/Qualtrics/Scored_Qualtrics/Session_1")
+RPI_df<-as.data.frame(read.csv("TDS2_S1_2015.10.05.csv", header=TRUE))
+
+# Stoplight behavior by signal detection theory
+setwd("/Volumes/research/tds/behavioral/raw/cyberball/TC_analysis/stoplight_beh")
+df <-read.csv("stoplight_beh.csv", header=TRUE, stringsAsFactors=FALSE)
+df$SID<-df$SID1
+
+df_all<-merge(demo_df, df, by = "SID")
+
+# add subject IDs and merge demographics w/ stoplight behavior
+setwd("/Volumes/research/tds/behavioral/raw/cyberball")
+df_age <-read.csv("SubjectList_full.csv", header=FALSE)
+df_age$SID <- df_age$V1
+df <- merge(df_age, df, by="SID")
+
+# Stoplight behavior by % correct/incorrect
+setwd("/Volumes/research/tds/behavioral/processed/ylg")
+df_trial<-read.csv("tds2-all_trial_by_trial.csv", header=TRUE)
+
+#calculate the probability of go and stop decisions by subject ID, run, and intersection type
+df_trial$decision=as.numeric(df_trial$decision) # 3=stop, 1=go, 2= penalty
+df_random=filter(df_trial, crash_prob==.5)
+probGo=summarise(group_by(df_trial, subject.name, run_index, type), sum(decision=="1")/(sum(decision=="1")+sum(decision=="3")))
+colnames(probGo)=c("SID", "run","type", "probGo")
+probGo=probGo[-1408,]
+probGo=spread(probGo, key=type, value=probGo)
+colnames(probGo)=c("SID", "run", "pG_E", "pG_L", "pG_M")
+
+probStop=summarise(group_by(df_trial, subject.name, run_index, type), sum(decision=="3")/(sum(decision=="1")+sum(decision=="3")))
+colnames(probStop)=c("SID", "run","type", "probStop")
+probStop=probStop[-1408,]
+probStop=spread(probStop, key=type, value=probStop)
+colnames(probStop)=c("SID", "run", "pS_E", "pS_L", "pS_M")
+
+prob=merge(probGo, probStop)
+
+prob$cond=mapvalues(prob$run, from=c(1,2,3,4,5,6,7,8), to=c(0,0,1,1,2,2,3,3))
+prob_byCond=summarise(group_by(prob, SID,cond), mean(pG_E), mean(pG_L), mean(pG_M))
+prob_byCond=gather(prob_byCond, "type", "pG", 3:5)
+prob_byCond$condType=paste(prob_byCond$cond,prob_byCond$type,sep="_")
+prob_byCond=prob_byCond[-c(2,3)]
+prob_byCond=spread(prob_byCond, key=condType, value=pG)
+colnames(prob_byCond)=c("SID", "pG_E_12","pG_L_12","pG_M_12","pG_E_34", "pG_L_34","pG_M_34", "pG_E_56", "pG_L_56", "pG_M_56","pG_E_78", "pG_L_78","pG_M_78")
+
+df <- merge(df, prob_byCond, by="SID")
+df$age=df$V2
+
+attach(df)
+df_raw=as.data.frame(cbind(SID, age, G12 ,G34, G56, G78, ST12, ST34,ST56,ST78, GD12 ,GD34,GD56,GD78,BD12, BD34,BD56,BD78,pG_E_12, pG_L_12,  pG_M_12,  pG_E_34,  pG_L_34,  pG_M_34,  pG_E_56, pG_L_56,  pG_M_56 , pG_E_78,  pG_L_78,  pG_M_78))
+
+df_diff=as.data.frame(cbind(SID, age, dG34_12, dG56_34, dG78_56, dST34_12, dST56_34, dST78_56, dGD34_12, dGD56_34, dGD78_56, dBD34_12, dBD56_34, dBD78_56))
+
+df_raw=gather(df_raw, condition, score, G12:pG_M_78)
+df_raw$context=mapvalues(df_raw$condition, from=c("G12" ,"G34", "G56", "G78", "ST12", "ST34","ST56","ST78", "GD12" ,"GD34","GD56","GD78","BD12", "BD34","BD56","BD78","pG_E_12", "pG_L_12",  "pG_M_12",  "pG_E_34",  "pG_L_34",  "pG_M_34",  "pG_E_56", "pG_L_56",  "pG_M_56" , "pG_E_78",  "pG_L_78",  "pG_M_78"), to=c(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,1,1,2,2,2,3,3,3,4,4,4))
+
+df_raw$beh=mapvalues(df_raw$condition, from=c("G12" ,"G34", "G56", "G78", "ST12", "ST34","ST56","ST78", "GD12" ,"GD34","GD56","GD78","BD12", "BD34","BD56","BD78","pG_E_12", "pG_L_12",  "pG_M_12",  "pG_E_34",  "pG_L_34",  "pG_M_34",  "pG_E_56", "pG_L_56",  "pG_M_56" , "pG_E_78",  "pG_L_78",  "pG_M_78"), to=c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,6,7,5,6,7,5,6,7,5,6,7))
+
+df_raw$condition=NULL
+df_raw=spread(df_raw, key=beh, value=score)
+colnames(df_raw)= c("SID", "age", "context","GO", "ST", "GD","BD","pG_E","pG_L","pG_M")
+```
+
+# Behavioral Analyses
+```{r, warning=FALSE}
+
+#GOS
+df_raw_summary=group_by(df_raw, context) %>% summarize(sem=sd(GO, na.rm=TRUE)/8, GO=mean(GO, na.rm=TRUE))
+df_raw_summary$upper=df_raw_summary$GO+df_raw_summary$sem
+df_raw_summary$lower=df_raw_summary$GO-df_raw_summary$sem
+
+ggplot(data=df_raw_summary, aes(x=context, y=GO))+
+  geom_bar(stat="identity")+
+  geom_errorbar(data=df_raw_summary, mapping=aes(x=context, ymax=upper, ymin=lower))
+
+# STOPS
+df_raw_summary=group_by(df_raw, context) %>% summarize(sem=sd(ST, na.rm=TRUE)/8, ST=mean(ST, na.rm=TRUE))
+df_raw_summary$upper=df_raw_summary$ST+df_raw_summary$sem
+df_raw_summary$lower=df_raw_summary$ST-df_raw_summary$sem
+
+ggplot(data=df_raw_summary, aes(x=context, y=ST))+
+  geom_bar(stat="identity")+
+  geom_errorbar(data=df_raw_summary, mapping=aes(x=context, ymax=upper, ymin=lower))
+
+#GOOD DECISIONS
+df_raw_summary=group_by(df_raw, context) %>% summarize(sem=sd(GD, na.rm=TRUE)/8, GD=mean(GD, na.rm=TRUE))
+df_raw_summary$upper=df_raw_summary$GD+df_raw_summary$sem
+df_raw_summary$lower=df_raw_summary$GD-df_raw_summary$sem
+
+ggplot(data=df_raw_summary, aes(x=context, y=GD))+
+  scale_y_continuous(limits=c(7.5,11))+
+  geom_bar(stat="identity")+
+  geom_errorbar(data=df_raw_summary, mapping=aes(x=context, ymax=upper, ymin=lower))
+
+# BAD DECISIONS
+df_raw_summary=group_by(df_raw, context) %>% summarize(sem=sd(BD, na.rm=TRUE)/8, BD=mean(BD, na.rm=TRUE))
+df_raw_summary$upper=df_raw_summary$BD+df_raw_summary$sem
+df_raw_summary$lower=df_raw_summary$BD-df_raw_summary$sem
+
+ggplot(data=df_raw_summary, aes(x=context, y=BD))+
+  scale_y_continuous(limits=c(7.5,10))+
+  geom_bar(stat="identity")+
+  geom_errorbar(data=df_raw_summary, mapping=aes(x=context, ymax=upper, ymin=lower))
+
+# pG_E
+df_raw_summary=group_by(df_raw, context) %>% summarize(sem=sd(pG_E, na.rm=TRUE)/8, pG_E=mean(pG_E, na.rm=TRUE))
+df_raw_summary$upper=df_raw_summary$pG_E+df_raw_summary$sem
+df_raw_summary$lower=df_raw_summary$pG_E-df_raw_summary$sem
+
+ggplot(data=df_raw_summary, aes(x=context, y=pG_E))+
+  geom_bar(stat="identity")+
+  geom_errorbar(data=df_raw_summary, mapping=aes(x=context, ymax=upper, ymin=lower))
+
+# pG_M
+df_raw_summary=group_by(df_raw, context) %>% summarize(sem=sd(pG_M, na.rm=TRUE)/8, pG_M=mean(pG_M, na.rm=TRUE))
+df_raw_summary$upper=df_raw_summary$pG_M+df_raw_summary$sem
+df_raw_summary$lower=df_raw_summary$pG_M-df_raw_summary$sem
+
+ggplot(data=df_raw_summary, aes(x=context, y=pG_M))+
+  geom_bar(stat="identity")+
+  geom_errorbar(data=df_raw_summary, mapping=aes(x=context, ymax=upper, ymin=lower))
+
+# pG_L
+df_raw_summary=group_by(df_raw, context) %>% summarize(sem=sd(pG_L, na.rm=TRUE)/8, pG_L=mean(pG_L, na.rm=TRUE))
+df_raw_summary$upper=df_raw_summary$pG_L+df_raw_summary$sem
+df_raw_summary$lower=df_raw_summary$pG_L-df_raw_summary$sem
+
+ggplot(data=df_raw_summary, aes(x=context, y=pG_L))+
+  geom_bar(stat="identity")+
+  geom_errorbar(data=df_raw_summary, mapping=aes(x=context, ymax=upper, ymin=lower))
+```
+
+# Plot individuals across conditions
+```{r, warning=FALSE}
+df_raw_MRIruns= subset(df_raw, context!=1)
+df_raw_MRIruns$SID= as.factor(df_raw_MRIruns$SID)
+temp=group_by(df_raw_MRIruns, SID, context)
+
+ggplot(data=df_raw_MRIruns, aes(x=context, y=pG_E, group=SID)) +
+  geom_point() + 
+  geom_line(aes(color=SID))
+
+ggplot(data=df_diff, aes(x=age, y=dG56_34)) +
+  geom_point()+
+  geom_smooth()
+
+ggplot(data=df_diff, aes(x=age, y=dG78_56)) +
+  geom_point()+
+  geom_smooth()
+
+df_raw_MRIruns$SID= as.character(df_raw_MRIruns$SID)
+RPI_df$SID=as.character(RPI_df$SID)
+merge(df_diff, RPI_df, by=SID, all=FALSE)
+
+```
+
+#Get RPI for our cyberball subjects
+```{r}
+RPI<-RPI_df[,c("SID","RPI_Total_Score")]
+
+setwd("/Volumes/research/tds/behavioral/raw/cyberball")
+subjectList=as.data.frame(read.csv("SubjectList_full.csv", header=FALSE))
+colnames(subjectList)=c("SID","age")
+RPI <- merge(subjectList,RPI, by.x = "SID", all.x = FALSE)
+
+setwd("/Volumes/research/tds/behavioral/raw/cyberball")
+#write.csv(RPI, file = "RPI.csv")
+#write.table(RPI, file = "RPI.csv", sep = ",")
+```
+
+# Compile dataframe for brain-behavior analyses
+```{r}
+df_prob_byCond=merge(subjectList, prob_byCond)
+
+df_brainbeh=df_diff[,1:5]
+
+# calculate differences in go probabilities for early
+df_brainbeh$dpG_E_34_12=df$pG_E_34-df$pG_E_12
+df_brainbeh$dpG_E_56_34=df$pG_E_56-df$pG_E_34
+df_brainbeh$dpG_E_78_56=df$pG_E_78-df$pG_E_56
+    #and late stops
+df_brainbeh$dpG_L_34_12=df$pG_L_34-df$pG_L_12
+df_brainbeh$dpG_L_56_34=df$pG_L_56-df$pG_L_34
+df_brainbeh$dpG_L_78_56=df$pG_L_78-df$pG_L_56
+
+# mean center each variable of interest
+for (i in 3:length(df_brainbeh)){
+  mean=mean(df_brainbeh[,i], na.rm=TRUE)
+  df_brainbeh[,i]=df_brainbeh[,i]-mean
+}
+
+setwd("/Volumes/research/tds/behavioral/raw/cyberball")
+#write.csv(df_brainbeh, file="df_ylg_brainbeh.csv") 
+````

@@ -1,0 +1,493 @@
+---
+title: "explore_stoplight_beh"
+author: "TC NV"
+date: "April 20, 2016"
+output: html_document
+---
+
+```{r}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+if(!require(knitr)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(knitr)
+if(!require(PerformanceAnalytics)){
+  install.packages('PerformanceAnalytics')
+}
+library(PerformanceAnalytics)
+```
+
+```{r, warning=FALSE, echo=FALSE, eval=FALSE} 
+# LOAD FILES
+rm(list=ls())
+
+# Demographic data
+setwd("/Users/marge/Dropbox (PfeiBer Lab)/TDS/TDS-II/data/Qualtrics/Scored_Qualtrics/Session_2")
+
+demo_df<-as.data.frame(read.csv("TDS2_S2_Qualtrics_2015.10.03.csv", header=TRUE))
+demo_df<-demo_df[,c("SID","Age","Gender")]
+
+# Stoplight behavior 
+setwd("/Volumes/research/tds/behavioral/cyberball/stoplight_beh")
+df<-read.csv("stoplight_beh.csv", header=TRUE)
+df<-df[1:87,]
+
+# Average stoplight behavior
+df[1:10,]=NA
+
+df$G34=df$GO3+df$GO4
+mean(df$G34, na.rm=TRUE)
+sd(df$G34, na.rm=TRUE)
+df$G56=df$GO6+df$GO6
+mean(df$G56, na.rm=TRUE)
+sd(df$G56, na.rm=TRUE)
+df$GO8=as.numeric(as.character(df$GO8))
+df$G78=df$GO7+df$GO8
+mean(df$G78, na.rm=TRUE)
+sd(df$G78, na.rm=TRUE)
+
+df$FA34=df$FA3+df$FA4
+df$FA56=df$FA5+df$FA5
+df$FA8=as.numeric(as.character(df$FA8))
+df$FA78=df$FA7+df$FA8
+
+mean(df$FA34, na.rm=TRUE)
+sd(df$FA34, na.rm=TRUE)
+mean(df$FA56, na.rm=TRUE)
+sd(df$FA56, na.rm=TRUE)
+mean(df$FA78, na.rm=TRUE)
+sd(df$FA78, na.rm=TRUE)
+
+t.test(df$G34, df$G78, paired = TRUE, var.equal = TRUE)
+ 
+df$SID<-df$SID1
+
+df_all<-merge(demo_df, df, by = "SID")
+
+# add subject IDs and merge demographics w/ stoplight behavior
+setwd("/Volumes/research/tds/behavioral/cyberball")
+df_age <-read.csv("SubjectList_full.csv", header=FALSE)
+df_age$SID <- df_age$V1
+df <- merge(df_age, df, by="SID")
+
+# BRAIN
+setwd("/Volumes/research/tds/rx/ROIs/cyb_events/catchonly_meanCpmod_linear/ROIs_definedBy_exc_p")
+df_exc_ROIs_intercept<-read.csv("ROIs_summary_exc.csv", header=TRUE)
+df_exc_ROIs<-read.csv("ROIs_summary_exc_p.csv", header=TRUE)
+setwd("/Volumes/research/tds/rx/ROIs/cyb_events/catchonly_meanCpmod_linear/ROIs_definedBy_inc_p")
+df_inc_ROIs_intercept<-read.csv("ROIs_summary_inc.csv", header=TRUE)
+df_inc_ROIs<-read.csv("ROIs_summary_inc_p.csv", header=TRUE)
+df_ROIs<-as.data.frame(bind_cols(df_exc_ROIs_intercept, df_exc_ROIs, df_inc_ROIs_intercept, df_inc_ROIs))
+setwd("/Volumes/research/tds/rx/ROIs/cyb_events/catchonly_meanCpmod_linear/Exc_p_vs_Inc_p")
+df_excVinc_ROIs<-read.csv("ROIs_summary_exc_p_vs_inc_p.csv", header=TRUE)
+df_ROIs<-as.data.frame(bind_cols(df_exc_ROIs_intercept, df_exc_ROIs, df_inc_ROIs_intercept, df_inc_ROIs, df_excVinc_ROIs))
+
+# remove randomly created variables (ick)
+df_ROIs$X<-NULL
+df_ROIs$X.1<-NULL
+df_ROIs$X.2<-NULL
+df_ROIs$X.3<-NULL
+
+# MERGE
+df<-as.data.frame(bind_cols(df,df_ROIs))
+```
+
+#EXCLUSION ANALYSES
+
+Correlation: Go to brain
+```{r, warning=FALSE}
+
+#set up the dataframe
+df_GoExcP<-as.data.frame(cbind(df$G12, df$G34, df$G56, df$G78, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364,df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_GoExcP)<-c("G12", "G34", "G56", "df$G78","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_GoExcP, histogram=FALSE)
+```
+
+differences in Go to brain
+```{r, warning=FALSE}
+df$dG78_34<-as.numeric(df$G78)-as.numeric(df$G34)
+
+#set up the dataframe
+df_dGoExcP<-as.data.frame(cbind(df$dG34_12, df$dG56_34, df$dG78_56, df$dG78_34, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364, df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_dGoExcP)<-c("dG34_12", "dG56_34", "dG78_56", "df$dG78_34","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_dGoExcP, histogram=FALSE)
+```
+
+good decisions to brain
+```{r, warning=FALSE}
+
+#set up the dataframe
+df_GDExcP<-as.data.frame(cbind(df$GD12, df$GD34, df$GD56, df$GD78, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364, df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_GDExcP)<-c("GD12", "GD34", "GD56", "df$GD78","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_GDExcP, histogram=FALSE)
+```
+
+differences in good decisions to brain
+```{r, warning=FALSE}
+df$dGD78_34<-as.numeric(df$GD78)-as.numeric(df$GD34)
+
+#set up the dataframe
+df_dGDExcP<-as.data.frame(cbind(df$dGD34_12, df$dGD56_34, df$dGD78_56, df$dGD78_34, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364, df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_dGDExcP)<-c("dGD34_12", "dGD56_34", "dGD78_56", "df$dGD78_34","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_dGDExcP, histogram=FALSE)
+```
+
+bad decisions to brain
+```{r, warning=FALSE}
+#set up the dataframe
+df_BDExcP<-as.data.frame(cbind(df$BD12, df$BD34, df$BD56, df$BD78, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364, df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_BDExcP)<-c("BD12", "BD34", "BD56", "df$BD78","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_BDExcP, histogram=FALSE)
+```
+
+differences in bad decisions to brain
+```{r, warning=FALSE}
+df$dBD78_34<-as.numeric(df$BD78)-as.numeric(df$BD34)
+
+#set up the dataframe
+df_dBDExcP<-as.data.frame(cbind(df$dBD34_12, df$dBD56_34, df$dBD78_56, df$dBD78_34, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364, df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_dBDExcP)<-c("dBD34_12", "dBD56_34", "dBD78_56", "df$dBD78_34","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_dBDExcP, histogram=FALSE)
+```
+
+crashes (false alarms) to brain
+```{r, warning=FALSE}
+#set up the dataframe
+df_FAExcP<-as.data.frame(cbind(df$FA12, df$FA34, df$FA56, df$FA78, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364, df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_FAExcP)<-c("FA12", "FA34", "FA56", "df$FA78","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_FAExcP, histogram=FALSE)
+```
+
+differences in crashes (false alarms) to brain
+```{r, warning=FALSE}
+df$dFA78_34<-as.numeric(df$FA78)-as.numeric(df$FA34)
+
+#set up the dataframe
+df_dFAExcP<-as.data.frame(cbind(df$dFA34_12, df$dFA56_34, df$dFA78_56, df$dFA78_34, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364, df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_dFAExcP)<-c("dFA34_12", "dFA56_34", "dFA78_56", "df$dFA78_34","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_dFAExcP, histogram=FALSE)
+```
+
+misses
+```{r, warning=FALSE}
+#set up the dataframe
+df_MIExcP<-as.data.frame(cbind(df$MI12, df$MI34, df$MI56, df$MI78, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364, df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_MIExcP)<-c("MI12", "MI34", "MI56", "df$MI78","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_MIExcP, histogram=FALSE)
+```
+
+differences in misses to brain
+```{r, warning=FALSE}
+df$dMI78_34<-as.numeric(df$MI78)-as.numeric(df$MI34)
+
+#set up the dataframe
+df_dMIExcP<-as.data.frame(cbind(df$dMI34_12, df$dMI56_34, df$dMI78_56, df$dMI78_34, df$exc_p_ROI_n28n88n34, df$exc_p_ROI_n4420n10, df$exc_p_ROI_n58n6234, df$exc_p_ROI_n66n364, df$exc_p_ROI_04438, df$exc_p_ROI_28n80n36, df$exc_p_ROI_2n5862, df$exc_p_ROI_212n24, df$exc_p_ROI_462642, df$exc_p_ROI_4826n12, df$exc_p_ROI_56n24n8))
+
+#rename columns
+colnames(df_dMIExcP)<-c("dMI34_12", "dMI56_34", "dMI78_56", "df$dMI78_34","exc_p_ROI_n28n88n34", "exc_p_ROI_n4420n10", "exc_p_ROI_n58n6234", "exc_p_ROI_n66n364", "exc_p_ROI_04438", "exc_p_ROI_28n80n36", "exc_p_ROI_2n5862", "exc_p_ROI_212n24", "exc_p_ROI_462642", "exc_p_ROI_4826n12", "exc_p_ROI_56n24n8")
+
+chart.Correlation(df_dMIExcP, histogram=FALSE)
+```
+
+#INCLUSION
+
+Gos
+```{r, warning=FALSE}
+#set up the dataframe
+df_GIncP<-as.data.frame(cbind(df$G12, df$G34, df$G56, df$G78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_GIncP)<-c("G12", "G34", "G56", "df$G78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_GIncP, histogram=FALSE)
+```
+
+difference in gos
+```{r, warning=FALSE}
+df$dG78_34<-as.numeric(df$G78)-as.numeric(df$G34)
+
+#set up the dataframe
+df_dGIncP<-as.data.frame(cbind(df$dG34_12, df$dG56_34, df$dG78_56, df$dG78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434, df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dGIncP)<-c("dG34_12", "dG56_34", "dG78_56", "df$dG78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dGIncP, histogram=FALSE)
+```
+
+good outcomes
+```{r, warning=FALSE}
+#set up the dataframe
+df_GDIncP<-as.data.frame(cbind(df$GD12, df$GD34, df$GD56, df$GD78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_GDIncP)<-c("GD12", "GD34", "GD56", "df$GD78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_GDIncP, histogram=FALSE)
+```
+
+difference in good outcomes
+```{r, warning=FALSE}
+df$dGD78_34<-as.numeric(df$GD78)-as.numeric(df$GD34)
+
+#set up the dataframe
+df_dGDIncP<-as.data.frame(cbind(df$dGD34_12, df$dGD56_34, df$dGD78_56, df$dGD78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434, df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dGDIncP)<-c("dGD34_12", "dGD56_34", "dGD78_56", "df$dGD78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dGDIncP, histogram=FALSE)
+```
+
+bad outcomes
+```{r, warning=FALSE}
+#set up the dataframe
+df_BDIncP<-as.data.frame(cbind(df$BD12, df$BD34, df$BD56, df$BD78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_BDIncP)<-c("BD12", "BD34", "BD56", "df$BD78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_BDIncP, histogram=FALSE)
+```
+
+differences in bad outcomes
+```{r, warning=FALSE}
+df$dBD78_34<-as.numeric(df$BD78)-as.numeric(df$BD34)
+
+#set up the dataframe
+df_dBDIncP<-as.data.frame(cbind(df$dBD34_12, df$dBD56_34, df$dBD78_56, df$dBD78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dBDIncP)<-c("dBD34_12", "dBD56_34", "dBD78_56", "df$dBD78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dBDIncP, histogram=FALSE)
+```
+
+crashes
+```{r, warning=FALSE}
+#set up the dataframe
+df_FAIncP<-as.data.frame(cbind(df$FA12, df$FA34, df$FA56, df$FA78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_FAIncP)<-c("FA12", "FA34", "FA56", "df$FA78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_FAIncP, histogram=FALSE)
+```
+
+differences in crashes
+```{r, warning=FALSE}
+df$dFA78_34<-as.numeric(df$FA78)-as.numeric(df$FA34)
+
+#set up the dataframe
+df_dFAIncP<-as.data.frame(cbind(df$dFA34_12, df$dFA56_34, df$dFA78_56, df$dFA78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dFAIncP)<-c("dFA34_12", "dFA56_34", "dFA78_56", "df$dFA78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dFAIncP, histogram=FALSE)
+```
+
+misses
+```{r, warning=FALSE}
+#set up the dataframe
+df_MIIncP<-as.data.frame(cbind(df$MI12, df$MI34, df$MI56, df$MI78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_MIIncP)<-c("MI12", "MI34", "MI56", "df$MI78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_MIIncP, histogram=FALSE)
+```
+
+differences in misses to brain
+```{r, warning=FALSE}
+df$dMI78_34<-as.numeric(df$MI78)-as.numeric(df$MI34)
+
+#set up the dataframe
+df_dMIIncP<-as.data.frame(cbind(df$dMI34_12, df$dMI56_34, df$dMI78_56, df$dMI78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dMIIncP)<-c("dMI34_12", "dMI56_34", "dMI78_56", "df$dMI78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dMIIncP, histogram=FALSE)
+```
+
+# SUBTRACTION
+
+Gos
+```{r, warning=FALSE}
+#set up the dataframe
+df_GIncP<-as.data.frame(cbind(df$G12, df$G34, df$G56, df$G78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_GIncP)<-c("G12", "G34", "G56", "df$G78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_GIncP, histogram=FALSE)
+```
+
+difference in gos
+```{r, warning=FALSE}
+df$dG78_34<-as.numeric(df$G78)-as.numeric(df$G34)
+
+#set up the dataframe
+df_dGIncP<-as.data.frame(cbind(df$dG34_12, df$dG56_34, df$dG78_56, df$dG78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434, df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dGIncP)<-c("dG34_12", "dG56_34", "dG78_56", "df$dG78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dGIncP, histogram=FALSE)
+```
+
+good outcomes
+```{r, warning=FALSE}
+#set up the dataframe
+df_GDIncP<-as.data.frame(cbind(df$GD12, df$GD34, df$GD56, df$GD78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_GDIncP)<-c("GD12", "GD34", "GD56", "df$GD78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_GDIncP, histogram=FALSE)
+```
+
+difference in good outcomes
+```{r, warning=FALSE}
+df$dGD78_34<-as.numeric(df$GD78)-as.numeric(df$GD34)
+
+#set up the dataframe
+df_dGDIncP<-as.data.frame(cbind(df$dGD34_12, df$dGD56_34, df$dGD78_56, df$dGD78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434, df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dGDIncP)<-c("dGD34_12", "dGD56_34", "dGD78_56", "df$dGD78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dGDIncP, histogram=FALSE)
+```
+
+bad outcomes
+```{r, warning=FALSE}
+#set up the dataframe
+df_BDIncP<-as.data.frame(cbind(df$BD12, df$BD34, df$BD56, df$BD78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_BDIncP)<-c("BD12", "BD34", "BD56", "df$BD78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_BDIncP, histogram=FALSE)
+```
+
+differences in bad outcomes
+```{r, warning=FALSE}
+df$dBD78_34<-as.numeric(df$BD78)-as.numeric(df$BD34)
+
+#set up the dataframe
+df_dBDIncP<-as.data.frame(cbind(df$dBD34_12, df$dBD56_34, df$dBD78_56, df$dBD78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dBDIncP)<-c("dBD34_12", "dBD56_34", "dBD78_56", "df$dBD78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dBDIncP, histogram=FALSE)
+```
+
+crashes
+```{r, warning=FALSE}
+#set up the dataframe
+df_FAIncP<-as.data.frame(cbind(df$FA12, df$FA34, df$FA56, df$FA78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_FAIncP)<-c("FA12", "FA34", "FA56", "df$FA78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_FAIncP, histogram=FALSE)
+```
+
+differences in crashes
+```{r, warning=FALSE}
+df$dFA78_34<-as.numeric(df$FA78)-as.numeric(df$FA34)
+
+#set up the dataframe
+df_dFAIncP<-as.data.frame(cbind(df$dFA34_12, df$dFA56_34, df$dFA78_56, df$dFA78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dFAIncP)<-c("dFA34_12", "dFA56_34", "dFA78_56", "df$dFA78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dFAIncP, histogram=FALSE)
+```
+
+misses
+```{r, warning=FALSE}
+#set up the dataframe
+df_MIIncP<-as.data.frame(cbind(df$MI12, df$MI34, df$MI56, df$MI78,df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_MIIncP)<-c("MI12", "MI34", "MI56", "df$MI78","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_MIIncP, histogram=FALSE)
+```
+
+differences in misses to brain
+```{r, warning=FALSE}
+df$dMI78_34<-as.numeric(df$MI78)-as.numeric(df$MI34)
+
+#set up the dataframe
+df_dMIIncP<-as.data.frame(cbind(df$dMI34_12, df$dMI56_34, df$dMI78_56, df$dMI78_34, df$inc_p_ROI_n30n88n30, df$inc_p_ROI_n5228n12, df$inc_p_ROI_04434,df$inc_p_ROI_18n102_14, df$inc_p_ROI_42n80n30, df$inc_p_ROI_4630n16, df$inc_p_ROI_56n22n8))
+
+#rename columns
+colnames(df_dMIIncP)<-c("dMI34_12", "dMI56_34", "dMI78_56", "df$dMI78_34","inc_p_ROI_n30n88n30", "inc_p_ROI_n5228n12", "inc_p_ROI_04434","inc_p_ROI_18n102_14", "inc_p_ROI_42n80n30", "inc_p_ROI_4630n16", "inc_p_ROI_56n22n8")
+
+chart.Correlation(df_dMIIncP, histogram=FALSE)
+```
+
+
+

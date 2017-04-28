@@ -1,0 +1,211 @@
+---
+title: 'Characteristics of Early + Mid # of Gos'
+author: "Theresa Cheng"
+date: "August 23, 2016"
+output: word_document
+---
+
+# This script loads, cleans, and plots data related to the number of Gos in early and mid yellow light game behavior ("EM"). It examines relationships between EM, age, sex, and RPI in preparation for a Flux 2016 conference poster.
+
+# Load packages
+```{r}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(sjPlot)
+```
+
+# Acquire data 
+```{r}
+rm(list=ls())
+
+# Cyberball subject list
+setwd("/Volumes/research/tds/behavioral/raw/cyberball")
+subjectList=as.data.frame(read.csv("SubjectList_full.csv", header=FALSE), header=FALSE)
+colnames(subjectList) = c("SID", "Age")
+
+# Demographic data
+setwd("/Users/theresacheng/Dropbox (PfeiBer Lab)/TDS/TDS-II/data/Qualtrics/Scored_Qualtrics/Session_2")
+df_demo<-as.data.frame(read.csv("TDS2_S2_Qualtrics_2015.10.03.csv", header=TRUE))
+df_demo<-df_demo[,c("SID","Age","Gender")]
+  
+# Trial-by-trial stoplight behavior
+setwd("/Volumes/research/tds/behavioral/processed/ylg")
+df_trial<-read.csv("tds2-all_trial_by_trial.csv", header=TRUE)
+
+# Calculate the number of decisions per subject per run by intersection type
+df_trial$decision=as.numeric(df_trial$decision) #make it into a numeric value; 3=stop, 1=go, 2= penalty 
+numGo=summarise(group_by(df_trial, subject.name, run_index, type), sum(decision=="1")) 
+colnames(numGo)=c("SID", "run","type", "numGo")
+
+# Dealing with NAs, which make it so that the spread function doesn't work
+  sum(is.na(numGo$type))
+  numGo=numGo[-1408,]
+
+numGo= spread(numGo, key=type, value=numGo)
+
+# RPI data
+setwd("/Volumes/research/tds/behavioral/processed/cyberball")
+RPI<-read.csv("RPI.csv", header=TRUE)
+
+```
+
+# Manipulate data for this particular analysis
+```{r}
+
+# Subset demographic information by Cyberball subject list
+df_demo=merge(subjectList, df_demo, by="SID")
+df_demo$Age.y=NULL
+colnames(df_demo)=c("SID", "age", "sex")
+
+# Create a dataframe of Gos fo early + mid trials only
+numGo$EM=numGo$E+numGo$M # merge the count for early and mid trials
+df=cbind(numGo[,1:2], numGo[,6]) # create a dataframe of just these trials
+df=spread(df, key=run, value=EM)
+
+# Merge with demographic data
+df=merge(df_demo, df)
+
+# Create a long version for graphing funsies
+df_long=gather(df, "run", "EM", 4:11)
+
+# Generate variables of average num of Gos for each condition
+df$aloneGo=(df$"3"+df$"4")/2
+df$peerGo=(df$"5"+df$"6")/2
+df$excGo=(df$"7"+df$"8")/2
+
+# Missing data: 
+# Note that 189 was removed for lacking ylg beh data
+# 127 and 168 is missing run 8, use run 7 data as the excGo value
+df[10,]$excGo=df[10,]$"7"
+df[43,]$excGo=df[43,]$"7"
+
+# subset df down to grouped variables
+df[,4:11]=NULL
+
+# generate difference scores
+df$peer_alone=df$peerGo-df$aloneGo
+df$exc_peer=df$excGo-df$peerGo
+df$exc_alone=df$excGo-df$aloneGo
+
+# remove 189 from RPI list
+RPI=RPI[-61,]
+
+# add RPI variable to the df
+df$RPI=RPI$RPI_cov
+```
+
+# How do the number of Gos in early and middle intersections change by run?
+```{r, warning=FALSE}
+# Generate a summary dataframe
+EMbyRun=summarise(group_by(df_long, run), mean(EM, na.rm=TRUE), se=sd(EM, na.rm=TRUE)/sqrt(length(EM)))
+colnames(EMbyRun)=c("run", "mean", "se")
+
+factor(EMbyRun$run, labels=c("Alone 1", "Alone 2", "Alone 3", "Alone 4", "Peer 1", "Peer 2", "Exclusion 1", "Exclusion 2"))
+
+p=ggplot(data=EMbyRun, aes(x=run, y=mean)) + #plot it
+ geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.1) +
+  geom_point() +
+  geom_line() +
+  ggtitle("Go decisions Across Yellow Light Game Conditions") + 
+  labs(x= "Condition", y="Average number of Go decisions")
+
+p + scale_x_discrete(labels=c("Practice 1", "Practice 2", "Alone 1", "Alone 2", "Peer 1", "Peer 2", "Exclusion 1", "Exclusion 2"))
+
+# This plot suggests that we should not lump across the alone trials (1-4), and that differences related to learning the task and/or the scanner environment make 3-4 qualitatively different. 
+# Also, this graph suggests that collapsing across 34, 56, and 78 trials is reasonable
+```
+
+# How is ylg behavior in early+mid #Gos affected by age and sex?
+## Descriptives
+```{r}
+# Inspect the data distributions
+hist(df$aloneGo) #ylg beh
+hist(df$peerGo)
+hist(df$excGo)
+hist(df$age) # age and gender
+tally(df, sex)
+
+# Inspect scatterplots 
+plot(df$aloneGo, df$peerGo) #ylg beh
+plot(df$aloneGo, df$excGo)
+plot(df$peerGo, df$excGo)
+
+plot(df$aloneGo, df$age) #ylg and age
+plot(df$peerGo, df$age)
+plot(df$excGo, df$age)
+
+# Examine correlations
+cor.table=cor(df)
+sjt.corr(df, p.numeric=TRUE, corr.method="pearson")
+```
+
+## Regression models
+```{r}
+# Do age and sex significantly predict the number of Gos (examined by condition)?
+M1 <- lm(aloneGo ~ age + sex, data=df) #alone
+summary(M1)
+
+M2 <- lm(peerGo ~ age + sex, data=df) #peer
+summary(M2)
+
+M3 <- lm(excGo ~ age + sex, data=df) #exc
+summary(M3)
+
+# Do age and sex significantly predict the differences in the number of Gos (examined by condition)?
+M4 <- lm(peer_alone ~ age + sex, data=df) #peer minus alone
+summary(M4) 
+
+# Yes, graph this effect
+ggplot(data=df, aes(x=age, y=peer_alone))+
+  geom_point()+
+  geom_smooth(method="lm") +
+  ggtitle("Peer effect on early+mid intersections vs. age")
+
+M5 <- lm(exc_peer ~ age + sex, data=df) #exc minus peer
+summary(M5)
+
+M6 <- lm(exc_alone ~ age + sex, data=df) #exc minus alone
+summary(M6)
+```
+
+# Acquire difference scores between conditions in early and mid trials, plus peer minus alone scores with an age residual
+```{r}
+df$mc_age=scale(df$age, scale=FALSE)
+df$mc_aloneGo=scale(df$aloneGo, scale=FALSE)
+df$mcPeer_alone=scale(df$peer_alone, scale=FALSE)
+df$mcExc_peer=scale(df$exc_peer, scale=FALSE)
+df$mcExc_alone=scale(df$exc_alone, scale=FALSE)
+
+setwd("/Volumes/research/tds/behavioral/processed/cyberball")
+#write.csv(df, "ylgBeh_earlyMid.csv")
+
+M7 <- lm(peer_alone ~ age, data=df) #peer minus alone
+summary(M7) 
+peer_alone_ageResid=as.data.frame(as.numeric(M7$residual))
+colnames(peer_alone_ageResid)="peer_alone_ageResid"
+peer_alone_ageResid$mcPeer_alone_ageResid=scale(peer_alone_ageResid, scale=FALSE)
+
+#write.csv(peer_alone_ageResid, "peer_alone_ageResid.csv")
+```
+
+# Is the difference between Gos in the exclusion and peer conditions collinear with alone Gos?
+```{r}
+cor.test(df$exc_peer, df$aloneGo)
+```
+
+# Now let's think about RPI
+```{r}
+summary(M4) #peer minus alone by age + sex, presented for comparison
+
+M5 <- lm(peer_alone ~ age + RPI + sex, data=df) #peer minus alone
+summary(M5)
+
+df_ofInterest= as.data.frame(cbind(df$age, df$sex, df$RPI, df$peer_alone))
+colnames(df_ofInterest)= c("Age", "Sex","RPI","Peer Effect")
+
+sjt.corr(df_ofInterest, p.numeric=TRUE, corr.method="pearson", no.output=TRUE)
+cor.table2=cor(df_ofInterest)
+
+```
+
