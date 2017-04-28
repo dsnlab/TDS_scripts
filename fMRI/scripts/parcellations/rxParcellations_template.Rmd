@@ -1,0 +1,114 @@
+---
+title: "rxParcellations"
+author: "Dani Cosme"
+date: "August 10, 2016"
+output: html_document
+---
+
+# load packages
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(fslr)
+library(papayar)
+```
+
+# define variables and paths
+```{r}
+# paths
+setwd('/Volumes/research/dsnlab/Studies/FP/rx/parcellations/groupLevel')
+file_list = list.files('/Volumes/research/dsnlab/Studies/FP/rx/parcellations/groupLevel', pattern = "reg.*txt") 
+# key = read.csv('/Volumes/research/dsnlab/Studies/SFIC_Self3/analysis/rx/LME/craddock_key.csv', header=TRUE) %>% 
+#   mutate(parcellation = as.character(parcellation)) #parcellation key, if applicable
+csv_path='/Volumes/research/dsnlab/Studies/FP/rx/parcellations/groupLevel'
+structural_path = '~/Documents/MATLAB/spm12/canonical/MNI152_T1_1mm_brain.nii'
+parcellation_path = '~/Desktop/parcellations/aligned_craddock.nii'
+output_path = '~/Desktop/parcellations/'
+
+# variables
+N = 30
+```
+
+# load data
+```{r}
+for (file in file_list){
+       
+  # if the merged dataset doesn't exist, create it
+  if (!exists("dataset")){
+    dataset <- read.table(file) %>% 
+      mutate(file = file)
+  }
+   
+  # if the merged dataset does exist, append to it
+  else {
+    temp_dataset <- tryCatch(read.table(file) %>% mutate(file = file), error=function(e) NULL)
+    dataset <- rbind(dataset, temp_dataset)
+    rm(temp_dataset)
+  }
+ 
+}
+```
+
+# tidy data
+```{r}
+data = dataset %>% separate(file, c('con','parcellation'), extra = "drop") %>% 
+  rename('beta' = V1) %>%
+  rename('sd' = V2) %>%
+  mutate(se = sd/sqrt(N),
+         ci=qt(0.975, df=N-1)*se,
+         parcellation = as.numeric(parcellation)) %>%
+  select(con, parcellation, beta, sd, se, ci) %>%
+  arrange(parcellation)
+  #left_join(., key, by="parcellation")
+```
+
+# write csv file
+```{r}
+write.csv(data, paste0(csv_path,'/rxParcellations.csv'), row.names = FALSE)
+```
+
+# visualize effect sizes on a brain
+```{r}
+# load structural image and parcellation map
+structural = readnii(structural_path)
+parcellation = readnii(parcellation_path)
+
+# replace parcellation numbers with effect size values and create control.df to make sure replacements are correct
+for (parcNum in data$parcellation){
+  betaRow = which(data$parcellation == parcNum)
+  parcellation[parcellation == parcNum] = data$beta[betaRow]
+  if (!exists("control.df")){
+    control.df = data.frame(parcNum, betaRow, beta = data$beta[betaRow])
+  }
+  else {
+    temp_df = data.frame(parcNum, betaRow, beta = data$beta[betaRow])
+    control.df = rbind(control.df, temp_df)
+    rm(temp_df)
+  }
+}
+
+# view maps in papaya viewer --> press "show in new window" to view in browser and get more visualization options (e.g. loading negative values and changing color tables)
+papaya(list(structural,parcellation))
+```
+
+# write parcellation map nifti
+```{r}
+setwd(output_path)
+writenii(parcellation, "effectsMap")
+```
+
+# example plot
+```{r}
+limits=aes(ymax = data$beta + ci, ymin = data$beta - ci)
+position = position_dodge(width=.9)
+
+ggplot(data, aes(reorder(parcellation, -beta), beta, fill=con)) +
+  geom_bar(stat='identity', position=position) + 
+  geom_errorbar(limits, position=position, width=0.05) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  ylab("effect size") + 
+  xlab("parcellation number") +
+  theme(legend.position="",
+      legend.title=element_blank())
+```

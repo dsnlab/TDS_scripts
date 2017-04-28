@@ -1,0 +1,112 @@
+---
+title: "fxParcellations"
+author: "Dani Cosme"
+date: "August 10, 2016"
+output: html_document
+---
+
+# load packages
+```{r}
+library(dplyr)
+library(tidyr)
+library(reshape2)
+library(ggplot2)
+```
+
+# define variables and paths
+```{r}
+# paths
+setwd('/Volumes/research/dsnlab/Studies/FP/rx/parcellations/subjectLevel/')
+file_list = list.files('/Volumes/research/dsnlab/Studies/FP/rx/parcellations/subjectLevel/', pattern = "con.*txt") 
+# key = read.csv('/Volumes/research/dsnlab/Studies/SFIC_Self3/analysis/rx/LME/craddock_key.csv', header=TRUE) %>% 
+#   mutate(parcellation = as.character(parcellation))
+csv_path='/Volumes/research/dsnlab/Studies/FP/rx/parcellations/subjectLevel'
+
+# variables
+N = 30
+```
+
+# load data
+```{r}
+for (file in file_list){
+       
+  # if the merged dataset doesn't exist, create it
+  if (!exists("dataset")){
+    dataset <- read.table(file) %>% 
+      mutate(file = file)
+  }
+   
+  # if the merged dataset does exist, append to it
+  else {
+    temp_dataset <- tryCatch(read.table(file) %>% mutate(file = file), error=function(e) NULL)
+    dataset<-rbind(dataset, temp_dataset)
+    rm(temp_dataset)
+  }
+ 
+}
+```
+
+# tidy data
+## you'll need to specify your factors and levels in this part
+```{r}
+# tidy raw data
+data = dataset %>% separate(file, c('parcellation','subjectID','prefix', 'con'), extra = "drop") %>%
+  rename('beta' = V1) %>%
+  rename('sd' = V2) %>%
+  mutate(autonomy = ifelse(con %in% c('0001', '0002'), 'low', 'high'),
+         instruction = ifelse(con %in% c('0001', '0003'), 'look', 'regulate'), 
+         beta = as.numeric(beta),
+         sd = as.numeric(sd),
+         parcellation = as.numeric(parcellation),
+         autonomy = as.factor(autonomy),
+         instruction = as.factor(instruction)) %>%
+  select(subjectID, autonomy, instruction, parcellation, beta, sd)
+  #left_join(., key, by="parcellation")
+
+# tidy data for plotting
+data1 = data %>% melt(id.vars = c("subjectID", "parcellation", "autonomy", "instruction")) %>%
+  spread(instruction, value) %>%
+  mutate(value = ifelse(variable == "beta", regulate-look, (regulate+look)/2)) %>% #calculate mean difference and mean SD
+  select(-look, -regulate) %>%
+  spread(variable, value) %>%
+  rename("meanDiff" = beta, "meanSD" = sd) %>% 
+  group_by(subjectID, parcellation) %>%
+  mutate(intDiff = meanDiff[1] - meanDiff[2]) %>% #calculate initeraction value to sort parcellations
+  within(., {
+  parcellation <- reorder(parcellation, intDiff)
+})
+```
+
+# write csv file
+```{r}
+write.csv(data, paste0(csv_path,'/fxParcellations.csv'), row.names = FALSE)
+```
+
+# example plots
+```{r}
+# sort parcellations by beta value
+data = data %>%
+  within(., {
+  parcellation = reorder(parcellation, -beta)
+})
+
+# plot data
+ggplot(data1, aes(x=autonomy, y=meanDiff, group = parcellation)) + 
+  geom_point(alpha=.1) +
+  geom_line(aes(group=subjectID), alpha=.1) +
+  stat_summary(fun.data = "mean_cl_boot", geom = "line") +
+  stat_summary(fun.data = "mean_cl_boot", geom = "linerange") +
+  theme(legend.position = "none") +
+  facet_wrap(~parcellation, scales="free") + 
+  #coord_cartesian(ylim=c(-1,1)) +
+  labs(y = "Mean difference of parameter estimates")
+  
+ggplot(data, aes(x=instruction, y=beta, color = autonomy, group=interaction(subjectID, autonomy))) +
+  geom_point(alpha=.1) +
+  geom_line(alpha=.1) +
+  stat_summary(aes(group = autonomy), fun.data = "mean_cl_boot", geom = "line", position = position_dodge(width = .1)) +
+  stat_summary(aes(group = autonomy), fun.data = "mean_cl_boot", geom = "linerange", position = position_dodge(width = .1)) +
+  facet_grid(~parcellation, scales="free") + 
+  #coord_cartesian(ylim=c(-1,1)) +
+  labs(y = "Mean parameter estimates")
+```
