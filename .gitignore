@@ -28,6 +28,7 @@ core
 *.annot
 *.~*
 ~$*
+*m~
 
 #no pictures
 *.jpg
