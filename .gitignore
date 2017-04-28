@@ -1,6 +1,5 @@
 *.RDS
 *.txt
-*.mat
 *.mgz
 *.nii
 *.nii.gz
