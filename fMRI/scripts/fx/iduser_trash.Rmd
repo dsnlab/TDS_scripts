@@ -1,0 +1,81 @@
+---
+title: "idsubj_blocks6s_SplitCont"
+author: "TC NV"
+date: "March 8, 2016"
+output: html_document
+---
+
+```{r, warning=FALSE, echo=FALSE}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+if(!require(knitr)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(knitr)
+```
+
+```{r, warning=FALSE, echo=FALSE} 
+# LOAD FILES
+rm(list=ls())
+
+# define folder locations
+tds_folder<-'/Volumes/research/tds/'
+summary_cyberball_folder<-'behavioral/cyberball/TDS2_cyb_summary/newPT_compT_splitcont'
+summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
+
+setwd("/Volumes/research/tds/behavioral/cyberball/TDS2_cyb_summary/newPT_compT_splitcont")
+
+## INCLUSION
+# list the files for the inclusion run
+listFiles<-list.files(summary_files_folder,recursive=T, pattern='cyb.*_1.csv$') 
+
+# merge these files
+df<-do.call("rbind", lapply(listFiles, read.csv, header = TRUE))
+  
+# Filter Condition 5: Trash
+ df.splitcont_cyb1<- subset(df,names==5)
+ 
+ setwd("/Volumes/research/tds/behavioral/cyberball")
+ write.csv(df.splitcont_cyb1, "userids_splitcont.csv")
+
+## EXCLUSION
+ 
+ setwd("/Volumes/research/tds/behavioral/cyberball/TDS2_cyb_summary/newPT_compT_splitcont")
+# list the files for the exclusion run
+listFiles<-list.files(summary_files_folder,recursive=T, pattern='cyb.*_2.csv$') 
+
+# merge these files
+df<-do.call("rbind", lapply(listFiles, read.csv, header = TRUE))
+  
+# Filter Condition 5: Trash
+ df.splitcont_cyb2<- subset(df,names==5)
+ 
+```

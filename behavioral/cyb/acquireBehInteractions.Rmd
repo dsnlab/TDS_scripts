@@ -1,0 +1,172 @@
+---
+title: "tds2_summary_beh_data"
+author: "Theresa Cheng"
+date: "July 22, 2016"
+output: html_document
+---
+
+# LOAD PACKAGES
+```{r, warning=FALSE}
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+} library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+} library(dplyr)
+
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+} library(tidyr)
+
+if(!require(knitr)){
+  install.packages('R.matlab',repos=osuRepo)
+} library(knitr)
+
+if(!require(ggplot2)){
+  install.packages('R.matlab',repos=osuRepo)
+} library(ggplot2)
+```
+
+# LOAD FILES
+```{r, warning=FALSE, echo=FALSE, eval=FALSE} 
+rm(list=ls())
+
+# list of subject IDs (65 in cyb analysis)
+setwd("/Volumes/research/tds/behavioral/raw/cyberball")
+subjectList=as.data.frame(read.csv("SubjectList_full.csv", header=FALSE))
+colnames(subjectList)=c("SID","age")
+
+# scored Questionnaires
+setwd("/Volumes/research/tds/behavioral/processed/qualtrics")
+df=as.data.frame(read.csv("TDS-2-auto_scored_scales_wide.csv", header=TRUE)) # input all scored data
+```
+
+# Clean files
+```{r}
+# get data and reduce to 65 cyb subjects
+df.behav=cbind(df$SID, df[,grepl( "SPSRQ*" , names( df ) ) ], df[,grepl( "PEQ*" , names( df ) ) ], df[,grepl("RSQ", names(df))], df[,grep("CES.DC_ces_dc_mean", names(df))], df[,grep("RPI", names(df))], df[,grep("NTS", names(df))], df[,grep("BFNE_bfne_mean*", names(df))], df[,grep("PDSS_pdss", names(df))], df[,grep("CARE.R.Willingness.to.Engage", names(df))])
+colnames(df.behav)[1]="SID"
+df.behav=merge(subjectList, df.behav)
+
+#use mean imputation on NAs or subjects that completed less than 75% of the subscale
+
+#SPSRQ
+for (i in 1:length(df.behav$SID)) {
+  if (is.na(df.behav$SPSRQ.S_sensitivity_punishment_n_items[i]) | df.behav$SPSRQ.S_sensitivity_punishment_n_items[i] < .75*(max(df.behav$SPSRQ.S_sensitivity_punishment_n_items))){
+     df.behav$SPSRQ.S_sensitivity_punishment_score[i] = mean(df.behav$SPSRQ.S_sensitivity_punishment_score,na.rm=TRUE)
+     }}
+    
+for (i in 1:length(df.behav$SID)) {
+  if (is.na(df.behav$SPSRQ.S_sensitivity_reward_n_items[i]) | df.behav$SPSRQ.S_sensitivity_reward_n_items[i] < .75*(max(df.behav$SPSRQ.S_sensitivity_reward_n_items))){
+     df.behav$SPSRQ.S_sensitivity_reward_score [i] = mean(df.behav$SPSRQ.S_sensitivity_reward_score ,na.rm=TRUE)
+  }}
+
+# PEQ
+for (i in 1:length(df.behav$SID)) {
+  if (is.na(df.behav$PEQ_overt_aggressor_n_items[i]) | df.behav$PEQ_overt_aggressor_n_items[i] < .75*(max(df.behav$PEQ_overt_aggressor_n_items))){
+     df.behav$PEQ_overt_aggressor_score [i] = mean(df.behav$PEQ_overt_aggressor_score ,na.rm=TRUE)
+  }}
+
+for (i in 1:length(df.behav$SID)) {
+  if (is.na(df.behav$PEQ_overt_victim_n_items[i]) | df.behav$PEQ_overt_victim_n_items[i] < .75*(max(df.behav$PEQ_overt_victim_n_items))){
+     df.behav$PEQ_overt_victim_score  [i] = mean(df.behav$PEQ_overt_victim_score  ,na.rm=TRUE)
+  }}
+
+for (i in 1:length(df.behav$SID)) {
+  if (is.na(df.behav$PEQ_prosocial_by_me_n_items[i]) | df.behav$PEQ_prosocial_by_me_n_items[i] < .75*(max(df.behav$PEQ_prosocial_by_me_n_items))){
+     df.behav$PEQ_prosocial_by_me_score  [i] = mean(df.behav$PEQ_prosocial_by_me_score  ,na.rm=TRUE)
+  }}
+
+for (i in 1:length(df.behav$SID)) {
+  if (is.na(df.behav$PEQ_prosocial_to_me_n_items[i]) | df.behav$PEQ_prosocial_to_me_n_items[i] < .75*(max(df.behav$PEQ_prosocial_to_me_n_items))){
+     df.behav$PEQ_prosocial_to_me_score  [i] = mean(df.behav$PEQ_prosocial_to_me_score  ,na.rm=TRUE)
+  }}
+
+for (i in 1:length(df.behav$SID)) {
+  if (is.na(df.behav$PEQ_relational_aggressor_n_items[i]) | df.behav$PEQ_relational_aggressor_n_items[i] < .75*(max(df.behav$PEQ_relational_aggressor_n_items ))){
+     df.behav$PEQ_relational_aggressor_score   [i] = mean(df.behav$PEQ_relational_aggressor_score   ,na.rm=TRUE)
+  }}
+
+for (i in 1:length(df.behav$SID)) {
+  if (is.na(df.behav$PEQ_relational_victim_n_items[i]) | df.behav$PEQ_relational_victim_n_items[i] < .75*(max(df.behav$PEQ_relational_victim_n_items ))){
+     df.behav$PEQ_relational_victim_score   [i] = mean(df.behav$PEQ_relational_victim_score, na.rm=TRUE)
+  }}
+
+
+df.beh1=df.behav[,c("SID","age","SPSRQ.S_sensitivity_punishment_score","SPSRQ.S_sensitivity_reward_score","PEQ_overt_aggressor_score","PEQ_overt_victim_score","PEQ_prosocial_by_me_score", "PEQ_prosocial_to_me_score", "PEQ_relational_aggressor_score", "PEQ_relational_victim_score")] 
+```
+
+Get other surveys
+```{r}
+
+for (i in 1:length(df.behav$SID)) {
+if (df.behav$RSQ_part2_rsq_mean_angry_expectation_n_items[i] < 0.75*(max(df.behav$RSQ_part2_rsq_mean_angry_expectation_n_items))) {
+  df.behav$RSQ_part2_rsq_mean_angry_expectation_score[i] = mean(df.behav$RSQ_part2_rsq_mean_angry_expectation_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (df.behav$RSQ_part2_rsq_mean_anxious_expectation_n_items[i] < 0.75*(max(df.behav$RSQ_part2_rsq_mean_anxious_expectation_n_items))) {
+  df.behav$RSQ_part2_rsq_mean_anxious_expectation_score[i] = mean(df.behav$RSQ_part2_rsq_mean_anxious_expectation_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (is.na(df.behav$NTS_mean_score_n_items[i])) {
+  df.behav$NTS_mean_score_score[i] = mean(df.behav$NTS_mean_score_score,na.rm=TRUE)} 
+  else if (df.behav$NTS_mean_score_n_items[i] < 9)  {
+  df.behav$NTS_mean_score_score[i] = mean(df.behav$NTS_mean_score_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (is.na(df.behav$NTS_control_n_items[i])) {
+  df.behav$NTS_control_score[i] = mean(df.behav$NTS_control_score,na.rm=TRUE)} 
+  else if (df.behav$NTS_control_n_items[i] < 3)  {
+  df.behav$NTS_control_score[i] = mean(df.behav$NTS_control_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (df.behav$RPI_part2_rpi_mean_n_items[i] < 7.5) {
+  df.behav$RPI_part2_rpi_mean_score[i] = mean(df.behav$RPI_part2_rpi_mean_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (is.na(df.behav$CES.DC_ces_dc_mean_n_items[i])) {
+  df.behav$CES.DC_ces_dc_mean_score[i] = mean(df.behav$CES.DC_ces_dc_mean_score,na.rm=TRUE)} 
+  else if (df.behav$CES.DC_ces_dc_mean_n_items[i] < 15)  {
+  df.behav$CES.DC_ces_dc_mean_score[i] = mean(df.behav$CES.DC_ces_dc_mean_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (is.na(df.behav$BFNE_bfne_mean_n_items[i])) {
+  df.behav$BFNE_bfne_mean_score[i] = mean(df.behav$BFNE_bfne_mean_score,na.rm=TRUE)} 
+  else if (df.behav$BFNE_bfne_mean_n_items[i] < 9)  {
+  df.behav$BFNE_bfne_mean_score[i] = mean(df.behav$BFNE_bfne_mean_score,na.rm=TRUE)
+  }}
+
+for (i in 1:length(df.behav$SID)) {
+if (is.na(df.behav$PDSS_pdss_score[i]))  {
+  df.behav$PDSS_pdss_score[i] = mean(df.behav$PDSS_pdss_score,na.rm=TRUE)
+  }}
+
+df.beh2 <- df.behav[,c("SID","age","RSQ_part2_rsq_mean_anxious_expectation_score","RSQ_part2_rsq_mean_angry_expectation_score","RPI_part2_rpi_mean_score","NTS_mean_score_score","NTS_control_score","CES.DC_ces_dc_mean_score","BFNE_bfne_mean_score","PDSS_pdss_score")]
+
+df.beh2$RSQ_total <- df.beh2$RSQ_part2_rsq_mean_anxious_expectation_score + df.beh2$RSQ_part2_rsq_mean_angry_expectation_score
+
+df.beh=merge(df.beh1, df.beh2)
+
+# mean center it all
+center_mean <- function(x) {
+    ones = rep(1, nrow(x))
+    x_mean = ones %*% t(colMeans(x))
+    x - x_mean
+}
+
+#apply it
+df.beh <- cbind(df.beh$SID, center_mean(df.beh[,2:17]))
+
+setwd("/Volumes/research/tds/behavioral/processed/cyberball")
+write.csv(df.beh, file="tds2_summary_beh_data.csv")
+```

@@ -1,0 +1,340 @@
+---
+title: "Cyberball_brainbehav_corr"
+author: "NV"
+date: "July 14, 2016"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+#Load packages
+```{r}
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+
+if(!require(ggplot2)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(ggplot2)
+
+if(!require(pequod)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(pequod)
+```
+
+# Load cyberball list
+```{r}
+rm(list=ls())
+# list of subject IDs (65 in cyb analysis)
+setwd("/Volumes/research/tds/behavioral/raw/cyberball")
+subjectList=as.data.frame(read.csv("SubjectList_full.csv", header=FALSE))
+colnames(subjectList)=c("SID","age")
+
+setwd("/Volumes/research/tds/behavioral/processed/qualtrics")
+sex=as.data.frame(read.csv("tds2-PDS-scores.csv", header=TRUE))
+sex <- merge(sex,subjectList,by = "SID")
+sex <- sex [, c("SID","Gender","age")]
+sex <- within(sex, {Gender = factor(Gender, levels=c(1,2), labels=c("male", "female"))})
+
+summary(sex$Gender)
+
+```
+
+# Load brain data
+```{r}
+# Set working directory to where marsbar ROI summary time course .csv files are kept
+setwd("/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_events/noage_covariate/catch_meanCpmod_linear_w190/F_pmod/conj")
+
+# Load file - NEED TO CREATE THE SUMMARY TIME COURSE FILE!
+df.conj<-read.csv("conj_summary_allROIs.csv", header=TRUE)
+
+# Set working directory to where marsbar ROI summary time course .csv files are kept
+setwd("/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_events/noage_covariate/catch_meanCpmod_linear_w190/F_pmod/excP_over_incP")
+
+# Load file - NEED TO CREATE THE SUMMARY TIME COURSE FILE!
+df.sub<-read.csv("excP_o_incP_summary_allROIs.csv", header=TRUE)
+
+# Set working directory to where marsbar ROI summary time course .csv files are kept
+setwd("/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_events/noage_covariate/catch_meanCpmod_linear_w190/F_pmod/excP_over_incP/subpeaks")
+
+# Load file - NEED TO CREATE THE SUMMARY TIME COURSE FILE!
+df.sub_dacc<-read.csv("excPVincP_summary_dACCsubpeaks.csv", header=TRUE)
+
+# Set working directory to where marsbar ROI summary time course .csv files are kept
+setwd("/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_events/noage_covariate/catch_meanCpmod_linear_w190/t_expP_o_incP")
+
+# Load file - NEED TO CREATE THE SUMMARY TIME COURSE FILE!
+df.sub2<-read.csv("t_excP_o_incP.csv", header=TRUE)
+
+# Merge all ROIs into one df
+df.sub <- merge (df.sub, df.sub_dacc, by="SID")
+df.sub <- merge (df.sub, df.sub2, by="SID")
+df.ROIs <- merge (df.conj, df.sub, by="SID")
+```
+
+# Organize behav data
+```{r}
+# Set working directory to where marsbar ROI summary time course .csv files are kept
+setwd("/Volumes/research/tds/behavioral/processed/qualtrics")
+df=as.data.frame(read.csv("TDS-2-auto_scored_scales_wide.csv", header=TRUE)) # input all scored data
+df.rsq=df[,grepl("RSQ", names(df))] # subset by RSQ relevant
+df.rsq$SID=df$SID
+
+df.rpi=df[,grepl("RPI", names(df))] # subset by RPI relevant
+df.rpi$SID=df$SID
+
+df.nts=df[,grepl("NTS_mean", names(df))] # subset by NTS relevant
+df.nts$SID=df$SID
+
+df.cesd=df[,grepl("CES.DC_ces_dc_mean", names(df))] # subset by CESD relevant
+df.cesd$SID=df$SID
+
+df.bfne<-df[,grepl("BFNE_bfne_mean", names(df))] # subset by BFNE relevant
+df.bfne$SID=df$SID
+
+df.pds<-df[,grepl("PDSS_pdss", names(df))] # subset by PDS relevant
+df.pds$SID=df$SID 
+
+df.behav<-merge(subjectList, df.rsq, by = "SID", all.x=TRUE) #subset by 65 subjects in cyb analysis
+df.behav<-merge(df.behav, df.nts, by = "SID", all.x=TRUE)
+df.behav<-merge(df.behav, df.rpi, by = "SID", all.x=TRUE)
+df.behav<-merge(df.behav, df.cesd, by = "SID", all.x=TRUE)
+df.behav<-merge(df.behav, df.bfne, by = "SID", all.x=TRUE)
+df.behav<-merge(df.behav, df.pds, by = "SID", all.x=TRUE)
+
+for (i in 1:length(df.behav$SID)) {
+if (df.behav$RSQ_part2_rsq_mean_angry_expectation_n_items[i] < 0.75*(max(df.behav$RSQ_part2_rsq_mean_angry_expectation_n_items))) {
+  df.behav$RSQ_part2_rsq_mean_angry_expectation_score[i] = mean(df.behav$RSQ_part2_rsq_mean_angry_expectation_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (df.behav$RSQ_part2_rsq_mean_anxious_expectation_n_items[i] < 0.75*(max(df.behav$RSQ_part2_rsq_mean_anxious_expectation_n_items))) {
+  df.behav$RSQ_part2_rsq_mean_anxious_expectation_score[i] = mean(df.behav$RSQ_part2_rsq_mean_anxious_expectation_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (is.na(df.behav$NTS_mean_score_n_items[i])) {
+  df.behav$NTS_mean_score_score[i] = mean(df.behav$NTS_mean_score_score,na.rm=TRUE)} 
+  else if (df.behav$NTS_mean_score_n_items[i] < 9)  {
+  df.behav$NTS_mean_score_score[i] = mean(df.behav$NTS_mean_score_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (df.behav$RPI_part2_rpi_mean_n_items[i] < 7.5) {
+  df.behav$RPI_part2_rpi_mean_score[i] = mean(df.behav$RPI_part2_rpi_mean_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (is.na(df.behav$CES.DC_ces_dc_mean_n_items[i])) {
+  df.behav$CES.DC_ces_dc_mean_score[i] = mean(df.behav$CES.DC_ces_dc_mean_score,na.rm=TRUE)} 
+  else if (df.behav$CES.DC_ces_dc_mean_n_items[i] < 15)  {
+  df.behav$CES.DC_ces_dc_mean_score[i] = mean(df.behav$CES.DC_ces_dc_mean_score,na.rm=TRUE)
+}}
+
+for (i in 1:length(df.behav$SID)) {
+if (is.na(df.behav$BFNE_bfne_mean_n_items[i])) {
+  df.behav$BFNE_bfne_mean_score[i] = mean(df.behav$BFNE_bfne_mean_score,na.rm=TRUE)} 
+  else if (df.behav$BFNE_bfne_mean_n_items[i] < 9)  {
+  df.behav$BFNE_bfne_mean_score[i] = mean(df.behav$BFNE_bfne_mean_score,na.rm=TRUE)
+  }}
+
+for (i in 1:length(df.behav$SID)) {
+if (is.na(df.behav$PDSS_pdss_score[i]))  {
+  df.behav$PDSS_pdss_score[i] = mean(df.behav$PDSS_pdss_score,na.rm=TRUE)
+  }}
+
+df.beh <- df.behav[,c("SID","age","RSQ_part2_rsq_mean_anxious_expectation_score","RSQ_part2_rsq_mean_angry_expectation_score","RPI_part2_rpi_mean_score","NTS_mean_score_score","CES.DC_ces_dc_mean_score","BFNE_bfne_mean_score","PDSS_pdss_score")]
+
+df.beh$RSQ_total <- df.beh$RSQ_part2_rsq_mean_anxious_expectation_score + df.beh$RSQ_part2_rsq_mean_angry_expectation_score
+```
+
+# Brain and behav
+```{r}
+df.ROI.beh <- merge(df.ROIs,df.beh,by="SID")
+COR <- corr.test(df.ROI.beh, adjust = "none")
+
+##Frontolimbic networks of depression at T4
+ROIs <- grep("conj|sub|exc_o_inc", colnames(df.ROI.beh), value=TRUE)
+
+RSQ_anx <- paste(ROIs, "~ RSQ_part2_rsq_mean_anxious_expectation_score*age")
+RSQ_anx.formulae <- lapply(RSQ_anx, as.formula)
+RSQ_anx.models <- lapply(RSQ_anx.formulae, lm, data=df.ROI.beh)
+names(RSQ_anx.models) = ROIs
+
+summary.RSQ_anx <- sapply(RSQ_anx.models, function(P)
+{
+  s<-summary(P)
+  return(s$coefficients[4,4])
+})
+summary.RSQ_anx.sorted <- sort(summary.RSQ_anx)
+summary.RSQ_anx.sorted
+
+RSQ_angry <- paste(ROIs, "~ RSQ_part2_rsq_mean_angry_expectation_score+ age")
+RSQ_angry.formulae <- lapply(RSQ_angry, as.formula)
+RSQ_angry.models <- lapply(RSQ_angry.formulae, lm, data=df.ROI.beh)
+names(RSQ_angry.models) = ROIs
+
+summary.RSQ_angry <- sapply(RSQ_angry.models, function(P)
+{
+  s<-summary(P)
+  return(s$coefficients[2,4])
+})
+summary.RSQ_angry.sorted <- sort(summary.RSQ_angry)
+summary.RSQ_angry.sorted
+
+RSQ_total <- paste(ROIs, "~ RSQ_total+ age")
+RSQ_total.formulae <- lapply(RSQ_total, as.formula)
+RSQ_total.models <- lapply(RSQ_total.formulae, lm, data=df.ROI.beh)
+names(RSQ_total.models) = ROIs
+
+summary.RSQ_total <- sapply(RSQ_total.models, function(P)
+{
+  s<-summary(P)
+  return(s$coefficients[2,4])
+})
+summary.RSQ_total.sorted <- sort(summary.RSQ_total)
+summary.RSQ_total.sorted
+
+RPI <- paste(ROIs, "~ RPI_part2_rpi_mean_score+ age")
+RPI.formulae <- lapply(RPI, as.formula)
+RPI.models <- lapply(RPI.formulae, lm, data=df.ROI.beh)
+names(RPI.models) = ROIs
+
+summary.RPI <- sapply(RPI.models, function(P)
+{
+  s<-summary(P)
+  return(s$coefficients[2,4])
+})
+summary.RPI.sorted <- sort(summary.RPI)
+summary.RPI.sorted
+
+NTS <- paste(ROIs, "~ NTS_mean_score_score+ age")
+NTS.formulae <- lapply(NTS, as.formula)
+NTS.models <- lapply(NTS.formulae, lm, data=df.ROI.beh)
+names(NTS.models) = ROIs
+
+summary.NTS <- sapply(NTS.models, function(P)
+{
+  s<-summary(P)
+  return(s$coefficients[2,4])
+})
+summary.NTS.sorted <- sort(summary.NTS)
+summary.NTS.sorted
+
+CESD <- paste(ROIs, "~ CES.DC_ces_dc_mean_score+ age")
+CESD.formulae <- lapply(CESD, as.formula)
+CESD.models <- lapply(CESD.formulae, lm, data=df.ROI.beh)
+names(CESD.models) = ROIs
+
+summary.CESD <- sapply(CESD.models, function(P)
+{
+  s<-summary(P)
+  return(s$coefficients[2,4])
+})
+summary.CESD.sorted <- sort(summary.CESD)
+summary.CESD.sorted
+
+BFNE <- paste(ROIs, "~ BFNE_bfne_mean_score + age")
+BFNE.formulae <- lapply(BFNE, as.formula)
+BFNE.models <- lapply(BFNE.formulae, lm, data=df.ROI.beh)
+names(BFNE.models) = ROIs
+
+summary.BFNE <- sapply(BFNE.models, function(P)
+{
+  s<-summary(P)
+  return(s$coefficients[2,4])
+})
+summary.BFNE.sorted <- sort(summary.BFNE)
+summary.BFNE.sorted
+
+model<-lmres(sub_exc_n8p6p38~RSQ_part2_rsq_mean_anxious_expectation_score*age, data=df.ROI.beh)
+S_slopes <- simpleSlope(model, pred="RSQ_part2_rsq_mean_anxious_expectation_score", mod1="age")
+Plot<-PlotSlope(S_slopes)
+Plot
+```
+
+```{r}
+
+center_mean <- function(x) {
+    ones = rep(1, nrow(x))
+    x_mean = ones %*% t(colMeans(x))
+    x - x_mean
+}
+
+# apply it
+df.beh2 <- center_mean(df.beh[,c("age","RSQ_part2_rsq_mean_anxious_expectation_score","RSQ_part2_rsq_mean_angry_expectation_score","RPI_part2_rpi_mean_score","NTS_mean_score_score","CES.DC_ces_dc_mean_score","BFNE_bfne_mean_score")])
+
+df.beh2 <- as.data.frame(c(df.beh2,df.beh))
+
+df.beh2$RSQ_anx_int <- df.beh2$RSQ_part2_rsq_mean_anxious_expectation_score*df.beh2$age
+df.beh2$RPI_int <- df.beh2$RPI_part2_rpi_mean_score*df.beh2$age
+df.beh2$NTS_int <- df.beh2$NTS_mean_score_score*df.beh2$age
+df.beh2$BFNE_int <- df.beh2$BFNE_bfne_mean_score*df.beh2$age
+
+df.beh2$age_group<- cut(df.beh2$age.1, breaks=c(-Inf,14,Inf),labels=c(0,1))
+
+setwd("/Volumes/research/tds/behavioral/raw/cyberball/")
+write.csv(df.beh2, file = "behavior_interactions", sep = " ", col.names = TRUE)
+
+COR <- corr.test(df.beh2, adjust = "none")
+
+hist(subset(df.beh2, df.beh2$age_group == 1) $RPI_part2_rpi_mean_score.1)
+
+ggplot(df.beh2, aes(x=age.1, y=RPI_part2_rpi_mean_score)) + geom_point(shape_=1) + geom_smooth(method=lm)
+
+ggplot(df.beh2, aes(x=age.1, y=NTS_mean_score_score)) + geom_point(shape_=1) + geom_smooth(method=lm)
+
+ggplot(df.beh2, aes(x=age.1, y=RSQ_part2_rsq_mean_anxious_expectation_score)) + geom_point(shape_=1) + geom_smooth(method=lm)
+
+mean(subset(df.beh2, age_group == 0)$RPI_part2_rpi_mean_score)
+mean(subset(df.beh2, age_group == 1)$RPI_part2_rpi_mean_score)
+sd(subset(df.beh2, age_group == 0)$RPI_part2_rpi_mean_score)
+sd(subset(df.beh2, age_group == 1)$RPI_part2_rpi_mean_score)
+
+t.test(RPI_part2_rpi_mean_score ~ age_group, data= df.beh2)
+```
+
+```{r}
+setwd("/Volumes/research/tds/behavioral/raw/cyberball")
+df.ylg=as.data.frame(read.csv("df_ylg_brainbeh.csv", header=TRUE)) # input all scored data
+
+df.ylg_age_c <- center_mean(df.ylg["age"])
+colnames(df.ylg_age_c)=c("age_c")
+df.ylg <- cbind(df.ylg, df.ylg_age_c)
+
+df.ylgList <- grep("dG|dpG", colnames(df.ylg), value=TRUE)
+
+df.ylg$dG34_12_int <- df.ylg$dG34_12*df.ylg$age_c
+df.ylg$dG56_34_int <- df.ylg$dG56_34*df.ylg$age_c
+df.ylg$dG78_56_int <- df.ylg$dG78_56*df.ylg$age_c
+df.ylg$dpG_E_34_12_int <- df.ylg$dpG_E_34_12*df.ylg$age_c
+df.ylg$dpG_E_56_34_int <- df.ylg$dpG_E_56_34*df.ylg$age_c
+df.ylg$dpG_E_78_56_int <- df.ylg$dpG_E_78_56*df.ylg$age_c
+df.ylg$dpG_L_34_12_int <- df.ylg$dpG_L_34_12*df.ylg$age_c
+df.ylg$dpG_L_56_34_int <- df.ylg$dpG_L_56_34*df.ylg$age_c
+df.ylg$dpG_L_78_56_int <- df.ylg$dpG_L_78_56*df.ylg$age_c
+
+library(zoo)
+df.ylg <- na.aggregate(df.ylg)
+
+setwd("/Volumes/research/tds/behavioral/raw/cyberball/")
+write.csv(df.ylg, file = "df_ylg_brainbeh_ageinteractions.csv", sep = " ", col.names = TRUE)
+

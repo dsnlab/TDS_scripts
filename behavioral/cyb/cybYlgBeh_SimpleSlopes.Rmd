@@ -1,0 +1,233 @@
+---
+title: "Simple slopes for cyb-ylg beh interactions"
+author: "Theresa Cheng"
+date: "August 24, 2016"
+output: html_document
+---
+
+# Load packages
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+# Load the data
+```{r}
+rm(list=ls())
+
+# Cyberball subject list
+setwd("/Volumes/research/tds/behavioral/raw/cyberball")
+subjectList=as.data.frame(read.csv("SubjectList_full.csv", header=FALSE), header=FALSE)
+colnames(subjectList) = c("SID", "Age")
+
+# ylg behavior
+setwd("/Volumes/research/tds/behavioral/processed/cyberball")
+df=as.data.frame(read.csv("ylgBeh_earlyMid.csv", header=TRUE), header=FALSE)
+
+# roi data
+setwd("/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_blocks/behavior")
+excFP_negIntExcFP_peerAloneGos_dlPFC=as.data.frame(read.csv("excFp_negIntExcFP_peerAloneGos_dlPFC.csv", header=FALSE), header=FALSE)
+excHi_negIntExcHi_peerAloneGos_mPFC=as.data.frame(read.csv("excHi_negIntExcHi_peerAloneGos_mPFC.csv", header=FALSE), header=FALSE)
+hiExc_negIntExcHi_peerAloneGos_mPFC= as.data.frame(read.csv("hiExc_negIntExcHi_peerAloneGos_mPFC.csv", header=FALSE), header=FALSE)
+
+# merge with subject list, then remove subject 189 (due to a lack of ylg behavior)
+excFP_negIntExcFP_peerAloneGos_dlPFC$SID=subjectList$SID
+excHi_negIntExcHi_peerAloneGos_mPFC$SID=subjectList$SID
+hiExc_negIntExcHi_peerAloneGos_mPFC$SID=subjectList$SID
+temp=merge(excFP_negIntExcFP_peerAloneGos_dlPFC, excHi_negIntExcHi_peerAloneGos_mPFC, by="SID")
+temp=merge(temp, hiExc_negIntExcHi_peerAloneGos_mPFC, by="SID")
+colnames(temp)= c("SID", "excFP_negIntExcFP_peerAloneGos_dlPFC", "excHi_negIntExcHi_peerAloneGos_mPFC", "hiExc_negIntExcHi_peerAloneGos_mPFC")
+```
+
+# Missing data
+```{r}
+# remove t189
+temp=temp[-61,]
+
+# join the dataframes
+df$excFP_negIntExcFP_peerAloneGos_dlPFC=temp$excFP_negIntExcFP_peerAloneGos_dlPFC
+df$excHi_negIntExcHi_peerAloneGos_mPFC=temp$excHi_negIntExcHi_peerAloneGos_mPFC
+df$hiExc_negIntExcHi_peerAloneGos_mPFC=temp$hiExc_negIntExcHi_peerAloneGos_mPFC
+```
+
+# Test the interaction: How do age and Peer-Alone in early and mid intersections interact to predict neural activation in exclusion as compared to fair play?
+## ROI1: dlPFC in exc>fp
+```{r}
+# Examine data distributions
+hist(df$excFP_negIntExcFP_peerAloneGos_dlPFC)
+hist(df$excHi_negIntExcHi_peerAloneGos_mPFC)
+
+
+# Model without the interaction
+M1= lm(excFP_negIntExcFP_peerAloneGos_dlPFC ~ age + mcPeer_alone, data=df)
+summary(M1)
+
+# Model with the interaction
+M2= lm(excFP_negIntExcFP_peerAloneGos_dlPFC ~ age*mcPeer_alone, data=df)
+summary(M2)
+
+# Examine bivariate relationships with scatterplots
+# ggplot(data=df, aes(x=age, y=mcPeer_alone)) +
+#   geom_point(shape=1) +
+#   geom_smooth(method="lm")
+# 
+# ggplot(data=df, aes(x=age, y=excFP_negIntExcFP_peerAloneGos_dlPFC)) +
+#   geom_point(shape=1) +
+#   geom_smooth(method="lm")
+# 
+# ggplot(data=df, aes(x=mcPeer_alone, y=excFP_negIntExcFP_peerAloneGos_dlPFC)) +
+#   geom_point(shape=1) +
+#   geom_smooth(method="lm")
+
+# Plot simple slopes
+
+## Identify low (-1SD), mean, and high (+1SD) values of age and peerAlone 
+meanAge=mean(df$age)
+lowAge=meanAge-sd(df$age)
+highAge=meanAge+sd(df$age)
+
+meanPeerAlone=0
+lowPeerAlone=-2
+highPeerAlone=2
+
+# Set up coefficients
+b0=round(M2$coeff[1], digits=3)
+b1_age=round(M2$coeff[2], digits=3)
+b2_pa=round(M2$coeff[3], digits=3)
+b3_int=round(M2$coeff[4], digits=3)
+
+# Plot it out
+ggplot(data=df, aes(x = age, y = excFP_negIntExcFP_peerAloneGos_dlPFC)) +
+  geom_point(shape = 1) + 
+  geom_abline(intercept = b0, slope = b1_age, colour= "red") +
+  geom_abline(intercept=b0 + b2_pa*lowPeerAlone, slope= b1_age + b3_int*lowPeerAlone, color="green") +
+  geom_abline(intercept=b0 + b2_pa*highPeerAlone, slope=b1_age + b3_int*highPeerAlone, color="blue") +
+  ggtitle("Age by dlPFC, excFP (-1SD Peer-Alone=green, avg Peer-Alone=red, +1SD Peer-Alone=blue")+
+  labs(y="dlPFC BOLD signal difference in Exc>Hi")
+
+# Plot the residuals
+M3.res = resid(M3) 
+df$M3.resid=M3.res
+df$M3.stdresid=M3.res/sd(df$M3.resid)
+
+ggplot(data=df, aes(x = mc_age, y = M3.stdresid)) +
+  geom_point(shape = 1) + 
+  geom_smooth(method="lm")
+
+# ggplot(data=df, aes(x = mcPeer_alone, y = excFP_negIntExcFP_peerAloneGos_dlPFC)) +
+#   geom_point(shape = 1) + 
+#   geom_abline(intercept = b0 +b1_age*meanAge, slope = b2_pa+b3_int*meanAge, colour= "red") +
+#   geom_abline(intercept=b0 +b1_age*lowAge, slope= b2_pa+b3_int*lowAge, color="green") +
+#   geom_abline(intercept=b0 +b1_age*highAge, slope=b2_pa+b3_int*highAge, color="blue") +
+#   ggtitle("Age by dlPFC, excFP (-1SD Age=green, avg Age=red, +1SD Age=blue")
+```
+
+## ROI2: mPFC in exc>hi
+```{r}
+M3= lm(excHi_negIntExcHi_peerAloneGos_mPFC~ age*mcPeer_alone, data=df)
+summary(M3)
+
+# Set up coefficients
+b0=round(M3$coeff[1], digits=3)
+b1_age=round(M3$coeff[2], digits=3)
+b2_pa=round(M3$coeff[3], digits=3)
+b3_int=round(M3$coeff[4], digits=3)
+
+# Plot it out
+ggplot(data=df, aes(x = age, y = excHi_negIntExcHi_peerAloneGos_mPFC), color="Line name", labs(y="Exc>Hi BOLD signal change in rACC/mPFC")) +
+  geom_point(shape = 1) + 
+  geom_abline(intercept = b0, slope = b1_age, colour= "gray61") +
+  geom_abline(intercept=b0 + b2_pa*lowPeerAlone, slope= b1_age + b3_int*lowPeerAlone, color="blue3") +
+  geom_abline(intercept=b0 + b2_pa*highPeerAlone, slope=b1_age + b3_int*highPeerAlone, color="firebrick3") +
+  ggtitle("Peer effect by age interaction and rACC/mPFC signal in Exc>Hi") +
+  labs(y="BOLD signal in Exc>Hi")
+
+  #scale_colour_manual(breaks= c("2 Fewer Gos in Peer than Alone", "No peer effect", "Two more Gos in peer than alone"), values = c("red", "gray", "blue"))
+
+
+# M4= lm(hiExc_negIntExcHi_peerAloneGos_mPFC~ mc_age*mcPeer_alone, data=df)
+# summary(M4)
+# 
+# # Set up coefficients
+# b0=round(M4$coeff[1], digits=3)
+# b1_age=round(M4$coeff[2], digits=3)
+# b2_pa=round(M4$coeff[3], digits=3)
+# b3_int=round(M4$coeff[4], digits=3)
+# 
+# # Plot it out
+# ggplot(data=df, aes(x = mc_age, y = hiExc_negIntExcHi_peerAloneGos_mPFC)) +
+#   geom_point(shape = 1) + 
+#   geom_abline(intercept = b0, slope = b1_age, colour= "red") +
+#   geom_abline(intercept=b0 + b2_pa*lowPeerAlone, slope= b1_age + b3_int*lowPeerAlone, color="green") +
+#   geom_abline(intercept=b0 + b2_pa*highPeerAlone, slope=b1_age + b3_int*highPeerAlone, color="blue") +
+#   ggtitle("Peer effect by age interaction predicts rACC/mPFC activation in Hi>Exc \n (-1SD Peer-Alone=green, avg Peer-Alone=red, +1SD Peer-Alone=blue)")
+# 
+# # Plot the residuals
+# M4.res = resid(M4) 
+# df$M4.resid=M4.res
+# df$M4.stdresid=M4.res/sd(df$M4.resid)
+# 
+# ggplot(data=df, aes(x = mc_age, y = M4.stdresid)) +
+#   geom_point(shape = 1) + 
+#   geom_smooth(method="lm")
+```
+
+# Hmm... a plot of the studentized residuals shows that 186 is not behaving well. Let's take it out and re-run just to see its influence. 
+```{r}
+# Remove 186
+df_wo186=df[-58,]
+
+## Identify low (-1SD), mean, and high (+1SD) values of age and peerAlone 
+meanAge=mean(df$age)
+lowAge=meanAge-sd(df$age)
+highAge=meanAge+sd(df$age)
+
+meanPeerAlone=mean(df$mcPeer_alone)
+lowPeerAlone=-1*sd(df$mcPeer_alone)
+highPeerAlone=sd(df$mcPeer_alone)
+
+M5= lm(excHi_negIntExcHi_peerAloneGos_mPFC~ age*mcPeer_alone, data=df_wo186)
+summary(M5)
+
+# Set up coefficients
+b0=round(M5$coeff[1], digits=3)
+b1_age=round(M5$coeff[2], digits=3)
+b2_pa=round(M5$coeff[3], digits=3)
+b3_int=round(M5$coeff[4], digits=3)
+
+# Plot it out
+ggplot(data=df_wo186, aes(x = age, y = excHi_negIntExcHi_peerAloneGos_mPFC)) +
+  geom_point(shape = 1) + 
+  geom_abline(intercept = b0, slope = b1_age, colour= "gray0") +
+  geom_abline(intercept=b0 + b2_pa*lowPeerAlone, slope= b1_age + b3_int*lowPeerAlone, color="deeppink3") +
+  geom_abline(intercept=b0 + b2_pa*highPeerAlone, slope=b1_age + b3_int*highPeerAlone, color="darkslateblue") +
+  ggtitle("Peer effect by age interaction predicts rACC/mPFC activation in Exc>Hi \n  (Fuschia: -1 SD Peer-Alone, Gray: Avg Peer-Alone=red, Blue: +1SD Peer-Alone")
+
+M6= lm(hiExc_negIntExcHi_peerAloneGos_mPFC~ mc_age*mcPeer_alone, data=df_wo186)
+summary(M6)
+
+# Set up coefficients
+b0=round(M6$coeff[1], digits=3)
+b1_age=round(M6$coeff[2], digits=3)
+b2_pa=round(M6$coeff[3], digits=3)
+b3_int=round(M6$coeff[4], digits=3)
+
+# Plot it out
+# ggplot(data=df_wo186, aes(x = mc_age, y = hiExc_negIntExcHi_peerAloneGos_mPFC)) +
+#   geom_point(shape = 1) + 
+#   geom_abline(intercept = b0, slope = b1_age, colour= "red") +
+#   geom_abline(intercept=b0 + b2_pa*lowPeerAlone, slope= b1_age + b3_int*lowPeerAlone, color="green",) +
+#   geom_abline(intercept=b0 + b2_pa*highPeerAlone, slope=b1_age + b3_int*highPeerAlone, color="blue") +
+#   ggtitle("Peer effect by age interaction predicts rACC/mPFC activation in Hi>Exc \n (-1SD Peer-Alone=green, avg Peer-Alone=red, +1SD Peer-Alone=blue)")
+
+# Plot the residuals
+M6.res = resid(M6) 
+df_wo186$M6.resid=M6.res
+df_wo186$M6.stdresid=M6.res/sd(df_wo186$M6.resid)
+# 
+# ggplot(data=df_wo186, aes(x = mc_age, y = M6.stdresid)) +
+#   geom_point(shape = 1) + 
+#   geom_smooth(method="lm")
+
+```
+

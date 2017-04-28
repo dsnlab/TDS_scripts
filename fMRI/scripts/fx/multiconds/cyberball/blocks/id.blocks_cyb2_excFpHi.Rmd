@@ -1,0 +1,291 @@
+---
+title: "id.blocks_cyb2_newPT_excVfp"
+author: "TCheng"
+date: "June 29, 2016"
+output: html_document
+---
+# Theresa Cheng | Nandita Vijayakumar
+# 6/29/2016
+# This script identifies the wait period and initial block of fair play within the Cyberball inclusion run
+# newPT: adjusting the onset of the participant throw regressor to begin when they catch the ball (WITHIN the initial fair play block only)
+
+#########
+#!!! Remember to run 'module add R' at the command line first
+#########
+#Paths are set to run locally, not on the grid.
+
+```{r}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+```
+
+```{r} 
+# LOAD FILES
+rm(list=ls())
+
+#define folder locations
+tds_folder<-'/Volumes/research/tds/'
+labeled_cyberball_folder<-'fMRI/analysis/fx/multicond/cyberball/TDS2_labeled_cyb_data'
+labeled_files_folder<-paste(tds_folder,labeled_cyberball_folder,sep='')
+summary_cyberball_folder<-'fMRI/analysis/fx/multicond/cyberball/TDS2_cyb_summary/blocks/excFpHi'
+summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
+
+setwd(labeled_files_folder)
+
+#list the files 
+listFiles<-list.files(labeled_files_folder,recursive=T, pattern='cyb.*_2.csv$')
+```
+
+```{r}
+# READ IN EACH FILE AND CLEAN IT UP
+
+for(j in 1:length(listFiles)) 
+{
+  setwd(labeled_files_folder)
+  df<-read.csv(listFiles[j]) #read in the file
+  timestamp<-as.character(df[1,2]) #change the timestamp into a character
+  
+  # Reformat Timestamp Into Hour, Minutes, and Seconds.Milliseconds
+  df<-separate(df, "timestamp", c("date", "time"), sep=16)
+  df<-separate(df, "time", c("time","junk"), sep=8)
+  
+  df<-separate(df,"milliseconds",c("junk","milliseconds"), sep=1)
+  df$time<-paste(df$time, df$milliseconds, sep="")
+  
+  # Delete unnecessary variables
+  df <- df[,-(5:7)]
+  
+# Label each behavior type according to the following scheme:
+    # 4: catch(player1) catch(player3) 
+    # 3: throw(player1) throw(player3)
+    # 2: connecting(time: 6)
+    # 1: throw(player1-player2) throw(player3-player2) #throws to the subj
+    # 0: throw(player1-player3)
+    # 0: throw(player3-player1) 
+  
+  df$behavior.num<-mapvalues(df$behavior.type, c("catch(player1)", "catch(player3)","throw(player1)","throw(player3)", "connecting(time: 6)", "throw(player1-player2)",
+                                                 "throw(player3-player2)", "throw(player1-player3)","throw(player3-player1)"),c(4,4,3,3,2,1,1,0,0))
+  
+  # Filter out unnecessary information (catches, participant throws) keep connecting time and all throws from player 1 or 3
+  df.blockID<-filter(df, behavior.num==1| behavior.num==2|behavior.num==0)
+  
+  # Identify lengths of repeating conditions types in df$behavior.num
+  tmp<-rle(as.vector(df.blockID$behavior.num)) 
+  df.blockID$blocks<-rep(tmp$lengths>=4, times=tmp$lengths)
+  
+  # Created a "lag" column to identify condition boundaries
+  df.blockID <- df.blockID %>% mutate(blocks.lag=lag(blocks,1), boundaries=blocks==blocks.lag, index=1:n() %>% as.numeric(df.blockID$index))
+  
+# IDENTIFY EXCLUSION BLOCKS
+  # Filtered df.blockID based on the boundaries (i.e. first row) that begin EXC blocks
+  df.exc<-filter(df.blockID, blocks==TRUE, boundaries==FALSE)
+  df.exc$secondtoss<-df.exc$index +1 # found row number of the SECOND toss in each EXC blocks
+  
+  # Filtered df.blockID based on the SECOND toss in the EXC blocks, which is what we want as an onset time
+  exc.info<-subset(df.blockID, df.exc$secondtoss[1]==df.blockID$index |df.exc$secondtoss[2]==df.blockID$index |df.exc$secondtoss[3]==df.blockID$index |df.exc$secondtoss[4]==df.blockID$index |df.exc$secondtoss[5]==df.blockID$index)
+  exc.info$start<-1
+  
+  ## add the final toss of the run that ends the last exclusion block
+  df.exc<-filter(df.blockID, blocks==FALSE, boundaries==FALSE)
+  
+  last.toss<-df[NROW(df),]
+  last.toss$blocks<-NA
+  last.toss$blocks.lag<-NA
+  last.toss$boundaries<-NA
+  last.toss$index<-NROW(df)
+  
+  df.exc<-rbind(df.exc,last.toss)
+  
+  df.exc$start<-0
+  
+  # Combine starts and ends of exc block and sort by index
+  exc.info<-rbind(exc.info,df.exc)
+  exc.info<-exc.info[order(exc.info$index),]
+  
+# IDENTIFY FAIRPLAY (FP) BLOCKS
+  # Reverse code them start and end of exclusion blocks (reverse code start variable), and delete last row (we this will always be the end of an exclusion block)
+  fp.info<-exc.info[-NROW(exc.info),]
+  fp.info$start<-mapvalues(fp.info$start, c(1,0), c(0,1))
+  
+  # Identify start of first fairplay block - begins with the first throw
+  first.toss<-df.blockID[2,]
+  first.toss$start<-1
+  fp.info<-rbind(fp.info, first.toss)
+  
+  # Identify the end of the last block  (could be hi or inc)
+  last.toss<-df[NROW(df),]
+  last.toss$blocks<-NA
+  last.toss$blocks.lag<-NA
+  last.toss$boundaries<-NA
+  last.toss$index<-NROW(df)
+  last.toss$start<-0
+  fp.info<-rbind(fp.info,last.toss)
+  
+  # Order the fairplay block info
+  fp.info<-fp.info[order(fp.info$index),]
+  
+#CREATE NAMES, ONTSET AND durations 
+  #Create names variable
+  exc.info$names<-"exc"
+  fp.info$names<-"fp"
+  
+  #Create onset variable
+  op<-options(digits.secs=3)
+  exc.info$onsets<-exc.info$time
+  fp.info$onsets<-fp.info$time
+  
+  #Create durations variable
+  op<-options(digits.secs=5) #futz with getting it into the right time format
+  exc.info$time<-strptime(exc.info$time, format="%H:%M:%OS")
+  op<-options(digits.secs=5)
+  df$time<-strptime(df$time,format="%H:%M:%OS")
+  options(op)
+  
+  for (i in 1:NROW(exc.info)) { #for loop identifies each start and durations
+    if (exc.info$start[i] == 1) {
+      exc.info$durations[i] = difftime(exc.info$time[i+1],exc.info$time[i],unit="secs")
+      exc.info$onsets[i]=difftime(exc.info$time[i],df$time[1], unit="secs")
+    } else if (exc.info$start[i] < 1) {
+      exc.info$durations[i] = NA
+      exc.info$onsets[i]=NA}}
+  
+  exc.info<-subset(exc.info,start==1)
+  exc.info<-subset(exc.info, !is.na(exc.info$blocks))
+  
+  op<-options(digits.secs=5)
+  fp.info$time<-strptime(fp.info$time, format="%H:%M:%OS")
+  options(op)
+  
+  for (i in 1:NROW(fp.info)) {
+    if (fp.info$start[i] == 1) {
+      fp.info$durations[i] = difftime(fp.info$time[i+1],fp.info$time[i],unit="secs")
+      fp.info$onsets[i]=difftime(fp.info$time[i],df$time[1], unit="secs")
+    } else if (fp.info$start[i] < 1) {
+      fp.info$durations[i] = NA
+      fp.info$onsets[i]=NA}}
+  
+  fp.info<-subset(fp.info,start==1)
+  fp.info<-subset(fp.info, !is.na(fp.info$blocks))
+  
+  #### 8/31/2016: EDIT fp_1.info INCLUDING ONLY THE FIRST ROW OF inc.info, add fp_exc for the rest 
+  fp_1.info<-fp.info[1,]
+  fp_1.info$names="fp_1"
+  fp_exc.info<-fp.info[2:NROW(fp.info),]
+  fp_exc.info$names="fp_exc"
+  
+  file<-rbind(fp_1.info, fp_exc.info, exc.info)
+  file<-file[,c(2,13:15)]
+  
+# IDENTIFY FIVESECS CONDITION: BLOCKS LESS THAN 5secs
+# for (l in 1:NROW(file)){
+#   if(file$durations[l]<5) {
+#     file$names[l]<-"fivesecs"
+#   }else{}
+# }
+
+# IDENTIFY PARTICIPANT THROWS
+# Generate variables that reflect the conditions one trial later
+  df$behavior.num1 =lead(df$behavior.num)
+  
+  # Loop specifies that if there are fewer than 1 cyberball action following the catch by a subject, specify duration=0
+  for(i in 1:NROW(df)){
+      if (df$behavior.num[i]==4 & !(is.na(df$behavior.num1[i]))) {
+        df$pt.onsets[i]=difftime(df$time[i],df$time[1], unit="secs")
+        df$pt.durations[i]= difftime(df$time[i+1],df$time[i],unit="secs")}
+      else if (df$behavior.num[i]==4 & is.na(df$behavior.num1[i])) {
+        df$pt.onsets[i]=difftime(df$time[i],df$time[1], unit="secs")
+        df$pt.durations[i]=0 }
+        else {
+        df$pt.onsets[i]=NA
+        df$pt.durations[i]=NA}
+      }
+  
+  pt.info<-subset(df,df$behavior.num==4)
+  pt.info$names<-"pt"
+  pt.info$onsets<-pt.info$pt.onsets
+  pt.info$durations<-rep(0, NROW(pt.info))
+  
+  pt.file<-pt.info[,c(2,11:13)]
+  
+### FP: Filter out onsets that began after the FP block
+  #endFp=as.numeric(fp.info$onsets[1])+as.numeric(fp.info$durations[1])
+  #pt.file=filter(pt.file, pt.file$onsets<endFp)
+  
+op<-options(digits.secs=5)
+df.blockID$time<-strptime(df.blockID$time, format="%H:%M:%OS")
+options(op)
+
+# # MODEL ALL COMPUTER THROWS
+#   for (l in 1:NROW(df.blockID)) {
+#     if (df.blockID$behavior.num[l]==0 | df.blockID$behavior.num[l]==1) {
+#       df.blockID$compt.onsets[l] = difftime(df.blockID$time[l],df$time[1],unit="secs")
+#       df.blockID$compt.durations[l] = 0
+#     } else {
+#       df.blockID$compt.onsets[l]= NA
+#       df.blockID$compt.durations[l]= NA
+#     }
+#   }
+# 
+# compt.info<-subset(df.blockID, df.blockID$behavior.num=="0" |df.blockID$behavior.num=="1") #subset out throws by the computer
+# compt.info$names<-"compthrow"
+# compt.info$onsets<-compt.info$compt.onsets
+# compt.info$durations<-compt.info$compt.durations
+# compt.file<-compt.info[,c(2,14,15,16)]
+
+##IDENTIFY wait
+  for(i in 1:NROW(df)){
+    if (df$behavior.num[i]==2) {
+      df$wait.onsets[i]=difftime(df$time[i],df$time[1], unit="secs")
+      df$wait.durations[i]= difftime(df$time[i+1],df$time[i],unit="secs")}
+    else {
+      df$wait.onsets[i]=NA
+      df$wait.durations[i]=NA}
+  }
+
+wait.info<-subset(df,!(is.na(df$wait.onsets)))
+wait.info$names<-"wait"
+wait.info$onsets<-wait.info$wait.onsets
+wait.info$durations<-wait.info$wait.durations
+wait.file<-wait.info[,c(2,13:15)]
+
+#COMBINE WAIT, FP, EXC, PT and SAVE CSV FILE
+  file<-rbind(wait.file, file, pt.file)
+  
+  file$names<-mapvalues(file$names,c("wait","fp_1", "fp_exc", "exc", "pt"), c(1,2,3,4,5))
+  file$names<-as.numeric(file$names)
+  file$onsets<-as.numeric(file$onsets)
+
+  #file= rbind(file[1:4,], file[6:nrow(file),])
+  
+  setwd(summary_files_folder)
+  write.csv(file, paste("summary_excFpHi",listFiles[j], sep="_"))
+}
+```

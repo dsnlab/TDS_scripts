@@ -1,0 +1,82 @@
+---
+title: "Does BG mediate relationship between RS and depression"
+author: "Theresa Cheng"
+date: "August 1, 2016"
+output: html_document
+---
+
+# LOAD PACKAGES
+```{r, warning=FALSE}
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+library(plyr)
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(ggplot2)
+```
+
+# LOAD FILES
+```{r, warning=FALSE, echo=FALSE, eval=FALSE} 
+rm(list=ls())
+
+# list of mean centered behavioral variables for 65 cyb subjects w/ mean imputation
+setwd("/Volumes/research/tds/behavioral/processed/cyberball")
+df.beh=as.data.frame(read.csv("tds2_summary_beh_data.csv", header=TRUE))
+df.beh=df.beh[c("df.beh.SID", "age","RSQ_part2_rsq_mean_anxious_expectation_score", "CES.DC_ces_dc_mean_score")]
+colnames(df.beh)=c("SID", "age", "rs","cesd")
+
+# brain params
+setwd("/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_blocks/excVfp")
+df.brain=as.data.frame(read.csv("excVfp_cesdBasalGangliaRoi.csv", header=FALSE)) 
+colnames(df.brain)="bg_roi"
+
+#merge dfs
+df=cbind(df.beh, df.brain)
+```
+
+# Test the mediation
+```{r, warning=FALSE}
+# path a: rs--> bg_roi
+a.model <- lm(bg_roi ~ rs, data=df)
+summary(a.model)
+a <- summary(a.model)$coefficients[2,1] #  coefficient for the effect of X on M
+a_se <- summary(a.model)$coefficients[2,2] # standard error
+#install.packages('QuantPsyc')
+library(QuantPsyc)
+lm.beta(a.model)
+
+## c: rs-> cesd
+c.model <- lm(cesd~ rs,data=df)
+summary(c.model)
+c <- summary(c.model)$coefficients[2,1] #coefficient for bivariate relationship between X and Y
+lm.beta(c.model)
+
+## b and c': rs-> brain --> cesd
+bc.model <- lm(cesd ~ rs + bg_roi, data=df)
+summary(bc.model)
+b <- summary(bc.model)$coefficients[3,1] #  coefficient for the effect of M on Y, given X
+b_se <- summary(bc.model)$coefficients[3,2] # and here is its standard error
+c_prime <- summary(bc.model)$coefficients[2,1] # here is the effect of X on Y, given M
+lm.beta(bc.model)
+
+bc_only.model = lm(cesd ~ bg_roi, data=df)
+summary(bc_only.model)
+lm.beta(bc_only.model)
+
+# Estimate the mediated effect
+medeff_diff <- c - c_prime
+medeff_diff
+
+# Test the significance of the mediated effect (Sobel test)
+SEmed <- sqrt(((b^2)*(a_se^2)) + ((a^2)*(b_se^2)))
+
+## Get the estimate of Z
+Zmed<-medeff_diff/SEmed
+Zmed
+
+## Get the p-value
+pval <- 2*pnorm(abs(Zmed), lower.tail=FALSE)
+pval
+```

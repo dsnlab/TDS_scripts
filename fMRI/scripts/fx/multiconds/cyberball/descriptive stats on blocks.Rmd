@@ -1,0 +1,142 @@
+---
+output: html_document
+---
+# Theresa Cheng | Nandita Vijayakumar
+# 1/19/2016
+# This script provides descriptive stats on the durations of inclusion and exclusion blocks within Cyberball runs
+
+```{r, warning=FALSE, echo=FALSE}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+if(!require(knitr)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(knitr)
+```
+
+```{r, warning=FALSE, echo=FALSE} 
+# LOAD FILES
+rm(list=ls())
+
+#define folder locations
+tds_folder<-'/Volumes/research/tds/'
+summary_cyberball_folder<-'behavioral/cyberball/TDS2_cyb_summary'
+summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
+
+setwd("/Volumes/research/tds/behavioral/cyberball/TDS2_cyb_summary/newPT_excVfp")
+```
+
+```{r}
+#list the files (inc and exc runs)
+listFiles<-c(list.files(recursive=T, pattern='*_1.csv$'),list.files(recursive=T, pattern='*_2.csv$'))
+
+df<-do.call("rbind", lapply(listFiles, read.csv, header = TRUE))
+
+# Stats on the fair play blocks
+fp.info=subset(df, df$name==2)
+
+  min(fp.info$durations) # what is the range 
+  max(fp.info$durations)
+  
+  mean(fp.info$durations) # mean and sd 
+  median(fp.info$durations)
+  sd(fp.info$durations)
+  
+  hist(fp.info$durations, main= "Histogram of fair play durations")
+
+#list the files (exc runs only)
+listFiles<-list.files(recursive=T, pattern='*_2.csv$')
+
+df<-do.call("rbind", lapply(listFiles, read.csv, header = TRUE))
+
+# Stats on the exclusion blocks
+exc.info=subset(df, df$name==3)
+
+  min(exc.info$durations) # what is the range 
+  max(exc.info$durations)
+  
+  mean(exc.info$durations) # mean and sd 
+  sd(exc.info$durations)
+  
+  hist(exc.info$durations, main= "Histogram of exclusion durations")
+```
+
+# 
+# 
+# ```{r, warning=FALSE, echo=FALSE}
+# # MERGE ALL SUMMARY FILES & SUBSET to HI, INC & PT 
+# 
+# setwd("/Volumes/research/tds/behavioral/cyberball/TDS2_cyb_summary/events")
+#   df<-do.call("rbind", lapply(listFiles, read.csv, header = TRUE))
+#   
+#   hi.info<-subset(df,df$name==1) # OR exc
+#   inc.info<-subset(df,df$name==2) # and FP
+#   pt_1.info<-subset(df,df$name==3)
+#   cont.info<-subset(df,df$names==4)
+#   
+#   hist(hi.info$durations, main= "Histogram of hyperinclusion durations")
+#   hist(inc.info$durations, main= "Histogram of inclusion (i.e., fair play) durations")
+#   
+#   per_short.hi<-NROW(subset(hi.info, durations<7))/NROW(hi.info)*100
+#   per_long.hi<-NROW(subset(hi.info, durations>35))/NROW(hi.info)*100
+#   
+#   per_short.inc<-NROW(subset(inc.info, durations<7))/NROW(inc.info)*100 
+#   per_long.inc<-NROW(subset(inc.info, durations>35))/NROW(inc.info)*100
+#   
+#   per_wrongduration_1<-as.data.frame(c(per_short.hi, per_long.hi, per_short.inc, per_long.inc), row.names=c("%age of short hi blocks", "%age of long hi blocks", "%age of short inc blocks", "%age of long inc blocks"))
+#   kable(format="pandoc", per_wrongduration_1)
+#   
+# ```
+# 
+# ```{r, warning=FALSE}
+#   
+#   #list the files 
+#   setwd("/Volumes/research/tds/behavioral/cyberball/TDS2_cyberball_summary")
+# listFiles<-list.files(summary_files_folder,recursive=T, pattern='cyb.*_1.csv$') # Can be 1 or 2 to examine inc or exc runs 
+#   df<-do.call("rbind", lapply(listFiles, read.csv, header = TRUE))
+#  
+#   exc.info<-subset(df,df$name=="exc") # OR exc
+#  fp.info<-subset(df,df$name=="fp") # and FP
+#   pt_2.info<-subset(df,df$name=="pt")
+#   
+#   hist(exc.info$durations, main= "Histogram of exclusion durations")
+#   hist(fp.info$durations, main= "Histogram of fair play (within exc runs) durations")
+#   
+#   per_short.exc<-NROW(subset(exc.info, durations<7))/NROW(exc.info)*100
+#   per_long.exc<-NROW(subset(exc.info, durations>35))/NROW(exc.info)*100
+#   
+#   per_short.fp<-NROW(subset(fp.info, durations<7))/NROW(fp.info)*100 
+#   per_long.fp<-NROW(subset(fp.info, durations>35))/NROW(fp.info)*100
+#   
+#     per_wrongduration_2<-as.data.frame(c(per_short.exc, per_long.exc, per_short.fp, per_long.fp), row.names=c("%age of short exc blocks", "%age of long exc blocks", "%age of short fp blocks", "%age of long fp blocks"))
+#   kable(format="pandoc", per_wrongduration_2)
+#   
+#   ```

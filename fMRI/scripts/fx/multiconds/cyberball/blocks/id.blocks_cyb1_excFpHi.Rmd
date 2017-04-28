@@ -1,0 +1,422 @@
+---
+title: "id.blocks_cyb1_newPT_excVfpVhi"
+author: "TCheng"
+date: "June 29, 2016"
+output: html_document
+---
+
+# Theresa Cheng | Nandita Vijayakumar
+# 6/29/2016
+# This script identifies the wait period and initial block of fair play within the Cyberball inclusion run
+# newPT: adjusting the onset of the participant throw regressor to begin when they catch the ball (WITHIN the initial fair play block only)
+
+#########
+#!!! Remember to run 'module add R' at the command line first
+#########
+#Paths are set to run locally, not on the grid.
+
+```{r}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+```
+
+```{r} 
+# LOAD FILES
+rm(list=ls())
+
+#define folder locations
+tds_folder<-'/Volumes/research/tds/'
+labeled_cyberball_folder<-'fMRI/analysis/fx/multicond/cyberball/TDS2_labeled_cyb_data'
+labeled_files_folder<-paste(tds_folder,labeled_cyberball_folder,sep='')
+summary_cyberball_folder<-'fMRI/analysis/fx/multicond/cyberball/TDS2_cyb_summary/blocks/excFpHi'
+summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
+
+setwd(labeled_files_folder)
+
+#list the files 
+listFiles<-list.files(labeled_files_folder,recursive=T, pattern='cyb.*_1.csv$')
+```
+
+```{r}
+# READ IN EACH FILE AND CLEAN IT UP
+
+for(j in 1:length(listFiles)) 
+{
+  setwd(labeled_files_folder)
+  df<-read.csv(listFiles[j]) #read in the file
+  timestamp<-as.character(df[1,2]) #change the timestamp into a character
+
+  # Reformat Timestamp Into Hour, Minutes, and Seconds.Milliseconds
+  df<-separate(df, "timestamp", c("date", "time"), sep=16)
+  df<-separate(df, "time", c("time","junk"), sep=8)
+
+  df<-separate(df,"milliseconds",c("junk","milliseconds"), sep=1)
+  df$time<-paste(df$time, df$milliseconds, sep="")
+
+  #Delete unnecessary variables
+  df <- df[,-(5:7)]
+  
+  # Label each behavior type according to the following scheme:
+    # 4: catch(player1) catch(player3) 
+    # 3: throw(player1) throw(player3)
+    # 2: connecting(time: 6)
+    # 1: throw(player1-player2) throw(player3-player2) #throws to the subj
+    # 0: throw(player1-player3)
+    # 0: throw(player3-player1) 
+  
+  df$behavior.num<-mapvalues(df$behavior.type, c("catch(player1)", "catch(player3)","throw(player1)","throw(player3)", "connecting(time: 6)", "throw(player1-player2)",
+                                                 "throw(player3-player2)", "throw(player1-player3)","throw(player3-player1)"),c(4,4,3,3,2,1,1,0,0)) 
+  
+  # Filter out unnecessary information (catches, participant throws) keep connecting time and all throws from player 1 or 3
+  df.blockID<-filter(df, behavior.num==1| behavior.num==2|behavior.num==0)
+
+#for(k in 1:NROW(df.blockID))
+#{ df.blockID$block.sum2[k] = df.blockID$behavior.num2[k+4] + df.blockID$behavior.num2[k+3] + df.blockID$behavior.num2[k+2] + df.blockID$behavior.num2[k+1] + df.blockID$behavior.num2[k]}
+
+# #k=10
+# 
+### ORIGINAL CONTINUITY RULE 
+#   df.blockID2 <- df.blockID
+#   df.blockID$cont.throws<-rep(0,NROW(df.blockID)) # generate regressor of non-participant throws in hi.block
+#   
+#   for(k in 4:NROW(df.blockID))
+#           {if (df.blockID$behavior.num[k]==0 && df.blockID$behavior.num[k-1]==1 && df.blockID$behavior.num[k-2]==1 && df.blockID$behavior.num[k-3]==1) {
+#             if (is.na(df.blockID$behavior.num[k+1]==1)) {
+#              df.blockID$behavior.num[k]=1
+#              df.blockID$cont.throws[k]=1}
+#             else if (is.na(df.blockID$behavior.num[k+2]==1) && df.blockID$behavior.num[k+1]==1) {
+#                 df.blockID$behavior.num[k]=1
+#                 df.blockID$cont.throws[k]=1}
+#             else if (is.na(df.blockID$behavior.num[k+3]==1) && df.blockID$behavior.num[k+1]==1 && df.blockID$behavior.num[k+2]==1) {
+#               df.blockID$behavior.num[k]=1
+#               df.blockID$cont.throws[k]=1}
+#             else if (df.blockID$behavior.num[k+1]==1 && df.blockID$behavior.num[k+2]==1 && df.blockID$behavior.num[k+3]==1) {
+#             df.blockID$behavior.num[k]=1
+#             df.blockID$cont.throws[k]=1}
+#             else{}
+#           } else {}
+# }            
+
+# ### MODIFIED CONTINUITY RULE BELOW
+#   df.blockID$split.cont<-rep(0,NROW(df.blockID)) # generate regressor of non-participant throws in hi.block
+# 
+# for(k in 4:NROW(df.blockID))
+#           {if (df.blockID$behavior.num[k]==0 && df.blockID$behavior.num[k-1]==1 && df.blockID$behavior.num[k-2]==1 && df.blockID$behavior.num[k-3]==1) {
+#             if (is.na(df.blockID$behavior.num[k+1]==1)) {
+#              df.blockID$split.cont[k]=1}
+#             else if (is.na(df.blockID$behavior.num[k+2]==1) && df.blockID$behavior.num[k+1]==1) {
+#                 df.blockID$split.cont[k]=1
+#                 df.blockID$split.cont[k+1]=2}
+#             else if (is.na(df.blockID$behavior.num[k+3]==1) && df.blockID$behavior.num[k+1]==1 && df.blockID$behavior.num[k+2]==1) {
+#               df.blockID$split.cont[k]=1
+#               df.blockID$split.cont[k+1]=2
+#               df.blockID$split.cont[k+2]=2}
+#             else if (df.blockID$behavior.num[k+1]==1 && df.blockID$behavior.num[k+2]==1 && df.blockID$behavior.num[k+3]==1) {
+#             df.blockID$split.cont[k]=1
+#             df.blockID$split.cont[k+1]=2}
+#             else{}
+#           } else {}
+# }         
+
+# IDENTIFY CONTINUITY BLOCKS - THIS SHOULD GO BETWEEN HYPERINCLUSION AND INCLUSION
+
+# # Created a "lag" column to identify boundaries
+# df.blockID <- df.blockID %>% mutate(blocks.lag=lag(blocks,1), boundaries=blocks==blocks.lag, index=1:n() %>% as.numeric(df.blockID$index))
+# 
+# cont.info<-subset(df.blockID,df.blockID$cont==1)
+# 
+# cont.info<-subset(df.blockID, df.hi$secondtoss[1]==df.blockID$index |df.hi$secondtoss[2]==df.blockID$index |df.hi$secondtoss[3]==df.blockID$index |df.hi$secondtoss[4]==df.blockID$index |df.hi$secondtoss[5]==df.blockID$index)
+
+
+# IDENTIFY HYPERINCLUSION (HI) BLOCKS
+ 
+  # Identify blocks of hi
+  tmp<-rle(as.vector(df.blockID$behavior.num)) #found the lengths of repeating conditions types in df$behavior.num
+  df.blockID$blocks<-rep(tmp$lengths>=3 & tmp$values==1, times=tmp$lengths) #identified when condition types repeated 
+  
+  # Created a "lag" column to identify boundaries
+  df.blockID <- df.blockID %>% mutate(blocks.lag=lag(blocks,1), boundaries=blocks==blocks.lag, index=1:n() %>% as.numeric(df.blockID$index))
+
+# Filtered df.blockID based on the boundaries (i.e. first row) that begin HI blocks - threshold of 3 repeating throws (coded above) to the participant for start of Hi block
+  df.hi<-filter(df.blockID, blocks==TRUE, boundaries==FALSE)
+  df.hi$secondtoss<-df.hi$index +1 # found row number of the SECOND toss in the HI blocks
+  
+# Filtered df.blockID based on the SECOND toss in the hi block, which is what we want as an onsets time
+hi.info<-subset(df.blockID, df.hi$secondtoss[1]==df.blockID$index |df.hi$secondtoss[2]==df.blockID$index |df.hi$secondtoss[3]==df.blockID$index |df.hi$secondtoss[4]==df.blockID$index |df.hi$secondtoss[5]==df.blockID$index |df.hi$secondtoss[6]==df.blockID$index)
+  hi.info$start<-1
+  
+  # Filtered df.blockID based on the toss that terminates the hi block
+  df.hi<-filter(df.blockID, blocks==FALSE, boundaries==FALSE)
+  df.hi$start<-0
+  
+  # Identify the end of the last block  (could be hi or inc)
+  last.toss<-df[NROW(df),]
+  #last.toss$cont.throws<-0
+  last.toss$blocks<-NA
+  last.toss$blocks.lag<-NA
+  last.toss$boundaries<-NA
+  last.toss$index<-NROW(df)
+  last.toss$start<-0
+  hi.info<-rbind(hi.info,last.toss) #bananas
+  
+  # Combine starts and ends of hi block and sort by index
+  hi.info<-rbind(hi.info,df.hi)
+  hi.info<-hi.info[order(hi.info$index),]
+
+# IDENTIFY INCLUSION (inc) BLOCKS 
+
+# Identify start of first inclusion block - begins with the first throw
+first.toss<-df.blockID[2,]
+first.toss$start<-1
+
+# Filter df.blockID to identify the STARTs of inclusion blocks (aka the end of hyperinclusion, marked by the first throw between computer players. If there is only one throw btwn comp players between hyper inclusion blocks, do NOT start an inclusion block (this is the split.cont trash regressor))
+df.inc<-filter(df.blockID, blocks==FALSE, boundaries==FALSE) #split.cont removed
+df.inc$start<-1
+
+# Filter df.blockID to identify the ENDS of inclusion blocks (aka the start of hyperinclusion 2nd of at least 3 throws to the player)
+
+  # Step 1: Filtered df.blockID based on the boundaries (i.e. first row) that begin HI blocks - threshold of 3 repeating throws (coded above) to the participant for start of Hi block
+  df.hi<-filter(df.blockID, blocks==TRUE, boundaries==FALSE) #split.cont==0
+  
+  # Step 2: Found row number of the SECOND toss in the HI blocks
+  df.hi$secondtoss<-df.hi$index +1 
+  
+  # Step 3. Add the ENDS of inclusion blocks into inc.info
+  inc.info<-subset(df.blockID, df.hi$secondtoss[1]==df.blockID$index |df.hi$secondtoss[2]==df.blockID$index |df.hi$secondtoss[3]==df.blockID$index |df.hi$secondtoss[4]==df.blockID$index |df.hi$secondtoss[5]==df.blockID$index |df.hi$secondtoss[6]==df.blockID$index)
+  inc.info$start<-0
+
+# Identify the end of the last block (could be hi or inc)
+last.toss<-df[NROW(df),]
+#last.toss$split.cont<-0
+last.toss$blocks<-NA
+last.toss$blocks.lag<-NA
+last.toss$boundaries<-NA
+last.toss$index<-NROW(df)
+last.toss$start<-0
+
+# Combine and order inc.info with first and last toss info
+  inc.info<-rbind(inc.info, df.inc, first.toss, last.toss) 
+  inc.info<-inc.info[order(inc.info$index),]
+  
+#CREATE NAMES, ONSET AND durations 
+  #Create names variable
+  inc.info$names<-"inc"
+  hi.info$names<-"hi"
+  
+  #Create onsets variable
+  op<-options(digits.secs=3)
+inc.info$onsets<-inc.info$time
+  hi.info$onsets<-hi.info$time
+  
+  #Create durations variable
+op<-options(digits.secs=5)
+inc.info$time<-strptime(inc.info$time, format="%H:%M:%OS")
+ op<-options(digits.secs=5)
+df$time<-strptime(df$time,format="%H:%M:%OS")
+options(op)
+  
+  for (i in 1:NROW(inc.info)) {
+    if (inc.info$start[i] == 1) {
+      inc.info$durations[i] = difftime(inc.info$time[i+1],inc.info$time[i],unit="secs")
+      inc.info$onsets[i]=difftime(inc.info$time[i],df$time[1], unit="secs")
+    } else if (inc.info$start[i] < 1) {
+      inc.info$durations[i] = NA
+      inc.info$onsets[i]=NA}
+    }
+  
+  op<-options(digits.secs=5)
+  hi.info$time<-strptime(hi.info$time, format="%H:%M:%OS")
+  options(op)
+  
+  inc.info<-subset(inc.info, start==1)
+ inc.info<-subset(inc.info, !is.na(inc.info$blocks))
+  
+  for (i in 1:NROW(hi.info)) {
+    if (hi.info$start[i] == 1) {
+      hi.info$durations[i] = difftime(hi.info$time[i+1],hi.info$time[i],unit="secs")
+      hi.info$onsets[i]=difftime(hi.info$time[i],df$time[1], unit="secs")
+    } else if (hi.info$start[i] < 1) {
+      hi.info$durations[i] = NA
+      hi.info$onsets[i]=NA}
+    }
+  
+  hi.info<-subset(hi.info,start==1)
+  hi.info<-subset(hi.info, !is.na(hi.info$blocks))
+  hi.file<-hi.info[,c(2,13:15)]
+
+#### CREATE fp_1.info INCLUDING ONLY THE FIRST ROW OF inc.info
+  fp_1.info<-inc.info[1,]
+  fp_1.file<-fp_1.info[,c(2,13:15)]
+  fp_1.file$names='fp_1'
+  
+### 8/31 Create fp_inc.info, including fair play blocks beyond the first row of inc.info
+  fp_inc.info=inc.info[2:NROW(inc.info),]
+  fp_inc.file=fp_inc.info[,c(2,13:15)]
+  fp_inc.file$names='fp_inc'
+  
+# # IDENTIFY FIVESECS CONDITION: BLOCKS LESS THAN 5secs
+# for (l in 1:NROW(file)){
+#   if(file$durations[l]<5) {
+#     file$names[l]<-"fivesecs"
+#   }else{}
+# }
+
+# IDENTIFY PARTICIPANT THROWS
+
+# Generate variables that reflect the conditions one trial later
+  df$behavior.num1 =lead(df$behavior.num)
+  
+  # Loop specifies that if there are fewer than 1 cyberball action following the catch by a subject, specify duration=0
+  for(i in 1:NROW(df)){
+      if (df$behavior.num[i]==4 & !(is.na(df$behavior.num1[i]))) {
+        df$pt.onsets[i]=difftime(df$time[i],df$time[1], unit="secs")
+        df$pt.durations[i]= difftime(df$time[i+1],df$time[i],unit="secs")}
+      else if (df$behavior.num[i]==4 & is.na(df$behavior.num1[i])) {
+        df$pt.onsets[i]=difftime(df$time[i],df$time[1], unit="secs")
+        df$pt.durations[i]=0 }
+        else {
+        df$pt.onsets[i]=NA
+        df$pt.durations[i]=NA}
+      }
+  
+  pt.info<-subset(df,df$behavior.num==4)
+  pt.info$names<-"pt"
+  pt.info$onsets<-pt.info$pt.onsets
+  #pt.info$durations<-pt.info$pt.durations
+  pt.info$durations=rep(0, NROW(pt.info))
+  
+  pt.file<-pt.info[,c(2,11:13)]
+
+### FP: Filter out onsets that began after the FP block
+  #endFp=as.numeric(file$onsets)+as.numeric(file$durations)
+  #pt.file=filter(pt.file, pt.file$onsets<endFp)
+  
+#### Reformat TIME in df.blockID
+op<-options(digits.secs=5)
+df.blockID$time<-strptime(df.blockID$time, format="%H:%M:%OS")
+options(op)
+
+# # MODEL ALL COMPUTER THROWS
+#   for (l in 1:NROW(df.blockID)) {
+#     if (df.blockID$behavior.num[l]==0 | df.blockID$behavior.num[l]==1) {
+#       df.blockID$compt.onsets[l] = difftime(df.blockID$time[l],df$time[1],unit="secs")
+#       df.blockID$compt.durations[l] = 0
+#     } else {
+#       df.blockID$compt.onsets[l]= NA
+#       df.blockID$compt.durations[l]= NA
+#     }
+#   }
+# 
+# compt.info<-subset(df.blockID, df.blockID$behavior.num=="0" |df.blockID$behavior.num=="1") #subset out throws by the computer
+# compt.info$names<-"compthrow"
+# compt.info$onsets<-compt.info$compt.onsets
+# compt.info$durations<-compt.info$compt.durations
+# compt.file<-compt.info[,c(2,15,16,17)]
+
+# "SPLIT CONTINUITY" ONSETS AND DURATIONS
+#Create durations variable
+#df.blockID$time<-strptime(df.blockID$time, format="%H:%M:%OS")
+#options(op)
+# 
+# for (l in 1:NROW(df.blockID)) {
+# if (df.blockID$split.cont[l]==1 && is.na(df.blockID$split.cont[l+1]==2)){
+#   df.blockID$split.cont.onsets[l] = difftime(df.blockID$time[l],df$time[1],unit="secs")
+#   df.blockID$split.cont.durations[l] = 0 
+# } else if (df.blockID$split.cont[l]==1 && df.blockID$split.cont[l+1]==2 && (is.na(df.blockID$split.cont[l+2]==1))) {
+#  df.blockID$split.cont.onsets[l] = difftime(df.blockID$time[l],df$time[1],unit="secs")
+#   df.blockID$split.cont.durations[l] = difftime(df.blockID$time[l+1],df.blockID$time[l],unit="secs")
+# } else if (df.blockID$split.cont[l]==1 && df.blockID$split.cont[l+1]==2 && df.blockID$split.cont[l+2]==2 && (is.na(df.blockID$split.cont[l+3]==1))){ 
+#   df.blockID$split.cont.onsets[l] = difftime(df.blockID$time[l],df$time[1],unit="secs")
+#   df.blockID$split.cont.durations[l] = difftime(df.blockID$time[l+2],df.blockID$time[l],unit="secs")
+#   } else if (df.blockID$split.cont[l]==1 && df.blockID$split.cont[l+1]==2 && df.blockID$split.cont[l+2]==0) {
+#   df.blockID$split.cont.onsets[l] = difftime(df.blockID$time[l],df$time[1],unit="secs")
+#   df.blockID$split.cont.durations[l] = difftime(df.blockID$time[l+2],df.blockID$time[l],unit="secs")
+# } else {
+#   df.blockID$split.cont.onsets[l] = NA
+#   df.blockID$split.cont.durations[l] = NA
+# }}
+
+# split.cont.info<-subset(df.blockID,(is.na(split.cont.onsets)==0))
+# 
+# X=NROW(split.cont.info)
+# 
+#   if (X>0) {
+#   split.cont.info$names<-"splitcont"  
+#   split.cont.info$onsets<-split.cont.info$split.cont.onsets
+#   split.cont.info$durations<-split.cont.info$split.cont.durations
+#   split.cont.info<-split.cont.info[,c(2,17,18,19)]
+#   } else {
+#     }
+
+##IDENTIFY wait
+  for(i in 1:NROW(df)){
+    if (df$behavior.num[i]==2) {
+      df$wait.onsets[i]=difftime(df$time[i],df$time[1], unit="secs")
+      df$wait.durations[i]= difftime(df$time[i+1],df$time[i],unit="secs")}
+    else {
+      df$wait.onsets[i]=NA
+      df$wait.durations[i]=NA}
+  }
+
+wait.info<-subset(df,!(is.na(df$wait.onsets)))
+wait.info$names<-"wait"
+wait.info$onsets<-wait.info$wait.onsets
+wait.info$durations<-wait.info$wait.durations
+wait.file<-wait.info[,c(2,13:15)]
+
+#COMBINE wait, PT and FP INFO and SAVE CSV FILE
+#   if (X>0) {
+#     file<-rbind(file, pt.file)
+#   } else {
+#       file<-rbind(file,pt.file)}
+
+file<-rbind(wait.file, fp_1.file, fp_inc.file, hi.file, pt.file)
+
+  # change name into a numeral
+  # 1: hi
+  # 2: inc
+  # 3: pt
+  # 4: compthrow
+  # 5: blocks5s/fivesecs AND split cont
+
+file$names<-mapvalues(file$names,c("wait","fp_1","fp_inc","hi","pt"), c(1,2,3,4,5))
+file$names<-as.numeric(file$names)
+file$onsets<-as.numeric(file$onsets)
+#file$durations<-mapvalues(file$durations,NA, 0)
+
+# remove last catch
+#file<-subset(file, durations!<0)
+
+setwd(summary_files_folder)
+write.csv(file, paste("summary_excFpHi",listFiles[j], sep="_"))
+
+}
+```

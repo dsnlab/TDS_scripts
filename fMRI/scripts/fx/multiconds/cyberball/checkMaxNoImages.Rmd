@@ -1,0 +1,48 @@
+---
+title: "Untitled"
+author: "NV"
+date: "August 31, 2016"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+# LOAD FILES
+rm(list=ls())
+
+#define folder locations & get subject list
+tds_folder<-'/Volumes/research/tds/fMRI/subjects/'
+setwd(tds_folder)
+subjList <- (list.dirs(tds_folder, full.names = FALSE, recursive = FALSE))
+subjList <- as.data.frame(subjList)
+subjList <- subjList[grepl("^t1", subjList$subjList), ]
+
+```
+
+```{r}
+#calculate length of images in run1
+setwd('/Volumes/research/tds/behavioral/raw/cyberball/')
+cybID <- read.csv("SubjectList_full.csv", header = FALSE)
+cybID$maxFilter <- NA
+
+for(i in 1:length(cybID$V1)){ 
+  cyb1_directory <- (paste(tds_folder,"t",cybID$V1[i],"/ppc/cyb1",sep=""))
+  if (file.exists(cyb1_directory)){
+    setwd(cyb1_directory)
+    listRun1Images <- list.files(cyb1_directory,pattern='^sworucyb1_*')
+    lastImage <- tail(listRun1Images, n=1)
+    lastNum <- as.numeric(substring(lastImage, 11, 14))
+    cybID$maxFilter[i] = lastNum}}
+    
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

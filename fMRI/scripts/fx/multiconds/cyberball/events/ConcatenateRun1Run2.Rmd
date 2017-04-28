@@ -1,0 +1,96 @@
+---
+title: "Concatenate Run1 and Run2 Events"
+author: "NV"
+date: "August 30, 2016"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+
+require(stringr)
+```
+
+```{r, echo=FALSE}
+# LOAD FILES
+rm(list=ls())
+
+#define folder locations
+tds_folder<-'/Volumes/research/tds/'
+labeled_cyberball_folder<-'fMRI/analysis/fx/multicond/cyberball/TDS2_labeled_cyb_data'
+labeled_files_folder<-paste(tds_folder,labeled_cyberball_folder,sep='')
+summary_cyberball_folder<-'fMRI/analysis/fx/multicond/cyberball/TDS2_cyb_summary/events'
+summary_cyberball_folder_concat<-'fMRI/analysis/fx/multicond/cyberball/TDS2_cyb_summary/events/concat'
+summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
+summary_files_folder_concat <- paste(tds_folder,summary_cyberball_folder_concat,sep='')
+```
+
+```{r}
+#Import subject IDs and create list of IDs
+setwd('/Volumes/research/tds/behavioral/raw/cyberball')
+subjList <- read.csv("SubjectList_full.csv", header = FALSE)
+subjList <- subjList$V1
+
+#Within each subject...
+for(i in 1:length(subjList)) 
+{#Calculate length of first run
+ subjID = paste("t",subjList[i],sep = "")
+ imageFiles <- paste(tds_folder,"fMRI/subjects/",pattern=toString(subjID),"/ppc/cyb1",sep="")
+ setwd(imageFiles)
+ listImages <- list.files(imageFiles,pattern='^cyb1_*')
+ lastImage <- tail(listImages, n=1)
+ lastNum <- as.numeric(substring(lastImage, 6, 9))
+ lengthRun1 <- 2*(lastNum)
+                          
+ #Import summary files for each subject (based on block models)
+ setwd(summary_files_folder)
+ listFiles <- list.files(summary_files_folder,recursive=T, pattern=toString(subjList[i]))
+ inc<-read.csv(listFiles[1])
+ exc<-read.csv(listFiles[2])
+ 
+ #add 2x number of images in Run1 to all exc onsets
+ exc$onsets <- exc$onsets + lengthRun1
+ 
+ #renaming exclusion values 3 -> 5 (exc), 4 -> 3 (pt naming based on inc run)
+ exc$names <- mapvalues(exc$names, from=c("1","2","3","4","5"), to=c("1","2","6","7","5"))
+ 
+ #merge inc & exc runs into one file (wait = 1, pt = 2, ct_2C_inc = 3, ct_2P_inc = 4, pc = 5, ct_2C_exc = 6, ct_2P_exc = 7)
+ file <- rbind(inc, exc)
+
+ #set directory and write file
+ setwd(summary_files_folder_concat)
+ write.csv(file, paste("summary_concat_cyb",subjList[i],".csv", sep=""), row.names = FALSE) }
+```
