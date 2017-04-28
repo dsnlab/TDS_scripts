@@ -1,0 +1,70 @@
+---
+title: "Concatenate Cyb Motion Files"
+author: "NV"
+date: "August 31, 2016"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+
+require(stringr)
+```
+
+```{r, echo=FALSE}
+#load files
+rm(list=ls())
+
+#define folder location
+motion_folder <-'/Volumes/research/tds/fMRI/analysis/fx/motion/ylg/rp_art_txt/'
+new_motion_folder <- '/Volumes/research/tds/fMRI/analysis/fx/motion/cyb/concat_norun/'
+
+#define folder locations & get subject list
+setwd(motion_folder)
+subjList <- (list.files(motion_folder, full.names = FALSE, recursive = FALSE, pattern="cyb1"))
+subjNo <- unique(as.numeric(substring(subjList, 5, 7)))
+  
+#import two subject motion files
+for(i in 1:length(subjNo)){ 
+  setwd(motion_folder)
+  listMotion <- list.files(motion_folder,pattern=paste(subjNo[i],"_cyb",sep=""))
+  motion1 <- read.table(listMotion[1])
+  motion2 <- read.table(listMotion[2])
+  
+  motion <- rbind(motion1, motion2)
+  
+  setwd(new_motion_folder)
+  write.table(motion, paste("rp_t",subjNo[i],"_cyb.txt",sep=""),sep = "   ",row.names=FALSE,col.names=FALSE)}
