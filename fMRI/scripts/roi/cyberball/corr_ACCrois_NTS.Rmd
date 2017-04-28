@@ -1,0 +1,64 @@
+---
+title: "Are the ACC ROIs correlated with NTS scores?"
+author: "Theresa Cheng"
+date: "October 9, 2016"
+output: html_document
+---
+
+```{r}
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){install.packages('plyr',repos=osuRepo)}
+  library(plyr)
+if(!require(dplyr)){install.packages('dplyr',repos=osuRepo)}
+  library(dplyr)
+if(!require(tidyr)){install.packages('tidyr',repos=osuRepo)}
+  library(tidyr)
+if(!require(ggplot2)){install.packages('data.table',repos=osuRepo)}
+  library(ggplot2)
+if(!require(corrplot)){install.packages('data.table',repos=osuRepo)}
+  library(corrplot)
+if(!require(Hmisc)){install.packages('data.table',repos=osuRepo)}
+  library(Hmisc)
+```
+
+# Load dataframes
+```{r}
+rm(list=ls())
+
+setwd("/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_events/F_conj_pmod_flexi")
+df.ROIs=read.csv("rawRoiParameters_all_IncreasingExcIncreasingInc.csv", header=TRUE)
+df.ROIs.incP=subset(df.ROIs, cond=="Increasing Inc")
+df.ROIs.excP=subset(df.ROIs, cond=="Increasing Exc")
+
+setwd("/Volumes/research/tds/behavioral/processed/cyberball")
+df.NTS=read.csv("NTS.csv", header=TRUE)
+
+df.incP=full_join(df.ROIs.incP, df.NTS, by="SID")
+df.incP=df.incP[,c(-1,-13)]
+df.excP=full_join(df.ROIs.excP, df.NTS, by="SID")
+df.excP=df.excP[,c(-1,-13)]
+
+# missing data- remove 189, line 60
+df.excP=df.excP[-60,]
+df.incP=df.incP[-60,]
+```
+
+# Examine correlations
+```{r}
+
+excP <- rcorr(as.matrix(df.excP[,3:12]), type="pearson")
+excP.r=excP$r # get r values
+excP.r
+excP.p=excP$P # get p values
+excP.plot=cor(df.excP[,3:12])
+excP.p
+corrplot(excP.plot, method="color") # plot
+
+incP <- rcorr(as.matrix(df.incP[,3:12]), type="pearson")
+incP.r=incP$r # get r values
+incP.r
+incP.p=incP$P # get p values
+incP.p 
+incP.plot=cor(df.incP[,3:12])
+corrplot(incP.plot, method="color")
+```

@@ -1,0 +1,140 @@
+---
+title: "graphAnyROI"
+author: "Theresa Cheng"
+date: "July 2, 2016"
+output: html_document
+---
+
+Input MarsBar ROI raw parameter extracts in .csv files and various parameters.
+Outputs graphs of your ROI parameter extracts.
+
+# Load packages
+```{r, echo=FALSE}
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){install.packages('plyr',repos=osuRepo)}
+  library(plyr)
+if(!require(dplyr)){install.packages('dplyr',repos=osuRepo)}
+  library(dplyr)
+if(!require(tidyr)){install.packages('tidyr',repos=osuRepo)}
+  library(tidyr)
+if(!require(ggplot2)){install.packages('data.table',repos=osuRepo)}
+  library(ggplot2)
+if(!require(wesanderson)){install.packages('data.table',repos=osuRepo)}
+  library(wesanderson)
+```
+
+
+# Feed me. Change these parameters.
+```{r}
+rm(list=ls())
+
+#### PARAMETERS ####
+inputFileDir="/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_events/F_conj_pmod_flexi/"
+inputFilename="parcellationROIs_all_dACCsubpeaks.csv" #include .csv
+
+subjectList= c("113","114","115","116","117","119","121","125","126","127","128","129","130","131","132","133","134","135","136","137","139","140","141","142","144","145","146","150","151","152","155","156","157","158","159","160","161","162","163","164","165","167","168","169","170","171","172","173","174","175","177","179","181","182","183","184","185","186","187","188","189","190","192","193","196")
+
+# ROIs in the order they appear in the .csv file (with no spaces)
+roiList=c("ROI 1", "ROI2", "ROI 3", "ROI4", "ROI 5", "ROI6","ROI7", "ROI8","dACC subpeak") # list ROIs in order (names of additional columns in your raw dataframe)
+conditionNames=c("Increasing Inc","Increasing Exc") # list condition names in your design in order (names of repeating conditions extending additional rows of your raw dataframe)
+contrastName="Increasing Exc>Increasing Inc" 
+
+#### OTHER OPTIONS ####
+flexiFact=1 # did you use a flexible factorial model, or is your file structure subj1con 1, subj1con2, subj2con1, subj2con2? if yes, select 1. if no (and file structure is subj1con1, subj2con1, subj1con2, subj2con2), select 0. 
+
+pmods=1 # are your conditions pmods? if yes, select 1. if no, select 0. note that your condition names should be your pmod names
+  pmodRange=1:12 # set pmod_lowerlim:pmod_upperlim, ignore if pmods=0
+  totalPmods=2 # how many pmods are you using? ignore if pmods=0
+  
+export=0 # Do you want to export a .csv file with the raw data labeled by subject ID, condition, and ROI to your "input" directory? 1 if yes, 0 if no
+```
+
+# Load and structure data
+```{r, warning=FALSE}
+
+# Set wd and load file
+setwd(inputFileDir)
+df.raw<-read.csv(inputFilename, header=FALSE)
+
+# Label the rows and columns
+colnames(df.raw)=roiList # label each column with the ROI
+
+# create a subject list and condition column. if you used a flexible factorial model, your file/factor structure is con1, con2, con1, con2; if you used a different model, its con1, con1, con2, con2. this takes that into account
+if (flexiFact==1) {
+  df.raw$SID=rep(subjectList, each=length(conditionNames)) # add the list of SIDs
+  df.raw$cond=rep(1:(NROW(df.raw)/NROW(subjectList)), times=NROW(subjectList))
+ } else {
+   df.raw$SID=subjectList # add the list of SIDs  
+   df.raw$cond=rep(1:(NROW(df.raw)/NROW(subjectList)), times=1, each=NROW(subjectList))
+  }
+
+df.raw$cond=mapvalues(df.raw$cond, c(1:(NROW(df.raw)/NROW(subjectList))), conditionNames) # but let's give them the actual cond names instead of numbers
+df.raw=df.raw[,c("SID", "cond", roiList)] # rearrange with SIDs and cond on the left
+
+# Construct a tidy dataframe
+df=as.data.frame(subjectList) # establish a dataframe 
+df=gather(df.raw, "roi", "betas", 3:length(df.raw)) #tidy it
+df$cond_roi<-paste(df$cond, df$roi, sep="_") # give each condition and roi combo a unique name
+
+# Create a dataframe of summary statistics by condition and roi
+df.avg= df %>% group_by(roi, cond) %>% summarise(mean=mean(betas),se=sd(betas)/sqrt(length(subjectList))) 
+df.avg$cond_roi<-paste(df.avg$cond, df.avg$roi, sep="_") 
+df.avg$roi=as.factor(df.avg$roi)
+
+if (export==1){
+  write.csv(df.raw, file=paste("rawRoiParameters_all", contrastName, ".csv", sep="_"))
+}
+
+```
+
+# Create boxplots of the distribution of beta estimates and barplots of the average beta estimate per ROI and condition
+```{r, warning=FALSE}
+#palette = wes_palette("Moonrise1", 4, type = "continuous")
+
+#### GRAPH PARAMETER ESTIMATES ACROSS CONDITIONS ####
+# boxplot distribution of ROI params
+ggplot(df, aes(x=cond_roi, y=betas)) +
+  geom_boxplot() +
+  ggtitle(paste("Beta est by condition and roi for", contrastName, sep=" "))
+
+# bar graph of ROI params
+ggplot(df.avg, aes(x=cond, y=mean, fill=cond)) +
+  geom_bar(stat="identity") + # removed fill=palette 
+  geom_errorbar(aes(ymin=mean-1.96*se, ymax=mean+1.96*se), width=.3) +
+  ggtitle(paste("Mean beta estimates by condition and ROI for", contrastName, sep=" ")) +
+  guides(fill=FALSE) +
+  facet_grid(.~roi) +
+  labs(x="Conditions", y="Mean beta estimates with 95% CIs")
+
+#### PMOD LINE GRAPHS ####
+
+# Set up a null dataframe called df.pmod for summarizing plot parameters
+df.pmod=as.data.frame(matrix(rep(NA,(length(conditionNames)*length(roiList)*length(pmodRange)*5)),ncol=5))
+  
+colnames(df.pmod)=c("ROI","cond","pmod","mean", "beta") # name and fill each column
+  df.pmod$ROI=rep(roiList, each=NROW(df.pmod)/length(roiList))
+  df.pmod$cond=rep(conditionNames, times=length(roiList), each=length(pmodRange))
+  df.pmod$pmod=rep(pmodRange, times=length(roiList))
+
+  for (i in 1:NROW(df.pmod)) {  # define df.pmod$mean by matching with df.avg values
+    for (j in 1:NROW(df.avg)) {
+         if (df.pmod$ROI[i]==df.avg$roi[j] && df.pmod$cond[i]==df.avg$cond[j]) {
+        df.pmod$mean[i]=df.avg$mean[j] 
+         }
+    }}
+  
+  df.pmod$beta=df.pmod$pmod*df.pmod$mean
+  
+  df.pmod$ROI=as.factor(df.pmod$ROI) # make ROI and cond factors
+  df.pmod$cond=as.factor(df.pmod$cond)
+  
+ggplot(df.pmod, aes(x=pmod, y=beta, group=interaction(cond,ROI), color=cond)) +
+  geom_point(aes(shape=cond), size=1)+
+  facet_grid(.~ ROI) +
+   geom_line() + 
+  labs(title="Estimated beta weights with parametric modulation", x="Parametric Modulator", y="Beta estimates") +
+  scale_color_discrete(name="pmod", labels=conditionNames) +
+  scale_shape_discrete(name="pmod", labels=conditionNames)
+```

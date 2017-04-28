@@ -1,0 +1,253 @@
+---
+title: "analysis_cybBrain_stoplightBeh"
+author: "TCheng"
+date: "April 28, 2016"
+output: html_document
+---
+
+```{r}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+if(!require(knitr)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(knitr)
+if(!require(PerformanceAnalytics)){
+  install.packages('PerformanceAnalytics')
+}
+library(PerformanceAnalytics)
+library(psych)
+```
+
+```{r, warning=FALSE, echo=FALSE, eval=FALSE} 
+# LOAD FILES
+rm(list=ls())
+
+# Demographic data
+setwd("/Users/marge/Dropbox (PfeiBer Lab)/TDS/TDS-II/data/Qualtrics/Scored_Qualtrics/Session_2")
+
+demo_df<-as.data.frame(read.csv("TDS2_S2_Qualtrics_2015.10.03.csv", header=TRUE))
+demo_df<-demo_df[,c("SID","Age","Gender")]
+
+setwd("/Users/marge/Dropbox (PfeiBer Lab)/TDS/TDS-II/data/Qualtrics/Scored_Qualtrics/Session_1")
+RPI_df<-as.data.frame(read.csv("TDS2_S1_2015.10.05.csv", header=TRUE))
+
+# Stoplight behavior by signal detection theory
+setwd("/Volumes/research/tds/behavioral/cyberball/stoplight_beh")
+df<-read.csv("stoplight_beh.csv", header=TRUE)
+df$SID<-df$SID1
+df<-df[1:87,]
+
+df_all<-merge(demo_df, df, by = "SID")
+
+# add subject IDs and merge demographics w/ stoplight behavior
+setwd("/Volumes/research/tds/behavioral/cyberball")
+df_age <-read.csv("SubjectList_full.csv", header=FALSE)
+df_age$SID <- df_age$V1
+df <- merge(df_age, df, by="SID")
+
+# Stoplight behavior by % correct/incorrect
+setwd("/Volumes/research/tds/behavioral/stoplight")
+df_trial<-read.csv("tds2-all_trial_by_trial.csv", header=TRUE)
+
+
+#calculate the probability of go and stop decisions by subject ID, run, and intersection type
+df_trial$decision=as.numeric(df_trial$decision) # 3=stop, 1=go, 2= penalty
+df_random=filter(df_trial, crash_prob==.5)
+probGo=summarise(group_by(df_trial, subject.name, run_index, type), sum(decision=="1")/(sum(decision=="1")+sum(decision=="3")))
+colnames(probGo)=c("SID", "run","type", "probGo")
+probGo=probGo[-1408,]
+probGo=spread(probGo, key=type, value=probGo)
+colnames(probGo)=c("SID", "run", "pG_E", "pG_L", "pG_M")
+
+probStop=summarise(group_by(df_trial, subject.name, run_index, type), sum(decision=="3")/(sum(decision=="1")+sum(decision=="3")))
+colnames(probStop)=c("SID", "run","type", "probStop")
+probStop=probStop[-1408,]
+probStop=spread(probStop, key=type, value=probStop)
+colnames(probStop)=c("SID", "run", "pS_E", "pS_L", "pS_M")
+
+prob=merge(probGo, probStop)
+
+prob$cond=mapvalues(prob$run, from=c(1,2,3,4,5,6,7,8), to=c(0,0,1,1,2,2,3,3))
+prob_byCond=summarise(group_by(prob, SID,cond), mean(pG_E), mean(pG_L), mean(pG_M))
+prob_byCond=gather(prob_byCond, "type", "pG", 3:5)
+prob_byCond$condType=paste(prob_byCond$cond,prob_byCond$type,sep="_")
+prob_byCond=prob_byCond[-c(2,3)]
+prob_byCond=spread(prob_byCond, key=condType, value=pG)
+colnames(prob_byCond)=c("SID", "pG_E_12","pG_L_12","pG_M_12","pG_E_34", "pG_L_34","pG_M_34", "pG_E_56", "pG_L_56", "pG_M_56","pG_E_78", "pG_L_78","pG_M_78")
+
+# BRAIN
+setwd("/Volumes/research/tds/rx/ROIs/cyb_events/noage_covariate/catchonly_meanCpmod_linear/t_test_exc_p")
+df_exc_ROIs<-read.csv("ROIs_summary_exc_p.csv", header=TRUE)
+colnames(df_exc_ROIs)=paste("exc_p", colnames(df_exc_ROIs), sep="_")
+setwd("/Volumes/research/tds/rx/ROIs/cyb_events/noage_covariate/catchonly_meanCpmod_linear/t_test_inc_p")
+df_inc_ROIs<-read.csv("ROIs_summary_inc_p.csv", header=TRUE)
+colnames(df_inc_ROIs)=paste("inc_p", colnames(df_inc_ROIs), sep="_")
+df_ROIs<-as.data.frame(bind_cols(df_exc_ROIs, df_inc_ROIs))
+
+# subtraction
+setwd("/Volumes/research/tds/rx/ROIs/cyb_events/noage_covariate/catchonly_meanCpmod_linear/F_test_pmod/exc_p_over_inc_p")
+df_excVinc_ROIs<-read.csv("ROIs_summary_exc_p_over_inc_p.csv", header=TRUE)
+df_excVinc_ROIs$excORinc= c(rep(1, 64), rep(2, 64))
+df_inc_subtraction_ROIs<-filter(df_excVinc_ROIs, excORinc==1)
+colnames(df_inc_subtraction_ROIs)=paste("inc_sub", colnames(df_inc_subtraction_ROIs), sep="_")
+df_exc_subtraction_ROIs=filter(df_excVinc_ROIs, excORinc==2)
+colnames(df_exc_subtraction_ROIs)=paste("exc_sub", colnames(df_exc_subtraction_ROIs), sep="_")
+df_ROIs<-as.data.frame(bind_cols(df_exc_ROIs, df_inc_ROIs, df_exc_subtraction_ROIs, df_inc_subtraction_ROIs))
+
+# conjunction
+setwd("/Volumes/research/tds/rx/ROIs/cyb_events/noage_covariate/catchonly_meanCpmod_linear/F_test_pmod/conj")
+df_conj_ROIs<-read.csv("ROIs_summary_conj_p.csv", header=TRUE)
+df_conj_ROIs$excORinc= c(rep(1, 64), rep(2, 64))
+df_inc_conj_ROIs<-filter(df_conj_ROIs, excORinc==1)
+colnames(df_inc_conj_ROIs)=paste("inc_conj", colnames(df_inc_conj_ROIs), sep="_")
+df_exc_conj_ROIs=filter(df_conj_ROIs, excORinc==2)
+colnames(df_exc_conj_ROIs)=paste("exc_conj", colnames(df_exc_conj_ROIs), sep="_")
+df_ROIs<-as.data.frame(bind_cols(df_exc_ROIs, df_inc_ROIs, df_exc_subtraction_ROIs, df_inc_subtraction_ROIs, df_exc_conj_ROIs, df_inc_conj_ROIs))
+
+#bind behavior and brain to df
+df <- merge(df, prob_byCond, by="SID")
+df <- merge(df,RPI_df, by ="SID")
+df<-as.data.frame(bind_cols(df,df_ROIs))
+names(df)[3]<-"age"
+
+df$G56<-as.numeric(df$G56)
+df$G78<-as.numeric(df$G78)
+
+#find the difference scores between conditions
+df$dpG_E_78_56=df$pG_E_78-df$pG_E_56
+df$dpG_E_78_34=df$pG_E_78-df$pG_E_34
+df$dpG_E_56_34=df$pG_E_56-df$pG_E_34
+df$dpG_L_78_56=df$pG_L_78-df$pG_L_56
+df$dpG_L_78_34=df$pG_L_78-df$pG_L_34
+df$dpG_L_56_34=df$pG_L_56-df$pG_L_34
+df$dpG_M_78_56=df$pG_M_78-df$pG_M_56
+df$dpG_M_78_34=df$pG_M_78-df$pG_M_34
+df$dpG_M_56_34=df$pG_M_56-df$pG_M_34
+
+df$pCorrect_78=(1-df$pG_E_78+df$pG_L_78)/2
+df$pCorrect_56=(1-df$pG_E_56+df$pG_L_56)/2
+df$pCorrect_34=(1-df$pG_E_34+df$pG_L_34)/2
+
+df$dpCorrect_78_56=df$pCorrect_78-df$pCorrect_56
+df$dpCorrect_78_34=df$pCorrect_78-df$pCorrect_34
+df$dpCorrect_56_34=df$pCorrect_56-df$pCorrect_34
+```
+
+# Correlations between behavior and age
+```{r, warning=FALSE}
+df_behAge<-as.data.frame(cbind(df$G56, df$G78, df$dG56_34, df$dG78_56, df$GD56, df$GD78, df$dGD56_34, df$dGD78_56,df$age))
+colnames(df_behAge)=c("df$G56","df$G78","df$dG56_34", "df$dG78_56", "df$GD56", "df$GD78", "df$dGD56_34", "df$dGD78_56","age")
+chart.Correlation(df_behAge, histogram=FALSE)
+cor.test(df_behAge)
+```
+
+# Correlations between ROIs and age
+```{r, warning=FALSE}
+df_brainAge<-as.data.frame(cbind(df$exc_p_n44p20n10,df$exc_p_n58n62p34,df$exc_p_X0p14n24,df$exc_p_X0p44p36,df$exc_p_p2n58p62,df$exc_p_p46p26p42,df$exc_p_p48p26n12,df$inc_p_n52p28n12, df$inc_p_X0p44p34, df$inc_p_p48p26n12, df$inc_sub_n2n2p52, df$age))
+colnames(df_brainAge)<-c("exc_p_n44p20n10","exc_p_n58n62p34","exc_p_X0p14n24","exc_p_X0p44p36","exc_p_p2n58p62","exc_p_p46p26p42","exc_p_p48p26n12","inc_p_n52p28n12", "inc_p_X0p44p34", "inc_p_p48p26n12", "inc_sub_n2n2p52", "age")
+chart.Correlation(df_brainAge, histogram=FALSE)
+```
+
+# Correlations between ROIs and behavior
+```{r, warning=FALSE}
+df_brainBeh<-as.data.frame(cbind(df$G56, df$G78, df$dG56_34, df$dG78_56, df$GD56, df$GD78, df$dGD56_34, df$dGD78_56,df$exc_p_n44p20n10,df$exc_p_n58n62p34,df$exc_p_X0p14n24,df$exc_p_X0p44p36,df$exc_p_p2n58p62,df$exc_p_p46p26p42,df$exc_p_p48p26n12,df$inc_p_n52p28n12, df$inc_p_X0p44p34, df$inc_p_p48p26n12, df$inc_sub_n2n2p52,df$inc_conj_n28n90n32,df$inc_conj_n50p26n12,df$inc_conj_X0p44p36, df$inc_conj_p42n78n32,df$inc_conj_p48p26n12,df$inc_conj_p56n24n6,df$exc_conj_n28n90n32,df$exc_conj_n50p26n12,df$exc_conj_X0p44p36, df$exc_conj_p42n78n32,df$exc_conj_p48p26n12,df$exc_conj_p56n24n6))
+
+colnames(df_brainBeh)=c("df$G56","df$G78","df$dG56_34", "df$dG78_56", "df$GD56", "df$GD78", "df$dGD56_34", "df$dGD78_56","exc_p_n44p20n10","exc_p_n58n62p34","exc_p_X0p14n24","exc_p_X0p44p36","exc_p_p2n58p62","exc_p_p46p26p42","exc_p_p48p26n12","inc_p_n52p28n12", "inc_p_X0p44p34", "inc_p_p48p26n12", "inc_sub_n2n2p52", "inc_conj_n28n90n32","inc_conj_n50p26n12","inc_conj_X0p44p36", "inc_conj_p42n78n32","inc_conj_p48p26n12","inc_conj_p56n24n6","exc_conj_n28n90n32", "exc_conj_n50p26n12","exc_conj_X0p44p36","exc_conj_p42n78n32","exc_conj_p48p26n12","exc_conj_p56n24n6")
+
+options(scipen=999)
+chart.Correlation(df_brainBeh, histogram=FALSE)
+corr_brainBeh<-corr.test(df_brainBeh)
+corr_brainBeh_p<-round(corr_brainBeh$p, 3)
+  corr_brainBeh_p=corr_brainBeh_p[9:19, 1:8]
+    corr_brainBeh_r<-round(corr_brainBeh$r, 3)
+    corr_brainBeh_r=corr_brainBeh_r[9:19, 1:8]
+    
+    options(scipen=999)
+chart.Correlation(df_brainBeh, histogram=FALSE)
+    corr_brainBeh_CONJ<-corr.test(df_brainBeh)
+    corr_brainBeh_CONJ_p<-round(corr_brainBeh_CONJ$p, 3)
+    corr_brainBeh_CONJ_p=corr_brainBeh_CONJ_p[20:31, 1:8]
+    corr_brainBeh_CONJ_r<-round(corr_brainBeh_CONJ$r, 3)
+    corr_brainBeh_CONJ_r=corr_brainBeh_CONJ_r[20:31, 1:8]
+```
+
+# Correlations between prob beh and ROIs
+```{r, warning=FALSE}
+df_brainProb<-as.data.frame(cbind(df$pG_E_56,df$pG_E_78,df$pG_L_56,df$pG_L_78,df$pG_M_56,df$pG_M_78,df$dpG_E_78_56, df$dpG_E_78_34, df$dpG_E_56_34, df$dpG_L_78_56, df$dpG_L_78_34, df$dpG_L_56_34, df$dpG_M_78_56, df$dpG_M_78_34, df$dpG_M_56_34, df$exc_p_n44p20n10, df$exc_p_n58n62p34, df$exc_p_X0p14n24, df$exc_p_X0p44p36, df$exc_p_p2n58p62, df$exc_p_p46p26p42, df$exc_p_p48p26n12, df$inc_p_n52p28n12, df$inc_p_X0p44p34, df$inc_p_p48p26n12, df$inc_sub_n2n2p52, df$exc_sub_n2n2p52))
+  
+colnames(df_brainProb)=c("df$pG_E_56","df$pG_E_78","df$pG_L_56","df$pG_L_78","df$pG_M_56","df$pG_M_78","dpG_E_78_56","dpG_E_78_34","dpG_E_56_34","dpG_L_78_56","dpG_L_78_34","dpG_L_56_34","dpG_M_78_56","dpG_M_78_34","dpG_M_56_34","exc_p_n44p20n10","exc_p_n58n62p34","exc_p_X0p14n24","exc_p_X0p44p36","exc_p_p2n58p62","exc_p_p46p26p42","exc_p_p48p26n12","inc_p_n52p28n12", "inc_p_X0p44p34", "inc_p_p48p26n12", "inc_sub_n2n2p52", "exc_sub_n2n2p52")
+
+options(scipen=999)
+chart.Correlation(df_brainProb, histogram=FALSE)
+corr_brainProb<-corr.test(df_brainProb)
+corr_brainProb_p<-round(corr_brainProb$p, 3)
+  corr_brainProb_p=corr_brainProb_p[16:27, 1:15]
+  corr_brainProb_r<-round(corr_brainProb$r, 3)
+    corr_brainProb_r=corr_brainProb_r[16:27, 1:15]
+    
+  model1=lm(dpG_L_78_56 ~inc_sub_n2n2p52 + age, data=df)
+summary(model1)  
+```
+
+# Correlations between prob Correct and ROIs
+```{r, warning=FALSE}
+df_brainProbCorrect<-as.data.frame(cbind(df$pCorrect_78,df$pCorrect_56,df$pCorrect_34,df$dpCorrect_78_56,df$dpCorrect_78_34,df$dpCorrect_56_34, df$exc_p_n44p20n10, df$exc_p_n58n62p34, df$exc_p_X0p14n24, df$exc_p_X0p44p36, df$exc_p_p2n58p62, df$exc_p_p46p26p42, df$exc_p_p48p26n12, df$inc_p_n52p28n12, df$inc_p_X0p44p34, df$inc_p_p48p26n12, df$inc_sub_n2n2p52 ,df$exc_sub_n2n2p52))
+  
+colnames(df_brainProbCorrect)=c("pCorrect_78","pCorrect_56","pCorrect_34","dpCorrect_78_56","dpCorrect_78_34","dpCorrect_56_34","exc_p_n44p20n10","exc_p_n58n62p34","exc_p_X0p14n24","exc_p_X0p44p36","exc_p_p2n58p62","exc_p_p46p26p42","exc_p_p48p26n12","inc_p_n52p28n12", "inc_p_X0p44p34", "inc_p_p48p26n12", "inc_sub_n2n2p52",  "exc_sub_n2n2p52")
+
+options(scipen=999)
+chart.Correlation(df_brainProbCorrect, histogram=FALSE)
+corr_brainProbCorrect<-corr.test(df_brainProbCorrect)
+corr_brainProbCorrect_p<-round(corr_brainProbCorrect$p, 3)
+  corr_brainProbCorrect_p=corr_brainProbCorrect_p[7:18, 1:6]
+  corr_brainProbCorrect_r<-round(corr_brainProbCorrect$r, 3)
+    corr_brainProbCorrect_r=corr_brainProbCorrect_r[7:18, 1:6]
+    
+```
+
+# Correlations between prob Correct and ROIs
+```{r, warning=FALSE}
+df_brainRPI<-as.data.frame(cbind(df$RPI_Total_Score, df$RPI_Mean_Score, df$exc_p_n44p20n10, df$exc_p_n58n62p34, df$exc_p_X0p14n24, df$exc_p_X0p44p36, df$exc_p_p2n58p62, df$exc_p_p46p26p42, df$exc_p_p48p26n12, df$inc_p_n52p28n12, df$inc_p_X0p44p34, df$inc_p_p48p26n12, df$inc_sub_n2n2p52 ,df$exc_sub_n2n2p52))
+  
+colnames(df_brainRPI)=c("RPI_Total","RPI_Mean","exc_p_n44p20n10","exc_p_n58n62p34","exc_p_X0p14n24","exc_p_X0p44p36","exc_p_p2n58p62","exc_p_p46p26p42","exc_p_p48p26n12","inc_p_n52p28n12", "inc_p_X0p44p34", "inc_p_p48p26n12", "inc_sub_n2n2p52",  "exc_sub_n2n2p52")
+
+options(scipen=999)
+chart.Correlation(df_brainRPI, histogram=FALSE)
+corr_brainRPI<-corr.test(df_brainRPI)
+corr_brainRPI_p<-round(corr_brainRPI$p, 3)
+corr_brainRPI_r<-round(corr_brainRPI$r, 3)
+```
+
+# To examine a single correlation
+```{r, warning=FALSE}
+
+

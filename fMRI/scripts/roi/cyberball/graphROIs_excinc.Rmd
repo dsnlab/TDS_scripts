@@ -1,0 +1,175 @@
+---
+title: "graphROIs"
+author: "TC NV"
+date: "April 22, 2016"
+output: html_document
+---
+
+# Theresa Cheng | Nandita Vijayakumar
+# 4/22/2016
+# This script generates graphs for the linear & linear+quadratic functions of an ROI (threshold: 0.0005, 159 voxels, 48, 26, -12/vlPFC)
+
+```{r}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+library(ggplot2)
+```
+
+```{r} 
+# LOAD FILES
+rm(list=ls())
+
+setwd("/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_events/noage_covariate/catch_meanCpmod_linear_w190/F_pmod/conj")
+
+df<-read.csv("conj_summary_allROIs.csv", header=TRUE)
+#df_inc <- df[1:65,] 
+#df_exc <- df[66:130,] 
+  
+ROI1_inc<-mean(df[,2])
+ROI1_exc<-mean(df[,10])
+ROI2_inc<-mean(df[,3])
+ROI2_exc<-mean(df[,11])
+ROI3_inc<-mean(df[,4])
+ROI3_exc<-mean(df[,12])
+ROI4_inc<-mean(df[,5])
+ROI4_exc<-mean(df[,13])
+ROI5_inc<-mean(df[,6])
+ROI5_exc<-mean(df[,14])
+ROI6_inc<-mean(df[,7])
+ROI6_exc<-mean(df[,15])
+ROI7_inc<-mean(df[,8])
+ROI7_exc<-mean(df[,16])
+ROI8_inc<-mean(df[,9])
+ROI8_exc<-mean(df[,17])
+
+x_lin <- -4:7
+
+#ROI1
+df_avg<-as.data.frame(matrix(c(x_lin,ROI7_inc*x_lin,ROI7_exc*x_lin), nrow=12))
+
+colnames(df_avg)= c("pmod","lin_inc","lin_exc")
+
+ggplot(df_avg, aes(x=pmod, y=lin_inc)) +
+  geom_point(shape=1) +
+  geom_smooth()+
+  geom_smooth(aes(x=pmod, y=lin_exc)) +
+  ggtitle("Inclusion (circles) and exclusion pmod for ROI7")
+
+ROI1
+
+#ROI2
+df_avg<-as.data.frame(matrix(c(x_lin,ROI2_inc*x_lin,ROI2_exc*x_lin), nrow=12))
+
+colnames(df_avg)= c("pmod","lin_inc","lin_exc")
+
+ROI2 <- ggplot(df_avg, aes(x=pmod, y=lin_inc)) +
+  geom_point(shape=1) + 
+  geom_smooth()+
+  geom_smooth(aes(x=pmod, y=lin_exc)) +
+  ggtitle("Inclusion (circles) and exclusion pmod for dACC ROI2")
+
+  ROI2
+
+#ROI3
+df_avg<-as.data.frame(matrix(c(x_lin,ROI3_inc*x_lin,ROI3_exc*x_lin), nrow=12))
+
+colnames(df_avg)= c("pmod","lin_inc","lin_exc")
+
+ROI3 <- ggplot(df_avg, aes(x=pmod, y=lin_inc)) +
+  geom_point(shape=1) + 
+  geom_smooth()+
+  geom_smooth(aes(x=pmod, y=lin_exc)) +
+  ggtitle("Inclusion (circles) and exclusion pmod for lOFC roi")
+
+  ROI3
+  
+  #ROI4
+df_avg<-as.data.frame(matrix(c(x_lin,ROI4_inc*x_lin,ROI4_exc*x_lin), nrow=12))
+
+colnames(df_avg)= c("pmod","lin_inc","lin_exc")
+
+ROI4 <- ggplot(df_avg, aes(x=pmod, y=lin_inc)) +
+  geom_point(shape=1) + 
+  geom_smooth()+
+  geom_smooth(aes(x=pmod, y=lin_exc)) +
+  ggtitle("Inclusion (circles) and exclusion pmod for vlPFC roi")
+
+  ROI4
+
+```
+
+```{r} 
+setwd("/Volumes/research/tds/rx/ROIs/cyb_events/noage_covariate/catchonly_meanCpmod_linear/F_test_pmod/exc_p_over_inc_p")
+
+df<-read.csv("ROIs_summary_exc_p_over_inc_p.csv", header=TRUE)
+df_inc <- df[1:64,] 
+df_exc <- df[65:128,] 
+  
+ROI1_inc<-mean(df_inc[,1])
+ROI1_exc<-mean(df_exc[,1])
+ROI2_inc<-mean(df_inc[,2])
+ROI2_exc<-mean(df_exc[,2])
+ROI3_inc<-mean(df_inc[,3])
+ROI3_exc<-mean(df_exc[,3])
+
+x_lin <- -4:7
+
+#ROI1
+df_avg<-as.data.frame(matrix(c(x_lin,ROI1_inc*x_lin,ROI1_exc*x_lin), nrow=12))
+
+colnames(df_avg)= c("pmod","lin_inc","lin_exc")
+
+ROI1 <- ggplot(df_avg, aes(x=pmod, y=lin_inc)) +
+  geom_point(shape=1) +
+  geom_smooth()+
+  geom_smooth(aes(x=pmod, y=lin_exc))
+
+#ROI2
+df_avg<-as.data.frame(matrix(c(x_lin,ROI2_inc*x_lin,ROI2_exc*x_lin), nrow=12))
+
+colnames(df_avg)= c("pmod","lin_inc","lin_exc")
+
+ROI2 <- ggplot(df_avg, aes(x=pmod, y=lin_inc)) +
+  geom_point(shape=3) + 
+  geom_smooth()+
+  geom_smooth(aes(x=pmod, y=lin_exc))
+
+#ROI3
+df_avg2<-as.data.frame(matrix(c(x_lin,ROI3_inc*x_lin,ROI3_exc*x_lin), nrow=12))
+
+colnames(df_avg2)= c("pmod","lin_inc","lin_exc")
+
+ROI3 <- ggplot(df_avg2, aes(x=pmod, y=lin_inc)) +
+  geom_point(shape=1) +
+  geom_smooth()+
+  geom_smooth(aes(x=pmod, y=lin_exc))
+```
+

@@ -1,0 +1,75 @@
+---
+title: "graphROIs"
+author: "TC NV"
+date: "April 22, 2016"
+output: html_document
+---
+
+# Theresa Cheng | Nandita Vijayakumar
+# 4/22/2016
+# This script generates graphs for the linear & linear+quadratic functions of an ROI (threshold: 0.0005, 159 voxels, 48, 26, -12/vlPFC)
+
+
+```{r}
+# LOAD PACKAGES
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+  install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+
+if(!require(chron)){
+  install.packages('R.matlab',repos=osuRepo)
+}
+library(chron)
+library(R.matlab)
+library(ggplot2)
+```
+
+```{r} 
+# LOAD FILES
+rm(list=ls())
+
+setwd("/Volumes/research/tds/rx/ROIs/cyb_events")
+
+exc<-read.csv("exc_summary_timecourse.csv", header=FALSE)
+exc_p<-read.csv("exc_p_summary_timecourse.csv", header=FALSE)
+  exc_p2<-read.csv("exc_p2_summary_timecourse.csv", header=FALSE)
+
+avg_exc<-mean(exc[,1])
+avg_p<-mean(exc_p[,1])
+avg_p2<-mean(exc_p2[,1])
+
+x_lin<--4:7
+x_quad<-x_lin^2
+
+df_avg<-as.data.frame(matrix(c(x_lin,rep(avg_exc,12),avg_p*x_lin, avg_p2*x_quad), nrow=12))
+colnames(df_avg)= c("pmod", "intercept","linear","quadratic")
+
+ggplot(df_avg, aes(x=pmod, y=intercept+linear)) +
+  geom_point(shape=1) +
+  geom_smooth()+
+  geom_smooth(aes(x=pmod, y=intercept+linear+quadratic))
+  
+ggplot(df_avg, aes(x=pmod, y=intercept+linear+quadratic))+
+  geom_point(shape=1) +
+  geom_smooth()
+
