@@ -1,0 +1,1 @@
+rename -n -v 's/(.*\/116\/)(stop[[:digit:]])(\/)(stop[[:digit:]])(_.*)/$1$2$3$2$5/' ~/Documents/tds/fMRI/subjects/116/stop7/*
