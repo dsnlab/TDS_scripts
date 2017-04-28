@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# This script deletes unnecessary files
+
+
+cd /vxfsvol/home/research/tds/behavior/raw/cyberball
+
+subj=`cat SubjectList_full.txt`
+
+for i in $subj;
+    do 
+    	echo $i
+    	#mkdir /vxfsvol/home/research/tds/fMRI/subjects/$i
+    	#mkdir /vxfsvol/home/research/tds/fMRI/subjects/$i/ppi
+
+    	#cp -r $i/fx /home/research/tds/tds_reorg/fMRI/subjects/$i
+    	#cp -r $i/ppc/functionals/* /home/research/tds/tds_reorg/fMRI/subjects/$i/ppc/
+
+
+    done

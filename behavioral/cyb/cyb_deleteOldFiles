@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This script deletes unnecessary files
+
+for i in t*;
+    do 
+    	mkdir /home/research/tds/tds_reorg/fMRI/subjects/$i
+    	mkdir /home/research/tds/tds_reorg/fMRI/subjects/$i/ppc
+
+    	cp -r $i/fx /home/research/tds/tds_reorg/fMRI/subjects/$i
+    	cp -r $i/ppc/functionals/* /home/research/tds/tds_reorg/fMRI/subjects/$i/ppc/
+
+    done
