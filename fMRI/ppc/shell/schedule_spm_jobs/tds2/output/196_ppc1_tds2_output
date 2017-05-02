@@ -1,0 +1,189 @@
+-------------------------------------------------------------------------------
+196
+Running /Users/ralph/Documents/tds/tds_repo/fMRI/scripts/ppc/spm/tds2/coreg_realign_unwarp_coreg_segment_tds2_job.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2015 The MathWorks, Inc.
+                   R2015b (8.6.0.267246) 64-bit (maci64)
+                              August 20, 2015
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+	Academic License
+
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Coregister: Estimate'
+
+SPM12: spm_coreg (v6435)                           08:19:16 - 30/04/2017
+========================================================================
+Completed                               :          08:19:58 - 30/04/2017
+Done    'Coregister: Estimate'
+Running 'Calculate VDM'
+Segmenting and extracting brain...
+
+Matching session 1...
+
+
+SPM12: spm_coreg (v6435)                           08:20:19 - 30/04/2017
+========================================================================
+Completed                               :          08:20:29 - 30/04/2017
+
+Matching session 2...
+
+
+SPM12: spm_coreg (v6435)                           08:20:29 - 30/04/2017
+========================================================================
+Completed                               :          08:20:41 - 30/04/2017
+
+Matching session 3...
+
+
+SPM12: spm_coreg (v6435)                           08:20:42 - 30/04/2017
+========================================================================
+Completed                               :          08:20:53 - 30/04/2017
+
+Matching session 4...
+
+
+SPM12: spm_coreg (v6435)                           08:20:54 - 30/04/2017
+========================================================================
+Completed                               :          08:21:04 - 30/04/2017
+
+Matching session 5...
+
+
+SPM12: spm_coreg (v6435)                           08:21:04 - 30/04/2017
+========================================================================
+Completed                               :          08:21:13 - 30/04/2017
+
+Matching session 6...
+
+
+SPM12: spm_coreg (v6435)                           08:21:14 - 30/04/2017
+========================================================================
+Completed                               :          08:21:23 - 30/04/2017
+
+Matching session 7...
+
+
+SPM12: spm_coreg (v6435)                           08:21:24 - 30/04/2017
+========================================================================
+Completed                               :          08:21:33 - 30/04/2017
+
+Matching session 8...
+
+
+SPM12: spm_coreg (v6435)                           08:21:34 - 30/04/2017
+========================================================================
+Completed                               :          08:21:46 - 30/04/2017
+
+Matching session 9...
+
+
+SPM12: spm_coreg (v6435)                           08:21:47 - 30/04/2017
+========================================================================
+Completed                               :          08:21:53 - 30/04/2017
+
+Matching session 10...
+
+
+SPM12: spm_coreg (v6435)                           08:21:54 - 30/04/2017
+========================================================================
+Completed                               :          08:22:03 - 30/04/2017
+Done    'Calculate VDM'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'Realign & Unwarp'
+
+SPM12: spm_realign (v6070)                         08:22:07 - 30/04/2017
+========================================================================
+Completed                               :          08:49:16 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     08:49:16 - 30/04/2017
+========================================================================
+Completed                               :          08:52:28 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     08:52:28 - 30/04/2017
+========================================================================
+Completed                               :          08:54:35 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     08:54:35 - 30/04/2017
+========================================================================
+Completed                               :          08:56:58 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     08:56:58 - 30/04/2017
+========================================================================
+Completed                               :          08:59:03 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     08:59:03 - 30/04/2017
+========================================================================
+Completed                               :          09:01:03 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     09:01:03 - 30/04/2017
+========================================================================
+Completed                               :          09:03:19 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     09:03:19 - 30/04/2017
+========================================================================
+Completed                               :          09:05:30 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     09:05:30 - 30/04/2017
+========================================================================
+Completed                               :          09:07:54 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     09:07:54 - 30/04/2017
+========================================================================
+Completed                               :          09:09:35 - 30/04/2017
+
+SPM12: spm_uw_estimate (v6824)                     09:09:36 - 30/04/2017
+========================================================================
+Completed                               :          09:11:35 - 30/04/2017
+
+SPM12: spm_uw_apply (v6301)                        09:11:35 - 30/04/2017
+========================================================================
+Computing mask...                       :                                                      ...done
+Reslicing images...                     :                                                      ...done
+Writing mean image...                   :                                                      ...done
+Completed                               :          09:15:05 - 30/04/2017
+Done    'Realign & Unwarp'
+Running 'Coregister: Estimate'
+
+SPM12: spm_coreg (v6435)                           09:15:07 - 30/04/2017
+========================================================================
+Completed                               :          09:15:15 - 30/04/2017
+Done    'Coregister: Estimate'
+Running 'Segment'
+
+SPM12: spm_preproc_run (v6365)                     09:15:21 - 30/04/2017
+========================================================================
+Segment /Users/ralph/Documents/tds/fMRI/subjects_tds2/196/structurals/mprage.nii,1
+Completed                               :          09:22:49 - 30/04/2017
+Done    'Segment'
+Done
+
