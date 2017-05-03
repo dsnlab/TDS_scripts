@@ -1,0 +1,109 @@
+#########
+#!!! Remember to run 'module add R' at the command line first
+#########
+#Paths are set to run locally, not on the grid.
+
+```{r}
+osuRepo<-'http://ftp.osuosl.org/pub/cran/'
+
+#Check if the packages we need are installed, and if not, install them
+if(!require(plyr)){
+  install.packages('plyr',repos=osuRepo)
+}
+library(plyr)
+
+if(!require(dplyr)){
+	install.packages('dplyr',repos=osuRepo)
+}
+library(dplyr)
+if(!require(tidyr)){
+	install.packages('tidyr',repos=osuRepo)
+}
+library(tidyr)
+if(!require(data.table)){
+	install.packages('data.table',repos=osuRepo)
+}
+library(data.table)
+if(!require(R.matlab)){
+	install.packages('R.matlab',repos=osuRepo)
+}
+library(R.matlab)
+```
+
+```{r}
+#define folder locations
+tds_folder<-'/Volumes/TDS/'
+session_info_folder<-'Subject IDs/'
+cyberball_folder<-'behavior/CyberBall/backups/'
+
+#read in cyberball files
+files_folder<-paste(tds_folder,cyberball_folder,sep='')
+cb_data_long<-read.csv(paste(files_folder,"Merged_Log_1493659540.csv",sep=''))
+
+#one row per run
+cb_data<-subset(cb_data_long, v1 == 'connecting(time: 6)')
+
+#separate day, date, and time
+cb_data$stamp<-cb_data$timestamp
+cb_data<-separate(cb_data, "timestamp", c("junk", "timestamp"), sep=4)
+cb_data$date <- format(as.POSIXct(strptime(cb_data$timestamp, '%B %d %Y %H:%M:%S',tz="")),format = "%m/%d/%Y")
+cb_data$time <- format(as.POSIXct(strptime(cb_data$timestamp, '%B %d %Y %H:%M:%S',tz="")),format = "%H:%M:%S")
+cb_data$timestamp <- strptime(cb_data$timestamp, '%B %d %Y %H:%M:%S',tz="")
+
+#order by date and time
+cb_data <- cb_data[order(cb_data[,"timestamp"],decreasing=F),] 
+
+#remove unnecessary columns
+cb_data$junk <-NULL
+cb_data$timestamp <-NULL
+
+#limit to TDS1 and TDS3
+cb_data$date <- as.Date(cb_data$date, format= "%m/%d/%Y")
+cb_data <- subset(cb_data, date > "2015-08-17")
+x <- c("Chuck", "al+capone", "Alfred", "PART_0013", "P0023", "P0033", "9008", "999")
+y <- c("Sat Nov 07 2015 09:12:52 GMT-0800 (PST)", "Wed Dec 02 2015 16:08:07 GMT-0800 (PST)", "Wed Dec 02 2015 13:40:06 GMT-0800 (PST)")
+cb_data <- cb_data %>% filter(!(grepl(paste(x, collapse = "|"), userid))) %>% filter(!stamp == "Sat Nov 07 2015 09:12:52 GMT-0800 (PST)") %>% filter(!date == "2015-12-02")
+
+#generate "number" which orders runs by time within each date
+cb_data<-
+  cb_data %>%
+  group_by(date) %>%
+  mutate(number = 1:n())
+
+#generate "order" which collapses run 1 and 2 into "1" for first participant and runs 3/4 into "2" for second participant
+cb_data$order<-ifelse(cb_data$number==1|cb_data$number==2, 1, 2)
+
+#generate "run" which labels the runs appropriately
+cb_data$run<-mapvalues(cb_data$number, from=c("1","2","3","4"), to=c("1","2","1","2"))
+
+#generate variable "datecode"
+cb_data$datecode<-with(cb_data, paste(date,order))
+```
+
+
+```{r}
+#LOAD SESSION DATES
+
+#read in stoplight files
+files_folder2<-paste(tds_folder,session_info_folder,sep='')
+setwd(files_folder2)
+
+files_folder2<-paste(tds_folder,session_info_folder,sep='')
+setwd(files_folder2)
+
+sess_data<-read.csv(paste(files_folder2,"TDS1_Session2_Dates.csv",sep=''))
+
+#clean variables
+sess_data$Date <- as.Date(sess_data$Date, format= "%m/%d/%y")
+sess_data$order <- sess_data$Session_No
+
+#generate variable "datecode"
+sess_data$datecode<-with(sess_data, paste(Date,order))
+
+#match cd_data w/ sl_data by datecode
+master<- merge(cb_data, sess_data, by="datecode")
+
+##Used Fix(byDate) command to rename 141 and 145 files by taking into account that the first run of the day at 10am was a test (DATE: Sat Mar 07 2015); 
+##ALSO changed Jun 26 2015 so that the first file was practice, runs 1 and 2 for 187 were appropriately labeled, and the last two that day were also test
+## Found row 119_2: SID= 119, Run = 2, stamp=Sun Dec 21 2014 15:53:04 GMT-0800 (PST)
+## Labeled 196_2 using the stamp Sat Aug 15 2015 14:40:14 GMT-0700 (PDT)
