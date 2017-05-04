@@ -51,10 +51,10 @@ library(R.matlab)
 rm(list=ls())
 
 #define folder locations
-tds_folder<-'/Volumes/research/tds/'
-labeled_cyberball_folder<-'behavioral/cyberball/TDS2_labeled_cyb_data'
+tds_folder<-'/Volumes/TDS/'
+labeled_cyberball_folder<-'behavior/CyberBall/multiconds/TDS1_labeled_cyb_data/'
 labeled_files_folder<-paste(tds_folder,labeled_cyberball_folder,sep='')
-summary_cyberball_folder<-'behavioral/cyberball/TDS2_cyb_summary/events'
+summary_cyberball_folder<-'behavior/CyberBall/multiconds/TDS1_cyb_summary/events'
 summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
 
 setwd(labeled_files_folder)
@@ -66,8 +66,7 @@ listFiles<-list.files(labeled_files_folder,recursive=T, pattern='cyb.*_2.csv$')
 ```{r}
 # READ IN EACH FILE AND CLEAN IT UP
 
-for(j in 1:length(listFiles)) 
-{
+for(j in 1:length(listFiles)) {
   setwd(labeled_files_folder)
   df<-read.csv(listFiles[j]) #read in the file
   timestamp<-as.character(df[1,2]) #change the timestamp into a character
@@ -210,7 +209,7 @@ ct_2P.info<-subset(ct.info, behavior.num.x==1)
 ct_2P.info$names<-"ct_2P"
 ct_2P.info$onsets<-ct_2P.info$ct_2P.onsets
 ct_2P.info$durations<-0
-ct_2P.info$pmod<-ct_2P.info$pmod_ct_2P
+ct_2P.info$pmod<-NA
 ct_2P.info<-ct_2P.info[,c(1,11:14)]
 
 #4. CT_2C
@@ -248,7 +247,7 @@ file<-rbind(wait.info, pt.info, ct_2C.info, ct_2P.info,pc.info)
   file$names<-mapvalues(file$names,c("wait","pt","ct_2C","ct_2P","pc"), c(1,2,3,4,5))
   file$names<-as.numeric(file$names)
   file$onsets<-as.numeric(file$onsets)
-  file$meanC_pmod = file$pmod - 6.024
+  file$meanC_pmod = file$pmod - 6.419
   
   setwd(summary_files_folder)
   write.csv(file, paste("summary_events",listFiles[j], sep="_"))

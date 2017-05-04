@@ -56,10 +56,10 @@ library(R.matlab)
 rm(list=ls())
 
 #define folder locations
-tds_folder<-'/Volumes/research/tds/'
-labeled_cyberball_folder<-'behavioral/cyberball/TDS2_labeled_cyb_data'
+tds_folder<-'/Volumes/TDS/'
+labeled_cyberball_folder<-'behavior/CyberBall/multiconds/TDS1_labeled_cyb_data/'
 labeled_files_folder<-paste(tds_folder,labeled_cyberball_folder,sep='')
-summary_cyberball_folder<-'behavioral/cyberball/TDS2_cyb_summary/events'
+summary_cyberball_folder<-'behavior/CyberBall/multiconds/TDS1_cyb_summary/events'
 summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
 
 setwd(labeled_files_folder)
@@ -71,8 +71,7 @@ listFiles<-list.files(labeled_files_folder,recursive=T, pattern='cyb.*_1.csv$')
 ```{r}
 # READ IN EACH FILE AND CLEAN IT UP
 
-for(j in 1:length(listFiles)) 
-{
+for(j in 1:length(listFiles)) {
   setwd(labeled_files_folder)
   df<-read.csv(listFiles[j]) #read in the file
   timestamp<-as.character(df[1,2]) #change the timestamp into a character
@@ -87,8 +86,7 @@ for(j in 1:length(listFiles))
   #Delete unnecessary variables
   df <- df[,-(5:7)]
   
-  df$behavior.num<-mapvalues(df$behavior.type, c("catch(player1)", "catch(player3)","throw(player1)","throw(player3)", "connecting(time: 6)", "throw(player1-player2)",
-                                                 "throw(player3-player2)", "throw(player1-player3)","throw(player3-player1)"),c(4,4,3,3,2,1,1,0,0)) 
+  df$behavior.num<-mapvalues(df$behavior.type, c("catch(player1)", "catch(player3)","throw(player1)","throw(player3)", "connecting(time: 6)", "throw(player1-player2)", "throw(player3-player2)", "throw(player1-player3)","throw(player3-player1)"),c(4,4,3,3,2,1,1,0,0)) 
   
   # Filter out unnecessary information (catches, participant throws) keep connecting time and all throws from player 1 or 3
   df.blockID<-filter(df, behavior.num==1| behavior.num==2|behavior.num==0)
@@ -238,8 +236,8 @@ file<-rbind(wait.info,pt.info, ct_2C.info, ct_2P.info, pc.info)
 file$names<-mapvalues(file$names,c("wait","pt", "ct_2C","ct_2P","pc"), c(1,2,3,4,5))
 file$names<-as.numeric(file$names)
 file$onsets<-as.numeric(file$onsets)
-file$meanC_pmod = file$pmod - 2.748
+file$meanC_pmod = file$pmod - 2.871
 
 setwd(summary_files_folder)
-write.csv(file,paste("summary_events",listFiles[j], sep="_"))
+write.csv(file,paste("summary_events",listFiles[j], sep="_")) 
 }
