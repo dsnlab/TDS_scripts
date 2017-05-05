@@ -8,42 +8,56 @@
 #  b) be named t{SUBID}.proc
 #  c) execute automatically.
 #
+echo -e "\nSetting up AFNI"
 
-setenv PATH /usr/local/afni_16.1.06:${PATH}
+module use /projects/tau/packages/Modules/modulefiles/
+module load afni
+
+date
 
 echo $SHELL
 echo $SHLVL
 echo ${SUBID}
 
-# set data directories
-set top_dir=/home/research/tds
-echo $top_dir
-set anat_dir=$top_dir/sMRI/subjects/freesurfer/"${SUBID}"/SUMA
-echo $anat_dir
-set epi_dir=$top_dir/rsfMRI/subjects/"${SUBID}"
-echo $epi_dir
-cd epi_dir
-
 # set subject and group identifiers
 set subj="${SUBID}"
 echo $subj
+set group_id=tds
+echo $group_id
+set pipeline=rsfMRI_preproc
 
-# remove previous output
-#pushd $epi_dir
-#rm proc.t$subj
-#rm -r t$subj.results
+# set data directories
+set top_dir=/projects/dsnlab/"${group_id}"
+echo $top_dir
+set anat_dir=$top_dir/bids_data/derivatives/freesurfer6/$subj/SUMA
+echo $anat_dir
+set epi_dir=$top_dir/bids_data/"$subj"/ses-wave1/func
+echo $epi_dir
+set rsfMRI_output=$top_dir/bids_data/derivatives/$pipeline
+echo $rsfMRI_output
+
+# create subject folder
+pushd $rsfMRI_output
+if (! -d ./"$subj") then
+   echo '"$subj" folder created'
+   mkdir "$subj"
+   cd "$subj"
+else
+   echo 'Directory for "$subj" exists'
+   cd "$subj"
+endif
 
 # run afni_proc.py to create a single subject processing script
 afni_proc.py -subj_id $subj                                \
--script proc.$subj -scr_overwrite                          \
--blocks despike tshift align volreg mask regress      \
--copy_anat $anat_dir/"${subj}"_SurfVol.nii                          \
--anat_follower_ROI aaseg anat $anat_dir/aparc.a2009s+aseg_rank.nii   \
--anat_follower_ROI aeseg epi  $anat_dir/aparc.a2009s+aseg_rank.nii   \
--anat_follower_ROI FSvent epi $anat_dir/"${subj}"_vent.nii           \
--anat_follower_ROI FSWe epi $anat_dir/"${subj}"_WM.nii            \
+-script $pipeline.proc.$subj -scr_overwrite                          \
+-blocks despike align volreg blur mask regress      \
+-copy_anat $anat_dir/"${subj}"_SurfVol.nii.gz                          \
+-anat_follower_ROI aaseg anat $anat_dir/aparc.a2009s+aseg_rank.nii.gz   \
+-anat_follower_ROI aeseg epi  $anat_dir/aparc.a2009s+aseg_rank.nii.gz   \
+-anat_follower_ROI FSvent epi $anat_dir/"${subj}"_vent.nii.gz           \
+-anat_follower_ROI FSWe epi $anat_dir/"${subj}"_WM.nii.gz            \
 -anat_follower_erode FSvent FSWe                           \
--dsets $epi_dir/resting_bold_mb6_2_5mm_tr780.nii.gz                           \
+-dsets $epi_dir/"${subj}"_ses-wave1_task-rest_run-01_bold.nii.gz \
 -tcat_remove_first_trs 13                                  \
 -volreg_align_to MIN_OUTLIER                               \
 -volreg_align_e2a                                          \
@@ -51,8 +65,14 @@ afni_proc.py -subj_id $subj                                \
 -regress_make_corr_vols aeseg FSvent                       \
 -regress_anaticor_fast                                     \
 -regress_anaticor_label FSWe                               \
--regress_bandpass 0.01 0.1                                 \
+-regress_censor_motion 0.2                                 \
+-regress_censor_outliers 0.1                               \
+-regress_bandpass 0.008 0.09                               \
 -regress_apply_mot_types demean deriv                      \
+-regress_est_blur_epits                                    \
+-regress_est_blur_errts                                    \
 -regress_run_clustsim no
 
-tcsh -xef proc.$subj
+
+tcsh -xef $pipeline.proc.$subj
+

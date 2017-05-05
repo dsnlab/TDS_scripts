@@ -6,9 +6,15 @@
 # for each subject in that list.
 #
 
-STUDY=`cat study.txt`
-SUBJLIST=`cat subject_list.txt`
+# Set your study
+STUDY=/projects/dsnlab/tds
+
+# Set subject list
+#SUBJLIST=`cat subject_list.txt`
+SUBJLIST=`cat test.txt`
+
 
 for SUBJ in $SUBJLIST
- do qsub -v SUBID=${SUBJ} -N vols2timecourses -o /vxfsvol/home/research/"${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_vols2timecourses_output.txt -e /vxfsvol/home/research/"${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_vols2timecourses_error.txt job_vols2timecourses.sh
+ do sbatch --export SUBID=${SUBJ} --job-name vols2timecourses --partition=defq --mem-per-cpu=8G --cpus-per-task=1 -o "${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_vols2timecourses_output.txt -e "${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_vols2timecourses_error.txt job_vols2timecourses.sh
 done
+
