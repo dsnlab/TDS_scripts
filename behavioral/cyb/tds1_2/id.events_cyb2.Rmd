@@ -1,17 +1,19 @@
 ---
-title: "id.blocks_cyb2"
-author: "TC NV"
-date: "March 11, 2016"
-output: word_document
+title: "id.events_cyb2"
+author: "NV"
+date: "May 3, 2017"
+output: html_document
 ---
-
-  # Theresa Cheng | Nandita Vijayakumar
-  # 3/11/2016
+  
+  # Nandita Vijayakumar
+  # 5/3/2017
+  # This script uses output of "collect_data_for_cyberball.Rmd"
   # This script identifies events within Cyberball run 2 and pmods
   # ct_2P: throws from computer to player
   # ct_2C: throws from computer to computer
   # PT: throws by player
   # PC: participant catches
+  # Run this script first without mean centered pmod, then run "Finding grand mean.R" to identify appropriate mean for centering.
   
 ```{r}
 # LOAD PACKAGES
@@ -247,7 +249,7 @@ file<-rbind(wait.info, pt.info, ct_2C.info, ct_2P.info,pc.info)
   file$names<-mapvalues(file$names,c("wait","pt","ct_2C","ct_2P","pc"), c(1,2,3,4,5))
   file$names<-as.numeric(file$names)
   file$onsets<-as.numeric(file$onsets)
-  file$meanC_pmod = file$pmod - 6.419
+  file$meanC_pmod = file$pmod - 6.419 #Comment out this line and run script without meanC_pmod first. Use this output with "Finding grand mean.R" script to identify appropriate value for centering. Then re-run this script with correct mean value.
   
   setwd(summary_files_folder)
   write.csv(file, paste("summary_events",listFiles[j], sep="_"))

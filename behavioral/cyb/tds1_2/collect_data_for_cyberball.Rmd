@@ -1,7 +1,16 @@
-#########
-#!!! Remember to run 'module add R' at the command line first
-#########
-#Paths are set to run locally, not on the grid.
+---
+title: "Collect Cyberball Behavioral Data for TDS1"
+author: "NV"
+date: "May 3, 2017"
+output: word_document
+---
+
+  # Nandita Vijayakumar
+  # 5/3/2017
+  # This script relabels individual subjects Cyberball log files into appropriate formate (i.e. "cyb_301_1.csv")
+  # Not in combines the "rename_files_cyberball.R", which was run as a separete script for TDS2.
+  # Output of this script isused with "id.events_cyb1.Rmd" and "id.events_cyb2.Rmd" for identify relevant events (and onsets/durations) for each individual.
+  
 
 ```{r}
 osuRepo<-'http://ftp.osuosl.org/pub/cran/'
