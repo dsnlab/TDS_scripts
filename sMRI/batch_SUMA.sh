@@ -8,13 +8,14 @@
 # directories.
 #
 # Set your study
-STUDY=tds
+STUDY=/projects/dsnlab/tds
 
 # Set subject list
 SUBJLIST=`cat subject_list.txt`
-
+#SUBJLIST=`cat test.txt`
 # 
 for SUBJ in $SUBJLIST
 do
- qsub -v SUBID=${SUBJ} -N SUMAprep -o /vxfsvol/home/research/"${STUDY}"/sMRI/scripts/output/"${SUBJ}"_SUMAprep_output.txt -e /vxfsvol/home/research/"${STUDY}"/sMRI/scripts/output/"${SUBJ}"_SUMAprep_error.txt job_SUMA.sh
+ sbatch --export SUBID=${SUBJ} --job-name SUMAprep --partition=defq --mem-per-cpu=2G --cpus-per-task=1 -o "${STUDY}"/sMRI/scripts/output/"${SUBJ}"_SUMAprep_output.txt -e "${STUDY}"/sMRI/scripts/output/"${SUBJ}"_SUMAprep_error.txt "${STUDY}"/sMRI/scripts/job_SUMA.sh
 done
+
