@@ -19,14 +19,20 @@ STUDY=tds/TDS_scripts
 
 # Set subject list
 SUBJLIST=`cat subject_list_dartel.txt`
+#Which SID should be replaced?
+REPLACESID='101'
 
-# Set MATLAB script path
+# Set MATLAB script pat
 COMPNAME=ralph
-SCRIPT=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/spm/tds2/tds_dartel_tds2_job.m
-SCRIPTNAME=dartel
+SCRIPT=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/ppc/spm/tds2/ppc2_tds2_job.m
+
+
+
+# Tag the results files
+RESULTS_INFIX=ppc2
 
 # Set output dir
-OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_spm_jobs/tds2/output/
+OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/ppc/shell/schedule_spm_jobs/tds2/output/
 
 # Set processor
 # use "qsub" for HPC
@@ -34,22 +40,22 @@ OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_
 # use "parlocal" for local parallel processing
 
 PROCESS=parlocal
-MAXJOBS=1
+MAXJOBS=8
 
 # Create and execute batch job
 if [ "${PROCESS}" == "qsub" ]; then 
 	for SUBJ in $SUBJLIST
 	do
 	 echo "submitting via qsub"
-	 qsub -v SUBID=${SUBJ},STUDY=${STUDY} -N x4dmerge -o "${OUTPUTDIR}"/"${SUBJ}"_4dmerge_output.txt -e "${OUTPUTDIR}"/"${SUBJ}"_4dmerge_error.txt 4dmerge.sh
+	 qsub -v REPLACESID=${REPLACESID},SCRIPT=${SCRIPT},SUB=${SUB} -N ${RESULTS_INFIX} -o "${OUTPUTDIR}"/"${SUB}"_${RESULTS_INFIX}_output.txt -e "${OUTPUTDIR}"/"${SUB}"_${RESULTS_INFIX}_error.txt spm_job.sh
 	done
 
 elif [ "${PROCESS}" == "local" ]; then 
-	for SUBJ in $SUBJLIST
+	for SUB in $SUBJLIST
 	do
 	 echo "submitting locally"
-	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > "${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_error.txt
+	 bash spm_job.sh ${REPLACESID} ${SCRIPT} ${SUB} > "${OUTPUTDIR}"/"${SUBJ}"_${RESULTS_INFIX}_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_${RESULTS_INFIX}_error.txt
 	done
 elif [ "${PROCESS}" == "parlocal" ]; then 
-	parallel --verbose --results "${OUTPUTDIR}"/{}_${SCRIPTNAME}_output -j${MAXJOBS} bash spm_job.sh ${SCRIPT} :::: subject_list.txt
+	parallel --verbose --results "${OUTPUTDIR}"/{}_${RESULTS_INFIX}_output -j${MAXJOBS} bash spm_job.sh ${REPLACESID} ${SCRIPT} :::: subject_list.txt
 fi
