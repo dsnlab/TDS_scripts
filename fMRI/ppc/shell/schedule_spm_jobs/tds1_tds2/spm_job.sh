@@ -38,10 +38,18 @@ if "$SINGLECOREMATLAB"; then
 	ADDITIONALOPTIONS="-singleCompThread"
 fi
 
+
+if [ "${PROCESS}" == "slurm" ]; then
+	module load matlab
+	MATLABCOMMAND=matlab
+else
+	MATLABCOMMAND="/Applications/MATLAB_"${MATLABVER}".app/bin/matlab"
+fi
+
 # create and execute job
 echo -------------------------------------------------------------------------------
 echo "${SUB}"
 echo "Running ${SCRIPT}"
 echo -------------------------------------------------------------------------------
 
-/Applications/MATLAB_"${MATLABVER}".app/bin/matlab -nosplash -nodisplay -nodesktop ${ADDITIONALOPTIONS} -r "clear; addpath('/Users/marge/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; script_file='$SCRIPT'; replacesid='$REPLACESID'; run('make_sid_matlabbatch.m'); spm_jobman('run',matlabbatch); exit"
+$MATLABCOMMAND -nosplash -nodisplay -nodesktop -noFigureWindows ${ADDITIONALOPTIONS} -r "clear; addpath('$SPM_PATH'); spm_jobman('initcfg'); sub='$SUB'; script_file='$SCRIPT'; replacesid='$REPLACESID'; run('make_sid_matlabbatch.m'); spm_jobman('run',matlabbatch); exit"
