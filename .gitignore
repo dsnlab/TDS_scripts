@@ -23,6 +23,7 @@ rsfMRI/subjects/*
 .Rhistory
 .Rapp.history
 */output/*
+*/sid_batches/*
 core
 *.~*
 ~$*
