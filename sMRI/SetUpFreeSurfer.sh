@@ -8,13 +8,11 @@
 # Edit as needed for your specific setup.
 # The defaults should work with most installations.
 
-# Set this to the location of the freesurfer installation.
-if [ -z $FREESURFER_HOME ]; then
-    export FREESURFER_HOME=/usr/local/packages/freesurfer/5.3.0
-fi
+# Set up FreeSurfer 6.0.0
+export FREESURFER_HOME=/packages/freesurfer/6.0.0/freesurfer
 
 # Set this to your subjects/ dir, usually freesurfer/subjects/
-export SUBJECTS_DIR=/home/research/tds/sMRI/subjects/freesurfer/
+export SUBJECTS_DIR=/projects/dsnlab/tds/bids_data/derivatives/freesurfer6
 
 # Set this to your functional sessions dir, usually freesurfer/sessions/
 if [ -z $FUNCTIONALS_DIR ]; then

@@ -4,11 +4,15 @@
 # list (named subject_list.txt) in the same
 # folder and will run job_rsfMRIproc.tcsh
 # for each subject in that list.
-#
 
-STUDY=tds
+# Set your study
+STUDY=/projects/dsnlab/tds
+
+# Set subject list
 SUBJLIST=`cat subject_list.txt`
+#SUBJLIST=`cat test.txt`
 
 for SUBJ in $SUBJLIST
- do qsub -v SUBID=${SUBJ} -N rsfMRI_ppi -S /bin/tcsh -o /vxfsvol/home/research/"${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_rsfMRIproc_output.txt -e /vxfsvol/home/research/"${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_rsfMRIproc_error.txt job_rsfMRIproc.tcsh
+ do sbatch --export SUBID=${SUBJ} --job-name rsfMRIproc --partition=defq --mem-per-cpu=8G --cpus-per-task=1 -o "${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_rsfMRIproc_output.txt -e "${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_rsfMRIproc_error.txt job_rsfMRIproc.tcsh
 done
+

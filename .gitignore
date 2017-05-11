@@ -22,9 +22,8 @@ rsfMRI/subjects/*
 .zshrc
 .Rhistory
 .Rapp.history
-*/scripts/output/*
+*/output/*
 core
-*.annot
 *.~*
 ~$*
 *m~

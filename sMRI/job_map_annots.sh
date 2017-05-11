@@ -7,16 +7,17 @@
 
 echo "job_map_annots.sh ran on $(date) $line"
 
-echo -e "\nSetting Up Freesurfer5.3"
+echo -e "\nSetting Up Freesurfer6.0"
 
-source /home/research/tds/sMRI/scripts/SetUpFreeSurfer.sh
+source /projects/dsnlab/tds/sMRI/scripts/SetUpFreeSurfer.sh
 
 echo -e "\nSetting up AFNI"
 
-export PATH="/usr/local/afni_16.1.06:${PATH}"
+module use /projects/tau/packages/Modules/modulefiles/
+module load afni
 
-rsfMRIdir="/home/research/tds/rsfMRI/subjects/"
-templatedir="/home/research/tds/sMRI/templates/"
+rsfMRIdir="/projects/dsnlab/tds/bids_data/derivatives/rsfMRIprepro/"
+templatedir="/projects/dsnlab/tds/sMRI/templates/"
 
 echo -e "\nFreesurfer Home is $FREESURFER_HOME"
 echo -e "\nThe Subject Directory is $SUBJECTS_DIR"
@@ -60,3 +61,4 @@ for label in $lhlabels; do
 	rm $SUBJECTS_DIR/$SUBID/mri/fromannots/"${label}".nii.gz
 	mv $SUBJECTS_DIR/$SUBID/mri/fromannots/"${label}"_final.nii.gz $SUBJECTS_DIR/$SUBID/mri/fromannots/"${label}".nii.gz
  done
+
