@@ -1,5 +1,5 @@
 %-----------------------------------------------------------------------
-% Job saved on 02-May-2017 16:57:15 by cfg_util (rev $Rev: 6460 $)
+% Job saved on 05-May-2017 16:52:12 by cfg_util (rev $Rev: 6460 $)
 % spm SPM - SPM12 (6906)
 %-----------------------------------------------------------------------
 matlabbatch{1}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/Users/ralph/Documents/tds/fMRI/subjects_tds2/113/cyb1'};
@@ -33,7 +33,7 @@ matlabbatch{3}.spm.stats.fmri_spec.mthresh = -Inf;
 matlabbatch{3}.spm.stats.fmri_spec.mask = {'/Users/ralph/Documents/tds/fMRI/analysis/masks/tds2/tds_gw_smoothed_group_average_optthresh.nii,1'};
 matlabbatch{3}.spm.stats.fmri_spec.cvi = 'AR(1)';
 matlabbatch{4}.spm.stats.fmri_est.spmmat(1) = cfg_dep('fMRI model specification: SPM.mat File', substruct('.','val', '{}',{3}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','spmmat'));
-matlabbatch{4}.spm.stats.fmri_est.write_residuals = 0;
+matlabbatch{4}.spm.stats.fmri_est.write_residuals = 1;
 matlabbatch{4}.spm.stats.fmri_est.method.Classical = 1;
 matlabbatch{5}.spm.stats.con.spmmat(1) = cfg_dep('Model estimation: SPM.mat File', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','spmmat'));
 matlabbatch{5}.spm.stats.con.consess{1}.tcon.name = 'pc>rest';
