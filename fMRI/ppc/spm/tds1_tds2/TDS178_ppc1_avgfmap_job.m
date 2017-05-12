@@ -2,7 +2,7 @@
 % Job saved on 12-May-2017 10:11:18 by cfg_util (rev $Rev: 6460 $)
 % spm SPM - SPM12 (6906)
 %-----------------------------------------------------------------------
-matlabbatch{1}.spm.spatial.coreg.estimate.ref = {'/Users/ralph/SPM12/canonical/avg152T1.nii,1'};
+matlabbatch{1}.spm.spatial.coreg.estimate.ref = {'/projects/dsnlab/SPM12/canonical/avg152T1.nii,1'};
 matlabbatch{1}.spm.spatial.coreg.estimate.source = {'/projects/dsnlab/tds/fMRI/subjects/178/structurals/mprage.nii,1'};
 matlabbatch{1}.spm.spatial.coreg.estimate.other = {''};
 matlabbatch{1}.spm.spatial.coreg.estimate.eoptions.cost_fun = 'nmi';
