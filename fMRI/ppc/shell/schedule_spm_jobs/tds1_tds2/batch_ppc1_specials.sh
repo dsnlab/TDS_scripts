@@ -1,34 +1,61 @@
 #!/bin/bash
 #--------------------------------------------------------------
-# Inputs:
-#	* STUDY = study name
-#	* SUBJLIST = subject_list.txt
-#	* SCRIPT = MATLAB script to create and execute batch job
-#	* PROCESS = running locally, via qsub, or on the Mac Pro
-#	* Edit output and error paths
-#
-# Outputs:
-#	* Executes spm_job.sh for $SUB and $SCRIPT
+#	* Executes spm_job.sh for subjects specials list (ppc1) 
 #
 # D.Cos 2017.3.7
 #--------------------------------------------------------------
 
+STUDY=/projects/dsnlab/tds/TDS_scripts
+SPM_PATH=/projects/dsnlab/SPM12
+OUTPUTDIR=${STUDY}/fMRI/ppc/shell/schedule_spm_jobs/tds2/output/
+RESULTS_INFIX=ppc1
+PROCESS=slurm
 
-# Set your study
-STUDY=tds/tds_repo
+sbatch --export=REPLACESID=108,SCRIPT=TDS108_coreg_realign_unwarp_coreg_segment.m,SUB=108,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/108_ppc1.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
 
-# Set subject list
-#SUBJLIST=`cat subject_list.txt`
+sbatch --export=REPLACESID=178,SCRIPT=TDS178_coreg_segment.m,SUB=178,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/178_ppc1_1.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
 
-# Set MATLAB script path
-COMPNAME=ralph
-SCRIPTNAME=ppc1
+sbatch --export=REPLACESID=178,SCRIPT=TDS178_realign_unwarp_coreg_avgfmap.m,SUB=178,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/178_ppc1_2.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
 
-# Set output dir
-OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_spm_jobs/output/
+sbatch --export=REPLACESID=179,SCRIPT=TDS179_coreg_realign_unwarp_coreg_segment.m,SUB=179,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/179_ppc1.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
 
-# Set processor
+sbatch --export=REPLACESID=189,SCRIPT=TDS189_coreg_realign_unwarp_coreg_segment.m,SUB=189,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/189_ppc1.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
 
-CORES=2
+sbatch --export=REPLACESID=350,SCRIPT=TDS350_coreg_realign_unwarp_coreg_segment.m,SUB=350,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/350_ppc1.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
 
-parallel --verbose --results "${OUTPUTDIR}"/{2}_${SCRIPTNAME}_output -j${CORES} --colsep ',' bash spm_job.sh :::: subject_list_specials.txt
+sbatch --export=REPLACESID=356,SCRIPT=TDS356_coreg_realign_unwarp_coreg_segment.m,SUB=356,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/356_ppc1.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
