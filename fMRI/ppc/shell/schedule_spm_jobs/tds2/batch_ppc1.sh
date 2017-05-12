@@ -47,7 +47,7 @@ MAXJOBS=8
 
 #Only matters for slurm
 cpuspertask=1
-mempercpu=2G
+mempercpu=5G
 
 # Create and execute batch job
 if [ "${PROCESS}" == "slurm" ]; then 
