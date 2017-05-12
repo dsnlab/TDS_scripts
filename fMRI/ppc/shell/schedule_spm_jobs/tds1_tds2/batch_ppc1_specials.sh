@@ -28,7 +28,7 @@ mempercpu=5G
 #		 --mem-per-cpu=${mempercpu} \
 #		 spm_job.sh
 
-sbatch --export=REPLACESID=178,SCRIPT=${STUDY}/${SCRIPT}/TDS178_realign_unwarp_coreg_avgfmap.m,SUB=178,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+sbatch --export=REPLACESID=178,SCRIPT=${STUDY}/${SCRIPT}/TDS178_ppc1_avgfmap_job.m,SUB=178,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \
 		 -o "${OUTPUTDIR}"/178_ppc1_2.log \
 		 --cpus-per-task=${cpuspertask} \
