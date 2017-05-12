@@ -34,26 +34,35 @@ extract_rsfcMRI_runinfo= function(sub){
     TRscensored<-log %>% filter(grepl("TRs censored",.[[1]]))
     TRscensored<-as.character(TRscensored[[1]])
     TRscensored<-substring(TRscensored,first=29,last=(nchar(TRscensored)))
-    cbind(sub,TRsleft,TRscensored)
-    } else {
-      TRsleft<-"NA"
-      TRscensored<-"NA"
-      cbind(sub,TRsleft,TRscensored)
-    }
+    preproc_complete="yes"
+    cbind(sub,TRsleft,TRscensored,preproc_complete)
+    } else if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_censor.1D"))){
+      log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_censor.1D"))
+      TRsleft<-nrow(log %>% filter(.[[1]]=="1"))
+      TRscensored<-nrow(log %>% filter(.[[1]]=="0"))
+      preproc_complete="no"
+      cbind(sub,TRsleft,TRscensored,preproc_complete)
+    } else{
+      TRsleft<-NA
+      TRscensored<-NA
+      preproc_complete="no"
+      cbind(sub,TRsleft,TRscensored,preproc_complete)
+      }
 }
 outputlist<-lapply(subs,extract_rsfcMRI_runinfo)
 output.df<-as.data.frame(do.call(rbind,outputlist)) %>% 
   mutate(TRscensored=as.numeric(levels(TRscensored))[TRscensored],
          TRsleft=as.numeric(levels(TRsleft))[TRsleft])
+
 censored <- ggplot((output.df %>% select(-TRsleft)),
-                aes(x=sub, y=TRscensored, fill=TRscensored))
+                aes(x=sub, y=TRscensored, fill=preproc_complete))
 censored + geom_bar(colour="black", stat="identity") 
 
 TotalTRs <- ggplot((output.df %>% select(-TRscensored)),
-                aes(x=sub, y=TRsleft, fill=TRsleft))
+                aes(x=sub, y=TRsleft, fill=preproc_complete))
 TotalTRs + geom_bar(colour="black", stat="identity")
 
 TRtime <- ggplot((output.df %>% select(-TRscensored)),
-                aes(x=sub, y=(TRsleft*.78)/60, fill=(TRsleft*.78)/60))
+                aes(x=sub, y=(TRsleft*.78)/60, fill=preproc_complete))
 TRtime + geom_bar(colour="black", stat="identity")
 ```
