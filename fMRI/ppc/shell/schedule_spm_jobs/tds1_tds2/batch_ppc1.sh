@@ -18,7 +18,7 @@
 STUDY=/projects/dsnlab/tds/TDS_scripts
 
 #SUBJLIST=`cat subject_list_nomissingruns.txt` # specials processed manually
-SUBJLIST=`cat subject_list_prac.txt`
+SUBJLIST=`cat subject_list_nomissingruns2.txt`
 
 #Which SID should be replaced?
 REPLACESID='101'
@@ -27,13 +27,13 @@ REPLACESID='101'
 SPM_PATH=/projects/dsnlab/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/ppc/spm/tds2/ppc1_tds1_2_job.m
+SCRIPT=${STUDY}/fMRI/ppc/spm/tds1_tds2/ppc1_tds1_2_job.m
 
 # Tag the results files
 RESULTS_INFIX=ppc1
 
 # Set output dir
-OUTPUTDIR=${STUDY}/fMRI/ppc/shell/schedule_spm_jobs/tds2/output/
+OUTPUTDIR=${STUDY}/fMRI/ppc/shell/schedule_spm_jobs/tds1_tds2/output/
 
 # Set processor
 # use "qsub" for HPC
@@ -47,7 +47,7 @@ MAXJOBS=8
 
 #Only matters for slurm
 cpuspertask=1
-mempercpu=2G
+mempercpu=5G
 
 # Create and execute batch job
 if [ "${PROCESS}" == "slurm" ]; then 
