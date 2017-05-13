@@ -27,13 +27,13 @@ REPLACESID='113'
 SPM_PATH=/projects/dsnlab/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/fx/models/cyb/tds2/fx_tds2_job.m
+SCRIPT=${STUDY}/fMRI/fx/models/cyb/tds1_tds2/fx_tds2_job.m
 
 # Tag the results files
 RESULTS_INFIX=fx_cyb_tds2
 
 # Set output dir
-OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/cyb/tds2/output/
+OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/cyb/tds1_tds2/output/
 
 # Set processor
 # use "qsub" for HPC
