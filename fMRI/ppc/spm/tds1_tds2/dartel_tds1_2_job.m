@@ -1,5 +1,5 @@
 %-----------------------------------------------------------------------
-% Job saved on 16-Mar-2017 18:04:56 by cfg_util (rev $Rev: 6460 $)
+% Job saved on 30-Apr-2017 22:30:59 by cfg_util (rev $Rev: 6460 $)
 % spm SPM - SPM12 (6906)
 % cfg_basicio BasicIO - Unknown
 %-----------------------------------------------------------------------
@@ -27,7 +27,7 @@ matlabbatch{7}.spm.tools.dartel.warp.images{3}(1) = cfg_dep('File Selector (Batc
 matlabbatch{7}.spm.tools.dartel.warp.images{4}(1) = cfg_dep('File Selector (Batch Mode): Selected Files (rc4mprage.nii)', substruct('.','val', '{}',{4}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','files'));
 matlabbatch{7}.spm.tools.dartel.warp.images{5}(1) = cfg_dep('File Selector (Batch Mode): Selected Files (rc5mprage.nii)', substruct('.','val', '{}',{5}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','files'));
 matlabbatch{7}.spm.tools.dartel.warp.images{6}(1) = cfg_dep('File Selector (Batch Mode): Selected Files (rc6mprage.nii)', substruct('.','val', '{}',{6}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','files'));
-matlabbatch{7}.spm.tools.dartel.warp.settings.template = 'tds_template_n148';
+matlabbatch{7}.spm.tools.dartel.warp.settings.template = 'tds1_2_template';
 matlabbatch{7}.spm.tools.dartel.warp.settings.rform = 0;
 matlabbatch{7}.spm.tools.dartel.warp.settings.param(1).its = 3;
 matlabbatch{7}.spm.tools.dartel.warp.settings.param(1).rparam = [4 2 1e-06];
