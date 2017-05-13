@@ -1,6 +1,0 @@
-/Users/ralph/Documents/tds/tds_repo/fMRI/scripts/ppc/spm/TDS108_coreg_realign_unwarp_coreg_segment.m,108
-/Users/ralph/Documents/tds/tds_repo/fMRI/scripts/ppc/spm/TDS178_coreg_realign_unwarp_coreg_segment.m,178
-/Users/ralph/Documents/tds/tds_repo/fMRI/scripts/ppc/spm/TDS179_coreg_realign_unwarp_coreg_segment.m,179
-/Users/ralph/Documents/tds/tds_repo/fMRI/scripts/ppc/spm/TDS189_coreg_realign_unwarp_coreg_segment.m,189
-/Users/ralph/Documents/tds/tds_repo/fMRI/scripts/ppc/spm/TDS350_coreg_realign_unwarp_coreg_segment.m,350
-/Users/ralph/Documents/tds/tds_repo/fMRI/scripts/ppc/spm/TDS356_coreg_realign_unwarp_coreg_segment.m,356
