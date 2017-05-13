@@ -1,0 +1,80 @@
+-------------------------------------------------------------------------------
+178
+Running /projects/dsnlab/tds/TDS_scripts/fMRI/ppc/spm/tds1_tds2/TDS178_job.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2016 The MathWorks, Inc.
+                   R2016b (9.1.0.441655) 64-bit (glnxa64)
+                             September 7, 2016
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Coregister: Estimate'
+
+SPM12: spm_coreg (v6435)                           08:57:54 - 13/05/2017
+========================================================================
+Completed                               :          08:58:09 - 13/05/2017
+Error: Permission denied
+There was a problem writing to the header of
+  "/projects/dsnlab/tds/fMRI/subjects/178/structurals/mprage.nii"
+Failed  'Coregister: Estimate'
+Error using nifti/create (line 26)
+Unable to write header for "/projects/dsnlab/tds/fMRI/subjects/178/structurals/mprage.nii".
+In file "/projects/dsnlab/SPM12/@nifti/create.m" (v5451), function "create" at line 26.
+In file "/projects/dsnlab/SPM12/spm_get_space.m" (v6379), function "spm_get_space" at line 51.
+In file "/gpfs/projects/dsnlab/SPM12/config/spm_run_coreg.m" (v5956), function "spm_run_coreg" at line 30.
+
+Running 'Calculate VDM'
+Failed  'Calculate VDM'
+Error using read_hdr (line 32)
+Error reading header file "/projects/dsnlab/tds/fMRI/subjects/178/fmaps/fieldmap.nii".
+In file "/projects/dsnlab/SPM12/@nifti/private/read_hdr.m" (v4967), function "read_hdr" at line 32.
+In file "/projects/dsnlab/SPM12/@nifti/nifti.m" (v4986), function "nifti" at line 26.
+In file "/projects/dsnlab/SPM12/spm_vol_nifti.m" (v6079), function "spm_vol_nifti" at line 19.
+In file "/projects/dsnlab/SPM12/spm_vol.m" (v5958), function "spm_vol_hdr" at line 128.
+In file "/projects/dsnlab/SPM12/spm_vol.m" (v5958), function "spm_vol" at line 61.
+In file "/projects/dsnlab/SPM12/toolbox/FieldMap/FieldMap_Run.m" (v6656), function "FieldMap_Run" at line 79.
+In file "/gpfs/projects/dsnlab/SPM12/toolbox/FieldMap/tbx_cfg_fieldmap.m" (v6501), function "FieldMap_calculatevdm" at line 766.
+
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+No executable modules, but still unresolved dependencies or incomplete module inputs.
+The following modules did not run:
+Failed: Coregister: Estimate
+Failed: Calculate VDM
+Skipped: Realign & Unwarp
+Skipped: Coregister: Estimate
+Skipped: Segment
+
+{Error using MATLABbatch system
+Job execution failed. The full log of this run can be found in MATLAB command
+window, starting with the lines (look for the line showing the exact #job as
+displayed in this error message)
+------------------
+Running job #1
+------------------
+} 
