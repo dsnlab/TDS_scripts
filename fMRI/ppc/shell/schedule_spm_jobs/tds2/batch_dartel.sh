@@ -46,7 +46,7 @@ mempercpu=10G
 # Create and execute batch job
 sbatch --export=REPLACESID=tds2,SCRIPT=$SCRIPT,SUB=tds2,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \
-		 -o ${OUTPUTDIR}/${SUB}_${RESULTS_INFIX}.log \
+		 -o $"{OUTPUTDIR}"/$"{SUB}"_$"{RESULTS_INFIX}".log \
 		 --cpus-per-task=${cpuspertask} \
 		 --mem-per-cpu=${mempercpu} \
 		 spm_job.sh
