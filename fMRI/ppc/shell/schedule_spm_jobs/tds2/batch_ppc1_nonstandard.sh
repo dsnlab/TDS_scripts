@@ -14,12 +14,12 @@ PROCESS=slurm
 cpuspertask=1
 mempercpu=5G
 
-sbatch --export=REPLACESID=108,SCRIPT=${STUDY}/${SCRIPT}/TDS108_ppc1_job.m,SUB=108,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS \
-		 --job-name=${RESULTS_INFIX} \
-		 -o "${OUTPUTDIR}"/108_ppc1.log \
-		 --cpus-per-task=${cpuspertask} \
-		 --mem-per-cpu=${mempercpu} \
-		 spm_job.sh
+#sbatch --export=REPLACESID=108,SCRIPT=${STUDY}/${SCRIPT}/TDS108_ppc1_job.m,SUB=108,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS \
+#		 --job-name=${RESULTS_INFIX} \
+#		 -o "${OUTPUTDIR}"/108_ppc1.log \
+#		 --cpus-per-task=${cpuspertask} \
+#		 --mem-per-cpu=${mempercpu} \
+#		 spm_job.sh
 
 sbatch --export=REPLACESID=178,SCRIPT=${STUDY}/${SCRIPT}/TDS178_ppc1_avgfmap_job.m,SUB=178,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \
@@ -28,16 +28,16 @@ sbatch --export=REPLACESID=178,SCRIPT=${STUDY}/${SCRIPT}/TDS178_ppc1_avgfmap_job
 		 --mem-per-cpu=${mempercpu} \
 		 spm_job.sh
 
-sbatch --export=REPLACESID=179,SCRIPT=${STUDY}/${SCRIPT}/TDS179_ppc1_job.m,SUB=179,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
-		 --job-name=${RESULTS_INFIX} \
-		 -o "${OUTPUTDIR}"/179_ppc1.log \
-		 --cpus-per-task=${cpuspertask} \
-		 --mem-per-cpu=${mempercpu} \
-		 spm_job.sh
+#sbatch --export=REPLACESID=179,SCRIPT=${STUDY}/${SCRIPT}/TDS179_ppc1_job.m,SUB=179,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+#		 --job-name=${RESULTS_INFIX} \
+#		 -o "${OUTPUTDIR}"/179_ppc1.log \
+#		 --cpus-per-task=${cpuspertask} \
+#		 --mem-per-cpu=${mempercpu} \
+#		 spm_job.sh
 
-sbatch --export=REPLACESID=189,SCRIPT=${STUDY}/${SCRIPT}/TDS189_ppc1_job.m,SUB=189,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
-		 --job-name=${RESULTS_INFIX} \
-		 -o "${OUTPUTDIR}"/189_ppc1.log \
-		 --cpus-per-task=${cpuspertask} \
-		 --mem-per-cpu=${mempercpu} \
-		 spm_job.sh
+#sbatch --export=REPLACESID=189,SCRIPT=${STUDY}/${SCRIPT}/TDS189_ppc1_job.m,SUB=189,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+#		 --job-name=${RESULTS_INFIX} \
+#		 -o "${OUTPUTDIR}"/189_ppc1.log \
+#		 --cpus-per-task=${cpuspertask} \
+#		 --mem-per-cpu=${mempercpu} \
+#		 spm_job.sh
