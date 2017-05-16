@@ -13,49 +13,62 @@
 # D.Cos 2017.3.7
 #--------------------------------------------------------------
 
-
 # Set your study
-STUDY=tds/tds_repo
+STUDY=/projects/dsnlab/tds/TDS_scripts
 
 # Set subject list
-SUBJLIST=`cat subject_list.txt`
+SUBJLIST=`cat subject_list_all.txt`
+
 #Which SID should be replaced?
 REPLACESID='101'
 
+#SPM Path
+SPM_PATH=/projects/dsnlab/SPM12
 
 # Set MATLAB script path
-COMPNAME=ralph
-SCRIPT=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/templates/masks/spm/tds2/tds_gw_join_smooth_job.m
-SCRIPTNAME=tds_gw_mask
+SCRIPT=${STUDY}/fMRI/templates/masks/spm/tds2/tds2_gw_join_smooth_job.m
 
 # Tag the results files
 RESULTS_INFIX=gw_join_smooth
 
 # Set output dir
-OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/templates/masks/shell/tds2/output
+OUTPUTDIR=${STUDY}/fMRI/templates/masks/shell/schedule_spm_jobs/tds2/output/
 
 # Set processor
 # use "qsub" for HPC
 # use "local" for local machine
 # use "parlocal" for local parallel processing
 
-PROCESS=parlocal
+PROCESS=slurm
+
+# Max jobs only matters for par local
 MAXJOBS=8
 
+#Only matters for slurm
+cpuspertask=1
+mempercpu=5G
+
 # Create and execute batch job
-if [ "${PROCESS}" == "qsub" ]; then 
-	for SUBJ in $SUBJLIST
+if [ "${PROCESS}" == "slurm" ]; then 
+	for SUB in $SUBJLIST
 	do
 	 echo "submitting via qsub"
-	 qsub -v SUBID=${SUBJ},STUDY=${STUDY} -N x4dmerge -o "${OUTPUTDIR}"/"${SUBJ}"_4dmerge_output.txt -e "${OUTPUTDIR}"/"${SUBJ}"_4dmerge_error.txt 4dmerge.sh
+	 sbatch --export=REPLACESID=$REPLACESID,SCRIPT=$SCRIPT,SUB=$SUB,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/"${SUB}"_"${RESULTS_INFIX}".log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
+	 sleep .25
 	done
 
 elif [ "${PROCESS}" == "local" ]; then 
-	for SUBJ in $SUBJLIST
+	for SUB in $SUBJLIST
 	do
 	 echo "submitting locally"
-	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > "${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_error.txt
+	 bash spm_job.sh ${REPLACESID} ${SCRIPT} ${SUB} > "${OUTPUTDIR}"/"${SUBJ}"_"${RESULTS_INFIX}"_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_"${RESULTS_INFIX}"_error.txt
 	done
+
 elif [ "${PROCESS}" == "parlocal" ]; then 
 	parallel --verbose --results "${OUTPUTDIR}"/{}_${RESULTS_INFIX}_output -j${MAXJOBS} bash spm_job.sh ${REPLACESID} ${SCRIPT} :::: subject_list.txt
 fi
