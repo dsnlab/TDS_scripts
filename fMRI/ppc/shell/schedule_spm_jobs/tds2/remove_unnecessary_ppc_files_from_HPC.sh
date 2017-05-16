@@ -13,15 +13,15 @@ TASK_LIST=`cat task_list.txt`
 for SUB in $SUBJECT_LIST
 do
 	echo "Removing files for $SUB"
-		for TASK in $TASK_LIST
-		do
-			echo "Removing unnecessary ppc files from $TASK"
-			rm $SOURCE_DIR/$SUB/${TASK}/ru*
-			rm $SOURCE_DIR/$SUB/${TASK}/u*
-			rm $SOURCE_DIR/$SUB/${TASK}/wfmag*
-			rm $SOURCE_DIR/$SUB/${TASK}/mean*
-			rm $SOURCE_DIR/$SUB/${TASK}/"${TASK}"*
-		done
+	for TASK in $TASK_LIST
+	do
+		echo "Removing unnecessary ppc files from $TASK"
+		rm $SOURCE_DIR/$SUB/${TASK}/ru*
+		rm $SOURCE_DIR/$SUB/${TASK}/u*
+		rm $SOURCE_DIR/$SUB/${TASK}/wfmag*
+		rm $SOURCE_DIR/$SUB/${TASK}/mean*
+		rm $SOURCE_DIR/$SUB/${TASK}/"${TASK}"*
+	done
 	echo "Files removed for $SUB"
 	echo "----------------------"
 done
