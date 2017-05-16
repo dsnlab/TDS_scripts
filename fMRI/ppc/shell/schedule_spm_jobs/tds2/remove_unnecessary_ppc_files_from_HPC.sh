@@ -16,11 +16,11 @@ do
 	for TASK in $TASK_LIST
 	do
 		echo "Removing unnecessary ppc files from $TASK"
-		rm $SOURCE_DIR/$SUB/${TASK}/ru*
-		rm $SOURCE_DIR/$SUB/${TASK}/u*
-		rm $SOURCE_DIR/$SUB/${TASK}/wfmag*
-		rm $SOURCE_DIR/$SUB/${TASK}/mean*
-		rm $SOURCE_DIR/$SUB/${TASK}/"${TASK}"*
+		rm -f $SOURCE_DIR/$SUB/${TASK}/ru*
+		rm -f $SOURCE_DIR/$SUB/${TASK}/u*
+		rm -f $SOURCE_DIR/$SUB/${TASK}/wfmag*
+		rm -f $SOURCE_DIR/$SUB/${TASK}/mean*
+		rm -f $SOURCE_DIR/$SUB/${TASK}/"${TASK}"*
 	done
 	echo "Files removed for $SUB"
 	echo "----------------------"
