@@ -16,5 +16,5 @@ matlabbatch{2}.spm.util.imcalc.options.interp = 0;
 matlabbatch{2}.spm.util.imcalc.options.dtype = 4;
 matlabbatch{3}.spm.tools.masking{1}.optthr.inname(1) = cfg_dep('Image Calculator: ImCalc Computed Image: tds2_gw_smoothed_group_average.nii', substruct('.','val', '{}',{2}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','files'));
 matlabbatch{3}.spm.tools.masking{1}.optthr.optfunc = '@opt_thr_corr';
-matlabbatch{3}.spm.tools.masking{1}.optthr.outname = 'average_optthr.nii';
+matlabbatch{3}.spm.tools.masking{1}.optthr.outname = 'tds2_gw_smoothed_group_average_optthr.nii';
 matlabbatch{3}.spm.tools.masking{1}.optthr.outdir = {'/projects/dsnlab/tds/fMRI/analysis/masks/tds2'};
