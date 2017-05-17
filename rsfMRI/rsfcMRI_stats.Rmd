@@ -18,7 +18,7 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 lapply(packages, library, character.only = TRUE)
 ```
 
-Extract FreeSurfer preprocessing stats
+Extract rsfcMRI preprocessing stats
 ```{r Extract and plot run times, echo=TRUE}
 # Set directory
 rsfcMRI_subjects="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc/"
@@ -65,4 +65,6 @@ TotalTRs + geom_bar(colour="black", stat="identity")
 TRtime <- ggplot((output.df %>% select(-TRscensored)),
                 aes(x=sub, y=(TRsleft*.78)/60, fill=preproc_complete))
 TRtime + geom_bar(colour="black", stat="identity")
+
+preprocessedcomplete<-(output.df %>% filter(preproc_complete=="yes") %>%select(sub))
 ```
