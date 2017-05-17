@@ -41,12 +41,13 @@ library(R.matlab)
 
 ```{r}
 #LOAD CYB MERGED FILE AND FORMAT
+rm(list=ls())
 
 #define folder locations
 psi_folder<-'/Volumes/TDS/'
 cyb_folder<-'behavior/CyberBall/raw/'
-scripts_folder<-'/projects/dsnlab/tds/TDS_scripts/behavioral/cyb'
-unmerged_folder<-'TDS1_cyberball_data/unmerged/'
+scripts_folder<-'/projects/dsnlab/tds/TDS_scripts/fMRI/fx/multiconds/cyberball'
+unmerged_folder<-'TDS_cyberball_data/'
   
 #read in cyberball files
 files_folder<-paste(psi_folder,cyb_folder,sep='')
@@ -141,7 +142,7 @@ for(i in 1:length(listFiles))
       df<-df[,-c(5,6)]
       
       #writes the .csv file to a new folder
-      setwd(paste(tds_folder,"behavior/CyberBall/multiconds/Labelled_Data",sep=""))
+      setwd(paste(psi_folder,"behavior/CyberBall/multiconds/Labelled_Data",sep=""))
       write.csv(df, paste("cyb",SID,"_",run,".csv", sep=""))
       setwd(files_folder3)
       
@@ -158,7 +159,7 @@ for(i in 1:length(listFiles))
       df<-df[,-c(5,6)]
       
       #writes the .csv file to a new folder
-      setwd(paste(tds_folder,"behavior/CyberBall/multiconds/Labelled_Data",sep=""))
+      setwd(paste(psi_folder,"behavior/CyberBall/multiconds/Labelled_Data",sep=""))
       write.csv(df, paste("cyb",SID,"_",run,".csv", sep=""))
       setwd(files_folder3)
       
@@ -167,3 +168,60 @@ for(i in 1:length(listFiles))
   }}
   
 end
+
+setwd(paste(psi_folder,"behavior/CyberBall/multiconds/Labelled_Data",sep=""))
+
+fn <- "cyb110_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb110_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb112_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb112_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb118_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb118_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb147_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb147_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb154_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb154_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb166_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb166_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb138_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb138_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb143_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb143_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb189_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb189_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb161_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb161_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb351_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb351_2.csv"
+if (file.exists(fn)) file.remove(fn)
