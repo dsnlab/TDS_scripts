@@ -29,7 +29,11 @@ rhparcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"rhlabels.txt")
   filter(grepl("rh.Parcel", .[[1]]))%>%
   mutate(parcel_name=.[[1]]) %>%
   select(parcel_name)
-gordon<-bind_rows(rhparcels,lhparcels)
+# https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI/FreeSurferColorLUT
+subcorticalparcels<-as.data.frame(rbind("aseg_18","aseg_54","aseg_17","aseg_53")) %>%
+   mutate(parcel_name=.[[1]]) %>%
+  select(parcel_name)
+gordon<-bind_rows(subcorticalparcels,rhparcels,lhparcels)
 testgordon<-as.data.frame(gordon[1:10,])
 colnames(testgordon)<-"parcel_name"
   
@@ -52,9 +56,9 @@ collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_
     mutate(index=1:n()) %>% filter(!is.na(V1))
   sub_dir <- paste0(sub_base_dir,sub,"/",sub,".results/")
   #get the motion information and censor properly
-  fdfile <- data.frame(motion=read.table(paste0(sub_dir,"motion_",sub,"_enorm.1D"))$V1) %>%
+  fdfile <- data.frame(motion=read.table(paste0(sub_dir,"motion_",sub,"_censor.1D"))$V1) %>%
     mutate(index=1:n(),
-           censor_raw=motion>scrubbingThreshold, #censor if over the threshold
+           censor_raw=motion==0, #censor if over the threshold
            censor_1after=censor_raw | lag(censor_raw,1, default=F), #censor 1 after any censored vols
            censor=censor_1after) #censor any vols between censored vols
   #timecourse length == motion data length error checking
@@ -100,20 +104,25 @@ collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_
                               Blurps=motiondata$Blurps,
                               Numcensored=motiondata$Numcensored,
                               Framesremaining=motiondata$Framesremaining) %>% as.data.table
+  subjDF <- subjDF %>%
+    filter(grepl("aseg", coi))
 }
 
 system.time(gordon_cois <- mclapply(as.list(preprocessedcomplete$sub),
                                     collectAndCorTimecourses, 
-                                    parcels=testgordon,
+                                    parcels=gordon,
                                     scrubbingThreshold=scrubbingThreshold, 
                                     sub_base_dir=sub_base_dir,
                                     mc.cores=1))
 print(object.size(gordon_cois), quote = FALSE, units = "Mb")
-#bind list of data.tables into one long data.table and filter by frames remaining (< 5 mins)
+
+# bind list of data.tables into one long data.table and filter by frames remaining (< 5 mins)
 system.time(gordon_coisDT <- do.call(bind_rows, gordon_cois) %>% 
               filter(Framesremaining >= 385) %>%
               select(-Blurps, -Numcensored, -Framesremaining) %>%  #we don't need these columns anymore
               as.data.table)
 print(object.size(gordon_coisDT), quote = FALSE, units = "Mb") #much smaller than the list of data.tables
 rm(gordon_cois);gc() #remove list, and garbage collect
+save(gordon_coisDT,file = "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")
+
 ```
