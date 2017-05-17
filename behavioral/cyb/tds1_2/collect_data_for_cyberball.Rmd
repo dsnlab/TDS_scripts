@@ -8,8 +8,8 @@ output: word_document
   # Nandita Vijayakumar
   # 5/3/2017
   # This script relabels individual subjects Cyberball log files into appropriate formate (i.e. "cyb_301_1.csv")
-  # Not in combines the "rename_files_cyberball.R", which was run as a separete script for TDS2.
-  # Output of this script isused with "id.events_cyb1.Rmd" and "id.events_cyb2.Rmd" for identify relevant events (and onsets/durations) for each individual.
+  # Note in combines the "rename_files_cyberball.R", which was run as a separete script for TDS2.
+  # Output of this script is used with "id.events_cyb1.Rmd" and "id.events_cyb2.Rmd" for identify relevant events (and onsets/durations) for each individual.
   
 
 ```{r}
@@ -43,14 +43,14 @@ library(R.matlab)
 #LOAD CYB MERGED FILE AND FORMAT
 
 #define folder locations
-tds_folder<-'/Volumes/TDS/'
-session_info_folder<-'Subject IDs/'
-cyberball_folder<-'behavior/CyberBall/backups/'
-unmerged_folder<-'behavior/CyberBall/raw/'
-
+psi_folder<-'/Volumes/TDS/'
+cyb_folder<-'behavior/CyberBall/raw/'
+scripts_folder<-'/projects/dsnlab/tds/TDS_scripts/behavioral/cyb'
+unmerged_folder<-'TDS1_cyberball_data/unmerged/'
+  
 #read in cyberball files
-files_folder<-paste(tds_folder,cyberball_folder,sep='')
-cb_data_long<-read.csv(paste(files_folder,"Merged_Log_1493659540.csv",sep=''))
+files_folder<-paste(psi_folder,cyb_folder,sep='')
+cb_data_long<-read.csv(paste(files_folder,"Merged_Log_1494973802.csv",sep=''))
 
 #one row per run
 cb_data<-subset(cb_data_long, v1 == 'connecting(time: 6)')
@@ -71,10 +71,11 @@ cb_data$timestamp <-NULL
 
 #limit to TDS1 and TDS3
 cb_data$date <- as.Date(cb_data$date, format= "%m/%d/%Y")
-cb_data <- subset(cb_data, date > "2015-08-17")
+#cb_data <- subset(cb_data, date > "2015-08-17")
 x <- c("Chuck", "al+capone", "Alfred", "PART_0013", "P0023", "P0033", "9008", "999")
-y <- c("Sat Nov 07 2015 09:12:52 GMT-0800 (PST)", "Wed Dec 02 2015 16:08:07 GMT-0800 (PST)", "Wed Dec 02 2015 13:40:06 GMT-0800 (PST)")
-cb_data <- cb_data %>% filter(!(grepl(paste(x, collapse = "|"), userid))) %>% filter(!stamp == "Sat Nov 07 2015 09:12:52 GMT-0800 (PST)") %>% filter(!date == "2015-12-02")
+y <- c("Sat Nov 07 2015 09:12:52 GMT-0800 (PST)", "Wed Dec 02 2015 16:08:07 GMT-0800 (PST)", "Wed Dec 02 2015 13:40:06 GMT-0800 (PST)","Mon Dec 22 2014 12:33:09 GMT-0800 (PST)","Sat Mar 07 2015 09:56:49 GMT-0800 (PST)")
+
+cb_data <- cb_data %>% filter(!(grepl(paste(x, collapse = "|"), userid))) %>% filter(!stamp == "Sat Nov 07 2015 09:12:52 GMT-0800 (PST)") %>% filter(!stamp == "Mon Dec 22 2014 12:33:09 GMT-0800 (PST)") %>% filter(!stamp == "Sat Mar 07 2015 09:56:49 GMT-0800 (PST)") %>% filter(!date == "2015-12-02")
 
 #generate "number" which orders runs by time within each date
 cb_data<-
@@ -96,14 +97,9 @@ cb_data$datecode<-with(cb_data, paste(date,order))
 ```{r}
 #LOAD SESSION DATES AND CREATE LABELLED_DF
 
-#read in stoplight files
-files_folder2<-paste(tds_folder,session_info_folder,sep='')
-setwd(files_folder2)
-
-files_folder2<-paste(tds_folder,session_info_folder,sep='')
-setwd(files_folder2)
-
-sess_data<-read.csv(paste(files_folder2,"TDS1_Session2_Dates.csv",sep=''))
+#read in session dates
+setwd(scripts_folder)
+sess_data<-read.csv("TDS_Session2_Dates.csv")
 
 #clean variables
 sess_data$Date <- as.Date(sess_data$Date, format= "%m/%d/%y")
@@ -118,7 +114,7 @@ labelled_df <- merge(cb_data, sess_data, by="datecode")
 
 ```{r}
 #LIST UNMERGED FILES AND RENAME
-files_folder3<-paste(tds_folder,unmerged_folder,sep='')
+files_folder3<-paste(psi_folder,cyb_folder,unmerged_folder,sep='')
 setwd(files_folder3)
 
 #list the files 
@@ -145,7 +141,7 @@ for(i in 1:length(listFiles))
       df<-df[,-c(5,6)]
       
       #writes the .csv file to a new folder
-      setwd(paste(tds_folder,"behavior/CyberBall/multiconds/TDS1_labeled_cyb_data",sep=""))
+      setwd(paste(tds_folder,"behavior/CyberBall/multiconds/Labelled_Data",sep=""))
       write.csv(df, paste("cyb",SID,"_",run,".csv", sep=""))
       setwd(files_folder3)
       
@@ -162,7 +158,7 @@ for(i in 1:length(listFiles))
       df<-df[,-c(5,6)]
       
       #writes the .csv file to a new folder
-      setwd(paste(tds_folder,"behavior/CyberBall/multiconds/TDS1_labeled_cyb_data",sep=""))
+      setwd(paste(tds_folder,"behavior/CyberBall/multiconds/Labelled_Data",sep=""))
       write.csv(df, paste("cyb",SID,"_",run,".csv", sep=""))
       setwd(files_folder3)
       

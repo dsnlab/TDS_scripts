@@ -54,9 +54,9 @@ rm(list=ls())
 
 #define folder locations
 tds_folder<-'/Volumes/TDS/'
-labeled_cyberball_folder<-'behavior/CyberBall/multiconds/TDS1_labeled_cyb_data/'
+labeled_cyberball_folder<-'behavior/CyberBall/multiconds/Labelled_Data/'
 labeled_files_folder<-paste(tds_folder,labeled_cyberball_folder,sep='')
-summary_cyberball_folder<-'behavior/CyberBall/multiconds/TDS1_cyb_summary/events'
+summary_cyberball_folder<-'behavior/CyberBall/multiconds/Summary/'
 summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
 
 setwd(labeled_files_folder)
