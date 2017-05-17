@@ -1,0 +1,311 @@
+---
+title: 'TDS Dimensions of Adversity: Descriptive Stats'
+author: "Theresa Cheng"
+date: "April 13, 2017"
+output:
+html_document: default
+pdf_document: default
+---
+
+#### Evaluate the distribution of responses to questionnaire items pertaining to abuse, neglect, household dysfunction, and economic deprivation in the community, child welfare, and juvenile justice samples of TDS
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+rm(list=ls())
+
+povline_impute=1 # if this is set to 1 (true), household size will be imputed with the mean for each group, rounded down (4 for the community sample and 5 for the dhs and jj samples), affecting the income:needs ratio calculation; otherwise set to 0
+
+```
+
+```{r install packages, include=FALSE}
+if(!require(reshape)){install.packages('reshape')} ; library(reshape)
+if(!require(plyr)){install.packages('plyr')} ; library(plyr)
+if(!require(dplyr)){install.packages('dplyr')} ; library(dplyr)
+if(!require(tidyr)){install.packages('tidyr')} ; library(tidyr)
+if(!require(knitr)){install.packages('knitr')} ; library(knitr)
+if(!require(ggplot2)){install.packages('ggplot2')} ; library(ggplot2)
+if(!require(VennDiagram)){install.packages('VennDiagram')} ; library(VennDiagram)
+if(!require(GGally)){install.packages('GGally')} ; library(GGally)
+```
+
+```{r Load data, include=FALSE}
+
+setwd("/Users/theresacheng/Documents/tds_rsfc/Qualtrics") # need to change path to wherever qualtrics data is
+
+# ACES
+
+## TDS1: This data is stored within pre- and post- files, relative to IRB approval of additional questionnaires
+df1= rbind.fill(read.csv("TDS-1-PRE-auto_scored_scales_wide.csv", header=TRUE),  read.csv("TDS-1-POST-auto_scored_scales_wide.csv", header=TRUE)) # load pre/post, remove blank rows, and merge
+df1=cbind(SID=df1$SID, select(df1,starts_with("ACE_ace_abuse")), select(df1,starts_with("ACE_ace_neglect")), select(df1,starts_with("ACE_ace_hh")), select(df1,starts_with("ACE_ace_hh"))) # subset relevant items: abuse, neglect, hh
+
+## TDS2
+df2= read.csv("TDS-2-auto_scored_scales_wide.csv", header=TRUE) # load data
+df2=cbind(SID=df2$SID, select(df2,starts_with("ACE_ace_abuse")),  select(df2,starts_with("ACE_ace_neglect")), select(df2,starts_with("ACE_ace_hh")), select(df2,starts_with("ACE_ace_hh"))) # subset relevant items: abuse, neglect, hh
+
+## Data cleaning
+df_aces= rbind.fill(df1, df2) %>% filter(is.na(.$SID)==FALSE) # merge TDS1 and TDS2, remove NA rows
+
+fn <- substr(df_aces$SID,1,1)
+df_aces$group= ifelse(fn %in% "1", "comm", 
+               ifelse(fn %in% "3", "dhs",
+               "jj"))
+
+# Economic Deprivation 
+#### Notes: PAL2_5 a score of 4= Not enough to get by; PAL2_7 is # of people in household
+
+## TDS1: This data is stored within pre- and post- files, relative to IRB approval of additional questionnaires
+df1_raw= rbind.fill( read.csv("TDS-1-PRE-auto_raw_qualtrics_long.csv", header=TRUE), read.csv("TDS-1-POST-auto_raw_qualtrics_long.csv", header=TRUE)) 
+df1_ed= rbind.fill(filter(df1_raw, item=="Income"), filter(df1_raw, item=="PAL2_5"), filter(df1_raw, item=="PAL2_7")) %>% select(SID, item, value) %>% 
+spread(key=item, value=value) 
+
+## TDS2
+df2_raw= read.csv("TDS-2-auto_raw_qualtrics_long.csv", header=TRUE) 
+df2_ed= rbind.fill(filter(df2_raw, item=="Income"), filter(df2_raw, item=="PAL2_5"), filter(df2_raw, item=="PAL2_7")) %>% select(SID, item, value) %>% spread(key=item, value=value) 
+
+## Data Cleaning
+df_ed=rbind.fill(df1_ed, df2_ed) # add group label: dhs, jj, comm
+
+fn <- substr(df_ed$SID,1,1) # generate string of first number of SIDs
+df_ed$group= ifelse(fn %in% "1", "comm", 
+            ifelse(fn %in% "3", "dhs",
+               "jj")) # match strings to group labels
+
+# calculate average household size per group
+mean_hh= ddply(df_ed, .(group), summarize, mean(PAL2_7, na.rm=TRUE))
+mean_hh
+                                    
+# generate income to needs and poverty line variables
+income_lowerbound= as.numeric(ifelse(df_ed$Income %in% "1", "9999", 
+             ifelse(df_ed$Income %in% "2", "10000",
+             ifelse(df_ed$Income %in% "3", "15000",
+             ifelse(df_ed$Income %in% "4", "20000",
+             ifelse(df_ed$Income %in% "5", "25000",
+             ifelse(df_ed$Income %in% "6", "30000",
+             ifelse(df_ed$Income %in% "7", "35000",
+             ifelse(df_ed$Income %in% "8", "40000",
+             ifelse(df_ed$Income %in% "9", "50000",
+             ifelse(df_ed$Income %in% "10", "60000",
+             ifelse(df_ed$Income %in% "11", "80000",
+             ifelse(df_ed$Income %in% "12", "100000",
+             ifelse(df_ed$Income %in% "13", "150000", "NA"))))))))))))))
+
+if (povline_impute==1) {
+fedpovlev_byh = as.numeric(ifelse(df_ed$PAL2_7 %in% "1", "12060", # from 2017 guidelines
+             ifelse(df_ed$PAL2_7 %in% "2", "16240",
+             ifelse(df_ed$PAL2_7 %in% "3", "20420",
+             ifelse(df_ed$PAL2_7 %in% "4", "24600",
+             ifelse(df_ed$PAL2_7 %in% "5", "28780",
+             ifelse(df_ed$PAL2_7 %in% "6", "32960",
+             ifelse(df_ed$PAL2_7 %in% "7", "37140",
+             ifelse(df_ed$PAL2_7 %in% "8", "41320",
+             ifelse(df_ed$PAL2_7 %in% "9", "45500",
+             ifelse(df_ed$PAL2_7 %in% "10", "49680",
+             ifelse(df_ed$PAL2_7 %in% "11", "53860",
+             ifelse(df_ed$PAL2_7 %in% "12", "58040", 
+             ifelse(df_ed$group=="comm", "24600", # avg for hh_size=4
+             ifelse(df_ed$group=="dhs" | df_ed$group=="jj", "28780", #avg for hh_size=5
+                    "NA")))))))))))))))
+} else {
+  fedpovlev_byh = as.numeric(ifelse(df_ed$PAL2_7 %in% "1", "11880", 
+             ifelse(df_ed$PAL2_7 %in% "2", "16020",
+             ifelse(df_ed$PAL2_7 %in% "3", "20160",
+             ifelse(df_ed$PAL2_7 %in% "4", "24300",
+             ifelse(df_ed$PAL2_7 %in% "5", "28440",
+             ifelse(df_ed$PAL2_7 %in% "6", "32580",
+             ifelse(df_ed$PAL2_7 %in% "7", "36730",
+             ifelse(df_ed$PAL2_7 %in% "8", "40890",
+             ifelse(df_ed$PAL2_7 %in% "9", "40890",
+             ifelse(df_ed$PAL2_7 %in% "10", "45050",
+             ifelse(df_ed$PAL2_7 %in% "11", "49210",
+             ifelse(df_ed$PAL2_7 %in% "12", "53370", "NA")))))))))))))}
+
+df_ed$income_to_needs= income_lowerbound/fedpovlev_byh 
+df_ed$log_income_to_needs=log(df_ed$income_to_needs)
+df_ed$povline= as.integer(ifelse(df_ed$Income %in% c("1", "2"), "1", 
+                      ifelse(df_ed$income_to_needs<1, "1", 0))) # If the value for income is 1 or 2, assuming that kids' household size 2+, then they are below the poverty line. So even w/o household size data, they will get a 1. Otherwise, calculate whether the income to needs ratio is indeed <1. 
+
+# keep ACE scores only if less than or equal to 1 item is missing per subscale, otherwise replace with NA; Convert to factors
+
+df_aces$ACE_abuse_num= ifelse(df_aces$ACE_ace_abuse_n_missing<=1, mapvalues(df_aces$ACE_ace_abuse_score, from=c("0","0.333333333333333", "0.666666666666667","1"), to=c("0", "1","2","3")), "NA")
+df_aces$ACE_abuse_num= as.factor(df_aces$ACE_abuse_num)
+
+df_aces$ACE_neglect_num= ifelse(df_aces$ACE_ace_neglect_n_missing<=1, mapvalues(df_aces$ACE_ace_neglect_score, from=c("0","0.5","1.0"), to=c("0", "1","2")), "NA")
+df_aces$ACE_neglect_num=as.factor(df_aces$ACE_neglect_num)
+
+df_aces$ACE_hh_dysf_num= ifelse(df_aces$ACE_ace_hh_dysf_n_missing<=1, mapvalues(df_aces$ACE_ace_hh_dysf_score, from=c("0","0.25", "0.333333333333333", "0.5", "0.666666666666667", "0.75", "1"), to=c("0", "1","1", "2","2","3","4")), "NA")
+df_aces$ACE_hh_dysf_num= as.factor(df_aces$ACE_hh_dysf_num)
+
+```
+
+## How much missing data is there?
+
+```{r Missing data, echo=FALSE}
+
+## ACES
+df_aces_mi = df_aces %>% group_by(group) %>% summarise(abuse_mi = sum(ACE_ace_abuse_n_missing, na.rm=TRUE), 
+                      neglect_mi = sum(ACE_ace_neglect_n_missing, na.rm=TRUE), 
+                      hh_mi = sum(ACE_ace_hh_dysf_n_missing, na.rm=TRUE))
+kable(df_aces_mi, caption="ACES")
+
+## Economic deprivation
+df_ed_mi = df_ed %>% group_by(group) %>% summarise(income_mi=sum(is.na(Income)), enough_mi=sum(is.na(PAL2_5)), hhsize_mi=sum(is.na(PAL2_7)),povline_mi=sum(is.na(povline)))
+kable(df_ed_mi, caption="Economic Deprivation")
+```
+
+## How many subjects are in each group?
+```{r Total per group, echo=FALSE}
+
+# Merge dataframes 
+df=left_join(df_aces, df_ed, by=c("SID","group"))
+
+rm(list=setdiff(ls(), c("df")))
+
+# rename PAL2_5 to "enough"as in, did participants have enough to get by
+df = df %>% rename("enough"=PAL2_5, "hhsize"=PAL2_7)
+
+# make group a factor
+df$group=as.factor(df$group)
+
+tbl=ddply(df, .(group), summarize, count=NROW(SID))
+kable(tbl, format="pandoc")
+```
+
+## What are the basic descriptive stats and distributions for our variables of interest? [Economic Deprivation]
+```{r Distributions_EconDep, warning=FALSE}
+
+tbl=ddply(df, .(group), summarize, count=sum(!is.na(income_to_needs)))
+kable(tbl, format="pandoc", caption="Income:Needs Data; N by group")
+
+# What is the distribution of the income to needs ratio by group?
+ggplot(df, aes(x=income_to_needs, fill=group)) + 
+   geom_density(alpha=.3) + 
+  ggtitle(paste("Distribution of income to needs ratio by group (N=", sum(!is.na(df$income_to_needs)), ")", sep=""))
+
+# What is the distribution of the log-transformed values of income to needs ratio by group?
+ggplot(df, aes(x=log_income_to_needs, fill=group)) + 
+  geom_density(alpha=.3) + 
+  ggtitle(paste("Distribution of log-transformed income to needs ratio by group (N=", sum(!is.na(df$log_income_to_needs)), ")", sep=""))
+
+# What is the mean and sd for income:needs and log(income:needs) ratio by group?
+tbl=ddply(df, .(group), summarize, mean_ItN=mean(income_to_needs, na.rm=TRUE), sd_ItN=sd(income_to_needs, na.rm=TRUE), mean_logItN=mean(log_income_to_needs, na.rm=TRUE), sd_logItN=sd(log_income_to_needs, na.rm=TRUE))
+kable(tbl)
+
+# How many individuals from each group live below the poverty line?
+# ggplot(data=filter(df, df$povline=="1"), aes(x=povline, fill=group)) + 
+#    geom_histogram(position="dodge", bins=1) + 
+#   ggtitle(paste("Proportion of subjects living below the poverty line (N=", sum(!is.na(df$povline)), ")", sep=""))
+```
+
+## What are the distributions of variables of interest? [ACES]
+```{r Distributions_ACES, warning=FALSE}
+
+# What is the distribution of the ACE child abuse score by group?
+ggplot(df, aes(x=ACE_abuse_num, fill=group)) + 
+  geom_bar(position="dodge") + 
+  ggtitle(paste("Number of ACE abuse items endorsed by group (N=", sum(!is.na(df$ACE_ace_abuse_score)), ")", sep=""))
+
+# What is the distribution of the ACE neglect score by group?
+ggplot(df, aes(x=ACE_neglect_num, fill=group)) + 
+  geom_bar(position="dodge") + 
+  ggtitle(paste("Number of ACE neglect items endorsed by group (N=", sum(!is.na(df$ACE_ace_neglect_score)), ")", sep=""))
+
+# What is the distribution of the ACE household dysfunction score by group?
+ggplot(df, aes(x=ACE_hh_dysf_num, fill=group)) + 
+  geom_bar(position="dodge") + 
+  ggtitle(paste("Number of ACE household dysfunction items endorsed by group (N=", sum(!is.na(df$ACE_ace_hh_dysf_score)), ")", sep=""))
+
+# What is the mean and sd for income:needs and log(income:needs) ratio by group?
+tbl=ddply(df, .(group), summarize, mean_abuse=mean(ACE_ace_abuse_score, na.rm=TRUE), sd_abuse=sd(ACE_ace_abuse_score, na.rm=TRUE), mean_neglect=mean(ACE_ace_neglect_score, na.rm=TRUE), sd_neglect=sd(ACE_ace_neglect_score, na.rm=TRUE), mean_hh_dysf=mean(ACE_ace_hh_dysf_score, na.rm=TRUE), sd_hh_dysf=sd(ACE_ace_hh_dysf_score, na.rm=TRUE))
+kable(tbl)
+```
+# Continuous Data
+```{r correlations, warning=FALSE}
+df_pairs=cbind.data.frame(df$ACE_ace_abuse_score, df$ACE_ace_neglect_score, df$ACE_ace_hh_dysf_score, df$income_to_needs, df$group)
+colnames(df_pairs)=c("A","N","H","ItN", "group")
+
+ggpairs(df_pairs)
+```
+
+
+# Categorical Data
+##What is the overlap of ACE scores across groups?
+#### For these, each participant with a score of at least 1 in each category
+```{r venn diagrams, warning=FALSE}
+
+area1 = nrow(subset(df, ACE_ace_abuse_score>=.1))
+area2 = nrow(subset(df, ACE_ace_neglect_score>=.1))
+area3 = nrow(subset(df, ACE_ace_hh_dysf_score>=.1))
+n12=nrow(subset(df, ACE_ace_abuse_score>=.1 & ACE_ace_neglect_score>=.1))
+n23= nrow(subset(df, ACE_ace_neglect_score>=.1 & ACE_ace_hh_dysf_score>=.1))
+n13 = nrow(subset(df, ACE_ace_abuse_score>=.1 & ACE_ace_hh_dysf_score>=.1))
+n123=nrow(subset(df, ACE_ace_abuse_score>=.1 & ACE_ace_neglect_score>=.1 & ACE_ace_hh_dysf_score>=.1))
+
+# Abuse and neglect
+grid.newpage()
+draw.pairwise.venn(area1, area2, n12, category = c("Abuse", "Neglect"), lty = "blank", 
+    fill = c("skyblue", "pink1"), scaled=TRUE)
+
+# Abuse, neglect, and household dysfunction
+grid.newpage()
+draw.triple.venn(area1, area2, area3, n12, n23, n13, n123, category = c("Abuse", "Neglect", "Household Dysfunciton"), lty = "blank", 
+    fill = c("skyblue", "pink1", "mediumorchid"))
+```
+
+## Let's examine the breakdown of ACE and economic deprivation scores between groups
+```{r}
+
+df_binary=as.data.frame(cbind(SID=df$SID, 
+                              group=df$group, 
+                              ACE_abuse_binary=(df$ACE_ace_abuse_score>=.1),
+                              ACE_neglect_binary=(df$ACE_ace_neglect_score>=.1),
+                              ACE_hh_dysf_binary=(df$ACE_ace_hh_dysf_score>=.1), 
+                              povline=(df$povline)))
+
+df_binary$SID=as.character(df_binary$SID)
+colnames(df_binary)=c("SID", "group", "A", "N", "H", "P")
+df_binary$group=factor(df_binary$group, levels=c("1","2","3"), labels=c("comm","dhs","jj"))
+df_binary$A=factor(df_binary$A, levels=c("0","1"), labels=c("","A"))
+df_binary$N=factor(df_binary$N, levels=c("0","1"), labels=c("","N"))
+df_binary$H=factor(df_binary$H, levels=c("0","1"), labels=c("","H"))
+df_binary$P=factor(df_binary$P, levels=c("0","1"), labels=c("","P"))
+
+ggplot(df_binary, aes(x=interaction(A,N,H,P), fill=interaction(A,N,H,P))) +
+  geom_bar() + 
+  theme(axis.text.x= element_text(size=rel(.7))) + 
+  scale_fill_discrete(name="", labels=c("None", "A","N","AN", "H","AH","NH","ANH", "P","NP","ANP","HP","AHP","NHP","ANHP")) + 
+  scale_x_discrete(labels=c("None", "A","N","AN", "H","AH","NH","ANH", "P","NP","ANP","HP","AHP","NHP","ANHP")) +
+  ggtitle("Abuse, neglect, household dysfunction, and poverty")
+
+ggplot(df_binary, aes(x=interaction(A,N,H,P), fill=interaction(A,N,H,P))) +
+  geom_bar() + 
+  theme(axis.text.x= element_text(size=rel(.5))) + 
+   facet_grid(. ~group) +
+  scale_fill_discrete(name="", labels=c("None", "A","N","AN", "H","AH","NH","ANH", "P","NP","ANP","HP","AHP","NHP","ANHP"))+
+  scale_x_discrete(labels=c("None", "A","N","AN", "H","AH","NH","ANH", "P","NP","ANP","HP","AHP","NHP","ANHP")) +
+    ggtitle("Abuse, neglect, household dysfunction, and poverty by group")
+
+ggplot(df_binary, aes(x=interaction(A,N,P), fill=interaction(A,N,P))) +
+  geom_bar() + 
+  facet_grid(. ~group)+
+  theme(axis.text.x= element_text(size=rel(.5))) +
+  scale_fill_discrete(name="", labels=c("None", "A","N","AN","P","NP","ANP")) +
+  scale_x_discrete(labels=c("None", "A","N","AN","P","NP","ANP")) +
+  ggtitle("Abuse, neglect, and poverty by group")
+
+#ggplot(df_binary, aes(x=interaction(A,N,H,P), y=interaction(A,N,H,P))) + 
+ # geom_tile(aes(fill=interaction(A,N,H,P)))
+
+```
+
+# Get subject list
+### Acquire a subject list for participants in TDS 1 and TDS 2 (no juvenile justice kiddos) who have data for abuse, neglect, household dysfunction, and economic deprivation
+
+```{r Get Subject List}
+df_scores_complete=cbind(df$SID, df_pairs)
+colnames(df_scores_complete)[1]="SID"
+df_scores_complete=na.omit(df_scores_complete)
+df_scores_complete=df_scores_complete[- grep("^4", df_scores_complete$SID),]
+
+df_scores_complete$SID
+```
