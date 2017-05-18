@@ -1,5 +1,5 @@
 ---
-title: "id.events_cyb1"
+title: "id.events_cyb2"
 author: "NV"
 date: "May 3, 2017"
 output: html_document
@@ -8,18 +8,13 @@ output: html_document
   # Nandita Vijayakumar
   # 5/3/2017
   # This script uses output of "collect_data_for_cyberball.Rmd"
-  # This script identifies events within Cyberball run 1 and pmods
+  # This script identifies events within Cyberball run 2 and pmods
   # ct_2P: throws from computer to player
   # ct_2C: throws from computer to computer
   # PT: throws by player
   # PC: participant catches
   # Run this script first without mean centered pmod, then run "Finding grand mean.R" to identify appropriate mean for centering.
   
-#########
-#!!! Remember to run 'module add R' at the command line first
-#########
-#Paths are set to run locally, not on the grid.
-
 ```{r}
 # LOAD PACKAGES
 osuRepo<-'http://ftp.osuosl.org/pub/cran/'
@@ -62,12 +57,12 @@ tds_folder<-'/Volumes/TDS/'
 labeled_cyberball_folder<-'behavior/CyberBall/multiconds/Labelled_Data/'
 labeled_files_folder<-paste(tds_folder,labeled_cyberball_folder,sep='')
 summary_cyberball_folder<-'behavior/CyberBall/multiconds/Summary/'
-summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
-
+group_folder<-'tds1_tds2'
+summary_files_folder<-paste(tds_folder,summary_cyberball_folder,group_folder,sep='')
 setwd(labeled_files_folder)
 
 #list the files 
-listFiles<-list.files(labeled_files_folder,recursive=T, pattern='cyb.*_1.csv$')
+listFiles<-list.files(labeled_files_folder,recursive=T, pattern='cyb.*_2.csv$')
 ```
 
 ```{r}
@@ -88,12 +83,12 @@ for(j in 1:length(listFiles)) {
   #Delete unnecessary variables
   df <- df[,-(5:7)]
   
-  df$behavior.num<-mapvalues(df$behavior.type, c("catch(player1)", "catch(player3)","throw(player1)","throw(player3)", "connecting(time: 6)", "throw(player1-player2)", "throw(player3-player2)", "throw(player1-player3)","throw(player3-player1)"),c(4,4,3,3,2,1,1,0,0)) 
+  df$behavior.num<-mapvalues(df$behavior.type, c("catch(player1)", "catch(player3)","throw(player1)","throw(player3)", "connecting(time: 6)", "throw(player1-player2)",
+                                                 "throw(player3-player2)", "throw(player1-player3)","throw(player3-player1)"),c(4,4,3,3,2,1,1,0,0)) 
   
   # Filter out unnecessary information (catches, participant throws) keep connecting time and all throws from player 1 or 3
   df.blockID<-filter(df, behavior.num==1| behavior.num==2|behavior.num==0)
-  
-  
+
   op<-options(digits.secs=5)
   df$time<-strptime(df$time,format="%H:%M:%OS")
   options(op)
@@ -111,7 +106,7 @@ for(j in 1:length(listFiles)) {
       df$wait.durations[i]=NA}
   }
   
-  ##IDENTIFY pt: participant throws
+  ##IDENTIFY pt
   # Loop specifies that if there are fewer than 1 cyberball action following the catch by a subject, specify duration=0
   for(i in 1:NROW(df)){
     if (df$behavior.num[i]==3 & !(is.na(df$behavior.num1[i]))) {
@@ -124,8 +119,8 @@ for(j in 1:length(listFiles)) {
       df$pt.onsets[i]=NA
       df$pt.durations[i]=NA}
   }
-
-##IDENTIFY pc: participant catches
+  
+  ##IDENTIFY pc: participant catches
 # Loop specifies that if there are fewer than 1 cyberball action following the catch by a subject, specify duration=0
 for(i in 1:NROW(df)){
   if (df$behavior.num[i]==4 & !(is.na(df$behavior.num1[i]))) {
@@ -167,7 +162,7 @@ for(i in 1:NROW(df)){
       df$ct_2C.durations[i]=NA}
   }
   
-  ##IDENTIFY pmods
+##IDENTIFY pt_pmod
   
   df.blockID$pmod_ct_2P = 0
   df.blockID$pmod_ct_2C = 0
@@ -185,35 +180,25 @@ for(i in 1:NROW(df)){
     }}
         
 ##FILTER to get final events file
-df.ct<-subset(df, behavior.num==1| behavior.num==2| behavior.num==0)
+df.ct<-subset(df, behavior.num==1| behavior.num==2|behavior.num==0)
 df.ct$Y = df.ct$X
 df.blockID$Y = df.blockID$X
 
 ct.info<- merge(df.ct, df.blockID, by="Y")
 ct.info$userid<-ct.info$userid.x
-ct.info<-ct.info[,c(29,10:11,16:19,27:28)]
+ct.info<-ct.info[,c(29, 8,10:11,16:19,27:28)]
 
-ct_2P.info<-subset(ct.info,!(is.na(ct.info$ct_2P.onsets)))
-ct_2P.info$names<-"ct_2P"
-ct_2P.info$onsets<-ct_2P.info$ct_2P.onsets
-ct_2P.info$durations<-0
-ct_2P.info$pmod<-ct_2P.info$pmod_ct_2P
-ct_2P.info<-ct_2P.info[,c(1,10:13)]
+#Construct NOD structure for:
 
-ct_2C.info<-subset(ct.info,!(is.na(ct.info$ct_2C.onsets)))
-ct_2C.info$names<-"ct_2C"
-ct_2C.info$onsets<-ct_2C.info$ct_2C.onsets
-ct_2C.info$durations<-0
-ct_2C.info$pmod<-NA
-ct_2C.info<-ct_2C.info[,c(1,10:13)]
-
-wait.info<-subset(ct.info,!(is.na(ct.info$wait.onsets)))
+#1. Wait
+wait.info<-subset(df, behavior.num==2)
 wait.info$names<-"wait"
 wait.info$onsets<-wait.info$wait.onsets
 wait.info$durations<-wait.info$wait.durations
 wait.info$pmod<-NA
-wait.info<-wait.info[,c(1,10:13)]
+wait.info<-wait.info[c(2,19:22)]
 
+#2. PT
 pt.info<-subset(df, behavior.num==3)
 pt.info$names<-"pt"
 pt.info$onsets<-pt.info$pt.onsets
@@ -221,6 +206,23 @@ pt.info$durations<-0
 pt.info$pmod<-NA
 pt.info<-pt.info[,c(2,19:22)]
 
+#3. CT_2P
+ct_2P.info<-subset(ct.info, behavior.num.x==1)
+ct_2P.info$names<-"ct_2P"
+ct_2P.info$onsets<-ct_2P.info$ct_2P.onsets
+ct_2P.info$durations<-0
+ct_2P.info$pmod<-NA
+ct_2P.info<-ct_2P.info[,c(1,11:14)]
+
+#4. CT_2C
+ct_2C.info<-subset(ct.info, behavior.num.x==0)
+ct_2C.info$names<-"ct_2C"
+ct_2C.info$onsets<-ct_2C.info$ct_2C.onsets
+ct_2C.info$durations<-0
+ct_2C.info$pmod<-ct_2C.info$pmod_ct_2C
+ct_2C.info<-ct_2C.info[,c(1,11:14)]
+
+#5. PC
 pc.info<-subset(df, behavior.num==4)
 pc.info$names<-"pc"
 pc.info$onsets<-pc.info$pc.onsets
@@ -228,18 +230,28 @@ pc.info$durations<-0
 pc.info$pmod<-NA
 pc.info<-pc.info[,c(2,19:22)]
 
+# Remove row.names
 row.names(pt.info) <- seq(nrow(pt.info))
 row.names(ct_2P.info) <- seq(nrow(ct_2P.info))
 row.names(ct_2C.info) <- seq(nrow(ct_2C.info))
 row.names(pc.info) <- seq(nrow(pc.info))
 
-file<-rbind(wait.info,pt.info, ct_2C.info, ct_2P.info, pc.info)
+# Merge all condition types
+file<-rbind(wait.info, pt.info, ct_2C.info, ct_2P.info,pc.info)
 
-file$names<-mapvalues(file$names,c("wait","pt", "ct_2C","ct_2P","pc"), c(1,2,3,4,5))
-file$names<-as.numeric(file$names)
-file$onsets<-as.numeric(file$onsets)
-file$meanC_pmod = file$pmod - 2.871 #Comment out this line and run script without meanC_pmod first. Use this output with "Finding grand mean.R" script to identify appropriate value for centering. Then re-run this script with correct mean value.
-
-setwd(summary_files_folder)
-write.csv(file,paste("summary_events",listFiles[j], sep="_")) 
-}
+# Create csv file
+ # Change the names from string into numbers:
+    # 1: wait
+    # 2: pt
+    # 3: ct_2P
+    # 4: ct_2C
+  
+  file$names<-mapvalues(file$names,c("wait","pt","ct_2C","ct_2P","pc"), c(1,2,3,4,5))
+  file$names<-as.numeric(file$names)
+  file$onsets<-as.numeric(file$onsets)
+  file$meanC_pmod = file$pmod - 3.965103 #Comment out this line and run script without meanC_pmod first. Use this output with "Finding grand mean.R" script to identify appropriate value for centering. Then re-run this script with correct mean value.
+  
+  setwd(summary_files_folder)
+  write.csv(file, paste("summary_events",listFiles[j], sep="_"))
+  }
+```

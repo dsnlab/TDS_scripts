@@ -1,9 +1,8 @@
 # Theresa Cheng | Nandita Vijayakumar
 # 4/12/2016
 # This script provides descriptive stats for identifying the grand mean for pmods 
-# RESULTS: TDS1_TDS2_cyb2: 3.964404
-#          TDS1_TDS2_cyb1:     
-
+# RESULTS: TDS1_TDS2_cyb1: 1.866083 
+#          TDS1_TDS2_cyb2: 3.965103    
 
 ```{r, warning=FALSE, echo=FALSE}
 # LOAD PACKAGES
@@ -48,12 +47,12 @@ rm(list=ls())
 
 #define folder locations
 tds_folder<-'/Volumes/TDS/'
-summary_cyberball_folder<-'behavior/CyberBall/multiconds/Summary'
+summary_cyberball_folder<-'behavior/CyberBall/multiconds/Summary/tds1_tds2'
 summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
 setwd(summary_files_folder)
 
 #list the files 
-listFiles<-list.files(recursive=T, pattern='summary_events_cyb.*_1.csv$') # Can be 1 or 2 to examine inc or exc runs 
+listFiles<-list.files(recursive=T, pattern='summary_events_cyb.*_2.csv$') # Can be 1 or 2 to examine inc or exc runs 
 ```
 
 ```{r, warning=FALSE, echo=FALSE}

@@ -1,0 +1,7 @@
+for file in $(curl -s http://old-lcni.uoregon.edu/~chuck/cybernew/logs/ |
+                  grep href |
+                  sed 's/.*href="//' |
+                  sed 's/".*//' |
+                  grep '^[1-9].*'); do
+    curl -s -O http://old-lcni.uoregon.edu/~chuck/cybernew/logs/$file
+done
