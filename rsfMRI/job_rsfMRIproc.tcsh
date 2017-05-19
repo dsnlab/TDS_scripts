@@ -50,17 +50,20 @@ endif
 # run afni_proc.py to create a single subject processing script
 afni_proc.py -subj_id $subj                                \
 -script $pipeline.proc.$subj -scr_overwrite                          \
--blocks despike align volreg blur mask regress      \
+-blocks despike align volreg blur mask scale regress      \
 -copy_anat $anat_dir/"${subj}"_SurfVol.nii.gz                          \
 -anat_follower_ROI aaseg anat $anat_dir/aparc.a2009s+aseg_rank.nii.gz   \
 -anat_follower_ROI aeseg epi  $anat_dir/aparc.a2009s+aseg_rank.nii.gz   \
 -anat_follower_ROI FSvent epi $anat_dir/"${subj}"_vent.nii.gz           \
 -anat_follower_ROI FSWe epi $anat_dir/"${subj}"_WM.nii.gz            \
--anat_follower_erode FSvent FSWe                           \
+-anat_follower_erode FSvent FSWe                   \
 -dsets $epi_dir/"${subj}"_ses-wave1_task-rest_run-01_bold.nii.gz \
--tcat_remove_first_trs 13                                  \
+-tcat_remove_first_trs 5                                  \
 -volreg_align_to MIN_OUTLIER                               \
 -volreg_align_e2a                                          \
+-volreg_interp -Fourier \
+-mask_test_overlap yes \
+-scale_max_val 200 \
 -regress_ROI_PC FSvent 3                                   \
 -regress_make_corr_vols aeseg FSvent                       \
 -regress_anaticor_fast                                     \
@@ -71,7 +74,6 @@ afni_proc.py -subj_id $subj                                \
 -regress_est_blur_epits                                    \
 -regress_est_blur_errts                                    \
 -regress_run_clustsim no
-
 
 tcsh -xef $pipeline.proc.$subj
 
