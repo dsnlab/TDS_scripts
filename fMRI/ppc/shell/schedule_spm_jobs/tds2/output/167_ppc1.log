@@ -1,0 +1,186 @@
+-------------------------------------------------------------------------------
+167
+Running /projects/dsnlab/tds/TDS_scripts/fMRI/ppc/spm/tds2/ppc1_tds2_job.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2016 The MathWorks, Inc.
+                   R2016b (9.1.0.441655) 64-bit (glnxa64)
+                             September 7, 2016
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Coregister: Estimate'
+
+SPM12: spm_coreg (v6435)                           14:59:55 - 12/05/2017
+========================================================================
+Completed                               :          15:00:10 - 12/05/2017
+Done    'Coregister: Estimate'
+Running 'Calculate VDM'
+Segmenting and extracting brain...
+
+Matching session 1...
+
+
+SPM12: spm_coreg (v6435)                           15:00:42 - 12/05/2017
+========================================================================
+Completed                               :          15:00:48 - 12/05/2017
+
+Matching session 2...
+
+
+SPM12: spm_coreg (v6435)                           15:00:49 - 12/05/2017
+========================================================================
+Completed                               :          15:00:57 - 12/05/2017
+
+Matching session 3...
+
+
+SPM12: spm_coreg (v6435)                           15:00:57 - 12/05/2017
+========================================================================
+Completed                               :          15:01:06 - 12/05/2017
+
+Matching session 4...
+
+
+SPM12: spm_coreg (v6435)                           15:01:07 - 12/05/2017
+========================================================================
+Completed                               :          15:01:13 - 12/05/2017
+
+Matching session 5...
+
+
+SPM12: spm_coreg (v6435)                           15:01:14 - 12/05/2017
+========================================================================
+Completed                               :          15:01:23 - 12/05/2017
+
+Matching session 6...
+
+
+SPM12: spm_coreg (v6435)                           15:01:23 - 12/05/2017
+========================================================================
+Completed                               :          15:01:30 - 12/05/2017
+
+Matching session 7...
+
+
+SPM12: spm_coreg (v6435)                           15:01:31 - 12/05/2017
+========================================================================
+Completed                               :          15:01:39 - 12/05/2017
+
+Matching session 8...
+
+
+SPM12: spm_coreg (v6435)                           15:01:40 - 12/05/2017
+========================================================================
+Completed                               :          15:01:47 - 12/05/2017
+
+Matching session 9...
+
+
+SPM12: spm_coreg (v6435)                           15:01:48 - 12/05/2017
+========================================================================
+Completed                               :          15:01:53 - 12/05/2017
+
+Matching session 10...
+
+
+SPM12: spm_coreg (v6435)                           15:01:54 - 12/05/2017
+========================================================================
+Completed                               :          15:02:00 - 12/05/2017
+Done    'Calculate VDM'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'Realign & Unwarp'
+
+SPM12: spm_realign (v6070)                         15:02:05 - 12/05/2017
+========================================================================
+Completed                               :          15:25:18 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:25:18 - 12/05/2017
+========================================================================
+Completed                               :          15:26:15 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:26:15 - 12/05/2017
+========================================================================
+Completed                               :          15:28:35 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:28:35 - 12/05/2017
+========================================================================
+Completed                               :          15:29:50 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:29:51 - 12/05/2017
+========================================================================
+Completed                               :          15:31:11 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:31:11 - 12/05/2017
+========================================================================
+Completed                               :          15:32:31 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:32:31 - 12/05/2017
+========================================================================
+Completed                               :          15:33:52 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:33:52 - 12/05/2017
+========================================================================
+Completed                               :          15:36:28 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:36:28 - 12/05/2017
+========================================================================
+Completed                               :          15:37:42 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:37:42 - 12/05/2017
+========================================================================
+Completed                               :          15:39:59 - 12/05/2017
+
+SPM12: spm_uw_estimate (v6824)                     15:40:00 - 12/05/2017
+========================================================================
+Completed                               :          15:42:51 - 12/05/2017
+
+SPM12: spm_uw_apply (v6301)                        15:42:51 - 12/05/2017
+========================================================================
+Computing mask...                       :                                                      ...done
+Reslicing images...                     :                                                      ...done
+Writing mean image...                   :                                                      ...done
+Completed                               :          15:49:08 - 12/05/2017
+Done    'Realign & Unwarp'
+Running 'Coregister: Estimate'
+
+SPM12: spm_coreg (v6435)                           15:49:31 - 12/05/2017
+========================================================================
+Completed                               :          15:49:49 - 12/05/2017
+Done    'Coregister: Estimate'
+Running 'Segment'
+
+SPM12: spm_preproc_run (v6365)                     15:50:01 - 12/05/2017
+========================================================================
+Segment /projects/dsnlab/tds/fMRI/subjects_tds2/167/structurals/mprage.nii,1
+Completed                               :          15:59:21 - 12/05/2017
+Done    'Segment'
+Done
+
