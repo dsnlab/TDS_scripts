@@ -22,9 +22,6 @@ rsfMRI/subjects/*
 .zshrc
 .Rhistory
 .Rapp.history
-*.log
-*/output/*
-*/sid_batches/*
 core
 *.~*
 ~$*
