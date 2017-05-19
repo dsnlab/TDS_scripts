@@ -16,7 +16,7 @@
 STUDY=/projects/dsnlab/tds/TDS_scripts
 
 #SUBJLIST=`cat subject_list_nomissingruns.txt` # specials processed manually
-SUBJLIST=`cat subject_list_prac.txt`
+SUBJLIST=`cat subject_list_ppc2.txt`
 
 #Which SID should be replaced?
 REPLACESID='101'
