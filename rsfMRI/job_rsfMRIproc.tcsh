@@ -24,7 +24,7 @@ set subj="${SUBID}"
 echo $subj
 set group_id=tds
 echo $group_id
-set pipeline=rsfMRI_preproc_noFDcensor
+set pipeline=rsfMRI_preproc_noFDscrub
 
 # set data directories
 set top_dir=/projects/dsnlab/"${group_id}"
@@ -50,7 +50,7 @@ endif
 # run afni_proc.py to create a single subject processing script
 afni_proc.py -subj_id $subj                                \
 -script $pipeline.proc.$subj -scr_overwrite                          \
--blocks despike align volreg blur mask scale regress      \
+-blocks despike align volreg mask scale regress      \
 -copy_anat $anat_dir/"${subj}"_SurfVol.nii.gz                          \
 -anat_follower_ROI aaseg anat $anat_dir/aparc.a2009s+aseg_rank.nii.gz   \
 -anat_follower_ROI aeseg epi  $anat_dir/aparc.a2009s+aseg_rank.nii.gz   \
@@ -62,6 +62,7 @@ afni_proc.py -subj_id $subj                                \
 -volreg_align_to MIN_OUTLIER                               \
 -volreg_align_e2a                                          \
 -volreg_interp -Fourier \
+-mask_apply epi \
 -mask_test_overlap yes \
 -scale_max_val 200 \
 -regress_ROI_PC FSvent 3                                   \
@@ -69,10 +70,8 @@ afni_proc.py -subj_id $subj                                \
 -regress_anaticor_fast                                     \
 -regress_anaticor_label FSWe                               \
 -regress_censor_outliers 0.1                               \
--regress_bandpass 0.008 0.09                               \
+-regress_bandpass 0.009 0.08                               \
 -regress_apply_mot_types demean deriv                      \
--regress_est_blur_epits                                    \
--regress_est_blur_errts                                    \
 -regress_run_clustsim no
 
 tcsh -xef $pipeline.proc.$subj
