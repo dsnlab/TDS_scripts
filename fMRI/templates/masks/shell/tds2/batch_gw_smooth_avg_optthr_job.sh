@@ -44,8 +44,6 @@ mempercpu=5G
 
 # Create and execute batch job
 if [ "${PROCESS}" == "slurm" ]; then 
-	for SUB in $SUBJLIST
-	do
 	 echo "submitting via qsub"
 	 sbatch --export=REPLACESID=tds2,SCRIPT=$SCRIPT,SUB=tds2,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \
@@ -54,7 +52,7 @@ if [ "${PROCESS}" == "slurm" ]; then
 		 --mem-per-cpu=${mempercpu} \
 		 spm_job.sh
 	 sleep .25
-	done
+
 
 elif [ "${PROCESS}" == "local" ]; then 
 	for SUB in $SUBJLIST
