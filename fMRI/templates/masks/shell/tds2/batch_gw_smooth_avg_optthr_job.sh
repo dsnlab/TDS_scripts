@@ -26,7 +26,7 @@ SCRIPT=${STUDY}/fMRI/templates/masks/spm/tds2/tds2_gw_groupAverage_optthresh_job
 RESULTS_INFIX=avg_optthresh
 
 # Set output dir
-OUTPUTDIR=${STUDY}/fMRI/templates/masks/shell/schedule_spm_jobs/tds2/output/
+OUTPUTDIR=${STUDY}/fMRI/templates/masks/shell/tds2/output/
 
 # Set processor
 # use "qsub" for HPC

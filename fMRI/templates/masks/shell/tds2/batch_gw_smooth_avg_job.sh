@@ -32,7 +32,7 @@ SCRIPT=${STUDY}/fMRI/templates/masks/spm/tds2/tds2_gw_join_smooth_job.m
 RESULTS_INFIX=gw_join_smooth
 
 # Set output dir
-OUTPUTDIR=${STUDY}/fMRI/templates/masks/shell/schedule_spm_jobs/tds2/output/
+OUTPUTDIR=${STUDY}/fMRI/templates/masks/shell/tds2/output/
 
 # Set processor
 # use "qsub" for HPC
