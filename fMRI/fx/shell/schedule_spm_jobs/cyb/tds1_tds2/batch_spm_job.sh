@@ -15,7 +15,7 @@
 
 
 # Set your study
-STUDY=projects/dsnlab/tds/TDS_Scripts
+STUDY=/projects/dsnlab/tds/TDS_scripts
 
 # Set subject list
 SUBJLIST=`cat subject_list_fx.txt`
@@ -37,8 +37,8 @@ OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/cyb/tds1_tds2/output/
 
 # Set processor
 # use "qsub" for HPC
-# use "serlocal" for local, serial processing
-# use "parlocal" for local, parallel processing
+# use "local" for local machine
+# use "parlocal" for local parallel processing
 
 PROCESS=slurm
 
@@ -47,7 +47,7 @@ MAXJOBS=8
 
 #Only matters for slurm
 cpuspertask=1
-mempercpu=10G
+mempercpu=8G
 
 # Create and execute batch job
 if [ "${PROCESS}" == "slurm" ]; then 
