@@ -15,7 +15,7 @@
 
 
 # Set your study
-STUDY=tds/TDS_Scripts
+STUDY=projects/dsnlab/tds/TDS_Scripts
 
 # Set subject list
 SUBJLIST=`cat subject_list_fx.txt`
