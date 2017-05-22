@@ -45,7 +45,7 @@ mempercpu=10G
 # Create and execute batch job
 if [ "${PROCESS}" == "slurm" ]; then 
 	 echo "submitting via qsub"
-	 sbatch --export=REPLACESID=tds2,SCRIPT=$SCRIPT,SUB=tds2,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+	 sbatch --export=REPLACESID=tds1_tds2,SCRIPT=$SCRIPT,SUB=tds1_tds2,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \
 		 -o "${OUTPUTDIR}"/"${SUB}"_"${RESULTS_INFIX}".log \
 		 --cpus-per-task=${cpuspertask} \
