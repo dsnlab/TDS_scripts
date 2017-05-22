@@ -1,8 +1,8 @@
 # Theresa Cheng | Nandita Vijayakumar
 # 4/12/2016
 # This script provides descriptive stats for identifying the grand mean for pmods 
-# RESULTS: TDS1_TDS2_cyb1: 1.866083 
-#          TDS1_TDS2_cyb2: 3.965103    
+# RESULTS: TDS1_TDS2_cyb1: 2.802071 
+#          TDS1_TDS2_cyb2: 6.184874    
 
 ```{r, warning=FALSE, echo=FALSE}
 # LOAD PACKAGES
@@ -52,14 +52,14 @@ summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
 setwd(summary_files_folder)
 
 #list the files 
-listFiles<-list.files(recursive=T, pattern='summary_events_cyb.*_2.csv$') # Can be 1 or 2 to examine inc or exc runs 
+listFiles<-list.files(recursive=T, pattern='summary_events_cyb.*_1.csv$') # Can be 1 or 2 to examine inc or exc runs 
 ```
 
 ```{r, warning=FALSE, echo=FALSE}
 # MERGE ALL SUMMARY FILES
 df<-do.call("rbind", lapply(listFiles, read.csv, header = TRUE))
 
-df_pmod <- subset(df,df$names==3) #change to 3 to identify pmods for computer throws (i.e. exclusion) or 4 to identify pmods for inclusion.
+df_pmod <- subset(df,df$names==4) #change to 3 to identify pmods for computer throws (i.e. exclusion) or 4 to identify pmods for inclusion.
 
 df_pmod$index = NA
 
@@ -72,7 +72,7 @@ for(i in 1:NROW(df_pmod)){
   }}
 
 df_pmod <- subset(df_pmod,df_pmod$index==1)
-mean_pmod <- mean(df_pmod$pmod)
+mean(df_pmod$pmod)
 summary(df_pmod$pmod)
 sd(df_pmod$pmod)
 
