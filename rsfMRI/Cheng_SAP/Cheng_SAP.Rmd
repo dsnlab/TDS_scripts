@@ -255,7 +255,7 @@ if(rerun_models){
       }
     ))
   print(object.size(gordon_models), units='Mb')
-  gordon_modelsDT <- bind_rows(gordon_models)
+  gordon_modelsDT <- bind_rows(gordon_models) #make this into a dataframe
   print(object.size(gordon_modelsDT), units='Mb')
   rm(gordon_models);gc()
   saveRDS(gordon_modelsDT, paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT.RDS"))
