@@ -52,6 +52,15 @@ detach("package:plyr", unload=TRUE)
 rm(df1,df2,df_aces)
 ```
 
+Filter subs if needed
+```{r}
+preprocessedcomplete<- preprocessedcomplete %>%
+  filter(!sub=="sub-116") %>%
+  filter(!sub=="sub-192") %>%
+  filter(!sub=="sub-348") %>%
+  filter(!sub=="sub-363")
+```
+
 Get timecourses
 ```{r}
 numcores<-detectCores()[1]
@@ -162,8 +171,7 @@ save(gordon_coisDT,file = "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_c
 ```
 
 
-
-IN PROG: Analysis 
+Analysis
 ```{r}
 rerun_models=TRUE
 
@@ -171,8 +179,7 @@ gordon_cois<-distinct(gordon_coisDT, coi)
 
 if(rerun_models){
   system.time(
-    gordon_models<-mclapply(
-      as.list(gordon_cois$coi)[1:50], 
+    gordon_models<-mclapply(X=as.list(gordon_cois$coi[1:50]), 
       demodata=demographicsDF,
       coidat=gordon_coisDT,
       mc.cores=1,
@@ -251,8 +258,8 @@ if(rerun_models){
   gordon_modelsDT <- bind_rows(gordon_models)
   print(object.size(gordon_modelsDT), units='Mb')
   rm(gordon_models);gc()
-  saveRDS(gordon_modelsDT, paste0(workdir,"gordon_modelsDT.RDS"))
+  saveRDS(gordon_modelsDT, paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT.RDS"))
 } else {
-  gordon_modelsDT <- readRDS(paste0(workdir,"gordon_modelsDT.RDS"))
+  gordon_modelsDT <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT.RDS"))
 }
 ```

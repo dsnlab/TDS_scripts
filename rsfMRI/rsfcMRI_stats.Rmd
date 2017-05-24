@@ -28,33 +28,28 @@ subs<-list.files(path = rsfcMRI_subjects, pattern = "sub")
 extract_rsfcMRI_runinfo= function(sub){
 if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))){
       log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))
-      TRsleft<-nrow(log %>% filter(.[[1]]<scrubbingThreshold))
-      TRscensored<-nrow(log %>% filter(.[[1]]>scrubbingThreshold))
       preproc_complete="yes"
-      cbind(sub,TRsleft,TRscensored,preproc_complete)
+      blurps<-nrow(log %>% filter(.[[1]]>scrubbingThreshold))
+      potential<-(nrow(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))-(blurps*2))
+      viable<-ifelse(potential>=385,"yes","no")
+      cbind(sub,blurps,potential,viable,preproc_complete)
     } else{
-      TRsleft<-NA
-      TRscensored<-NA
       preproc_complete="no"
-      cbind(sub,TRsleft,TRscensored,preproc_complete)
+      blurps<-NA
+      potential<-NA
+      viable<-"No"
+      cbind(sub,blurps,potential,viable,preproc_complete)
       }
 }
 outputlist<-lapply(subs,extract_rsfcMRI_runinfo)
 output.df<-as.data.frame(do.call(rbind,outputlist)) %>% 
-  mutate(TRscensored=as.numeric(levels(TRscensored))[TRscensored],
-         TRsleft=as.numeric(levels(TRsleft))[TRsleft])
+  mutate(blurps=as.numeric(levels(blurps))[blurps],
+         potential=as.numeric(levels(potential))[potential])
 
-censored <- ggplot((output.df %>% select(-TRsleft)),
-                aes(x=sub, y=TRscensored, fill=preproc_complete))
-censored + geom_bar(colour="black", stat="identity") 
+useable <- ggplot((output.df %>% select(-blurps)),
+                aes(x=sub, y=(potential*.78)/60, fill=viable))
+useable + geom_bar(colour="black", stat="identity") 
 
-TotalTRs <- ggplot((output.df %>% select(-TRscensored)),
-                aes(x=sub, y=TRsleft, fill=preproc_complete))
-TotalTRs + geom_bar(colour="black", stat="identity")
-
-TRtime <- ggplot((output.df %>% select(-TRscensored)),
-                aes(x=sub, y=(TRsleft*.78)/60, fill=preproc_complete))
-TRtime + geom_bar(colour="black", stat="identity")
-
-preprocessedcomplete<-(output.df %>% filter(preproc_complete=="yes") %>%select(sub))
+preprocessedcomplete<-(output.df %>% filter(preproc_complete=="yes" &&
+                                              viables=="yes") %>%select(sub))
 ```
