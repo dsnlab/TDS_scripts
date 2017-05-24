@@ -1,25 +1,69 @@
 ---
 title: "Cheng_SAP"
-author: "Kate & Theresa"
-date: "May 17, 2017"
+author: "Kate & Theresa AND JOHN"
+date: "May 24, 2017"
 output: html_document
 ---
 
 ```{r Load Required Packages, message=FALSE, warning=FALSE, include=FALSE}
 ## Load required packages ##
 packages <-  c("lme4", "nlme", "ggplot2", "zoo", "dplyr", "tidyr", "knitr",
-              "parallel", "data.table", "lubridate", "plyr")
+              "parallel", "data.table", "lubridate")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }
 lapply(packages, library, character.only = TRUE)
 ```
 
+
+Get behavioral data together
+```{r}
+# ACES
+library("plyr")
+## TDS1: This data is stored within pre- and post- files, relative to IRB approval of additional questionnaires
+df1<-plyr::rbind.fill(read.csv("/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_scored_scales_wide.csv", header=TRUE),
+                      read.csv("/Volumes/TDS/behavior/Qualtrics/TDS-1-POST-auto_scored_scales_wide.csv", header=TRUE))
+# load pre/post, remove blank rows, and merge
+df1<-cbind(SID=df1$SID, select(df1,starts_with("ACE_ace_abuse")), select(df1,starts_with("ACE_ace_neglect")),
+          select(df1,starts_with("ACE_ace_hh")), select(df1,starts_with("ACE_ace_hh")))
+# subset relevant items: abuse, neglect, hh
+
+## TDS2
+df2<-read.csv("/Volumes/TDS/behavior/Qualtrics/TDS-2-auto_scored_scales_wide.csv", header=TRUE) # load data
+df2<-cbind(SID=df2$SID, select(df2,starts_with("ACE_ace_abuse")),  select(df2,starts_with("ACE_ace_neglect")),
+          select(df2,starts_with("ACE_ace_hh")), select(df2,starts_with("ACE_ace_hh"))) # subset relevant items: abuse, neglect, hh
+
+## Data cleaning
+df_aces<- rbind.fill(df1, df2) %>% filter(is.na(.$SID)==FALSE) # merge TDS1 and TDS2, remove NA rows
+
+fn <- substr(df_aces$SID,1,1)
+df_aces$group= ifelse(fn %in% "1", "comm", 
+                      ifelse(fn %in% "3", "dhs",
+                             "jj"))
+
+demographicsDF<-df_aces %>%
+  mutate(abuse=ACE_ace_abuse_score,
+         neglect=ACE_ace_neglect_score,
+         sub=paste0("sub-",SID)) %>%
+  select(sub, abuse, neglect, group) %>%
+  filter(!group=="jj") %>%
+  filter(!is.na(abuse))
+detach("package:plyr", unload=TRUE)
+rm(df1,df2,df_aces)
+```
+
+Participant list cleaning
+```{r}
+sublist<-demographicsDF %>%
+  filter(!sub=="sub-305") %>%
+  filter(!sub=="sub-309")
+```
+
 Get timecourses
 ```{r}
 numcores<-detectCores()[1]
 scrubbingThreshold<-.2
-sub_base_dir="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc/"
+sub_base_dir="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
 parcellation_list_dir='/projects/dsnlab/tds/TDS_scripts/sMRI/templates/lists/'
 lhparcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"lhlabels.txt"))[[1]]) %>%
   filter(grepl("lh.Parcel", .[[1]]))%>%
@@ -34,8 +78,6 @@ subcorticalparcels<-as.data.frame(rbind("aseg_18","aseg_54","aseg_17","aseg_53")
    mutate(parcel_name=.[[1]]) %>%
   select(parcel_name)
 gordon<-bind_rows(subcorticalparcels,rhparcels,lhparcels)
-testgordon<-as.data.frame(gordon[1:10,])
-colnames(testgordon)<-"parcel_name"
   
 # rsfcMRI_subjects="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc/"
 # # create sub list based on folders within the freesurfer subjects folder
@@ -56,11 +98,11 @@ collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_
     mutate(index=1:n()) %>% filter(!is.na(V1))
   sub_dir <- paste0(sub_base_dir,sub,"/",sub,".results/")
   #get the motion information and censor properly
-  fdfile <- data.frame(motion=read.table(paste0(sub_dir,"motion_",sub,"_censor.1D"))$V1) %>%
+  fdfile <- data.frame(motion=read.table(paste0(sub_dir,"motion_",sub,"_enorm.1D"))$V1) %>%
     mutate(index=1:n(),
-           censor_raw=motion==0, #censor if over the threshold
+           censor_raw=motion>scrubbingThreshold, #censor if over the threshold
            censor_1after=censor_raw | lag(censor_raw,1, default=F), #censor 1 after any censored vols
-           censor=censor_1after) #censor any vols between censored vols
+           censor=censor_1after | (lead(censor_1after,1, default=F) & lag(censor_1after,1, default=F))) #censor any vols between censored vols
   #timecourse length == motion data length error checking
   fdlength <- dim(fdfile)[1]
   nada <- timecourses %>% group_by(parcel) %>%
@@ -108,7 +150,7 @@ collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_
     filter(grepl("aseg", coi))
 }
 
-system.time(gordon_cois <- mclapply(as.list(preprocessedcomplete$sub),
+system.time(gordon_cois <- mclapply(as.list(sublist$sub),
                                     collectAndCorTimecourses, 
                                     parcels=gordon,
                                     scrubbingThreshold=scrubbingThreshold, 
@@ -126,40 +168,6 @@ rm(gordon_cois);gc() #remove list, and garbage collect
 save(gordon_coisDT,file = "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")
 ```
 
-Get behavioral data together
-```{r}
-# ACES
-
-## TDS1: This data is stored within pre- and post- files, relative to IRB approval of additional questionnaires
-df1<-plyr::rbind.fill(read.csv("/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_scored_scales_wide.csv", header=TRUE),
-                      read.csv("/Volumes/TDS/behavior/Qualtrics/TDS-1-POST-auto_scored_scales_wide.csv", header=TRUE))
-# load pre/post, remove blank rows, and merge
-df1<-cbind(SID=df1$SID, select(df1,starts_with("ACE_ace_abuse")), select(df1,starts_with("ACE_ace_neglect")),
-          select(df1,starts_with("ACE_ace_hh")), select(df1,starts_with("ACE_ace_hh")))
-# subset relevant items: abuse, neglect, hh
-
-## TDS2
-df2<-read.csv("/Volumes/TDS/behavior/Qualtrics/TDS-2-auto_scored_scales_wide.csv", header=TRUE) # load data
-df2<-cbind(SID=df2$SID, select(df2,starts_with("ACE_ace_abuse")),  select(df2,starts_with("ACE_ace_neglect")),
-          select(df2,starts_with("ACE_ace_hh")), select(df2,starts_with("ACE_ace_hh"))) # subset relevant items: abuse, neglect, hh
-
-## Data cleaning
-df_aces<- rbind.fill(df1, df2) %>% filter(is.na(.$SID)==FALSE) # merge TDS1 and TDS2, remove NA rows
-
-fn <- substr(df_aces$SID,1,1)
-df_aces$group= ifelse(fn %in% "1", "comm", 
-                      ifelse(fn %in% "3", "dhs",
-                             "jj"))
-
-demographicsDF<-df_aces %>%
-  mutate(abuse=ACE_ace_abuse_score,
-         neglect=ACE_ace_neglect_score,
-         sub=paste0("sub-",SID)) %>%
-  select(sub, abuse, neglect, group) %>%
-  filter(!group=="jj") %>%
-  filter(!is.na(abuse))
-
-```
 
 
 IN PROG: Analysis 
