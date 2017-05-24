@@ -21,26 +21,16 @@ lapply(packages, library, character.only = TRUE)
 Extract rsfcMRI preprocessing stats
 ```{r Extract and plot run times, echo=TRUE}
 # Set directory
-rsfcMRI_subjects="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc/"
+rsfcMRI_subjects="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub//"
 # create sub list based on folders within the freesurfer subjects folder
 subs<-list.files(path = rsfcMRI_subjects, pattern = "sub")
 # extract info
 extract_rsfcMRI_runinfo= function(sub){
-  if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/out.ss_review.",sub,".txt"))){
-    log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/out.ss_review.",sub,".txt"))
-    TRsleft<-log %>% filter(grepl("TRs total",.[[1]]))
-    TRsleft<-as.character(TRsleft[2,1])
-    TRsleft<-substring(TRsleft,first=29,last=(nchar(TRsleft)))
-    TRscensored<-log %>% filter(grepl("TRs censored",.[[1]]))
-    TRscensored<-as.character(TRscensored[[1]])
-    TRscensored<-substring(TRscensored,first=29,last=(nchar(TRscensored)))
-    preproc_complete="yes"
-    cbind(sub,TRsleft,TRscensored,preproc_complete)
-    } else if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_censor.1D"))){
-      log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_censor.1D"))
-      TRsleft<-nrow(log %>% filter(.[[1]]=="1"))
-      TRscensored<-nrow(log %>% filter(.[[1]]=="0"))
-      preproc_complete="no"
+if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))){
+      log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))
+      TRsleft<-nrow(log %>% filter(.[[1]]<scrubbingThreshold))
+      TRscensored<-nrow(log %>% filter(.[[1]]>scrubbingThreshold))
+      preproc_complete="yes"
       cbind(sub,TRsleft,TRscensored,preproc_complete)
     } else{
       TRsleft<-NA

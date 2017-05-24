@@ -8,7 +8,7 @@ output: html_document
 ```{r Load Required Packages, message=FALSE, warning=FALSE, include=FALSE}
 ## Load required packages ##
 packages <-  c("lme4", "nlme", "ggplot2", "zoo", "dplyr", "tidyr", "knitr",
-              "parallel", "data.table", "lubridate")
+              "parallel", "data.table", "lubridate","psych")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }
@@ -50,13 +50,6 @@ demographicsDF<-df_aces %>%
   filter(!is.na(abuse))
 detach("package:plyr", unload=TRUE)
 rm(df1,df2,df_aces)
-```
-
-Participant list cleaning
-```{r}
-sublist<-demographicsDF %>%
-  filter(!sub=="sub-305") %>%
-  filter(!sub=="sub-309")
 ```
 
 Get timecourses
@@ -124,7 +117,7 @@ collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_
     select(sub, index, parcel, V1) %>% 
     spread(parcel,V1) %>% ungroup %>% select(-index, -sub)
   #correlate!
-  CorrelationMatrix<-cor(timecourses_censored_w)
+  CorrelationMatrix<-fisherz(cor(timecourses_censored_w))
   #just take the bottom triangle
   CorrelationMatrix[upper.tri(CorrelationMatrix, diag=TRUE)] <- NA
   #this gets the names for the rows and columns and assigns each cor value
@@ -150,7 +143,7 @@ collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_
     filter(grepl("aseg", coi))
 }
 
-system.time(gordon_cois <- mclapply(as.list(sublist$sub),
+system.time(gordon_cois <- mclapply(as.list(preprocessedcomplete$sub),
                                     collectAndCorTimecourses, 
                                     parcels=gordon,
                                     scrubbingThreshold=scrubbingThreshold, 
