@@ -13,11 +13,21 @@
 # D.Cos 2017.3.7
 #--------------------------------------------------------------
 
-# define matlab script to run from input 1
-SCRIPT=$1
+if [[ -z $1 || -z $2 || -z $3 ]]; then
+	if [[ -z $REPLACESID || -z $SCRIPT || -z $SUB ]]; then
+		echo "Aguments not supplied on command line or in environment"
+		exit 1
+	fi
+else
+	# define subject id to replace in script from input 1
+	REPLACESID=$1
 
-# define subject ID from input 2
-SUB=$2
+	# define matlab script to run from input 2
+	SCRIPT=$2
+
+	# define subject ID from input 3
+	SUB=$3
+fi
 
 # MATLAB version
 MATLABVER=R2015b
@@ -28,10 +38,18 @@ if "$SINGLECOREMATLAB"; then
 	ADDITIONALOPTIONS="-singleCompThread"
 fi
 
+
+if [ "${PROCESS}" == "slurm" ]; then
+	module load matlab
+	MATLABCOMMAND=matlab
+else
+	MATLABCOMMAND="/Applications/MATLAB_"${MATLABVER}".app/bin/matlab"
+fi
+
 # create and execute job
 echo -------------------------------------------------------------------------------
 echo "${SUB}"
 echo "Running ${SCRIPT}"
 echo -------------------------------------------------------------------------------
 
-/Applications/MATLAB_"${MATLABVER}".app/bin/matlab -nosplash -nodisplay -nodesktop ${ADDITIONALOPTIONS} -r "clear; addpath('/Users/ralph/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; run('$SCRIPT'); spm_jobman('run',matlabbatch); exit"
+$MATLABCOMMAND -nosplash -nodisplay -nodesktop -noFigureWindows ${ADDITIONALOPTIONS} -r "clear; addpath('$SPM_PATH'); spm_jobman('initcfg'); sub='$SUB'; script_file='$SCRIPT'; replacesid='$REPLACESID'; run('make_sid_matlabbatch.m'); spm_jobman('run',matlabbatch); exit"

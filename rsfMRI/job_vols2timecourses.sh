@@ -10,15 +10,15 @@ echo "job_vols2timecourses.sh ran on $(date) $line"
 
 echo -e "\nSetting Up Freesurfer6.0"
 
-source /projects/dsnlab/tds/sMRI/scripts/SetUpFreeSurfer.sh
+source /projects/dsnlab/tds/TDS_scripts/sMRI/SetUpFreeSurfer.sh
 
 echo -e "\nSetting up AFNI"
 
 module use /projects/tau/packages/Modules/modulefiles/
 module load afni
 
-rsfMRIdir="/projects/dsnlab/tds/bids_data/derivatives/rsfMRI_preproc/"
-templatedir="/projects/dsnlab/tds/sMRI/templates/"
+rsfMRIdir="/projects/dsnlab/tds/bids_data/derivatives/rsfMRI_preproc_noFDscrub"
+templatedir="/projects/dsnlab/tds/TDS_scripts/sMRI/templates/"
 
 echo -e "\nFreesurfer Home is $FREESURFER_HOME"
 echo -e "\nThe Subject Directory is $SUBJECTS_DIR"
@@ -40,7 +40,7 @@ for label in $lhlabels; do
  3dmaskave -quiet -mask $rsfMRIdir/"${SUBID}"/"${SUBID}".results/alignedrois/"${label}"_aligned.nii.gz $rsfMRIdir/"${SUBID}"/"${SUBID}".results/errts."${SUBID}".fanaticor.nii.gz > $rsfMRIdir/"${SUBID}"/"${SUBID}".results/timecourses/"${SUBID}"_"${label}".txt
 
  rm $rsfMRIdir/"${SUBID}"/"${SUBID}".results/alignedrois/"${label}"_aligned.nii.gz 
- rm $SUBJECTS_DIR/$SUBID/mri/fromannots/"${label}".nii.gz
+# rm $SUBJECTS_DIR/$SUBID/mri/fromannots/"${label}".nii.gz
 
 done
 
@@ -50,7 +50,7 @@ for label in $rhlabels; do
  3dmaskave -quiet -mask $rsfMRIdir/"${SUBID}"/"${SUBID}".results/alignedrois/"${label}"_aligned.nii.gz $rsfMRIdir/"${SUBID}"/"${SUBID}".results/errts."${SUBID}".fanaticor.nii.gz > $rsfMRIdir/"${SUBID}"/"${SUBID}".results/timecourses/"${SUBID}"_"${label}".txt
 
  rm $rsfMRIdir/"${SUBID}"/"${SUBID}".results/alignedrois/"${label}"_aligned.nii.gz 
- rm $SUBJECTS_DIR/$SUBID/mri/fromannots/"${label}".nii.gz
+ #rm $SUBJECTS_DIR/$SUBID/mri/fromannots/"${label}".nii.gz
 
 done
 

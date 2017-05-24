@@ -15,30 +15,30 @@
 
 
 # Set your study
-STUDY=tds/TDS_Scripts
+STUDY=/projects/dsnlab/tds/TDS_scripts
 
 # Set subject list
-SUBJLIST=`cat subject_list.txt`
+SUBJLIST=`cat subject_list_fx.txt`
 
 #Which SID should be replaced?
-REPLACESID='113'
+REPLACESID='109'
 
 #SPM Path
 SPM_PATH=/projects/dsnlab/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/fx/models/cyb/tds1_tds2/fx_tds2_job.m
+SCRIPT=${STUDY}/fMRI/fx/models/cyb/tds1_tds2/fx_tds1_tds2_job.m
 
 # Tag the results files
-RESULTS_INFIX=fx_cyb_tds2
+RESULTS_INFIX=fx_cyb_tds1_tds2
 
 # Set output dir
 OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/cyb/tds1_tds2/output/
 
 # Set processor
 # use "qsub" for HPC
-# use "serlocal" for local, serial processing
-# use "parlocal" for local, parallel processing
+# use "local" for local machine
+# use "parlocal" for local parallel processing
 
 PROCESS=slurm
 
@@ -47,7 +47,7 @@ MAXJOBS=8
 
 #Only matters for slurm
 cpuspertask=1
-mempercpu=5G
+mempercpu=8G
 
 # Create and execute batch job
 if [ "${PROCESS}" == "slurm" ]; then 
