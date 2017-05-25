@@ -149,7 +149,7 @@ collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_
                               Numcensored=motiondata$Numcensored,
                               Framesremaining=motiondata$Framesremaining) %>% as.data.table
   subjDF <- subjDF %>%
-    filter(grepl("aseg", coi))
+    filter(grepl("aseg", coi)) #this filter step selects connections to amygdala and hippocampus only
 }
 
 system.time(gordon_cois <- mclapply(as.list(preprocessedcomplete$sub),
