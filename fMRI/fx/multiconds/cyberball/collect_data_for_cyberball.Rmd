@@ -168,8 +168,36 @@ for(i in 1:length(listFiles))
   }}
   
 end
+```
+
+
+```{r}
+#Removing excluded subjects 
+
+# 16 were excluded from the MRI scanning portion of the study: 
+#     9 were not scanned due to metal in the body
+#     4 had braces or a permanent retainer (118, 147, 154, 166)
+#     5 completed the paradigm outside of the MRI scanner due to metal in the body (103-braces, 107-metal rod in mouth, 138- permanent retainer, 176-permanent retainer and 191-metal in ear)
+#     1 did behavioral due to parents not being comfortable with the scanner (112)  
+#     1 was excluded due to a diagnosis of Autism Spectrum Disorder (143) 
+#     5 dropped out of the study and were not scanned for unknown reasons (148, 149-says ineligible, not sure why, 153, 180)
+# 
+# A total of 9 were excluded from the Cyberball analyses
+#     8 were excluded because they received a different schedule of throws 
+#     1 was excluded due to technical errors recording data during the first round of cyberball
+
 
 setwd(paste(psi_folder,"behavior/CyberBall/multiconds/Labelled_Data",sep=""))
+
+fn <- "cyb103_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb103_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb107_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb107_2.csv"
+if (file.exists(fn)) file.remove(fn)
 
 fn <- "cyb110_1.csv"
 if (file.exists(fn)) file.remove(fn)
@@ -186,9 +214,34 @@ if (file.exists(fn)) file.remove(fn)
 fn <- "cyb118_2.csv"
 if (file.exists(fn)) file.remove(fn)
 
+fn <- "cyb138_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb138_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb143_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb143_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
 fn <- "cyb147_1.csv"
 if (file.exists(fn)) file.remove(fn)
 fn <- "cyb147_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb148_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb148_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb149_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb149_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb153_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb153_2.csv"
 if (file.exists(fn)) file.remove(fn)
 
 fn <- "cyb154_1.csv"
@@ -201,19 +254,29 @@ if (file.exists(fn)) file.remove(fn)
 fn <- "cyb166_2.csv"
 if (file.exists(fn)) file.remove(fn)
 
-fn <- "cyb138_1.csv"
+fn <- "cyb176_1.csv"
 if (file.exists(fn)) file.remove(fn)
-fn <- "cyb138_2.csv"
+fn <- "cyb176_2.csv"
 if (file.exists(fn)) file.remove(fn)
 
-fn <- "cyb143_1.csv"
+fn <- "cyb178_1.csv"
 if (file.exists(fn)) file.remove(fn)
-fn <- "cyb143_2.csv"
+fn <- "cyb178_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb180_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb180_2.csv"
 if (file.exists(fn)) file.remove(fn)
 
 fn <- "cyb189_1.csv"
 if (file.exists(fn)) file.remove(fn)
 fn <- "cyb189_2.csv"
+if (file.exists(fn)) file.remove(fn)
+
+fn <- "cyb191_1.csv"
+if (file.exists(fn)) file.remove(fn)
+fn <- "cyb191_2.csv"
 if (file.exists(fn)) file.remove(fn)
 
 fn <- "cyb161_1.csv"
