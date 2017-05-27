@@ -34,7 +34,7 @@ df2<-cbind(SID=df2$SID, select(df2,starts_with("ACE_ace_abuse")),  select(df2,st
           select(df2,starts_with("ACE_ace_hh")), select(df2,starts_with("ACE_ace_hh"))) # subset relevant items: abuse, neglect, hh
 
 ## Data cleaning
-df_aces<- rbind.fill(df1, df2) %>% filter(is.na(.$SID)==FALSE) # merge TDS1 and TDS2, remove NA rows
+df_aces<- plyr::rbind.fill(df1, df2) %>% filter(is.na(.$SID)==FALSE) # merge TDS1 and TDS2, remove NA rows
 
 fn <- substr(df_aces$SID,1,1)
 df_aces$group= ifelse(fn %in% "1", "comm", 
@@ -53,7 +53,7 @@ rm(df1,df2,df_aces)
 ```
 
 Filter subs if needed
-```{r}
+```{r, eval=FALSE, include=FALSE}
 preprocessedcomplete<- preprocessedcomplete %>%
   filter(!sub=="sub-116") %>%
   filter(!sub=="sub-192") %>%
@@ -63,6 +63,9 @@ preprocessedcomplete<- preprocessedcomplete %>%
 
 Get timecourses
 ```{r}
+
+if(!file.exists("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")){
+
 numcores<-detectCores()[1]
 scrubbingThreshold<-.2
 sub_base_dir="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
@@ -168,6 +171,9 @@ system.time(gordon_coisDT <- do.call(bind_rows, gordon_cois) %>%
 print(object.size(gordon_coisDT), quote = FALSE, units = "Mb") #much smaller than the list of data.tables
 rm(gordon_cois);gc() #remove list, and garbage collect
 save(gordon_coisDT,file = "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")
+} else
+  load("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")
+
 ```
 
 
@@ -175,6 +181,7 @@ Analysis
 ```{r}
 rerun_models=TRUE
 
+#setwd("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/")
 gordon_cois<-distinct(gordon_coisDT, coi)
 
 if(rerun_models){
