@@ -1,0 +1,3 @@
+#type the following command in terminal within the folder that you want the template to the created. May have to change the path to the swmprage
+
+3dMean -prefix norm1_avg.nii `find /projects/dsnlab/tds/fMRI/subjects_tds2/ -path "*/structurals/norm1/swmprage.nii"`
