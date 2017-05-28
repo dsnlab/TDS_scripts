@@ -50,6 +50,11 @@ demographicsDF<-df_aces %>%
   filter(!is.na(abuse))
 detach("package:plyr", unload=TRUE)
 rm(df1,df2,df_aces)
+
+# change abuse and neglect to be dichotomous
+demographicsDF$abuse=ifelse(demographicsDF$abuse==0, 0, 1)
+demographicsDF$neglect=ifelse(demographicsDF$neglect==0, 0, 1)
+
 ```
 
 Filter subs if needed
@@ -223,7 +228,7 @@ if(rerun_models){
           nullAIC <- mod_comp[1,4]
           mod <- list(neglect_abuse_main_mod)
           mod_type <- "neglect and abuse interaction model"
-          cbind(coiname,chisq,pval,AIC,nullAIC,mod_type,mod)
+          retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type,mod)
           retDF<-as.data.table(retDF)
         } else if (mod_comp$'p-value'[3]<.05 &
                    mod_comp$AIC[3]<mod_comp$AIC[2] &
@@ -262,11 +267,31 @@ if(rerun_models){
       }
     ))
   print(object.size(gordon_models), units='Mb')
-  gordon_modelsDT <- bind_rows(gordon_models) #make this into a dataframe
+  gordon_modelsDT <- rbindlist(gordon_models) #make this into a dataframe
   print(object.size(gordon_modelsDT), units='Mb')
   rm(gordon_models);gc()
-  saveRDS(gordon_modelsDT, paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT.RDS"))
+  #saveRDS(gordon_modelsDT, paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT.RDS"))
 } else {
-  gordon_modelsDT <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT.RDS"))
+  #gordon_modelsDT <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT.RDS"))
 }
+
+# Search for subgenual ACC parcels
+
+
+```
+
+```{r Network Analysis}
+
+#take coiname and match to a network
+gordon_modelsDT$coiname
+"aseg_\d\d_"
+
+# take coi names starting from roi or 
+
+Nonly_best=filter(gordon_modelsDT, mod_type=="neglect only model")
+NA_ME_best=filter(gordon_modelsDT, mod_type=="neglect and abuse main model")
+NbyA_best=filter(gordon_modelsDT, mod_type=="neglect and abuse interaction model")
+
+
+
 ```
