@@ -13,6 +13,8 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }
 lapply(packages, library, character.only = TRUE)
+
+rm(list=ls())
 ```
 
 
@@ -160,6 +162,11 @@ collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_
     filter(grepl("aseg", coi)) #this filter step selects connections to amygdala and hippocampus only
 }
 
+# aseg_17: L hippocampus
+# aseg_18: L amygdala
+# aseg_53: R hippocampus
+# aseg_54: R amygdala
+
 system.time(gordon_cois <- mclapply(as.list(preprocessedcomplete$sub),
                                     collectAndCorTimecourses, 
                                     parcels=gordon,
@@ -186,12 +193,11 @@ Analysis
 ```{r}
 rerun_models=TRUE
 
-#setwd("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/")
 gordon_cois<-distinct(gordon_coisDT, coi)
 
 if(rerun_models){
   system.time(
-    gordon_models<-mclapply(X=as.list(gordon_cois$coi[1:50]), 
+    gordon_models<-mclapply(X=as.list(gordon_cois$coi), 
       demodata=demographicsDF,
       coidat=gordon_coisDT,
       mc.cores=1,
@@ -282,16 +288,43 @@ if(rerun_models){
 
 ```{r Network Analysis}
 
-#take coiname and match to a network
-gordon_modelsDT$coiname
-"aseg_\d\d_"
+# Identify the network of each COI target
 
-# take coi names starting from roi or 
+##Identify COI seed
+gordon_modelsDT$seed=gsub('(^\\w{4,9}_\\d{2,3})_.*','\\1',gordon_modelsDT$coiname[1:100])
 
-Nonly_best=filter(gordon_modelsDT, mod_type=="neglect only model")
-NA_ME_best=filter(gordon_modelsDT, mod_type=="neglect and abuse main model")
-NbyA_best=filter(gordon_modelsDT, mod_type=="neglect and abuse interaction model")
+## Identify COI target
 
+gordon_modelsDT$ParcelID= 
+  ifelse(startsWith((gsub('aseg_\\d\\d_(.*)','\\1',gordon_modelsDT$coiname)), "aseg"), # if it starts with aseg
+       gsub('aseg_\\d\\d_(aseg_\\d\\d)','\\1',gordon_modelsDT$coiname), # then call coitarget aseg_##
+       gsub('aseg_\\d\\d_\\wh.Parcel_(.*)','\\1',gordon_modelsDT$coiname)) # but if not, coitarget is the Gordon parcel number
 
+## Load Gordon parcel data
+parcels=read.csv("/Users/theresacheng/projects/dsnlab/tds/TDS_scripts/rsfMRI/Cheng_SAP/Parcels/Parcels.csv")
+parcels$ParcelID=as.character(parcels$ParcelID)
+
+## Match COI target with Gordon parcel #
+gordon_modelsDT=merge(gordon_modelsDT, parcels, by="ParcelID", all.x=TRUE)
+
+# Plot
+
+## generate a data frame to plot
+gordon_modelsDT$Community=as.character(gordon_modelsDT$Community) # turn community type into a character
+df_gordon_models= data.frame(cbind("ParcelID"=unlist(gordon_modelsDT$ParcelID), "seed"=unlist(gordon _modelsDT$seed), "mod_type"=unlist(gordon_modelsDT$mod_type), "Community"=unlist(gordon_modelsDT$Community))) 
+df_gordon_models$Community=as.factor(df_gordon_models$Community) # turn community back into a factor
+
+df_gordon_models=filter(df_gordon_models, df_gordon_models$mod_type!="null model") # remove those best explained by the null model
+
+## make the plot
+ggplot(df_gordon_models, aes(x=mod_type, fill=Community)) +
+  geom_bar(position="dodge") +
+  scale_x_discrete(labels=c("N by A", "N and A","N only","null")) +
+  facet_grid(seed~.)
+
+# Table 
+# turn into a table and calculate percentages
+
+# for each seed, find the number of connections that were explained by non-null models. then find the percentage of connections for each model explained by each network type. 
 
 ```
