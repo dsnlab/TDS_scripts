@@ -19,7 +19,7 @@ rm(list=ls())
 
 
 Get behavioral data together
-```{r}
+```{r demographicsDF}
 # ACES
 library("plyr")
 ## TDS1: This data is stored within pre- and post- files, relative to IRB approval of additional questionnaires
@@ -57,10 +57,17 @@ rm(df1,df2,df_aces)
 demographicsDF$abuse=ifelse(demographicsDF$abuse==0, 0, 1)
 demographicsDF$neglect=ifelse(demographicsDF$neglect==0, 0, 1)
 
+# previously the script called this preprocessedcomplete$subs, but I couldn't figure out where that was defined so this is hard coded like a LAME-O. 
+coi_subs=c("sub-104", "sub-105", "sub-106", "sub-108", "sub-109", "sub-110", "sub-113", "sub-114", "sub-115", "sub-117", "sub-120", "sub-121", "sub-122", "sub-124", "sub-125", "sub-126", "sub-127", "sub-128", "sub-129", "sub-130", "sub-131", "sub-132", "sub-134", "sub-135", "sub-136", "sub-137", "sub-140", "sub-141", "sub-142", "sub-144", "sub-145", "sub-146", "sub-150", "sub-151", "sub-152", "sub-155", "sub-156", "sub-158", "sub-159", "sub-162", "sub-163", "sub-165", "sub-167", "sub-168", "sub-169", "sub-170", "sub-171", "sub-173", "sub-174", "sub-175", "sub-177", "sub-178", "sub-181", "sub-182", "sub-183", "sub-184", "sub-185", "sub-187", "sub-188", "sub-190", "sub-193", "sub-194", "sub-195", "sub-196", "sub-301", "sub-302", "sub-303", "sub-304", "sub-306", "sub-307", "sub-308", "sub-310", "sub-312", "sub-313", "sub-314", "sub-315", "sub-321", "sub-322", "sub-323", "sub-324", "sub-327", "sub-328", "sub-329", "sub-330", "sub-332", "sub-333", "sub-334", "sub-335", "sub-336", "sub-339", "sub-340", "sub-341", "sub-342", "sub-343", "sub-345", "sub-346", "sub-352", "sub-355", "sub-356", "sub-357", "sub-359", "sub-360", "sub-364", "sub-401", "sub-402", "sub-403", "sub-404", "sub-407", "sub-408")
+
+# how many subjects are in the analysis? (has behavior AND resting state data)
+sum(demographicsDF$sub %in% coi_subs)
+
+
 ```
 
 Filter subs if needed
-```{r, eval=FALSE, include=FALSE}
+```{r filter subs, eval=FALSE, include=FALSE}
 preprocessedcomplete<- preprocessedcomplete %>%
   filter(!sub=="sub-116") %>%
   filter(!sub=="sub-192") %>%
@@ -69,122 +76,127 @@ preprocessedcomplete<- preprocessedcomplete %>%
 ```
 
 Get timecourses
-```{r}
+```{r timecourses}
 
-if(!file.exists("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")){
-
-numcores<-detectCores()[1]
-scrubbingThreshold<-.2
-sub_base_dir="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
-parcellation_list_dir='/projects/dsnlab/tds/TDS_scripts/sMRI/templates/lists/'
-lhparcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"lhlabels.txt"))[[1]]) %>%
-  filter(grepl("lh.Parcel", .[[1]]))%>%
-  mutate(parcel_name=.[[1]]) %>%
-  select(parcel_name)
-rhparcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"rhlabels.txt"))[[1]]) %>%
-  filter(grepl("rh.Parcel", .[[1]]))%>%
-  mutate(parcel_name=.[[1]]) %>%
-  select(parcel_name)
-# https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI/FreeSurferColorLUT
-subcorticalparcels<-as.data.frame(rbind("aseg_18","aseg_54","aseg_17","aseg_53")) %>%
-   mutate(parcel_name=.[[1]]) %>%
-  select(parcel_name)
-gordon<-bind_rows(subcorticalparcels,rhparcels,lhparcels)
-  
-# rsfcMRI_subjects="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc/"
-# # create sub list based on folders within the freesurfer subjects folder
-# subs<-list.files(path = rsfcMRI_subjects, pattern = "sub")
-
-collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_dir) {
-  #below makes a df with every parcel file location, that then reads in the data from that parcel.
-  #result is a long data frame with indexes within each parcel (e.g. volume number 1:514)
-  timecourses <- data.frame(file_location=paste0(sub_base_dir,sub,"/",sub,".results/timecourses/",sub,'_',parcels$parcel_name,'.txt'),
-                            sub=sub,
-                            parcel=parcels$parcel_name,
-                            stringsAsFactors=F) %>%
-    group_by(sub,parcel) %>% do({
-      timecourse<-try(fread(.$file_location, stringsAsFactors=F))
-      if('try-error' %in% class(timecourse)) timecourse <- data.frame(NA)
-      timecourse
-    }) %>%
-    mutate(index=1:n()) %>% filter(!is.na(V1))
-  sub_dir <- paste0(sub_base_dir,sub,"/",sub,".results/")
-  #get the motion information and censor properly
-  fdfile <- data.frame(motion=read.table(paste0(sub_dir,"motion_",sub,"_enorm.1D"))$V1) %>%
-    mutate(index=1:n(),
-           censor_raw=motion>scrubbingThreshold, #censor if over the threshold
-           censor_1after=censor_raw | lag(censor_raw,1, default=F), #censor 1 after any censored vols
-           censor=censor_1after | (lead(censor_1after,1, default=F) & lag(censor_1after,1, default=F))) #censor any vols between censored vols
-  #timecourse length == motion data length error checking
-  fdlength <- dim(fdfile)[1]
-  nada <- timecourses %>% group_by(parcel) %>%
-    summarize(n=n()) %>% group_by(parcel) %>%
-    do(thing=if(.$n != fdlength) stop(paste0('fdfile and timecourse ARE NOT SAME LENGTH!!!',
-                                             sub, ' ', .$parcel, '\n')))
-  #get a summary of motion for filtering later, and just for our info
-  motiondata <- summarize(fdfile,
-                          Blurps=sum(censor_raw),
-                          Numcensored=sum(censor))
-  #remove censored volumes
-  timecourses_censored <- left_join(timecourses, select(fdfile,index,censor)) %>% filter(!censor)
-  #more summary info for filtering subjects later
-  motiondata$Framesremaining <- timecourses_censored %>% group_by(parcel) %>% 
-    summarize(frames_remaining=n()) %>% distinct(frames_remaining) %>%
-    unlist  
-  #make the timecourse data nice for correlations
-  timecourses_censored_w <- timecourses_censored %>% 
-    select(sub, index, parcel, V1) %>% 
-    spread(parcel,V1) %>% ungroup %>% select(-index, -sub)
-  #correlate!
-  CorrelationMatrix<-fisherz(cor(timecourses_censored_w))
-  #just take the bottom triangle
-  CorrelationMatrix[upper.tri(CorrelationMatrix, diag=TRUE)] <- NA
-  #this gets the names for the rows and columns and assigns each cor value
-  #a name that is the combination of the row and column.
-  CorrDF <- as.data.frame(CorrelationMatrix) %>% #matrix colnames become df column names
-    mutate(var2=rownames(CorrelationMatrix)) %>% #add a column for matrix row names
-    gather(var1, cor, -var2) %>% #make wide cor mat long, but keep indexed by matrix row name
-    filter(!is.na(cor)) %>% #remove NA (upper tri) rows
-    unite(coi, var1, var2) #unite the row and col names, now next to each other, into a single name.
-  ## The CorrDF data frame now looks like, for example:
-  # key                         cor
-  # ---                         -----
-  # lh.Parcel_1_lh.Parcel_10    0.338
-  ##
-  # now we want to add in our summary timecourse info re motion etc, so we just 
-  # add columns to the correlation data frame, and turn it into a data table for
-  # efficiency later on.
-  subjDF <- CorrDF %>% mutate(sub=sub, 
-                              Blurps=motiondata$Blurps,
-                              Numcensored=motiondata$Numcensored,
-                              Framesremaining=motiondata$Framesremaining) %>% as.data.table
-  subjDF <- subjDF %>%
-    filter(grepl("aseg", coi)) #this filter step selects connections to amygdala and hippocampus only
-}
-
-# aseg_17: L hippocampus
-# aseg_18: L amygdala
-# aseg_53: R hippocampus
-# aseg_54: R amygdala
-
-system.time(gordon_cois <- mclapply(as.list(preprocessedcomplete$sub),
-                                    collectAndCorTimecourses, 
-                                    parcels=gordon,
-                                    scrubbingThreshold=scrubbingThreshold, 
-                                    sub_base_dir=sub_base_dir,
-                                    mc.cores=1))
-print(object.size(gordon_cois), quote = FALSE, units = "Mb")
-
-# bind list of data.tables into one long data.table and filter by frames remaining (< 5 mins)
-system.time(gordon_coisDT <- do.call(bind_rows, gordon_cois) %>% 
-              filter(Framesremaining >= 385) %>%
-              select(-Blurps, -Numcensored, -Framesremaining) %>%  #we don't need these columns anymore
-              as.data.table)
-print(object.size(gordon_coisDT), quote = FALSE, units = "Mb") #much smaller than the list of data.tables
-rm(gordon_cois);gc() #remove list, and garbage collect
-save(gordon_coisDT,file = "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")
-} else
-  load("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")
+# if(!file.exists("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")){
+# 
+# numcores<-detectCores()[1]
+# scrubbingThreshold<-.2
+# sub_base_dir="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
+# parcellation_list_dir='~/projects/dsnlab/tds/TDS_scripts/sMRI/templates/lists/'
+# lhparcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"lhlabels.txt"))[[1]]) %>%
+#   filter(grepl("lh.Parcel", .[[1]]))%>%
+#   mutate(parcel_name=.[[1]]) %>%
+#   select(parcel_name)
+# rhparcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"rhlabels.txt"))[[1]]) %>%
+#   filter(grepl("rh.Parcel", .[[1]]))%>%
+#   mutate(parcel_name=.[[1]]) %>%
+#   select(parcel_name)
+# # https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI/FreeSurferColorLUT
+# subcorticalparcels<-as.data.frame(rbind("aseg_18","aseg_54","aseg_17","aseg_53", "lh.L_a24_ROI", "rh.R_a24_ROI")) %>%
+#    mutate(parcel_name=.[[1]]) %>%
+#   select(parcel_name)
+# gordon<-bind_rows(subcorticalparcels,rhparcels,lhparcels)
+#   
+# # add sgACC: "lh.L_a24_ROI", "rh.R_a24_ROI"
+# 
+# # rsfcMRI_subjects="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc/"
+# # # create sub list based on folders within the freesurfer subjects folder
+# # subs<-list.files(path = rsfcMRI_subjects, pattern = "sub")
+# 
+# collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_dir) {
+#   #below makes a df with every parcel file location, that then reads in the data from that parcel.
+#   #result is a long data frame with indexes within each parcel (e.g. volume number 1:514)
+#   timecourses <- data.frame(file_location=paste0(sub_base_dir,sub,"/",sub,".results/timecourses/",sub,'_',parcels$parcel_name,'.txt'),
+#                             sub=sub,
+#                             parcel=parcels$parcel_name,
+#                             stringsAsFactors=F) %>%
+#     group_by(sub,parcel) %>% do({
+#       timecourse<-try(fread(.$file_location, stringsAsFactors=F))
+#       if('try-error' %in% class(timecourse)) timecourse <- data.frame(NA)
+#       timecourse
+#     }) %>%
+#     mutate(index=1:n()) %>% filter(!is.na(V1))
+#   sub_dir <- paste0(sub_base_dir,sub,"/",sub,".results/")
+#   #get the motion information and censor properly
+#   fdfile <- data.frame(motion=read.table(paste0(sub_dir,"motion_",sub,"_enorm.1D"))$V1) %>%
+#     mutate(index=1:n(),
+#            censor_raw=motion>scrubbingThreshold, #censor if over the threshold
+#            censor_1after=censor_raw | lag(censor_raw,1, default=F), #censor 1 after any censored vols
+#            censor=censor_1after | (lead(censor_1after,1, default=F) & lag(censor_1after,1, default=F))) #censor any vols between censored vols
+#   #timecourse length == motion data length error checking
+#   fdlength <- dim(fdfile)[1]
+#   nada <- timecourses %>% group_by(parcel) %>%
+#     summarize(n=n()) %>% group_by(parcel) %>%
+#     do(thing=if(.$n != fdlength) stop(paste0('fdfile and timecourse ARE NOT SAME LENGTH!!!',
+#                                              sub, ' ', .$parcel, '\n')))
+#   #get a summary of motion for filtering later, and just for our info
+#   motiondata <- summarize(fdfile,
+#                           Blurps=sum(censor_raw),
+#                           Numcensored=sum(censor))
+#   #remove censored volumes
+#   timecourses_censored <- left_join(timecourses, select(fdfile,index,censor)) %>% filter(!censor)
+#   #more summary info for filtering subjects later
+#   motiondata$Framesremaining <- timecourses_censored %>% group_by(parcel) %>% 
+#     summarize(frames_remaining=n()) %>% distinct(frames_remaining) %>%
+#     unlist  
+#   #make the timecourse data nice for correlations
+#   timecourses_censored_w <- timecourses_censored %>% 
+#     select(sub, index, parcel, V1) %>% 
+#     spread(parcel,V1) %>% ungroup %>% select(-index, -sub)
+#   #correlate!
+#   CorrelationMatrix<-fisherz(cor(timecourses_censored_w))
+#   #just take the bottom triangle
+#   CorrelationMatrix[upper.tri(CorrelationMatrix, diag=TRUE)] <- NA
+#   #this gets the names for the rows and columns and assigns each cor value
+#   #a name that is the combination of the row and column.
+#   CorrDF <- as.data.frame(CorrelationMatrix) %>% #matrix colnames become df column names
+#     mutate(var2=rownames(CorrelationMatrix)) %>% #add a column for matrix row names
+#     gather(var1, cor, -var2) %>% #make wide cor mat long, but keep indexed by matrix row name
+#     filter(!is.na(cor)) %>% #remove NA (upper tri) rows
+#     unite(coi, var1, var2) #unite the row and col names, now next to each other, into a single name.
+#   ## The CorrDF data frame now looks like, for example:
+#   # key                         cor
+#   # ---                         -----
+#   # lh.Parcel_1_lh.Parcel_10    0.338
+#   ##
+#   # now we want to add in our summary timecourse info re motion etc, so we just 
+#   # add columns to the correlation data frame, and turn it into a data table for
+#   # efficiency later on.
+#   subjDF <- CorrDF %>% mutate(sub=sub, 
+#                               Blurps=motiondata$Blurps,
+#                               Numcensored=motiondata$Numcensored,
+#                               Framesremaining=motiondata$Framesremaining) %>% as.data.table
+# 
+#   
+#   subjDF <- subjDF %>%
+#     filter(grepl("aseg", coi) #this filter step selects connections to amygdala, hippocampus only; note that `& grepl("lh.L_a24", coi) & grepl("rh.R_a24", coi)))' doesn't work
+# 
+# # aseg_17: L hippocampus
+# # aseg_18: L amygdala
+# # aseg_53: R hippocampus
+# # aseg_54: R amygdala
+# # lh.L_a24: L sgACC
+# # rh.R_a24: R sgACC
+# 
+# system.time(gordon_cois <- mclapply(as.list(coi_subs),
+#                                     collectAndCorTimecourses, 
+#                                     parcels=gordon,
+#                                     scrubbingThreshold=scrubbingThreshold, 
+#                                     sub_base_dir=sub_base_dir,
+#                                     mc.cores=1))
+# print(object.size(gordon_cois), quote = FALSE, units = "Mb")
+# 
+# # bind list of data.tables into one long data.table and filter by frames remaining (< 5 mins)
+# system.time(gordon_coisDT <- do.call(bind_rows, gordon_cois) %>% 
+#               filter(Framesremaining >= 385) %>%
+#               select(-Blurps, -Numcensored, -Framesremaining) %>%  #we don't need these columns anymore
+#               as.data.table)
+# print(object.size(gordon_coisDT), quote = FALSE, units = "Mb") #much smaller than the list of data.tables
+# rm(gordon_cois);gc() #remove list, and garbage collect
+# save(gordon_coisDT,file = "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")
+# } else
+ load("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")
 
 ```
 
@@ -288,13 +300,12 @@ if(rerun_models){
 
 ```{r Network Analysis}
 
-# Identify the network of each COI target
+# identify the network of each COI target
 
-##Identify COI seed
-gordon_modelsDT$seed=gsub('(^\\w{4,9}_\\d{2,3})_.*','\\1',gordon_modelsDT$coiname[1:100])
+## identify COI seed
+gordon_modelsDT$seed=gsub('(^\\w{4,9}_\\d{2,3})_.*','\\1',gordon_modelsDT$coiname)
 
-## Identify COI target
-
+## identify COI target
 gordon_modelsDT$ParcelID= 
   ifelse(startsWith((gsub('aseg_\\d\\d_(.*)','\\1',gordon_modelsDT$coiname)), "aseg"), # if it starts with aseg
        gsub('aseg_\\d\\d_(aseg_\\d\\d)','\\1',gordon_modelsDT$coiname), # then call coitarget aseg_##
@@ -307,13 +318,25 @@ parcels$ParcelID=as.character(parcels$ParcelID)
 ## Match COI target with Gordon parcel #
 gordon_modelsDT=merge(gordon_modelsDT, parcels, by="ParcelID", all.x=TRUE)
 
-# Plot
+# Display the Data
 
 ## generate a data frame to plot
 gordon_modelsDT$Community=as.character(gordon_modelsDT$Community) # turn community type into a character
-df_gordon_models= data.frame(cbind("ParcelID"=unlist(gordon_modelsDT$ParcelID), "seed"=unlist(gordon _modelsDT$seed), "mod_type"=unlist(gordon_modelsDT$mod_type), "Community"=unlist(gordon_modelsDT$Community))) 
+df_gordon_models= data.frame(cbind("ParcelID"=unlist(gordon_modelsDT$ParcelID), "seed"=unlist(gordon_modelsDT$seed), "mod_type"=unlist(gordon_modelsDT$mod_type), "Community"=unlist(gordon_modelsDT$Community))) 
 df_gordon_models$Community=as.factor(df_gordon_models$Community) # turn community back into a factor
 
+## Make a table 
+
+# calculate percentages
+tbl=group_by(df_gordon_models, seed, mod_type, Community) %>% tally %>% 
+  spread(Community, n, fill = 0)
+kable(tbl, format="pandoc")
+
+tbl=group_by(df_gordon_models, seed, mod_type) %>% tally %>% 
+  spread(seed, n, fill = 0)
+kable(tbl, format="pandoc")
+
+# Plot
 df_gordon_models=filter(df_gordon_models, df_gordon_models$mod_type!="null model") # remove those best explained by the null model
 
 ## make the plot
@@ -321,10 +344,5 @@ ggplot(df_gordon_models, aes(x=mod_type, fill=Community)) +
   geom_bar(position="dodge") +
   scale_x_discrete(labels=c("N by A", "N and A","N only","null")) +
   facet_grid(seed~.)
-
-# Table 
-# turn into a table and calculate percentages
-
-# for each seed, find the number of connections that were explained by non-null models. then find the percentage of connections for each model explained by each network type. 
 
 ```
