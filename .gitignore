@@ -26,6 +26,7 @@ core
 *.~*
 ~$*
 *m~
+*.ps
 
 #no pictures
 *.jpg
