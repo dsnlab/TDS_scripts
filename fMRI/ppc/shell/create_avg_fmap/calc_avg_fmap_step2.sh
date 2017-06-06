@@ -12,14 +12,19 @@
 ############################################################################
 #
 #Define variables and directories
-subjects=(102 104 105 106 108 109 110 111 113 114 115 116 117 119 120 121 122 124 125 126 127 128 129 130 131 132 133 134 135 136 137 139 140 141 142 144 145 146 150 151 152 155 156 157 158 159 160 161 162 163 164 165 167 168 169 170 171 172 173 174 175 177 179 181 182 183 184 185 186 187 188 189 190 192 193 194 195 196 197)
-RootDir=/Users/ralph/Documents/tds/fMRI/subjects/avg_fmap
+subjects=(101 102 104 105 106 108 109 110 111 113 114 115 116 117 119 120 121 122 124 125 126 127 128 129 130 131 132 133 134 135 136 137 139 140 141 142 144 145 146 150 151 152 155 156 157 159 160 161 162 163 164 165 167 168 169 170 171 172 173 174 175 177 179 181 182 183 184 185 186 187 188 190 193 194 195 196 197)
+# N = 77, subjects excluded: 
+#189 (excessive head motion), 
+#158 (excessive dropout), 
+#178 (missing fmap), 
+#192 (fmap in different space compared with stop3+stop4)
+RootDir=/projects/dsnlab/tds/fMRI/subjects_tds2/avg_fmap
 
 for s in ${subjects[@]};
 do
 	echo $s
-	StrucDir=$RootDir/$s/structurals #Make new folder of structural for average
-	FuncDir=$RootDir/$s/fmaps #Make new folder of fieldmaps for average
+	StrucDir=$RootDir/$s/structurals #Assign folder of structural for average
+	FuncDir=$RootDir/$s/fmaps #Assign folder of fieldmaps for average
 	#
 	##
 	# Put structural into standard orientation for FSL
@@ -33,7 +38,7 @@ do
 	echo -------------------------------------
 	echo Struct Registration
 	cd $StrucDir/
-	flirt -in mprage_oriented -ref $RootDir/templates/MNI152_T1_2mm_brain -omat highres2std.mat
+	flirt -in mprage_oriented -ref /projects/dsnlab/SPM12/canonical/avg152T1 -omat highres2std.mat
 	#
 	##
 	# Register fieldmap magnitude image to structural
@@ -54,14 +59,14 @@ do
 	echo -------------------------------------
 	echo Apply Transform
 	cd $FuncDir/
-	flirt -in fpm_scfieldmap -ref $RootDir/templates/MNI152_T1_2mm_brain -out fieldmap_hz_standard -applyxfm -init fm2std.mat
+	flirt -in fpm_scfieldmap -ref /projects/dsnlab/SPM12/canonical/avg152T1 -out fieldmap_hz_standard -applyxfm -init fm2std.mat
 	#
 	# #
 	# Copy standardized fieldmap to fmaps directory
 	echo -------------------------------------
 	echo Copy Standardized Fieldmaps
-	cp $FuncDir/fieldmap_hz_standard.nii.gz /Users/ralph/Documents/tds/fMRI/subjects/avg_fmap/fmaps/
-	cd /Users/ralph/Documents/tds/fMRI/subjects/avg_fmap/fmaps/
+	cp $FuncDir/fieldmap_hz_standard.nii.gz $RootDir/standard_fmaps/ # this folder needs to be created manually
+	cd $RootDir/standard_fmaps/
 	mv fieldmap_hz_standard.nii.gz ${s}_fieldmap_hz_standard.nii.gz
 	echo -------------------------------------
 	echo $s Fmaps Prepped
