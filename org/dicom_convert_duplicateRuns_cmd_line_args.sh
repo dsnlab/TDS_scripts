@@ -9,14 +9,14 @@
 # Be sure to write your task names in tasks.txt
 #
 
-WITHIN_DICOM_PATH=$1
+DICOM_PATH=$1
 SUBID_DICOM=$2
 SUBID=$3
 
 ## First make sure these directories are right ##
-DICOMDIR=$(echo "/Users/ralph/Documents/${WITHIN_DICOM_PATH}/${SUBID_DICOM}")
-OUTPUTDIR="/Users/ralph/Documents/tds"
-tasks=`cat /Users/ralph/Documents/tds/tds_repo/org/scripts/tasks.txt`
+DICOMDIR=$(echo "/Volumes/TDS/${DICOM_PATH}/${SUBID_DICOM}")
+OUTPUTDIR="/projects/dsnlab/tds/"
+tasks=`cat /projects/dsnlab/tds/TDS_scripts/org/tasks_template.txt`
 
 ## No need to change this part ##
 echo -e "\nConverting ${SUBID}"
