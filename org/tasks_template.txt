@@ -1,2 +1,10 @@
 vid1
 vid2
+stop3
+stop4
+stop5
+stop6
+stop7
+stop8
+cyb1
+cyb2
