@@ -37,15 +37,15 @@ core
 *.jpeg
 
 # We don't need to version control old stuff
-archive/*
-behavioral/raw/archive/*
-behavioral/scripts/archive/*
-fMRI/analysis/fx/multicond/archive/*
-fMRI/analysis/masks/archive/*
-fMRI/analysis/rx/archive/*
-fMRI/scripts/fx/archive/*
-fMRI/scripts/fx/models/cyb/archive/*
-fMRI/scripts/ppc/shell/archive/*
-fMRI/scripts/ppc/spm/archive/*
-fMRI/scripts/rx/models/archive/*
+*/archive/*
+#behavioral/raw/archive/*
+#behavioral/scripts/archive/*
+#fMRI/analysis/fx/multicond/archive/*
+#fMRI/analysis/masks/archive/*
+#fMRI/analysis/rx/archive/*
+#fMRI/scripts/fx/archive/*
+#fMRI/scripts/fx/models/cyb/archive/*
+#fMRI/scripts/ppc/shell/archive/*
+#fMRI/scripts/ppc/spm/archive/*
+#fMRI/scripts/rx/models/archive/*
 .Rproj.user
