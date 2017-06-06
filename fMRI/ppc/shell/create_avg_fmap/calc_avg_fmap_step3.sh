@@ -3,7 +3,7 @@
 #load fsl module (if running on the grid)
 #module load fsl
 #
-#go to fmaps directory
+#go into standardized fmaps directory
 cd /projects/dsnlab/tds/fMRI/subjects_tds2/avg_fmap/standard_fmaps
 #
 # Merge field maps
