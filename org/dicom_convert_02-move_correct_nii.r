@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 #install.packages('tidyverse')
 library(tidyverse)
-clean_nii_dir <- "/Users/ralph/Documents/tds/"
+clean_nii_dir <- "/projects/dsnlab/tds/"
 
 clean_nii_file_raw <- data_frame(file = dir(path = clean_nii_dir, recursive = T))
 clean_nii_filelist <- clean_nii_file_raw %>%
@@ -68,6 +68,8 @@ if(FALSE){
     mutate(full_path_to_use = file.path(clean_nii_dir, modality, 'subjects', sid, run, split_dir_to_use),
            cmd = paste0('mv -v ', full_path_to_use, '/* ', full_path_to_use, '/..')) %>%
     arrange(modality, sid, run)
+
+  clean_nii_mv_best_nii$cmd
   
   split_dir_mv_rez <- clean_nii_mv_best_nii %>% ungroup() %>%
     group_by(cmd)%>%
@@ -89,6 +91,8 @@ if(FALSE){
   clean_nii_rm_old_split_folders %>%
     filter(!grepl('[[:digit:]]_[[:digit:]]{8}$', rmcmd)) %>% #should end with the data for any dirs to be removed
     select(rmcmd)
+  
+  clean_nii_rm_old_split_folders$rmcmd
   
   split_dir_rm_rez <- clean_nii_rm_old_split_folders %>% ungroup() %>%
     group_by(rmcmd)%>%
