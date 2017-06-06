@@ -20,4 +20,4 @@ PATH_FOR_OUTPUT='/Users/ralph/Documents/tds/tds_repo/org/scripts/output/local_di
 #	bash dicom_convert_duplicateRuns_cmd_line_args.sh "${SUBJ}"
 #done
 
-parallel --results "${PATH_FOR_OUTPUT}"/{} --verbose -j1 --colsep '\t' bash dicom_convert_duplicateRuns_cmd_line_args.sh :::: "${SUBJLIST}"
+parallel --results "${PATH_FOR_OUTPUT}"/{} --verbose -j1 --colsep '\t' bash dicom_convert-convert_dicoms.sh	:::: "${SUBJLIST}"
