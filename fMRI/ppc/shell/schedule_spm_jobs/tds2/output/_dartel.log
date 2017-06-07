@@ -1,0 +1,138 @@
+-------------------------------------------------------------------------------
+tds2
+Running /projects/dsnlab/tds/TDS_scripts/fMRI/ppc/spm/tds2/tds_dartel_tds2_job.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2016 The MathWorks, Inc.
+                   R2016b (9.1.0.441655) 64-bit (glnxa64)
+                             September 7, 2016
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'Run Dartel (create Templates)'
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/101/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/102/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/105/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/106/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/108/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/109/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/110/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/111/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/113/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/115/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/116/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/117/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/119/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/120/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/121/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/122/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/124/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/125/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/126/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/127/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/128/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/129/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/130/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/131/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/132/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/133/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/134/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/135/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/136/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/137/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/139/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/140/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/141/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/142/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/144/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/145/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/146/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/150/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/151/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/152/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/155/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/156/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/157/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/159/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/160/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/161/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/162/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/163/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/164/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/165/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/167/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/168/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/169/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/170/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/171/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/172/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/173/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/174/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/175/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/177/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/179/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/181/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/182/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/183/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/184/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/185/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/186/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/187/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/188/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/190/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/193/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/194/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/195/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/196/structurals/u_rc1mprage_tds2_template.nii)
+Continuing registration from pre-existing parameters (/projects/dsnlab/tds/fMRI/subjects_tds2/197/structurals/u_rc1mprage_tds2_template.nii)
+ 531.93, 9.18147, 1.82282, 0.343055, 0.138578, 0.0750094, 0.0480025, 0.0334206,
+1 1	490351	560007	1.05036e+06	1835.19
+1 2	694236	2.57117e+06	3.26541e+06	3670.22
+1 3	989099	0	989099	573.808
+1 4	490684	490928	981613	1854.61
+1 5	428014	522500	950514	1683.14
+1 6	510480	622694	1.13317e+06	1916.23
+1 7	510153	767452	1.27761e+06	1716.4
+1 8	511022	584007	1.09503e+06	1829.71
+1 9	535059	821565	1.35662e+06	1864.48
+1 10	497633	534856	1.03249e+06	1903.62
+1 11	1.05716e+06	0	1.05716e+06	590.393
+1 12	407858	484069	891928	1605.05
+1 13	489469	513171	1.00264e+06	1800.76
+1 14	480553	550556	1.03111e+06	1909.48
+1 15	502193	760664	1.26286e+06	1916.02
+1 16	479600	606188	1.08579e+06	1986.29
+1 17	443392	512418	955810	1908.25
+1 18	508752	778808	1.28756e+06	1924.51
+1 19	436829	633784	1.07061e+06	1721.43
+1 20	463688	440546	904234	1845.82
+1 21	505297	565896	1.07119e+06	1814.89
+1 22	471212	480432	951643	1891.18
+1 23	489360	482974	972335	1930.47
+1 24	435691	537812	973503	1676.17
+1 25	479501	746480	1.22598e+06	1863.2
+1 26	515235	799670	1.31491e+06	1778.65
+1 27	441409	649202	1.09061e+06	1793.54
+1 28	471251	496945	968196	1853.7
+1 29	465159	585190	1.05035e+06	1891.08
+1 30	411580	560715	972295	1577.36
