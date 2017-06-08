@@ -70,8 +70,8 @@ motion_rp_txt_dir<-'/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-out
 # "t165/ppc/functionals/vid2/rp_vid2_0001.txt" in its entirety, but the 
 # parentheses will allow us to pick out just the 't165'.
 #
-sid_regex<-'^(t[0-9]{3})/.*txt' #add regular expression for subject ID between the `()`
-rid_regex<-'^t[0-9]{3}/(\\w+)/.*txt' #add regular expression for run ID between `()`
+sid_regex<-'^([0-9]{3})/.*txt' #add regular expression for subject ID between the `()`
+rid_regex<-'^[0-9]{3}/(\\w+)/.*txt' #add regular expression for run ID between `()`
 
 #
 # Document options
