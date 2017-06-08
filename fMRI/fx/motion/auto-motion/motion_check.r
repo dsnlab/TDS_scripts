@@ -53,11 +53,11 @@ library(stringr)
 #	!!: Make sure the directories below exist. This script will not make them.
 #
 # base directory for subjects
-subjsDir<-'/home/research/tds/subjects_G80' 
+subjsDir<-'/projects/dsnlab/tds/fMRI/subjects_tds2' 
 # requires trailing '/' - this is the path to prepend to output pdf filename. 
-motionPDFdir<-'/home/research/tds/motion_QC/G80/' 
+motionPDFdir<-'/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/pdf/' 
 # requires trailing '/' - this is where the augmented rp_*txt files go
-motion_rp_txt_dir<-'/home/research/tds/motion_QC/G80/rp_txt/'
+motion_rp_txt_dir<-'/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/rp_txt/'
 
 
 #
