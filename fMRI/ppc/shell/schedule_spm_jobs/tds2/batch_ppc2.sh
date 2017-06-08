@@ -18,7 +18,7 @@
 STUDY=/projects/dsnlab/tds/TDS_scripts
 
 # Set subject list
-SUBJLIST=`cat subject_list_all.txt`
+SUBJLIST=`cat subject_list_ppc2.txt`
 
 #Which SID should be replaced?
 REPLACESID='101'
