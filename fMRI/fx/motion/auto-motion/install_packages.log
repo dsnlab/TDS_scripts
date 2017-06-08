@@ -1,0 +1,12 @@
+running
+  '/packages/R/3.3.3/lib64/R/bin/R --slave --no-restore -e if(!require(devtools)){ install.packages('devtools',repos=osuRepo) }; if(!require(RNifti)){ devtools::install_github('jonclayden/RNifti') }; if(!require(tidyverse)){ install.packages('tidyverse',repos=osuRepo) }; if(!require(parallel)){ install.packages('parallel',repos=osuRepo) };'
+
+Loading required package: devtools
+Warning in install.packages("devtools", repos = osuRepo) :
+  'lib = "/gpfs/packages/R/3.3.3/lib64/R/library"' is not writable
+Error in install.packages("devtools", repos = osuRepo) : 
+  unable to install packages
+In addition: Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘devtools’
+Execution halted
