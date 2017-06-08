@@ -1,0 +1,40 @@
+-------------------------------------------------------------------------------
+410
+Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/cyb/tds1_tds2/additionalContrasts.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2016 The MathWorks, Inc.
+                   R2016b (9.1.0.441655) 64-bit (glnxa64)
+                             September 7, 2016
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Contrast Manager'
+
+SPM12: spm_contrasts.m                             13:03:33 - 26/05/2017
+========================================================================
+Failed  'Contrast Manager'
+Error using spm_run_con (line 23)
+Failed to change directory /projects/dsnlab/tds/fMRI/analysis/fx/models/cyb/tds1_tds2/410.
+In file "/gpfs/projects/dsnlab/SPM12/config/spm_run_con.m" (v6764), function "spm_run_con" at line 23.
+
+The following modules did not run:
+Failed: Contrast Manager
+
+{Error using MATLABbatch system
+Job execution failed. The full log of this run can be found in MATLAB command
+window, starting with the lines (look for the line showing the exact #job as
+displayed in this error message)
+------------------
+Running job #1
+------------------
+} 
+>> 
