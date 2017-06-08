@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #SBATCH --job-name=calc_glob_intens
-#SBATCH --output=calc_glob_intens.log
+#SBATCH --output=output/calc_glob_intens.log
 #
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1

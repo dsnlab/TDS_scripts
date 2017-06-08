@@ -1,0 +1,970 @@
+running
+  '/packages/R/3.3.3/lib64/R/bin/R --slave --no-restore --file=calculate_global_intensities.R'
+
+Loading required package: devtools
+Loading required package: RNifti
+Loading required package: tidyverse
+Loading tidyverse: ggplot2
+Loading tidyverse: tibble
+Loading tidyverse: tidyr
+Loading tidyverse: readr
+Loading tidyverse: purrr
+Loading tidyverse: dplyr
+Conflicts with tidy packages ---------------------------------------------------
+filter(): dplyr, stats
+lag():    dplyr, stats
+Loading required package: parallel
+Found 81 subject directories.
+starting worker pid=183189 on localhost:11510 at 15:15:21.948
+starting worker pid=183198 on localhost:11510 at 15:15:22.303
+starting worker pid=183207 on localhost:11510 at 15:15:22.675
+starting worker pid=183216 on localhost:11510 at 15:15:23.018
+starting worker pid=183225 on localhost:11510 at 15:15:23.382
+starting worker pid=183234 on localhost:11510 at 15:15:23.746
+starting worker pid=183246 on localhost:11510 at 15:15:24.094
+starting worker pid=183276 on localhost:11510 at 15:15:24.456
+starting worker pid=183286 on localhost:11510 at 15:15:24.819
+starting worker pid=183295 on localhost:11510 at 15:15:25.149
+starting worker pid=183304 on localhost:11510 at 15:15:25.509
+starting worker pid=183313 on localhost:11510 at 15:15:25.874
+starting worker pid=183322 on localhost:11510 at 15:15:26.237
+starting worker pid=183331 on localhost:11510 at 15:15:26.601
+starting worker pid=183340 on localhost:11510 at 15:15:26.951
+starting worker pid=183349 on localhost:11510 at 15:15:27.309
+starting worker pid=183358 on localhost:11510 at 15:15:27.659
+starting worker pid=183367 on localhost:11510 at 15:15:28.015
+starting worker pid=183376 on localhost:11510 at 15:15:28.381
+starting worker pid=183388 on localhost:11510 at 15:15:28.746
+starting worker pid=183397 on localhost:11510 at 15:15:29.054
+starting worker pid=183406 on localhost:11510 at 15:15:29.412
+starting worker pid=183415 on localhost:11510 at 15:15:29.774
+starting worker pid=183424 on localhost:11510 at 15:15:30.134
+starting worker pid=183433 on localhost:11510 at 15:15:30.494
+starting worker pid=183442 on localhost:11510 at 15:15:30.844
+starting worker pid=183451 on localhost:11510 at 15:15:31.201
+starting worker pid=183460 on localhost:11510 at 15:15:31.512
+socket cluster with 28 nodes on host ‘localhost’
+Subject 105, run cyb1: Found 75 files.
+Subject 101, run cyb1: Found 72 files.
+Subject 113, run cyb1: Found 69 files.
+Subject 135, run cyb1: Found 66 files.
+Subject 120, run cyb1: Found 65 files.
+Subject 132, run cyb1: Found 69 files.
+Subject 124, run cyb1: Found 66 files.
+Subject 109, run cyb1: Found 66 files.
+Subject 116, run cyb1: Found 64 files.
+Subject 139, run cyb1: Found 69 files.
+Subject 178, run cyb1: Found 0 files.
+Subject 126, run cyb1: Found 70 files.
+Subject 129, run cyb1: Found 65 files.
+Subject 178, run cyb2: Found 74 files.
+Subject 192, run cyb1: Found 66 files.
+Subject 162, run cyb1: Found 64 files.
+Subject 142, run cyb1: Found 62 files.
+Subject 156, run cyb1: Found 63 files.
+Subject 172, run cyb1: Found 69 files.
+Subject 169, run cyb1: Found 67 files.
+Subject 159, run cyb1: Found 65 files.
+Subject 146, run cyb1: Found 63 files.
+Subject 165, run cyb1: Found 61 files.
+Subject 175, run cyb1: Found 63 files.
+Subject 185, run cyb1: Found 79 files.
+Subject 152, run cyb1: Found 63 files.
+Subject 195, run cyb1: Found 61 files.
+Subject 188, run cyb1: Found 65 files.
+Subject 182, run cyb1: Found 65 files.
+Subject 101, run cyb2: Found 70 files.
+Subject 105, run cyb2: Found 84 files.
+Subject 146, run cyb2: Found 72 files.
+Subject 165, run cyb2: Found 71 files.
+Subject 195, run cyb2: Found 67 files.
+Subject 142, run cyb2: Found 63 files.
+Subject 156, run cyb2: Found 73 files.
+Subject 188, run cyb2: Found 72 files.
+Subject 162, run cyb2: Found 65 files.
+Subject 175, run cyb2: Found 69 files.
+Subject 192, run cyb2: Found 69 files.
+Subject 159, run cyb2: Found 87 files.
+Subject 129, run cyb2: Found 67 files.
+Subject 135, run cyb2: Found 71 files.
+Subject 116, run cyb2: Found 73 files.
+Subject 152, run cyb2: Found 70 files.
+Subject 120, run cyb2: Found 73 files.
+Subject 132, run cyb2: Found 72 files.
+Subject 126, run cyb2: Found 72 files.
+Subject 169, run cyb2: Found 74 files.
+Subject 124, run cyb2: Found 76 files.
+Subject 109, run cyb2: Found 71 files.
+Subject 172, run cyb2: Found 70 files.
+Subject 113, run cyb2: Found 73 files.
+Subject 182, run cyb2: Found 67 files.
+Subject 139, run cyb2: Found 73 files.
+Subject 185, run cyb2: Found 69 files.
+Subject 178, run stop3: Found 85 files.
+Subject 101, run stop3: Found 80 files.
+Subject 105, run stop3: Found 75 files.
+Subject 142, run stop3: Found 71 files.
+Subject 195, run stop3: Found 86 files.
+Subject 146, run stop3: Found 76 files.
+Subject 165, run stop3: Found 74 files.
+Subject 188, run stop3: Found 79 files.
+Subject 162, run stop3: Found 74 files.
+Subject 175, run stop3: Found 79 files.
+Subject 129, run stop3: Found 74 files.
+Subject 135, run stop3: Found 77 files.
+Subject 156, run stop3: Found 84 files.
+Subject 132, run stop3: Found 78 files.
+Subject 192, run stop3: Found 84 files.
+Subject 172, run stop3: Found 76 files.
+Subject 169, run stop3: Found 71 files.
+Subject 182, run stop3: Found 78 files.
+Subject 101, run stop4: Found 77 files.
+Subject 120, run stop3: Found 80 files.
+Subject 185, run stop3: Found 74 files.
+Subject 109, run stop3: Found 77 files.
+Subject 113, run stop3: Found 72 files.
+Subject 126, run stop3: Found 73 files.
+Subject 124, run stop3: Found 78 files.
+Subject 152, run stop3: Found 82 files.
+Subject 116, run stop3: Found 80 files.
+Subject 139, run stop3: Found 69 files.
+Subject 105, run stop4: Found 90 files.
+Subject 159, run stop3: Found 78 files.
+Subject 178, run stop4: Found 83 files.
+Subject 101, run stop5: Found 80 files.
+Subject 146, run stop4: Found 71 files.
+Subject 142, run stop4: Found 78 files.
+Subject 165, run stop4: Found 74 files.
+Subject 169, run stop4: Found 75 files.
+Subject 105, run stop5: Found 80 files.
+Subject 135, run stop4: Found 80 files.
+Subject 188, run stop4: Found 78 files.
+Subject 129, run stop4: Found 84 files.
+Subject 175, run stop4: Found 79 files.
+Subject 185, run stop4: Found 74 files.
+Subject 132, run stop4: Found 74 files.
+Subject 172, run stop4: Found 76 files.
+Subject 195, run stop4: Found 77 files.
+Subject 156, run stop4: Found 78 files.
+Subject 162, run stop4: Found 76 files.
+Subject 192, run stop4: Found 76 files.
+Subject 182, run stop4: Found 77 files.
+Subject 113, run stop4: Found 78 files.
+Subject 126, run stop4: Found 78 files.
+Subject 120, run stop4: Found 82 files.
+Subject 124, run stop4: Found 81 files.
+Subject 109, run stop4: Found 81 files.
+Subject 139, run stop4: Found 84 files.
+Subject 116, run stop4: Found 71 files.
+Subject 159, run stop4: Found 74 files.
+Subject 101, run stop6: Found 79 files.
+Subject 152, run stop4: Found 80 files.
+Subject 105, run stop6: Found 72 files.
+Subject 146, run stop5: Found 78 files.
+Subject 165, run stop5: Found 73 files.
+Subject 178, run stop5: Found 79 files.
+Subject 169, run stop5: Found 77 files.
+Subject 185, run stop5: Found 77 files.
+Subject 142, run stop5: Found 78 files.
+Subject 135, run stop5: Found 80 files.
+Subject 132, run stop5: Found 73 files.
+Subject 156, run stop5: Found 80 files.
+Subject 172, run stop5: Found 83 files.
+Subject 101, run stop7: Found 78 files.
+Subject 188, run stop5: Found 76 files.
+Subject 192, run stop5: Found 69 files.
+Subject 195, run stop5: Found 73 files.
+Subject 162, run stop5: Found 80 files.
+Subject 175, run stop5: Found 78 files.
+Subject 129, run stop5: Found 74 files.
+Subject 105, run stop7: Found 72 files.
+Subject 182, run stop5: Found 72 files.
+Subject 126, run stop5: Found 77 files.
+Subject 124, run stop5: Found 76 files.
+Subject 120, run stop5: Found 67 files.
+Subject 113, run stop5: Found 69 files.
+Subject 116, run stop5: Found 69 files.
+Subject 159, run stop5: Found 72 files.
+Subject 109, run stop5: Found 74 files.
+Subject 139, run stop5: Found 79 files.
+Subject 152, run stop5: Found 79 files.
+Subject 101, run stop8: Found 77 files.
+Subject 105, run stop8: Found 82 files.
+Subject 146, run stop6: Found 76 files.
+Subject 165, run stop6: Found 80 files.
+Subject 185, run stop6: Found 81 files.
+Subject 169, run stop6: Found 71 files.
+Subject 132, run stop6: Found 78 files.
+Subject 178, run stop6: Found 78 files.
+Subject 135, run stop6: Found 74 files.
+Subject 192, run stop6: Found 79 files.
+Subject 142, run stop6: Found 78 files.
+Subject 156, run stop6: Found 72 files.
+Subject 188, run stop6: Found 75 files.
+Subject 172, run stop6: Found 73 files.
+Subject 195, run stop6: Found 78 files.
+Subject 120, run stop6: Found 79 files.
+Subject 182, run stop6: Found 79 files.
+Subject 129, run stop6: Found 74 files.
+Subject 113, run stop6: Found 75 files.
+Subject 162, run stop6: Found 77 files.
+Subject 175, run stop6: Found 84 files.
+Subject 124, run stop6: Found 78 files.
+Subject 126, run stop6: Found 73 files.
+Subject 101, run vid1: Found 74 files.
+Subject 159, run stop6: Found 71 files.
+Subject 116, run stop6: Found 73 files.
+Subject 105, run vid1: Found 77 files.
+Subject 109, run stop6: Found 82 files.
+Subject 152, run stop6: Found 78 files.
+Subject 139, run stop6: Found 78 files.
+Subject 146, run stop7: Found 71 files.
+Subject 165, run stop7: Found 74 files.
+Subject 169, run stop7: Found 90 files.
+Subject 132, run stop7: Found 75 files.
+Subject 185, run stop7: Found 79 files.
+Subject 135, run stop7: Found 71 files.
+Subject 101, run vid2: Found 79 files.
+Subject 156, run stop7: Found 77 files.
+Subject 192, run stop7: Found 74 files.
+Subject 188, run stop7: Found 73 files.
+Subject 172, run stop7: Found 77 files.
+Subject 178, run stop7: Found 83 files.
+Subject 142, run stop7: Found 71 files.
+Subject 195, run stop7: Found 79 files.
+Subject 105, run vid2: Found 90 files.
+Subject 113, run stop7: Found 79 files.
+Subject 120, run stop7: Found 78 files.
+Subject 162, run stop7: Found 74 files.
+Subject 182, run stop7: Found 77 files.
+Subject 129, run stop7: Found 78 files.
+Subject 159, run stop7: Found 76 files.
+Subject 126, run stop7: Found 71 files.
+Subject 124, run stop7: Found 77 files.
+Subject 116, run stop7: Found 79 files.
+Subject 175, run stop7: Found 74 files.
+Subject 109, run stop7: Found 72 files.
+Subject 102, run cyb1: Found 84 files.
+Subject 152, run stop7: Found 74 files.
+Subject 146, run stop8: Found 75 files.
+Subject 139, run stop7: Found 77 files.
+Subject 165, run stop8: Found 68 files.
+Subject 132, run stop8: Found 73 files.
+Subject 135, run stop8: Found 79 files.
+Subject 106, run cyb1: Found 82 files.
+Subject 185, run stop8: Found 77 files.
+Subject 156, run stop8: Found 86 files.
+Subject 192, run stop8: Found 72 files.
+Subject 142, run stop8: Found 73 files.
+Subject 188, run stop8: Found 71 files.
+Subject 172, run stop8: Found 78 files.
+Subject 169, run stop8: Found 88 files.
+Subject 120, run stop8: Found 72 files.
+Subject 195, run stop8: Found 76 files.
+Subject 113, run stop8: Found 72 files.
+Subject 162, run stop8: Found 76 files.
+Subject 178, run stop8: Found 83 files.
+Subject 182, run stop8: Found 79 files.
+Subject 159, run stop8: Found 84 files.
+Subject 129, run stop8: Found 69 files.
+Subject 102, run cyb2: Found 90 files.
+Subject 126, run stop8: Found 72 files.
+Subject 124, run stop8: Found 74 files.
+Subject 116, run stop8: Found 76 files.
+Subject 175, run stop8: Found 83 files.
+Subject 109, run stop8: Found 76 files.
+Subject 165, run vid1: Found 64 files.
+Subject 106, run cyb2: Found 73 files.
+Subject 146, run vid1: Found 63 files.
+Subject 152, run stop8: Found 75 files.
+Subject 132, run vid1: Found 63 files.
+Subject 185, run vid1: Found 64 files.
+Subject 139, run stop8: Found 78 files.
+Subject 135, run vid1: Found 62 files.
+Subject 192, run vid1: Found 63 files.
+Subject 142, run vid1: Found 63 files.
+Subject 188, run vid1: Found 64 files.
+Subject 113, run vid1: Found 63 files.
+Subject 120, run vid1: Found 62 files.
+Subject 156, run vid1: Found 62 files.
+Subject 172, run vid1: Found 64 files.
+Subject 195, run vid1: Found 64 files.
+Subject 162, run vid1: Found 63 files.
+Subject 102, run stop3: Found 90 files.
+Subject 129, run vid1: Found 62 files.
+Subject 169, run vid1: Found 64 files.
+Subject 182, run vid1: Found 64 files.
+Subject 178, run vid1: Found 64 files.
+Subject 126, run vid1: Found 90 files.
+Subject 159, run vid1: Found 62 files.
+Subject 106, run stop3: Found 74 files.
+Subject 124, run vid1: Found 64 files.
+Subject 116, run vid1: Found 64 files.
+Subject 165, run vid2: Found 78 files.
+Subject 146, run vid2: Found 77 files.
+Subject 132, run vid2: Found 78 files.
+Subject 175, run vid1: Found 64 files.
+Subject 109, run vid1: Found 63 files.
+Subject 185, run vid2: Found 77 files.
+Subject 135, run vid2: Found 77 files.
+Subject 152, run vid1: Found 63 files.
+Subject 142, run vid2: Found 77 files.
+Subject 192, run vid2: Found 77 files.
+Subject 188, run vid2: Found 78 files.
+Subject 113, run vid2: Found 78 files.
+Subject 156, run vid2: Found 78 files.
+Subject 120, run vid2: Found 79 files.
+Subject 139, run vid1: Found 62 files.
+Subject 172, run vid2: Found 79 files.
+Subject 162, run vid2: Found 78 files.
+Subject 195, run vid2: Found 80 files.
+Subject 102, run stop4: Found 90 files.
+Subject 106, run stop4: Found 74 files.
+Subject 129, run vid2: Found 77 files.
+Subject 182, run vid2: Found 77 files.
+Subject 169, run vid2: Found 79 files.
+Subject 178, run vid2: Found 78 files.
+Subject 159, run vid2: Found 78 files.
+Subject 116, run vid2: Found 77 files.
+Subject 124, run vid2: Found 77 files.
+Subject 126, run vid2: Found 77 files.
+Subject 167, run cyb1: Found 66 files.
+Subject 175, run vid2: Found 79 files.
+Subject 150, run cyb1: Found 63 files.
+Subject 109, run vid2: Found 78 files.
+Subject 133, run cyb1: Found 60 files.
+Subject 186, run cyb1: Found 63 files.
+Subject 152, run vid2: Found 78 files.
+Subject 139, run vid2: Found 78 files.
+Subject 106, run stop5: Found 79 files.
+Subject 136, run cyb1: Found 68 files.
+Subject 144, run cyb1: Found 70 files.
+Subject 193, run cyb1: Found 72 files.
+Subject 189, run cyb1: Found 60 files.
+Subject 114, run cyb1: Found 65 files.
+Subject 157, run cyb1: Found 69 files.
+Subject 121, run cyb1: Found 67 files.
+Subject 102, run stop5: Found 83 files.
+Subject 163, run cyb1: Found 67 files.
+Subject 173, run cyb1: Found 62 files.
+Subject 196, run cyb1: Found 77 files.
+Subject 183, run cyb1: Found 65 files.
+Subject 130, run cyb1: Found 63 files.
+Subject 179, run cyb1: Found 68 files.
+Subject 160, run cyb1: Found 68 files.
+Subject 170, run cyb1: Found 63 files.
+Subject 125, run cyb1: Found 69 files.
+Subject 117, run cyb1: Found 67 files.
+Subject 167, run cyb2: Found 70 files.
+Subject 150, run cyb2: Found 66 files.
+Subject 133, run cyb2: Found 69 files.
+Subject 186, run cyb2: Found 67 files.
+Subject 106, run stop6: Found 77 files.
+Subject 127, run cyb1: Found 66 files.
+Subject 177, run cyb1: Found 69 files.
+Subject 189, run cyb2: Found 69 files.
+Subject 114, run cyb2: Found 67 files.
+Subject 110, run cyb1: Found 69 files.
+Subject 136, run cyb2: Found 72 files.
+Subject 144, run cyb2: Found 68 files.
+Subject 155, run cyb1: Found 64 files.
+Subject 102, run stop6: Found 80 files.
+Subject 193, run cyb2: Found 73 files.
+Subject 140, run cyb1: Found 66 files.
+Subject 121, run cyb2: Found 73 files.
+Subject 157, run cyb2: Found 65 files.
+Subject 173, run cyb2: Found 70 files.
+Subject 163, run cyb2: Found 67 files.
+Subject 183, run cyb2: Found 77 files.
+Subject 130, run cyb2: Found 73 files.
+Subject 170, run cyb2: Found 72 files.
+Subject 179, run cyb2: Found 71 files.
+Subject 196, run cyb2: Found 67 files.
+Subject 160, run cyb2: Found 72 files.
+Subject 117, run cyb2: Found 69 files.
+Subject 125, run cyb2: Found 73 files.
+Subject 106, run stop7: Found 80 files.
+Subject 150, run stop3: Found 75 files.
+Subject 133, run stop3: Found 76 files.
+Subject 186, run stop3: Found 77 files.
+Subject 167, run stop3: Found 76 files.
+Subject 102, run stop7: Found 73 files.
+Subject 127, run cyb2: Found 74 files.
+Subject 114, run stop3: Found 75 files.
+Subject 155, run cyb2: Found 74 files.
+Subject 177, run cyb2: Found 70 files.
+Subject 189, run stop3: Found 80 files.
+Subject 144, run stop3: Found 71 files.
+Subject 136, run stop3: Found 82 files.
+Subject 110, run cyb2: Found 69 files.
+Subject 157, run stop3: Found 79 files.
+Subject 140, run cyb2: Found 73 files.
+Subject 163, run stop3: Found 78 files.
+Subject 173, run stop3: Found 72 files.
+Subject 121, run stop3: Found 77 files.
+Subject 193, run stop3: Found 74 files.
+Subject 130, run stop3: Found 79 files.
+Subject 170, run stop3: Found 74 files.
+Subject 183, run stop3: Found 78 files.
+Subject 106, run stop8: Found 84 files.
+Subject 196, run stop3: Found 77 files.
+Subject 179, run stop3: Found 84 files.
+Subject 102, run stop8: Found 78 files.
+Subject 160, run stop3: Found 75 files.
+Subject 117, run stop3: Found 75 files.
+Subject 125, run stop3: Found 74 files.
+Subject 150, run stop4: Found 81 files.
+Subject 133, run stop4: Found 83 files.
+Subject 114, run stop4: Found 83 files.
+Subject 186, run stop4: Found 77 files.
+Subject 127, run stop3: Found 77 files.
+Subject 155, run stop3: Found 74 files.
+Subject 177, run stop3: Found 74 files.
+Subject 167, run stop4: Found 74 files.
+Subject 110, run stop3: Found 72 files.
+Subject 144, run stop4: Found 76 files.
+Subject 189, run stop4: Found 85 files.
+Subject 173, run stop4: Found 76 files.
+Subject 140, run stop3: Found 78 files.
+Subject 157, run stop4: Found 77 files.
+Subject 163, run stop4: Found 79 files.
+Subject 136, run stop4: Found 67 files.
+Subject 121, run stop4: Found 79 files.
+Subject 102, run vid1: Found 82 files.
+Subject 193, run stop4: Found 75 files.
+Subject 106, run vid1: Found 78 files.
+Subject 170, run stop4: Found 83 files.
+Subject 130, run stop4: Found 82 files.
+Subject 183, run stop4: Found 76 files.
+Subject 196, run stop4: Found 77 files.
+Subject 179, run stop4: Found 77 files.
+Subject 160, run stop4: Found 72 files.
+Subject 117, run stop4: Found 85 files.
+Subject 125, run stop4: Found 79 files.
+Subject 150, run stop5: Found 80 files.
+Subject 155, run stop4: Found 78 files.
+Subject 127, run stop4: Found 67 files.
+Subject 177, run stop4: Found 82 files.
+Subject 186, run stop5: Found 79 files.
+Subject 102, run vid2: Found 81 files.
+Subject 133, run stop5: Found 74 files.
+Subject 114, run stop5: Found 78 files.
+Subject 110, run stop4: Found 81 files.
+Subject 167, run stop5: Found 80 files.
+Subject 106, run vid2: Found 90 files.
+Subject 144, run stop5: Found 80 files.
+Subject 136, run stop5: Found 71 files.
+Subject 173, run stop5: Found 70 files.
+Subject 189, run stop5: Found 79 files.
+Subject 163, run stop5: Found 76 files.
+Subject 157, run stop5: Found 78 files.
+Subject 140, run stop4: Found 79 files.
+Subject 193, run stop5: Found 80 files.
+Subject 121, run stop5: Found 77 files.
+Subject 170, run stop5: Found 87 files.
+Subject 183, run stop5: Found 75 files.
+Subject 196, run stop5: Found 76 files.
+Subject 130, run stop5: Found 75 files.
+Subject 179, run stop5: Found 71 files.
+Subject 104, run cyb1: Found 61 files.
+Subject 160, run stop5: Found 87 files.
+Subject 127, run stop5: Found 77 files.
+Subject 125, run stop5: Found 71 files.
+Subject 155, run stop5: Found 67 files.
+Subject 150, run stop6: Found 85 files.
+Subject 117, run stop5: Found 73 files.
+Subject 133, run stop6: Found 73 files.
+Subject 114, run stop6: Found 71 files.
+Subject 108, run cyb1: Found 0 files.
+Subject 108, run cyb2: Found 70 files.
+Subject 186, run stop6: Found 73 files.
+Subject 110, run stop5: Found 75 files.
+Subject 177, run stop5: Found 76 files.
+Subject 136, run stop6: Found 76 files.
+Subject 173, run stop6: Found 71 files.
+Subject 144, run stop6: Found 83 files.
+Subject 167, run stop6: Found 77 files.
+Subject 163, run stop6: Found 74 files.
+Subject 157, run stop6: Found 73 files.
+Subject 189, run stop6: Found 74 files.
+Subject 140, run stop5: Found 79 files.
+Subject 193, run stop6: Found 72 files.
+Subject 121, run stop6: Found 70 files.
+Subject 183, run stop6: Found 74 files.
+Subject 179, run stop6: Found 80 files.
+Subject 104, run cyb2: Found 60 files.
+Subject 196, run stop6: Found 69 files.
+Subject 130, run stop6: Found 78 files.
+Subject 170, run stop6: Found 79 files.
+Subject 155, run stop6: Found 78 files.
+Subject 127, run stop6: Found 77 files.
+Subject 125, run stop6: Found 73 files.
+Subject 114, run stop7: Found 70 files.
+Subject 160, run stop6: Found 81 files.
+Subject 108, run stop3: Found 83 files.
+Subject 133, run stop7: Found 77 files.
+Subject 117, run stop6: Found 79 files.
+Subject 150, run stop7: Found 77 files.
+Subject 186, run stop7: Found 78 files.
+Subject 173, run stop7: Found 67 files.
+Subject 110, run stop6: Found 70 files.
+Subject 177, run stop6: Found 69 files.
+Subject 136, run stop7: Found 78 files.
+Subject 163, run stop7: Found 71 files.
+Subject 167, run stop7: Found 74 files.
+Subject 157, run stop7: Found 75 files.
+Subject 189, run stop7: Found 0 files.
+Subject 189, run stop8: Found 0 files.
+Subject 189, run vid1: Found 63 files.
+Subject 144, run stop7: Found 83 files.
+Subject 193, run stop7: Found 75 files.
+Subject 121, run stop7: Found 79 files.
+Subject 104, run stop3: Found 80 files.
+Subject 140, run stop6: Found 79 files.
+Subject 196, run stop7: Found 70 files.
+Subject 183, run stop7: Found 72 files.
+Subject 170, run stop7: Found 79 files.
+Subject 179, run stop7: Found 72 files.
+Subject 130, run stop7: Found 82 files.
+Subject 114, run stop8: Found 68 files.
+Subject 127, run stop7: Found 78 files.
+Subject 155, run stop7: Found 74 files.
+Subject 125, run stop7: Found 81 files.
+Subject 173, run stop8: Found 72 files.
+Subject 110, run stop7: Found 72 files.
+Subject 133, run stop8: Found 76 files.
+Subject 177, run stop7: Found 76 files.
+Subject 160, run stop7: Found 81 files.
+Subject 108, run stop4: Found 75 files.
+Subject 117, run stop7: Found 72 files.
+Subject 150, run stop8: Found 74 files.
+Subject 163, run stop8: Found 77 files.
+Subject 189, run vid2: Found 78 files.
+Subject 186, run stop8: Found 75 files.
+Subject 167, run stop8: Found 70 files.
+Subject 136, run stop8: Found 81 files.
+Subject 157, run stop8: Found 72 files.
+Subject 193, run stop8: Found 68 files.
+Subject 121, run stop8: Found 75 files.
+Subject 196, run stop8: Found 83 files.
+Subject 144, run stop8: Found 78 files.
+Subject 183, run stop8: Found 73 files.
+Subject 140, run stop7: Found 77 files.
+Subject 104, run stop4: Found 85 files.
+Subject 170, run stop8: Found 71 files.
+Subject 179, run stop8: Found 76 files.
+Subject 114, run vid1: Found 63 files.
+Subject 130, run stop8: Found 75 files.
+Subject 155, run stop8: Found 71 files.
+Subject 127, run stop8: Found 73 files.
+Subject 173, run vid1: Found 63 files.
+Subject 110, run stop8: Found 71 files.
+Subject 125, run stop8: Found 78 files.
+Subject 133, run vid1: Found 63 files.
+Subject 177, run stop8: Found 73 files.
+Subject 117, run stop8: Found 82 files.
+Subject 167, run vid1: Found 63 files.
+Subject 150, run vid1: Found 62 files.
+Subject 108, run stop5: Found 73 files.
+Subject 163, run vid1: Found 62 files.
+Subject 190, run cyb1: Found 61 files.
+Subject 186, run vid1: Found 73 files.
+Subject 160, run stop8: Found 74 files.
+Subject 157, run vid1: Found 62 files.
+Subject 136, run vid1: Found 63 files.
+Subject 193, run vid1: Found 63 files.
+Subject 121, run vid1: Found 63 files.
+Subject 170, run vid1: Found 64 files.
+Subject 114, run vid2: Found 78 files.
+Subject 183, run vid1: Found 64 files.
+Subject 144, run vid1: Found 63 files.
+Subject 196, run vid1: Found 63 files.
+Subject 140, run stop8: Found 76 files.
+Subject 130, run vid1: Found 64 files.
+Subject 173, run vid2: Found 78 files.
+Subject 179, run vid1: Found 64 files.
+Subject 155, run vid1: Found 63 files.
+Subject 104, run stop5: Found 86 files.
+Subject 127, run vid1: Found 62 files.
+Subject 133, run vid2: Found 78 files.
+Subject 110, run vid1: Found 60 files.
+Subject 167, run vid2: Found 79 files.
+Subject 163, run vid2: Found 78 files.
+Subject 150, run vid2: Found 78 files.
+Subject 190, run cyb2: Found 68 files.
+Subject 177, run vid1: Found 63 files.
+Subject 108, run stop6: Found 74 files.
+Subject 125, run vid1: Found 78 files.
+Subject 157, run vid2: Found 78 files.
+Subject 136, run vid2: Found 78 files.
+Subject 186, run vid2: Found 79 files.
+Subject 117, run vid1: Found 63 files.
+Subject 193, run vid2: Found 79 files.
+Subject 160, run vid1: Found 62 files.
+Subject 121, run vid2: Found 77 files.
+Subject 183, run vid2: Found 78 files.
+Subject 170, run vid2: Found 77 files.
+Subject 144, run vid2: Found 78 files.
+Subject 196, run vid2: Found 79 files.
+Subject 115, run cyb1: Found 73 files.
+Subject 130, run vid2: Found 77 files.
+Subject 179, run vid2: Found 0 files.
+Subject 155, run vid2: Found 78 files.
+Subject 181, run cyb1: Found 63 files.
+Subject 127, run vid2: Found 78 files.
+Subject 174, run cyb1: Found 69 files.
+Subject 140, run vid1: Found 62 files.
+Subject 110, run vid2: Found 72 files.
+Subject 134, run cyb1: Found 67 files.
+Subject 190, run stop3: Found 79 files.
+Subject 177, run vid2: Found 78 files.
+Subject 164, run cyb1: Found 67 files.
+Subject 168, run cyb1: Found 68 files.
+Subject 104, run stop6: Found 90 files.
+Subject 151, run cyb1: Found 64 files.
+Subject 117, run vid2: Found 77 files.
+Subject 160, run vid2: Found 77 files.
+Subject 108, run stop7: Found 67 files.
+Subject 125, run vid2: Found 63 files.
+Subject 137, run cyb1: Found 63 files.
+Subject 158, run cyb1: Found 0 files.
+Subject 158, run cyb2: Found 0 files.
+Subject 158, run stop3: Found 0 files.
+Subject 158, run stop4: Found 0 files.
+Subject 158, run stop5: Found 0 files.
+Subject 158, run stop6: Found 0 files.
+Subject 158, run stop7: Found 0 files.
+Subject 158, run stop8: Found 0 files.
+Subject 158, run vid1: Found 0 files.
+Subject 158, run vid2: Found 0 files.
+Subject 122, run cyb1: Found 62 files.
+Subject 187, run cyb1: Found 61 files.
+Subject 184, run cyb1: Found 69 files.
+Subject 194, run cyb1: Found 61 files.
+Subject 171, run cyb1: Found 69 files.
+Subject 181, run cyb2: Found 70 files.
+Subject 145, run cyb1: Found 65 files.
+Subject 115, run cyb2: Found 74 files.
+Subject 197, run cyb1: Found 73 files.
+Subject 131, run cyb1: Found 67 files.
+Subject 140, run vid2: Found 77 files.
+Subject 128, run cyb1: Found 63 files.
+Subject 174, run cyb2: Found 71 files.
+Subject 111, run cyb1: Found 69 files.
+Subject 134, run cyb2: Found 72 files.
+Subject 151, run cyb2: Found 63 files.
+Subject 164, run cyb2: Found 73 files.
+Subject 168, run cyb2: Found 68 files.
+Subject 190, run stop4: Found 76 files.
+Subject 108, run stop8: Found 79 files.
+Subject 137, run cyb2: Found 71 files.
+Subject 119, run cyb1: Found 64 files.
+Subject 122, run cyb2: Found 73 files.
+Subject 187, run cyb2: Found 71 files.
+Subject 194, run cyb2: Found 81 files.
+Subject 184, run cyb2: Found 67 files.
+Subject 161, run cyb1: Found 65 files.
+Subject 171, run cyb2: Found 70 files.
+Subject 145, run cyb2: Found 70 files.
+Subject 104, run stop7: Found 86 files.
+Subject 181, run stop3: Found 79 files.
+Subject 197, run cyb2: Found 84 files.
+Subject 131, run cyb2: Found 71 files.
+Subject 115, run stop3: Found 82 files.
+Subject 111, run cyb2: Found 82 files.
+Subject 128, run cyb2: Found 68 files.
+Subject 174, run stop3: Found 72 files.
+Subject 151, run stop3: Found 79 files.
+Subject 134, run stop3: Found 77 files.
+Subject 141, run cyb1: Found 63 files.
+Subject 164, run stop3: Found 75 files.
+Subject 168, run stop3: Found 78 files.
+Subject 119, run cyb2: Found 79 files.
+Subject 190, run stop5: Found 74 files.
+Subject 137, run stop3: Found 82 files.
+Subject 187, run stop3: Found 75 files.
+Subject 108, run vid1: Found 61 files.
+Subject 171, run stop3: Found 76 files.
+Subject 194, run stop3: Found 76 files.
+Subject 161, run cyb2: Found 71 files.
+Subject 122, run stop3: Found 77 files.
+Subject 184, run stop3: Found 76 files.
+Subject 145, run stop3: Found 75 files.
+Subject 131, run stop3: Found 74 files.
+Subject 181, run stop4: Found 77 files.
+Subject 197, run stop3: Found 90 files.
+Subject 128, run stop3: Found 72 files.
+Subject 111, run stop3: Found 85 files.
+Subject 104, run stop8: Found 83 files.
+Subject 115, run stop4: Found 69 files.
+Subject 151, run stop4: Found 81 files.
+Subject 141, run cyb2: Found 75 files.
+Subject 174, run stop4: Found 73 files.
+Subject 134, run stop4: Found 74 files.
+Subject 164, run stop4: Found 75 files.
+Subject 108, run vid2: Found 72 files.
+Subject 190, run stop6: Found 79 files.
+Subject 119, run stop3: Found 79 files.
+Subject 187, run stop4: Found 80 files.
+Subject 168, run stop4: Found 77 files.
+Subject 137, run stop4: Found 77 files.
+Subject 161, run stop3: Found 77 files.
+Subject 171, run stop4: Found 83 files.
+Subject 194, run stop4: Found 81 files.
+Subject 184, run stop4: Found 81 files.
+Subject 122, run stop4: Found 77 files.
+Subject 145, run stop4: Found 85 files.
+Subject 131, run stop4: Found 79 files.
+Subject 181, run stop5: Found 74 files.
+Subject 197, run stop4: Found 85 files.
+Subject 128, run stop4: Found 84 files.
+Subject 134, run stop5: Found 70 files.
+Subject 111, run stop4: Found 72 files.
+Subject 115, run stop5: Found 78 files.
+Subject 151, run stop5: Found 77 files.
+Subject 141, run stop3: Found 73 files.
+Subject 174, run stop5: Found 74 files.
+Subject 164, run stop5: Found 80 files.
+Subject 104, run vid1: Found 65 files.
+Subject 190, run stop7: Found 78 files.
+Subject 119, run stop4: Found 75 files.
+Subject 187, run stop5: Found 74 files.
+Subject 137, run stop5: Found 80 files.
+Subject 168, run stop5: Found 75 files.
+Subject 194, run stop5: Found 78 files.
+Subject 171, run stop5: Found 75 files.
+Subject 161, run stop4: Found 83 files.
+Subject 184, run stop5: Found 79 files.
+Subject 122, run stop5: Found 73 files.
+Subject 134, run stop6: Found 87 files.
+Subject 111, run stop5: Found 79 files.
+Subject 131, run stop5: Found 77 files.
+Subject 197, run stop5: Found 85 files.
+Subject 181, run stop6: Found 77 files.
+Subject 141, run stop4: Found 73 files.
+Subject 145, run stop5: Found 82 files.
+Subject 151, run stop6: Found 77 files.
+Subject 128, run stop5: Found 73 files.
+Subject 174, run stop6: Found 72 files.
+Subject 164, run stop6: Found 75 files.
+Subject 104, run vid2: Found 76 files.
+Subject 115, run stop6: Found 68 files.
+Subject 119, run stop5: Found 79 files.
+Subject 190, run stop8: Found 76 files.
+Subject 187, run stop6: Found 82 files.
+Subject 137, run stop6: Found 78 files.
+Subject 194, run stop6: Found 76 files.
+Subject 171, run stop6: Found 74 files.
+Subject 168, run stop6: Found 75 files.
+Subject 161, run stop5: Found 77 files.
+Subject 122, run stop6: Found 79 files.
+Subject 184, run stop6: Found 77 files.
+Subject 111, run stop6: Found 79 files.
+Subject 134, run stop7: Found 76 files.
+Subject 141, run stop5: Found 79 files.
+Subject 151, run stop7: Found 75 files.
+Subject 197, run stop6: Found 78 files.
+Subject 131, run stop6: Found 76 files.
+Subject 181, run stop7: Found 77 files.
+Subject 164, run stop7: Found 75 files.
+Subject 190, run vid1: Found 73 files.
+Subject 174, run stop7: Found 76 files.
+Subject 119, run stop6: Found 78 files.
+Subject 128, run stop6: Found 73 files.
+Subject 187, run stop7: Found 68 files.
+Subject 115, run stop7: Found 81 files.
+Subject 145, run stop6: Found 71 files.
+Subject 137, run stop7: Found 76 files.
+Subject 194, run stop7: Found 79 files.
+Subject 171, run stop7: Found 82 files.
+Subject 168, run stop7: Found 82 files.
+Subject 161, run stop6: Found 76 files.
+Subject 151, run stop8: Found 76 files.
+Subject 111, run stop7: Found 74 files.
+Subject 134, run stop8: Found 79 files.
+Subject 197, run stop7: Found 84 files.
+Subject 184, run stop7: Found 78 files.
+Subject 122, run stop7: Found 74 files.
+Subject 141, run stop6: Found 74 files.
+Subject 164, run stop8: Found 76 files.
+Subject 187, run stop8: Found 77 files.
+Subject 190, run vid2: Found 79 files.
+Subject 181, run stop8: Found 73 files.
+Subject 131, run stop7: Found 77 files.
+Subject 119, run stop7: Found 75 files.
+Subject 174, run stop8: Found 76 files.
+Subject 137, run stop8: Found 86 files.
+Subject 145, run stop7: Found 74 files.
+Subject 128, run stop7: Found 76 files.
+Subject 194, run stop8: Found 78 files.
+Subject 171, run stop8: Found 79 files.
+Subject 168, run stop8: Found 69 files.
+Subject 115, run stop8: Found 79 files.
+Subject 111, run stop8: Found 77 files.
+Subject 151, run vid1: Found 62 files.
+Subject 134, run vid1: Found 63 files.
+Subject 161, run stop7: Found 80 files.
+Subject 141, run stop7: Found 76 files.
+Subject 197, run stop8: Found 78 files.
+Subject 164, run vid1: Found 63 files.
+Subject 184, run stop8: Found 71 files.
+Subject 187, run vid1: Found 63 files.
+Subject 122, run stop8: Found 77 files.
+Subject 119, run stop8: Found 67 files.
+Subject 131, run stop8: Found 78 files.
+Subject 181, run vid1: Found 64 files.
+Subject 194, run vid1: Found 63 files.
+Subject 137, run vid1: Found 63 files.
+Subject 174, run vid1: Found 64 files.
+Subject 171, run vid1: Found 63 files.
+Subject 145, run stop8: Found 75 files.
+Subject 128, run stop8: Found 77 files.
+Subject 168, run vid1: Found 64 files.
+Subject 151, run vid2: Found 77 files.
+Subject 134, run vid2: Found 77 files.
+Subject 111, run vid1: Found 61 files.
+Subject 115, run vid1: Found 63 files.
+Subject 164, run vid2: Found 78 files.
+Subject 187, run vid2: Found 79 files.
+Subject 197, run vid1: Found 63 files.
+Subject 141, run stop8: Found 68 files.
+Subject 119, run vid1: Found 62 files.
+Subject 184, run vid1: Found 63 files.
+Subject 161, run stop8: Found 78 files.
+Subject 194, run vid2: Found 79 files.
+Subject 137, run vid2: Found 77 files.
+Subject 122, run vid1: Found 68 files.
+Subject 181, run vid2: Found 79 files.
+Subject 171, run vid2: Found 79 files.
+Subject 174, run vid2: Found 79 files.
+Subject 131, run vid1: Found 63 files.
+Subject 168, run vid2: Found 78 files.
+Subject 111, run vid2: Found 73 files.
+Subject 145, run vid1: Found 62 files.
+Subject 128, run vid1: Found 62 files.
+Subject 197, run vid2: Found 78 files.
+Subject 115, run vid2: Found 77 files.
+Subject 119, run vid2: Found 77 files.
+Subject 141, run vid1: Found 63 files.
+Subject 184, run vid2: Found 78 files.
+Subject 161, run vid1: Found 62 files.
+Subject 122, run vid2: Found 77 files.
+Subject 131, run vid2: Found 77 files.
+Subject 128, run vid2: Found 77 files.
+Subject 145, run vid2: Found 77 files.
+Subject 141, run vid2: Found 78 files.
+Subject 161, run vid2: Found 79 files.
+Shutting down cluster...Warning messages:
+1: In bind_rows_(x, .id) :Warning messages:
+1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2:  Unequal factor levels: coercing to character
+In bind_rows_(x, .id) :2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+Warning messages:
+Warning messages:
+1: 1: In bind_rows_(x, .id) :In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) :2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) :Warning messages:
+ Unequal factor levels: coercing to character
+1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+Warning messages:
+2: In bind_rows_(x, .id) :1:  Unequal factor levels: coercing to character
+In bind_rows_(x, .id) :3: In bind_rows_(x, .id) :Warning messages:
+ Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+2: Warning messages:
+In bind_rows_(x, .id) :1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+1: 3: In bind_rows_(x, .id) :In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+Warning messages:
+ Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) :2: Warning messages:
+In bind_rows_(x, .id) :1: 1:  Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+In bind_rows_(x, .id) :In bind_rows_(x, .id) :3: 3: In bind_rows_(x, .id) :In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+Warning messages:
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) :1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) :Warning messages:
+ Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+1: 2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+Warning messages:
+1: Warning messages:
+In bind_rows_(x, .id) :1:  Unequal factor levels: coercing to character
+In bind_rows_(x, .id) :2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+3: 2: In bind_rows_(x, .id) :In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+Warning messages:
+ Unequal factor levels: coercing to character
+Warning messages:
+1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) :Warning messages:
+ Unequal factor levels: coercing to character
+1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+Warning messages:
+3: Warning messages:
+In bind_rows_(x, .id) :1: 1:  Unequal factor levels: coercing to character
+In bind_rows_(x, .id) :Warning messages:
+In bind_rows_(x, .id) :1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) :2: In bind_rows_(x, .id) :Warning messages:
+ Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) :3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+1: 3: In bind_rows_(x, .id) :In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+Warning messages:
+Warning messages:
+3: In bind_rows_(x, .id) :1: In bind_rows_(x, .id) :1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+2: 2: In bind_rows_(x, .id) :In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+3: 3: In bind_rows_(x, .id) :In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+ Unequal factor levels: coercing to character
+Warning messages:
+1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+Warning messages:
+1: Warning messages:
+In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+1: In bind_rows_(x, .id) :Warning messages:
+ Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+Warning messages:
+1: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+2: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+3: In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+Warning message:
+In bind_rows_(x, .id) : Unequal factor levels: coercing to character
+For 81 participant IDs, the system logged this much time: 
+
+   user  system elapsed 
+  0.141   0.314 174.357 
