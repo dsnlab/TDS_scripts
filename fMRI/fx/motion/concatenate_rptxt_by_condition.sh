@@ -1,10 +1,9 @@
 #!/bin/bash
 
-#######################################
-### use the parameter file as an    ###
-### argument for the script         ###
-### (e.g. sh tds_merge_rptxts_G59.sh.sh tds_merge_rptxts_G59Params.txt) ###
-#######################################
+#################################################################
+### use the parameter file as an argument for the script      ###
+### (e.g. sh tds_merge_rptxts.sh tds_merge_rptxts_config.txt) ###
+#################################################################
 
 # This script merges the rp.txt files for separate runs (stop3, stop4, etc.) into single txt files for each condition (alone, peer, excl) 
 
@@ -15,11 +14,10 @@ if [ -f $prmfile ]
   then
   source $prmfile # set all vars in params file
   echo "sourceFolder = $sourceFolder"
-  echo "outputFolder = $outputFolder"
   echo "subs are ${subs[@]}"
   if [ -d $sourceFolder ]
     then
-    cd $sourceFolder #go into output folder
+    cd $sourceFolder #go into folder where rp.txt files are located
     pwd
     echo "1. I'm in the $sourceFolder folder for $studyName"
     for i in ${subs[@]}   # For each subj, merge the rp.txt files from each run into one rp.txt file for each condition. 
