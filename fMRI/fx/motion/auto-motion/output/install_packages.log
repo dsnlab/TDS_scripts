@@ -1,0 +1,135 @@
+running
+  '/packages/R/3.3.3/lib64/R/bin/R --slave --no-restore -e osuRepo = 'http://ftp.osuosl.org/pub/cran/'; if(!require(devtools)){ install.packages('devtools',repos=osuRepo) }; if(!require(RNifti)){ devtools::install_github('jonclayden/RNifti') }; if(!require(tidyverse)){ install.packages('tidyverse',repos=osuRepo) }; if(!require(parallel)){ install.packages('parallel',repos=osuRepo) };'
+
+Loading required package: devtools
+Loading required package: RNifti
+Loading required package: tidyverse
+Installing package into ‘/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3’
+(as ‘lib’ is unspecified)
+also installing the dependencies ‘haven’, ‘readr’
+
+trying URL 'http://ftp.osuosl.org/pub/cran/src/contrib/haven_1.0.0.tar.gz'
+Content type 'application/x-gzip' length 150016 bytes (146 KB)
+==================================================
+downloaded 146 KB
+
+trying URL 'http://ftp.osuosl.org/pub/cran/src/contrib/readr_1.1.1.tar.gz'
+Content type 'application/x-gzip' length 233793 bytes (228 KB)
+==================================================
+downloaded 228 KB
+
+trying URL 'http://ftp.osuosl.org/pub/cran/src/contrib/tidyverse_1.1.1.tar.gz'
+Content type 'application/x-gzip' length 23452 bytes (22 KB)
+==================================================
+downloaded 22 KB
+
+* installing *source* package ‘readr’ ...
+** package ‘readr’ successfully unpacked and MD5 sums checked
+** libs
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c Collector.cpp -o Collector.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c CollectorGuess.cpp -o CollectorGuess.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c Iconv.cpp -o Iconv.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c LocaleInfo.cpp -o LocaleInfo.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c Reader.cpp -o Reader.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c Source.cpp -o Source.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c Tokenizer.cpp -o Tokenizer.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c TokenizerDelim.cpp -o TokenizerDelim.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c TokenizerFwf.cpp -o TokenizerFwf.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c TokenizerWs.cpp -o TokenizerWs.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c connection.cpp -o connection.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c datetime.cpp -o datetime.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2 -std=c99  -c grisu3.c -o grisu3.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2 -std=c99  -c init.c -o init.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2 -std=c99  -c localtime.c -o localtime.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c parse.cpp -o parse.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c read.cpp -o read.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c type_convert.cpp -o type_convert.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c write.cpp -o write.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c write_connection.cpp -o write_connection.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"   -fpic  -g -O2  -c write_delim.cpp -o write_delim.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -shared -L/usr/local/lib64 -o readr.so Collector.o CollectorGuess.o Iconv.o LocaleInfo.o RcppExports.o Reader.o Source.o Tokenizer.o TokenizerDelim.o TokenizerFwf.o TokenizerWs.o connection.o datetime.o grisu3.o init.o localtime.o parse.o read.o type_convert.o write.o write_connection.o write_delim.o
+installing to /gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/readr/libs
+** R
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+* DONE (readr)
+* installing *source* package ‘haven’ ...
+** package ‘haven’ successfully unpacked and MD5 sums checked
+** libs
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c tagged_na.c -o tagged_na.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/readstat_parser.c -o readstat/readstat_parser.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/readstat_io_unistd.c -o readstat/readstat_io_unistd.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/readstat_bits.c -o readstat/readstat_bits.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/readstat_variable.c -o readstat/readstat_variable.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/readstat_writer.c -o readstat/readstat_writer.o
+readstat/readstat_writer.c(306): warning #266: function "strdup" declared implicitly
+      writer->notes[writer->notes_count++] = strdup(note);
+                                             ^
+
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/readstat_error.c -o readstat/readstat_error.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/readstat_convert.c -o readstat/readstat_convert.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/CKHashTable.c -o readstat/CKHashTable.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/readstat_value.c -o readstat/readstat_value.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/sas/readstat_sas7bcat_read.c -o readstat/sas/readstat_sas7bcat_read.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/sas/readstat_sas7bdat_write.c -o readstat/sas/readstat_sas7bdat_write.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/sas/readstat_sas7bcat_write.c -o readstat/sas/readstat_sas7bcat_write.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/sas/readstat_sas.c -o readstat/sas/readstat_sas.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/sas/readstat_sas_rle.c -o readstat/sas/readstat_sas_rle.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/sas/readstat_sas7bdat_read.c -o readstat/sas/readstat_sas7bdat_read.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_spss_parse.c -o readstat/spss/readstat_spss_parse.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_sav_read.c -o readstat/spss/readstat_sav_read.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_por_read.c -o readstat/spss/readstat_por_read.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_sav.c -o readstat/spss/readstat_sav.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_por.c -o readstat/spss/readstat_por.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_sav_parse_timestamp.c -o readstat/spss/readstat_sav_parse_timestamp.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_sav_write.c -o readstat/spss/readstat_sav_write.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_por_write.c -o readstat/spss/readstat_por_write.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_spss.c -o readstat/spss/readstat_spss.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_sav_parse.c -o readstat/spss/readstat_sav_parse.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/spss/readstat_por_parse.c -o readstat/spss/readstat_por_parse.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/stata/readstat_dta_read.c -o readstat/stata/readstat_dta_read.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/stata/readstat_dta.c -o readstat/stata/readstat_dta.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/stata/readstat_dta_parse_timestamp.c -o readstat/stata/readstat_dta_parse_timestamp.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2 -std=c99  -c readstat/stata/readstat_dta_write.c -o readstat/stata/readstat_dta_write.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2  -c DfReader.cpp -o DfReader.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2  -c DfWriter.cpp -o DfWriter.o
+DfWriter.cpp(13): warning #858: type qualifier on return type is meaningless
+  inline const bool string_is_missing(SEXP x, int i) {
+         ^
+
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include" -I"/gpfs/packages/R/3.3.3/lib64/R/library/BH/include"  -Ireadstat -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -shared -L/usr/local/lib64 -o haven.so tagged_na.o readstat/readstat_parser.o readstat/readstat_io_unistd.o readstat/readstat_bits.o readstat/readstat_variable.o readstat/readstat_writer.o readstat/readstat_error.o readstat/readstat_convert.o readstat/CKHashTable.o readstat/readstat_value.o readstat/sas/readstat_sas7bcat_read.o readstat/sas/readstat_sas7bdat_write.o readstat/sas/readstat_sas7bcat_write.o readstat/sas/readstat_sas.o readstat/sas/readstat_sas_rle.o readstat/sas/readstat_sas7bdat_read.o readstat/spss/readstat_spss_parse.o readstat/spss/readstat_sav_read.o readstat/spss/readstat_por_read.o readstat/spss/readstat_sav.o readstat/spss/readstat_por.o readstat/spss/readstat_sav_parse_timestamp.o readstat/spss/readstat_sav_write.o readstat/spss/readstat_por_write.o readstat/spss/readstat_spss.o readstat/spss/readstat_sav_parse.o readstat/spss/readstat_por_parse.o readstat/stata/readstat_dta_read.o readstat/stata/readstat_dta.o readstat/stata/readstat_dta_parse_timestamp.o readstat/stata/readstat_dta_write.o DfReader.o DfWriter.o RcppExports.o
+installing to /gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/haven/libs
+** R
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+* DONE (haven)
+* installing *source* package ‘tidyverse’ ...
+** package ‘tidyverse’ successfully unpacked and MD5 sums checked
+** R
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+* DONE (tidyverse)
+
+The downloaded source packages are in
+	‘/tmp/Rtmp0Cztd8/downloaded_packages’
+Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘tidyverse’
+Loading required package: parallel

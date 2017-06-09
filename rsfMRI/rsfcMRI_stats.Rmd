@@ -21,9 +21,11 @@ lapply(packages, library, character.only = TRUE)
 Extract rsfcMRI preprocessing stats
 ```{r Extract and plot run times, echo=TRUE}
 # Set directory
-rsfcMRI_subjects="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub//"
-# create sub list based on folders within the freesurfer subjects folder
+rsfcMRI_subjects="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
+# create sub list based on folders within the restings state fcMRI subjects folder
 subs<-list.files(path = rsfcMRI_subjects, pattern = "sub")
+# set scrubbing threshold
+scrubbingThreshold=.2
 # extract info
 extract_rsfcMRI_runinfo= function(sub){
 if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))){
@@ -41,15 +43,35 @@ if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_eno
       cbind(sub,blurps,potential,viable,preproc_complete)
       }
 }
+extract_rsfcMRI_runinfo= function(sub){
+if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))){
+      log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))
+      preproc_complete="yes"
+      blurps<-nrow(log %>% filter(.[[1]]>scrubbingThreshold))
+      potential<-(nrow(log)-(blurps*2))
+      viable<-ifelse(potential>=385,"yes","no")
+      cbind(sub,blurps,potential,viable,preproc_complete)
+    } else{
+      preproc_complete="no"
+      blurps<-NA
+      potential<-NA
+      viable<-"no"
+      cbind(sub,blurps,potential,viable,preproc_complete)
+      }
+}
 outputlist<-lapply(subs,extract_rsfcMRI_runinfo)
 output.df<-as.data.frame(do.call(rbind,outputlist)) %>% 
   mutate(blurps=as.numeric(levels(blurps))[blurps],
-         potential=as.numeric(levels(potential))[potential])
+         potential=as.numeric(levels(potential))[potential]) %>%
+  mutate(potential=ifelse(potential<0,0,potential))
 
 useable <- ggplot((output.df %>% select(-blurps)),
                 aes(x=sub, y=(potential*.78)/60, fill=viable))
 useable + geom_bar(colour="black", stat="identity") 
 
-preprocessedcomplete<-(output.df %>% filter(preproc_complete=="yes" &&
-                                              viables=="yes") %>%select(sub))
+sublist<-output.df %>%
+  mutate(sub=as.character(sub)) %>%
+  filter(!is.na(potential)) %>%
+  select(sub)
+print(paste0(nrow(output.df%>%filter(viable=="yes"))," are viable"))
 ```

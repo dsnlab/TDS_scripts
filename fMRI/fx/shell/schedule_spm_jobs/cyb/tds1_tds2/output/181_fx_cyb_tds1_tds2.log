@@ -1,0 +1,32 @@
+-------------------------------------------------------------------------------
+181
+Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/cyb/tds1_tds2/additionalContrasts.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2016 The MathWorks, Inc.
+                   R2016b (9.1.0.441655) 64-bit (glnxa64)
+                             September 7, 2016
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Contrast Manager'
+
+SPM12: spm_contrasts.m                             13:03:14 - 26/05/2017
+========================================================================
+Contrasts folder                        :  ./fx/models/cyb/tds1_tds2/181
+	contrast image 15               :                   ...computing       ...written con_0015.nii
+	spm{T} image 15                 :                   ...computing      ...written spmT_0015.nii
+	contrast image 16               :                   ...computing       ...written con_0016.nii
+	spm{T} image 16                 :                   ...computing      ...written spmT_0016.nii
+Completed                               :          13:03:15 - 26/05/2017
+Done    'Contrast Manager'
+Done
+

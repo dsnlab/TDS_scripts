@@ -1,0 +1,95 @@
+running
+  '/packages/R/3.3.3/lib64/R/bin/R --slave --no-restore -e if(!require(devtools)){ install.packages('devtools',repos=osuRepo) }; if(!require(RNifti)){ devtools::install_github('jonclayden/RNifti') }; if(!require(tidyverse)){ install.packages('tidyverse',repos=osuRepo) }; if(!require(parallel)){ install.packages('parallel',repos=osuRepo) };'
+
+Loading required package: devtools
+Loading required package: RNifti
+Downloading GitHub repo jonclayden/RNifti@master
+from URL https://api.github.com/repos/jonclayden/RNifti/zipball/master
+Installing RNifti
+trying URL 'https://cran.rstudio.com/src/contrib/Rcpp_0.12.11.tar.gz'
+Content type 'unknown' length 2485092 bytes (2.4 MB)
+==================================================
+downloaded 2.4 MB
+
+Installing Rcpp
+'/packages/R/3.3.3/lib64/R/bin/R' --no-site-file --no-environ --no-save  \
+  --no-restore --quiet CMD INSTALL  \
+  '/tmp/RtmpI25T9X/devtools2b9de209c6681/Rcpp'  \
+  --library='/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3'  \
+  --install-tests 
+
+* installing *source* package ‘Rcpp’ ...
+** package ‘Rcpp’ successfully unpacked and MD5 sums checked
+** libs
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -I../inst/include/ -I/usr/local/include    -fpic  -g -O2  -c Date.cpp -o Date.o
+Date.cpp(642): warning #437: reference to local variable of enclosing function is not allowed
+  		      2 * sizeof *sp + 4 * TZ_MAX_TIMES];
+  		                  ^
+
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -I../inst/include/ -I/usr/local/include    -fpic  -g -O2  -c Module.cpp -o Module.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -I../inst/include/ -I/usr/local/include    -fpic  -g -O2  -c Rcpp_init.cpp -o Rcpp_init.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -I../inst/include/ -I/usr/local/include    -fpic  -g -O2  -c api.cpp -o api.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -I../inst/include/ -I/usr/local/include    -fpic  -g -O2  -c attributes.cpp -o attributes.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -I../inst/include/ -I/usr/local/include    -fpic  -g -O2  -c barrier.cpp -o barrier.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -shared -L/usr/local/lib64 -o Rcpp.so Date.o Module.o Rcpp_init.o api.o attributes.o barrier.o
+installing to /gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/libs
+** R
+** inst
+** tests
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+* DONE (Rcpp)
+'/packages/R/3.3.3/lib64/R/bin/R' --no-site-file --no-environ --no-save  \
+  --no-restore --quiet CMD INSTALL  \
+  '/tmp/RtmpI25T9X/devtools2b9de5b54f6bc/jonclayden-RNifti-dbdc1e5'  \
+  --library='/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3'  \
+  --install-tests 
+
+* installing *source* package ‘RNifti’ ...
+** libs
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2  -c main.cpp -o main.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/adler32.c -o zlib/adler32.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/compress.c -o zlib/compress.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/crc32.c -o zlib/crc32.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/deflate.c -o zlib/deflate.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/gzclose.c -o zlib/gzclose.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/gzlib.c -o zlib/gzlib.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/gzread.c -o zlib/gzread.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/gzwrite.c -o zlib/gzwrite.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/infback.c -o zlib/infback.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/inffast.c -o zlib/inffast.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/inflate.c -o zlib/inflate.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/inftrees.c -o zlib/inftrees.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/trees.c -o zlib/trees.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/uncompr.c -o zlib/uncompr.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c zlib/zutil.c -o zlib/zutil.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c znzlib/znzlib.c -o znzlib/znzlib.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icc -I/packages/R/3.3.3/lib64/R/include -DNDEBUG -DNDEBUG -DHAVE_ZLIB -I../inst/include -Izlib -I/usr/local/include -I"/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include"   -fpic  -g -O2 -std=c99  -c niftilib/nifti1_io.c -o niftilib/nifti1_io.o
+/packages/intel/compilers_and_libraries_2017.2.174/linux/bin/intel64/icpc -shared -L/usr/local/lib64 -o RNifti.so main.o zlib/adler32.o zlib/compress.o zlib/crc32.o zlib/deflate.o zlib/gzclose.o zlib/gzlib.o zlib/gzread.o zlib/gzwrite.o zlib/infback.o zlib/inffast.o zlib/inflate.o zlib/inftrees.o zlib/trees.o zlib/uncompr.o zlib/zutil.o znzlib/znzlib.o niftilib/nifti1_io.o
+installing to /gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3/RNifti/libs
+** R
+** inst
+** tests
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (RNifti)
+Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘RNifti’
+Loading required package: tidyverse
+Installing package into ‘/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.3’
+(as ‘lib’ is unspecified)
+Error in install.packages("tidyverse", repos = osuRepo) : 
+  object 'osuRepo' not found
+In addition: Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘tidyverse’
+Execution halted
+slurmstepd: error: Exceeded step memory limit at some point.

@@ -21,14 +21,14 @@ Running 'File Selector (Batch Mode)'
 Done    'File Selector (Batch Mode)'
 Running 'Image Calculator'
 
-SPM12: spm_imcalc (v6124)                          12:33:35 - 19/05/2017
+SPM12: spm_imcalc (v6124)                          10:06:52 - 08/06/2017
 ========================================================================
 ImCalc Image: /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average.nii
 Done    'Image Calculator'
 Running 'Optimal Thresholding'
-Maximal correlation of 0.971219 found with threshold of 0.412056
+Maximal correlation of 0.971286 found with threshold of 0.412153
 
-SPM12: spm_imcalc (v6124)                          12:33:43 - 19/05/2017
+SPM12: spm_imcalc (v6124)                          10:07:01 - 08/06/2017
 ========================================================================
 Done    'Optimal Thresholding'
 Done
