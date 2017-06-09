@@ -99,11 +99,11 @@ echo $suffix
 
 for p in "${subjects[@]}" ; do  	    
 	for arun in "${runs[@]}"; do
-		fullDir="$basedir$p$arun/"
+		fullDir="$basedir$p/$arun/"
     	if [ -d "$fullDir" ]; then
     		echo "Making movies in $fullDir"
     		cd $fullDir
-
+    		
     		###########################
     		## MODIFY THIS LINE TOO! ##
             ## Specifically *.nii    ##
