@@ -29,7 +29,7 @@ plotDir = '/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/plots
 
 # variables
 study = "tds2"
-rpPattern = "^rp_(FP[0-9]{3})_(.*).txt"
+rpPattern = "^rp_([0-9]{3})_(.*).txt"
 rpCols = c("euclidian_trans","euclidian_rot","euclidian_trans_deriv","euclidian_rot_deriv","trash.rp")
 
 # write new rp_txt and plots files?
