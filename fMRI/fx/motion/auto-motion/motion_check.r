@@ -55,7 +55,7 @@ library(stringr)
 # base directory for subjects
 subjsDir<-'/projects/dsnlab/tds/fMRI/subjects_tds2' 
 # requires trailing '/' - this is the path to prepend to output pdf filename. 
-motionPDFdir<-'/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/pdf/' 
+motionPDFdir<-'/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/' 
 # requires trailing '/' - this is where the augmented rp_*txt files go
 motion_rp_txt_dir<-'/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/rp_txt/'
 
