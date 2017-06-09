@@ -35,6 +35,7 @@ if(!require(tidyverse)){
   install.packages('tidyverse',repos=osuRepo)
 }
 
+source('/projects/dsnlab/tds/TDS_scripts/fMRI/fx/motion/auto-motion/auto_trash_config.R')
 #------------------------------------------------------
 # load global intensity data
 #------------------------------------------------------
