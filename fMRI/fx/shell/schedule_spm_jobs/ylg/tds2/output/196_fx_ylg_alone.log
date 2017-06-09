@@ -1,0 +1,52 @@
+-------------------------------------------------------------------------------
+196
+Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/fx_ylg_alone.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2016 The MathWorks, Inc.
+                   R2016b (9.1.0.441655) 64-bit (glnxa64)
+                             September 7, 2016
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Item 'Scans', field 'val': Number of matching files (0) less than required (1).
+{Error using harvest (line 47)
+Dependencies resolved, but not suitable for this item.
+In item Scans:
+Dependency 1: File Selector (Batch Mode): Selected Files (^swrustop3*)
+(out.files)
+
+Dependency 2: File Selector (Batch Mode): Selected Files (^swrustop4*)
+(out.files)
+
+
+
+Error in harvest (line 49)
+
+Error in harvest (line 62)
+
+Error in harvest (line 49)
+
+Error in harvest (line 51)
+
+Error in cfg_util>local_runcj (line 1723)
+
+Error in cfg_util (line 959)
+
+Error in spm_jobman>fill_run_job (line 458)
+
+Error in spm_jobman (line 247)
+} 
+>> 
