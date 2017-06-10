@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 144
-Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/fx_ylg_alone_con_base_11.m
+Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_alone_con_base_11.m
 -------------------------------------------------------------------------------
 
                             < M A T L A B (R) >
@@ -12,13 +12,40 @@ Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/fx_ylg_alone_con_bas
 To get started, type one of these: helpwin, helpdesk, or demo.
 For product information, visit www.mathworks.com.
  
-{Error using textscan
-Invalid file identifier. Use fopen to generate a valid file identifier.
 
-Error in make_sid_matlabbatch (line 2)
-textstuffcell=textscan(fileID, '%[^\n]');
 
-Error in run (line 96)
-evalin('caller', [script ';']);
-} 
->> 
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Contrast Manager'
+
+SPM12: spm_contrasts.m                             11:16:29 - 10/06/2017
+========================================================================
+Contrasts folder                        :  ./models/ylg/fx_ylg_alone/144
+Deleting contrasts                      :                        ...done
+	contrast image  1               :                   ...computing       ...written con_0001.nii
+	spm{T} image  1                 :                   ...computing      ...written spmT_0001.nii
+	contrast image  2               :                   ...computing       ...written con_0002.nii
+	spm{T} image  2                 :                   ...computing      ...written spmT_0002.nii
+	contrast image  3               :                   ...computing       ...written con_0003.nii
+	spm{T} image  3                 :                   ...computing      ...written spmT_0003.nii
+	contrast image  4               :                   ...computing       ...written con_0004.nii
+	spm{T} image  4                 :                   ...computing      ...written spmT_0004.nii
+	contrast image  5               :                   ...computing       ...written con_0005.nii
+	spm{T} image  5                 :                   ...computing      ...written spmT_0005.nii
+	contrast image  6               :                   ...computing       ...written con_0006.nii
+	spm{T} image  6                 :                   ...computing      ...written spmT_0006.nii
+	contrast image  7               :                   ...computing       ...written con_0007.nii
+	spm{T} image  7                 :                   ...computing      ...written spmT_0007.nii
+	contrast image  8               :                   ...computing       ...written con_0008.nii
+	spm{T} image  8                 :                   ...computing      ...written spmT_0008.nii
+	contrast image  9               :                   ...computing       ...written con_0009.nii
+	spm{T} image  9                 :                   ...computing      ...written spmT_0009.nii
+	contrast image 10               :                   ...computing       ...written con_0010.nii
+	spm{T} image 10                 :                   ...computing      ...written spmT_0010.nii
+	contrast image 11               :                   ...computing       ...written con_0011.nii
+	spm{T} image 11                 :                   ...computing      ...written spmT_0011.nii
+Completed                               :          11:16:33 - 10/06/2017
+Done    'Contrast Manager'
+Done
+
