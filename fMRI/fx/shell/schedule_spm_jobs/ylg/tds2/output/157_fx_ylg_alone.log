@@ -21,32 +21,24 @@ Running 'File Selector (Batch Mode)'
 Done    'File Selector (Batch Mode)'
 Running 'File Selector (Batch Mode)'
 Done    'File Selector (Batch Mode)'
-Item 'Scans', field 'val': Number of matching files (0) less than required (1).
-{Error using harvest (line 47)
-Dependencies resolved, but not suitable for this item.
-In item Scans:
-Dependency 1: File Selector (Batch Mode): Selected Files (^swrustop3*)
-(out.files)
+Running 'fMRI model specification'
+Failed  'fMRI model specification'
+Error using load
+Unknown text on line number 79 of ASCII file /projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/rp_auto_txt/rp_157_alone.txt
+"NA".
+In file "/gpfs/projects/dsnlab/SPM12/config/spm_run_fmri_spec.m" (v6562), function "spm_run_fmri_spec" at line 298.
 
-Dependency 2: File Selector (Batch Mode): Selected Files (^swrustop4*)
-(out.files)
+No executable modules, but still unresolved dependencies or incomplete module inputs.
+The following modules did not run:
+Failed: fMRI model specification
+Skipped: Model estimation
 
-
-
-Error in harvest (line 49)
-
-Error in harvest (line 62)
-
-Error in harvest (line 49)
-
-Error in harvest (line 51)
-
-Error in cfg_util>local_runcj (line 1723)
-
-Error in cfg_util (line 959)
-
-Error in spm_jobman>fill_run_job (line 458)
-
-Error in spm_jobman (line 247)
+{Error using MATLABbatch system
+Job execution failed. The full log of this run can be found in MATLAB command
+window, starting with the lines (look for the line showing the exact #job as
+displayed in this error message)
+------------------
+Running job #1
+------------------
 } 
 >> 
