@@ -16,9 +16,8 @@ lapply(packages, library, character.only=TRUE)
 
 ## CHANGE IF NEEDED ##
 tds_folder<-'/Volumes/TDS/'
-behave_folder<-'Data_Behavioral/YLG/'
-scans_folder<-'/Users/ralph/Documents/tds/fMRI/subjects'
-
+behave_folder<-'behavior/YLG/'
+scans_folder<-paste(tds_folder,'/nonbids_data/fMRI/subjects/',sep='')
 files_folder<-paste(tds_folder,behave_folder,'raw/',sep='')
 folder_to_write_agglom<-paste(tds_folder,behave_folder,'processed/',sep='')
 files_to_read<-as.list(dir(files_folder,recursive=T,pattern='csv_run_output.*csv$'))
@@ -40,12 +39,16 @@ mutate(
 		sub('^[1-9][0-9][0-9].*/stop[3-8]_([0-9]+)\\.nii','\\1',scan_files))) %>%
 group_by(sid,rid) %>%
 summarise(n_vols=n(),max_trid=max(trid)) %>%
-mutate(run_length=n_vols*2000)# %>%
-# #chain this in if you want to check that the count is the same as the max
-# #volume number coded in the file name:
-# mutate(check=n_vols==max_trid) %>% filter(!check) %>% kable()
-# ungroup() %>%
-# summarise(checkcheck=all(check))
+mutate(run_length=n_vols*2000)
+
+#run this, if you want to check that the count is the same as the max
+#volume number coded in the file name:
+check_vols = counted_scans %>% mutate(check=n_vols==max_trid) %>% filter(!check) # sid 157 is missing a volume in stop3!
+
+# #run this, to count the min/max number of volumes for each run (alone, peer, excl)
+# alone_runs = counted_scans %>% filter(grepl("3|4", rid))
+# alone_runs_tds2 = alone_runs %>% filter(sid<200) 
+# count_vols_alone_tds2 = alone_runs_tds2 %>% group_by(rid) %>% summarize(min_vols = min(n_vols), max_vols = max(n_vols))
 
 intersection_types<-fread(intersection_types_file) %>% 
 gather(`profile-name`,value) %>% separate(value,c('intersection_num','type'),sep=-2) %>% 
@@ -58,7 +61,7 @@ arrange(`profile-name`,trial_index) %>% as.data.table
 
 setwd(files_folder)
 
-reload_data <- FALSE #Set to TRUE, is you want to reload the data
+reload_data <- TRUE #Set to TRUE, if you want to reload the data
 if(reload_data){
   sl_data<-lapply(
     files_to_read,
@@ -123,6 +126,9 @@ setorder(sl_data,`subject-name`,`run_index`,`trial_index`)
 
 # Prints YLG behavioral data for behavioral analysis:
 write.csv(sl_data,file=paste(folder_to_write_agglom,'/tds-all_trial_by_trial.csv',sep=''))
+
+# Manually edit multicond for stop3 for 157 (volume 44 is missing)
+TDS157_stop3 = sl_data %>% filter(`subject-name`==157) %>% filter(run_index==3)
 
 ##FILTERING OUT SID THAT DID BEHAVIORAL SESSION (no MRI)
 multicond_dt<-copy(sl_data) %>% 
