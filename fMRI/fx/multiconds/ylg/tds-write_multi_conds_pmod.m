@@ -1,6 +1,6 @@
 % Be sure to run the R script here first (it updates the
 % mat file we get data from for this script):
-% 	/home/research/tds/behavioral/scripts/ylg/tds1-collect_data_for_multi_conds.r
+% 	/projects/dsnlab/tds/TDS_scripts/behavioral/ylg/tds-collect_data_for_multi_conds.r
 % Paths in this script are set to run from the grid (danbo)
 
 SKIP = [103 107 112 138 143 176 191 305 318 319 339 345];
@@ -50,9 +50,9 @@ pmod_conds=struct('includeconds',[1 2 3 4],'pmodnames',{{'go'}},'pmodmatchconds'
 pmod_conds(2)=struct('includeconds',[5 8], 'pmodnames', {{'go' 'next_is_go' 'switch'}}, 'pmodmatchconds',{{[5]}});
 pmod_conds(3)=struct('includeconds',[6 7],'pmodnames',{{'go' 'next_is_go' 'switch'}},'pmodmatchconds',{{[6]}});
 
-
-multicond_WriteDir = '/Users/ralph/Documents/tds/tds_repo/fMRI/analysis/fx/multicond/ylg/';
-multicondSRCFileName = '/Volumes/TDS/Data_Behavioral/YLG/processed/tds-multicond_for_processing_decout_collapsed.mat';
+%CHANGE ME%
+multicond_WriteDir = '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/multicond/ylg/';
+multicondSRCFileName = '/Volumes/TDS/behavior/YLG/processed/tds-multicond_for_processing_decout_collapsed.mat';
 
 load(multicondSRCFileName, 'multicondSRC')
 subject_names = unique(multicondSRC(:,sid_col));
