@@ -43,7 +43,7 @@ mutate(run_length=n_vols*2000)
 
 #run this, if you want to check that the count is the same as the max
 #volume number coded in the file name:
-check_vols = counted_scans %>% mutate(check=n_vols==max_trid) %>% filter(!check) # sid 157 is missing a volume in stop3!
+missing_vols = counted_scans %>% mutate(check=n_vols==max_trid) %>% filter(!check) # sid 157 is missing a volume in stop3!
 
 # #run this, to count the min/max number of volumes for each run (alone, peer, excl)
 # alone_runs = counted_scans %>% filter(grepl("3|4", rid))
@@ -127,8 +127,15 @@ setorder(sl_data,`subject-name`,`run_index`,`trial_index`)
 # Prints YLG behavioral data for behavioral analysis:
 write.csv(sl_data,file=paste(folder_to_write_agglom,'/tds-all_trial_by_trial.csv',sep=''))
 
-# Manually edit multicond for stop3 for 157 (volume 44 is missing)
-TDS157_stop3 = sl_data %>% filter(`subject-name`==157) %>% filter(run_index==3)
+# Manually edit multicond for stop3 for 157 (volume #44 is missing);
+# This adds 1TR (2s) to every onset above 86s (i.e., after volume #43):
+sl_data = sl_data %>% 
+  mutate(`scenario-ms` = ifelse(`subject-name`==157 & run_index==3 & `scenario-ms`>86000, 
+                                `scenario-ms`+2000, `scenario-ms`)) %>%
+  mutate(`yellow-light-ms` = ifelse(`subject-name`==157 & run_index==3 & `yellow-light-ms`>86000, 
+                                `yellow-light-ms`+2000, `yellow-light-ms`)) #%>%
+  #mutate(`decision-ms` = ifelse(`subject-name`==157 & run_index==3 & `decision-ms`>86000, 
+  #                                  `decision-ms`+2000, `decision-ms`))
 
 ##FILTERING OUT SID THAT DID BEHAVIORAL SESSION (no MRI)
 multicond_dt<-copy(sl_data) %>% 
