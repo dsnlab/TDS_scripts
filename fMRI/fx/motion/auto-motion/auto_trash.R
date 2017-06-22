@@ -42,6 +42,10 @@ source('/projects/dsnlab/tds/TDS_scripts/fMRI/fx/motion/auto-motion/auto_trash_c
 # global intensity file created using calculate_global_intensities.R
 intensities = read.csv(paste0(outputDir,study,'_globalIntensities.csv'))
 
+# edit volume numbers for subject 157, stop3
+intensities = intensities %>% 
+  mutate(volume = ifelse(subjectID == 157 & run == "stop3" & volume > 43, volume - 1, volume))
+
 #------------------------------------------------------
 # load rp_txt files and concatenate them
 #------------------------------------------------------
