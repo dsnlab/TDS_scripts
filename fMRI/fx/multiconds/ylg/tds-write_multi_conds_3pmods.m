@@ -47,8 +47,8 @@ conds_as_pmods=true;
 num_l1_conds=4;
 %this structure sets up the loops for pmod creation.
 pmod_conds=struct('includeconds',[1 2 3 4],'pmodnames',{{'go'}},'pmodmatchconds',{{[1 2]}});
-pmod_conds(2)=struct('includeconds',[5 8], 'pmodnames', {{'go' 'next_is_go' 'switch'}}, 'pmodmatchconds',{{[5]}});
-pmod_conds(3)=struct('includeconds',[6 7],'pmodnames',{{'go' 'next_is_go' 'switch'}},'pmodmatchconds',{{[6]}});
+pmod_conds(2)=struct('includeconds',[5 8], 'pmodnames', {{'go'}}, 'pmodmatchconds',{{[5]}});
+pmod_conds(3)=struct('includeconds',[6 7],'pmodnames',{{'go'}},'pmodmatchconds',{{[6]}});
 
 %CHANGE ME%
 multicond_WriteDir = '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/multicond/ylg/';
