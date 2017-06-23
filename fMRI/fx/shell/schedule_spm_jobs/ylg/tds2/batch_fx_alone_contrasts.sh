@@ -27,7 +27,7 @@ REPLACESID='101'
 SPM_PATH=/projects/dsnlab/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/fx/models/ylg/contrasts/fx_ylg_alone_con_base_11.m
+SCRIPT=${STUDY}/fMRI/fx/models/ylg/contrasts/fx_ylg_alone_con_base_13.m
 
 # Tag the results files
 RESULTS_INFIX=fx_ylg_alone_contrasts

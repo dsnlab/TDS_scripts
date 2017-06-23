@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 104
-Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_alone_con_base_11.m
+Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_alone_con_base_13.m
 -------------------------------------------------------------------------------
 
                             < M A T L A B (R) >
@@ -12,9 +12,6 @@ Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_alo
 To get started, type one of these: helpwin, helpdesk, or demo.
 For product information, visit www.mathworks.com.
  
-[Warning: Directory already exists.] 
-[> In make_sid_matlabbatch (line 18)
-  In run (line 96)] 
 
 
 ------------------------------------------------------------------------
@@ -22,7 +19,7 @@ Running job #1
 ------------------------------------------------------------------------
 Running 'Contrast Manager'
 
-SPM12: spm_contrasts.m                             11:16:18 - 10/06/2017
+SPM12: spm_contrasts.m                             17:21:02 - 22/06/2017
 ========================================================================
 Contrasts folder                        :  ./models/ylg/fx_ylg_alone/104
 Deleting contrasts                      :                        ...done
@@ -48,7 +45,11 @@ Deleting contrasts                      :                        ...done
 	spm{T} image 10                 :                   ...computing      ...written spmT_0010.nii
 	contrast image 11               :                   ...computing       ...written con_0011.nii
 	spm{T} image 11                 :                   ...computing      ...written spmT_0011.nii
-Completed                               :          11:16:22 - 10/06/2017
+	contrast image 12               :                   ...computing       ...written con_0012.nii
+	spm{T} image 12                 :                   ...computing      ...written spmT_0012.nii
+	contrast image 13               :                   ...computing       ...written con_0013.nii
+	spm{T} image 13                 :                   ...computing      ...written spmT_0013.nii
+Completed                               :          17:21:07 - 22/06/2017
 Done    'Contrast Manager'
 Done
 
