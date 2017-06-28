@@ -19,7 +19,7 @@ Running job #1
 ------------------------------------------------------------------------
 Running 'Contrast Manager'
 
-SPM12: spm_contrasts.m                             17:21:09 - 22/06/2017
+SPM12: spm_contrasts.m                             16:29:50 - 27/06/2017
 ========================================================================
 Contrasts folder                        :  ./models/ylg/fx_ylg_alone/140
 Deleting contrasts                      :                        ...done
@@ -39,21 +39,17 @@ Deleting contrasts                      :                        ...done
 	spm{T} image  7                 :                   ...computing      ...written spmT_0007.nii
 	contrast image  8               :                   ...computing       ...written con_0008.nii
 	spm{T} image  8                 :                   ...computing      ...written spmT_0008.nii
-0  0  0  0  0  1  <-  !invalid contrast
-Failed  'Contrast Manager'
-Error using spm_run_con (line 249)
-Error in contrast specification
-In file "/gpfs/projects/dsnlab/SPM12/config/spm_run_con.m" (v6764), function "spm_run_con" at line 249.
+	contrast image  9               :                   ...computing       ...written con_0009.nii
+	spm{T} image  9                 :                   ...computing      ...written spmT_0009.nii
+	contrast image 10               :                   ...computing       ...written con_0010.nii
+	spm{T} image 10                 :                   ...computing      ...written spmT_0010.nii
+	contrast image 11               :                   ...computing       ...written con_0011.nii
+	spm{T} image 11                 :                   ...computing      ...written spmT_0011.nii
+	contrast image 12               :                   ...computing       ...written con_0012.nii
+	spm{T} image 12                 :                   ...computing      ...written spmT_0012.nii
+	contrast image 13               :                   ...computing       ...written con_0013.nii
+	spm{T} image 13                 :                   ...computing      ...written spmT_0013.nii
+Completed                               :          16:29:55 - 27/06/2017
+Done    'Contrast Manager'
+Done
 
-The following modules did not run:
-Failed: Contrast Manager
-
-{Error using MATLABbatch system
-Job execution failed. The full log of this run can be found in MATLAB command
-window, starting with the lines (look for the line showing the exact #job as
-displayed in this error message)
-------------------
-Running job #1
-------------------
-} 
->> 

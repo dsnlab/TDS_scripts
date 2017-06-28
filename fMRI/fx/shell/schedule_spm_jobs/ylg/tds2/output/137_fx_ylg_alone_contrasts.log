@@ -19,7 +19,7 @@ Running job #1
 ------------------------------------------------------------------------
 Running 'Contrast Manager'
 
-SPM12: spm_contrasts.m                             17:21:10 - 22/06/2017
+SPM12: spm_contrasts.m                             16:29:48 - 27/06/2017
 ========================================================================
 Contrasts folder                        :  ./models/ylg/fx_ylg_alone/137
 Deleting contrasts                      :                        ...done
@@ -29,7 +29,11 @@ Deleting contrasts                      :                        ...done
 	spm{T} image  2                 :                   ...computing      ...written spmT_0002.nii
 	contrast image  3               :                   ...computing       ...written con_0003.nii
 	spm{T} image  3                 :                   ...computing      ...written spmT_0003.nii
-0           0         0.5           0         0.5  <-  !invalid contrast
+	contrast image  4               :                   ...computing       ...written con_0004.nii
+	spm{T} image  4                 :                   ...computing      ...written spmT_0004.nii
+	contrast image  5               :                   ...computing       ...written con_0005.nii
+	spm{T} image  5                 :                   ...computing      ...written spmT_0005.nii
+0  0  0  1  <-  !invalid contrast
 Failed  'Contrast Manager'
 Error using spm_run_con (line 249)
 Error in contrast specification

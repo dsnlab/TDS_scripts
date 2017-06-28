@@ -23,39 +23,39 @@ Running 'File Selector (Batch Mode)'
 Done    'File Selector (Batch Mode)'
 Running 'fMRI model specification'
 
-SPM12: spm_fMRI_design (v5183)                     17:27:51 - 09/06/2017
+SPM12: spm_fMRI_design (v5183)                     16:27:08 - 27/06/2017
 ========================================================================
 Saving fMRI design                      :               ...SPM.mat saved
 
-SPM12: spm_fmri_spm_ui (v6088)                     17:27:51 - 09/06/2017
+SPM12: spm_fmri_spm_ui (v6088)                     16:27:08 - 27/06/2017
 ========================================================================
 Mapping files                           :                        ...done
 Calculating globals                     :                        ...done
 Saving SPM configuration                :               ...SPM.mat saved
 Saving SPM configuration                :               ...SPM.mat saved
-Completed                               :          17:28:03 - 09/06/2017
+Completed                               :          16:27:20 - 27/06/2017
 Done    'fMRI model specification'
 Running 'Model estimation'
 
-SPM12: spm_spm (v6842)                             17:28:03 - 09/06/2017
+SPM12: spm_spm (v6842)                             16:27:20 - 27/06/2017
 ========================================================================
 
-SPM12: spm_est_non_sphericity (v6913)              17:28:04 - 09/06/2017
+SPM12: spm_est_non_sphericity (v6913)              16:27:21 - 27/06/2017
 ========================================================================
 Chunk   1/5                             :                  ...processing                       ...doneChunk   2/5                             :                  ...processing                       ...doneChunk   3/5                             :                  ...processing                       ...doneChunk   4/5                             :                  ...processing                       ...doneChunk   5/5                             :                  ...processing
-Temporal non-sphericity (96589 voxels)  :             ...ReML estimation
+Temporal non-sphericity (99251 voxels)  :             ...ReML estimation
   ReML Block 1                
-  ReML Iteration 1                      :        ...1.913130e+01 [+4.25]
-  ReML Iteration 2                      :        ...1.065637e+00 [+4.50]
-  ReML Iteration 3                      :        ...1.157115e-01 [+4.75]
-  ReML Iteration 4                      :        ...1.364673e-02 [+5.00]
+  ReML Iteration 1                      :        ...1.973568e+01 [+4.25]
+  ReML Iteration 2                      :        ...9.450455e-01 [+4.50]
+  ReML Iteration 3                      :        ...1.019033e-01 [+4.75]
+  ReML Iteration 4                      :        ...1.180175e-02 [+5.00]
 
-SPM12: spm_spm (v6842)                             17:28:10 - 09/06/2017
+SPM12: spm_spm (v6842)                             16:27:27 - 27/06/2017
 ========================================================================
 Chunk   1/5                             :                  ...processing                       ...doneChunk   2/5                             :                  ...processing                       ...doneChunk   3/5                             :                  ...processing                       ...doneChunk   4/5                             :                  ...processing                       ...doneChunk   5/5                             :                  ...processing                       ...done
 Spatial non-sphericity (over scans)     :      ...estimating derivatives ...writing resels/voxel image                       ...done
 Saving SPM.mat                          :                     ...writing                       ...done
-Completed                               :          17:28:38 - 09/06/2017
+Completed                               :          16:28:07 - 27/06/2017
 Done
 Done    'Model estimation'
 Done

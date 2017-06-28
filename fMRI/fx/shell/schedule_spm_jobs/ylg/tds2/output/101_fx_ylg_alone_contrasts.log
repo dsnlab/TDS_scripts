@@ -12,9 +12,6 @@ Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_alo
 To get started, type one of these: helpwin, helpdesk, or demo.
 For product information, visit www.mathworks.com.
  
-[Warning: Directory already exists.] 
-[> In make_sid_matlabbatch (line 18)
-  In run (line 96)] 
 
 
 ------------------------------------------------------------------------
@@ -22,7 +19,7 @@ Running job #1
 ------------------------------------------------------------------------
 Running 'Contrast Manager'
 
-SPM12: spm_contrasts.m                             17:20:59 - 22/06/2017
+SPM12: spm_contrasts.m                             16:29:40 - 27/06/2017
 ========================================================================
 Contrasts folder                        :  ./models/ylg/fx_ylg_alone/101
 Deleting contrasts                      :                        ...done
@@ -52,7 +49,7 @@ Deleting contrasts                      :                        ...done
 	spm{T} image 12                 :                   ...computing      ...written spmT_0012.nii
 	contrast image 13               :                   ...computing       ...written con_0013.nii
 	spm{T} image 13                 :                   ...computing      ...written spmT_0013.nii
-Completed                               :          17:21:04 - 22/06/2017
+Completed                               :          16:29:44 - 27/06/2017
 Done    'Contrast Manager'
 Done
 

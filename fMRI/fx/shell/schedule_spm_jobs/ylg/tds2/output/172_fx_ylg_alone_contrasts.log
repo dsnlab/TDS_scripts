@@ -19,7 +19,7 @@ Running job #1
 ------------------------------------------------------------------------
 Running 'Contrast Manager'
 
-SPM12: spm_contrasts.m                             17:21:15 - 22/06/2017
+SPM12: spm_contrasts.m                             16:29:56 - 27/06/2017
 ========================================================================
 Contrasts folder                        :  ./models/ylg/fx_ylg_alone/172
 Deleting contrasts                      :                        ...done
@@ -49,7 +49,7 @@ Deleting contrasts                      :                        ...done
 	spm{T} image 12                 :                   ...computing      ...written spmT_0012.nii
 	contrast image 13               :                   ...computing       ...written con_0013.nii
 	spm{T} image 13                 :                   ...computing      ...written spmT_0013.nii
-Completed                               :          17:21:20 - 22/06/2017
+Completed                               :          16:30:00 - 27/06/2017
 Done    'Contrast Manager'
 Done
 
