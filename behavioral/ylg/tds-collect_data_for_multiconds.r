@@ -128,7 +128,8 @@ setorder(sl_data,`subject-name`,`run_index`,`trial_index`)
 write.csv(sl_data,file=paste(folder_to_write_agglom,'/tds-all_trial_by_trial.csv',sep=''))
 
 # Manually edit multicond for stop3 for 157 (volume #44 is missing);
-# This adds 1TR (2s) to every onset above 86s (i.e., after volume #43):
+# This inserts NA for events occurring during volume #44 (i.e., between 86-88s)
+# and subtracts 1TR (2s) from every onset above 88s (i.e., after volume #44):
 sl_data = sl_data %>% 
   mutate(`scenario-ms` = ifelse(`subject-name`==157 & run_index==3 & `scenario-ms`>86000 & `scenario-ms`<88000, NA, 
                          ifelse(`subject-name`==157 & run_index==3 & `scenario-ms`>88000, `scenario-ms`-2000, `scenario-ms`))) %>%
