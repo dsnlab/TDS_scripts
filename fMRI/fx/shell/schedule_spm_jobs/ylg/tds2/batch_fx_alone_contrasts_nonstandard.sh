@@ -19,7 +19,8 @@ STUDY=/projects/dsnlab/tds/TDS_scripts
 
 # Set subject list
 #SUBJLIST=`cat subject_list_fx_alone.txt`
-SUBJLIST=`cat subject_list_fx_alone_redo.txt`
+#SUBJLIST=`cat subject_list_fx_alone_redo.txt`
+SUBJLIST=`cat subject_list_fx_alone_nonstandard.txt`
 
 #Which SID should be replaced?
 REPLACESID='101'
@@ -28,7 +29,7 @@ REPLACESID='101'
 SPM_PATH=/projects/dsnlab/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/fx/models/ylg/contrasts/fx_ylg_alone_con_base_13.m
+SCRIPT=${STUDY}/fMRI/fx/models/ylg/contrasts/fx_ylg_alone_con_base_9.m
 
 # Tag the results files
 RESULTS_INFIX=fx_ylg_alone_contrasts
