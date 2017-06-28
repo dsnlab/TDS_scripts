@@ -130,12 +130,10 @@ write.csv(sl_data,file=paste(folder_to_write_agglom,'/tds-all_trial_by_trial.csv
 # Manually edit multicond for stop3 for 157 (volume #44 is missing);
 # This adds 1TR (2s) to every onset above 86s (i.e., after volume #43):
 sl_data = sl_data %>% 
-  mutate(`scenario-ms` = ifelse(`subject-name`==157 & run_index==3 & `scenario-ms`>86000, 
-                                `scenario-ms`+2000, `scenario-ms`)) %>%
-  mutate(`yellow-light-ms` = ifelse(`subject-name`==157 & run_index==3 & `yellow-light-ms`>86000, 
-                                `yellow-light-ms`+2000, `yellow-light-ms`)) #%>%
-  #mutate(`decision-ms` = ifelse(`subject-name`==157 & run_index==3 & `decision-ms`>86000, 
-  #                                  `decision-ms`+2000, `decision-ms`))
+  mutate(`scenario-ms` = ifelse(`subject-name`==157 & run_index==3 & `scenario-ms`>86000 & `scenario-ms`<88000, NA, 
+                         ifelse(`subject-name`==157 & run_index==3 & `scenario-ms`>88000, `scenario-ms`-2000, `scenario-ms`))) %>%
+  mutate(`yellow-light-ms` = ifelse(`subject-name`==157 & run_index==3 & `yellow-light-ms`>86000 & `yellow-light-ms`<88000, NA,
+  							 ifelse(`subject-name`==157 & run_index==3 & `yellow-light-ms`>88000, `yellow-light-ms`-2000, `yellow-light-ms`)))
 
 ##FILTERING OUT SID THAT DID BEHAVIORAL SESSION (no MRI)
 multicond_dt<-copy(sl_data) %>% 
@@ -243,6 +241,7 @@ gather(
 separate(key,c('d_or_c','ons_or_dur'),extra='merge',sep='_') %>%
 unite(condition,decision_outcome_name,d_or_c) %>%
 ungroup() %>%
+filter(!is.na(value)) %>%
 spread(ons_or_dur,value)%>% as.data.table
 
 # unique(multicond_dt_decout_collapsed$condition)
