@@ -1,1 +1,2 @@
-For analyses that include puberty (i.e., PDS score), only 77 participants were included because PDS score was missing for 2 participants.
+For analyses that include puberty (i.e., PDS score), only 77 participants were included because PDS score was missing for 160 and 174.
+Subjects 135 and 137 did not have good go outcomes; a separate contrasts script was run for these subjects, including 9 contrasts total (instead of 13 contrasts). The contrasts are con_0006.nii = bad-baseline, con_0007.nii = bad_go-stop, con_0008.nii = bad_stop-go, con_0009.nii = good-bad. Contrasts 1 thru 5 remained the same: con_0001.nii = decisions-baseline, con_0002.nii = go-stop, con_0003.nii = stop-go, con_0004.nii = outcomes-baseline, con_0005.nii = good-baseline.
