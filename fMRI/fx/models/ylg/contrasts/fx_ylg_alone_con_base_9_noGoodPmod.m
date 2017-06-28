@@ -1,5 +1,5 @@
 %-----------------------------------------------------------------------
-% Job saved on 28-Jun-2017 10:16:08 by cfg_util (rev $Rev: 6460 $)
+% Job saved on 28-Jun-2017 11:16:29 by cfg_util (rev $Rev: 6460 $)
 % spm SPM - SPM12 (6906)
 %-----------------------------------------------------------------------
 matlabbatch{1}.spm.stats.con.spmmat = {'/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_alone/101/SPM.mat'};
