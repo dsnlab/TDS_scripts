@@ -5,8 +5,10 @@
 # Date created; 11/21/2016; Last modified: 6/16/2017
 # This script should be run after writing residuals from second level models in SPM, and before running "AvgIndACFest.R"
 
+rx_path=/Volumes/TDS/nonbids_data/derivatives/fMRI/rx
+
 export PATH=/usr/local/afni_16.1.06:${PATH} # set path to latest AFNI version
-cd /vxfsvol/home/research/tds/fMRI/analysis/rx/cyb/catchonly_meanCpmod_noquad_w190/indResid_F_2x2_flexi #rx directory w/ residuals
+cd ${rx_path}/ylg/alone/tds2_n79/ttests/1-decisions #rx directory w/ residuals
 
 # estimate acf parameters for per subject and save this output to a log file
 for i in Res_* 
