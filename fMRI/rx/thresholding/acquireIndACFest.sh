@@ -5,7 +5,7 @@
 # Date created; 11/21/2016; Last modified: 6/16/2017
 # This script should be run after writing residuals from second level models in SPM, and before running "AvgIndACFest.R"
 
-rx_path=/Volumes/TDS/nonbids_data/derivatives/fMRI/rx
+rx_path=/projects/dsnlab/tds/fMRI/analysis/rx
 
 export PATH=/usr/local/afni_16.1.06:${PATH} # set path to latest AFNI version
 cd ${rx_path}/ylg/alone/tds2_n79/ttests/1-decisions #rx directory w/ residuals
