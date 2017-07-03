@@ -35,12 +35,16 @@ if(!require(tidyverse)){
   install.packages('tidyverse',repos=osuRepo)
 }
 
-source('/projects/dsnlab/tds/TDS_scripts/fMRI/fx/motion/auto-motion/auto_trash_config.R')
+if(!require(ggplot2)){
+  install.packages('ggplot2',repos=osuRepo)
+}
+
+source('~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/auto_trash_config.R')
 #------------------------------------------------------
 # load global intensity data
 #------------------------------------------------------
 # global intensity file created using calculate_global_intensities.R
-intensities = read.csv(paste0(outputDir,study,'_globalIntensities.csv'))
+intensities = read.csv(paste0('~',outputDir,study,'_globalIntensities.csv'))
 
 # edit volume numbers for subject 157, stop3
 intensities = intensities %>% 
@@ -181,8 +185,9 @@ if (writePlots){
       plot = ggplot(., aes(volume, value)) + 
         geom_point(aes(color = code)) + 
         geom_line() + 
-        facet_grid(measure ~ run, scales= "free") +
+        facet_grid(run ~ measure, scales= "free") +
         scale_colour_discrete(drop = FALSE) + 
+        scale_x_discrete(breaks=c())
         labs(title = .$subjectID[[1]])
       print(plot)
       ggsave(plot, file=paste0(plotDir,.$subjectID[[1]],'.pdf'), height = 10, width = 12)
