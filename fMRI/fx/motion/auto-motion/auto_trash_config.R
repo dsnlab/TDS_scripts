@@ -22,10 +22,10 @@
 # to run the script
 #------------------------------------------------------
 # paths
-rpDir = '/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/rp_txt/'
-outputDir = '/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/'
-rpOutputDir = '/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/rp_auto_txt/'
-plotDir = '/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/plots/'
+rpDir = '~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/rp_txt/'
+outputDir = '~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/'
+rpOutputDir = '~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/rp_auto_txt/'
+plotDir = '~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/plots/'
 
 # variables
 study = "tds2"

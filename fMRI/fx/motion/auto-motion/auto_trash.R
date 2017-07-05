@@ -31,20 +31,24 @@
 #------------------------------------------------------
 osuRepo = 'http://ftp.osuosl.org/pub/cran/'
 
-if(!require(tidyverse)){
-  install.packages('tidyverse',repos=osuRepo)
+if(!require(dplyr)){
+  install.packages('dplyr',repos=osuRepo)
+}
+
+if(!require(tidyr)){
+  install.packages('tidyr',repos=osuRepo)
 }
 
 if(!require(ggplot2)){
   install.packages('ggplot2',repos=osuRepo)
 }
 
-source('~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/auto_trash_config.R')
+source('/Users/theresacheng/projects/dsnlab/tds/TDS_scripts/fMRI/fx/motion/auto-motion/auto_trash_config.R')
 #------------------------------------------------------
 # load global intensity data
 #------------------------------------------------------
 # global intensity file created using calculate_global_intensities.R
-intensities = read.csv(paste0('~',outputDir,study,'_globalIntensities.csv'))
+intensities = read.csv(paste0(outputDir,study,'_globalIntensities.csv'))
 
 # edit volume numbers for subject 157, stop3
 intensities = intensities %>% 
@@ -172,25 +176,52 @@ rp_files_written = rp %>%
 #------------------------------------------------------
 # plot data for each subject
 #------------------------------------------------------
+# broken into two plots of 5 runs each for legibility
+
 if (writePlots){
-  # visualize for each subject subject
+  # visualize for each subject (first 5 runs)
   trash.plot = trash %>%
     mutate(trash.combined = ifelse(is.na(trash.combined), 0, trash.combined),
           code = ifelse(trash.combined == 1, "trash", "not trash")) %>%
     select(-starts_with("Diff"), -starts_with("trash")) %>%
     gather(measure, value, -c(subjectID, run, volume, code))
+    trash.plot=filter(trash.plot, run=="cyb1" | run=="cyb2" | run=="stop3" | run=="stop4" | run=="stop5")
   
   nada = trash.plot %>% group_by(subjectID) %>%
     do({
       plot = ggplot(., aes(volume, value)) + 
         geom_point(aes(color = code)) + 
         geom_line() + 
-        facet_grid(run ~ measure, scales= "free") +
+        facet_grid(measure ~ run, scales= "free") +
         scale_colour_discrete(drop = FALSE) + 
-        scale_x_discrete(breaks=c())
+        scale_x_continuous(breaks=c(0, 10, 20, 30, 40, 50, 60, 70, 80))
         labs(title = .$subjectID[[1]])
       print(plot)
-      ggsave(plot, file=paste0(plotDir,.$subjectID[[1]],'.pdf'), height = 10, width = 12)
+      ggsave(plot, file=paste0(plotDir,.$subjectID[[1]],'_pt1.pdf'), height = 10, width = 12)
+      data.frame()
+    })
+}
+
+if (writePlots){
+  # visualize for each subject (second 5 runs)
+  trash.plot = trash %>%
+    mutate(trash.combined = ifelse(is.na(trash.combined), 0, trash.combined),
+           code = ifelse(trash.combined == 1, "trash", "not trash")) %>%
+    select(-starts_with("Diff"), -starts_with("trash")) %>%
+    gather(measure, value, -c(subjectID, run, volume, code))
+  trash.plot=filter(trash.plot, run=="stop6" | run=="stop7" | run=="stop8" | run=="vid1" | run=="vid2")
+  
+  nada = trash.plot %>% group_by(subjectID) %>%
+    do({
+      plot = ggplot(., aes(volume, value)) + 
+        geom_point(aes(color = code)) + 
+        geom_line() + 
+        facet_grid(measure ~ run, scales= "free") +
+        scale_colour_discrete(drop = FALSE) + 
+        scale_x_continuous(breaks=c(0, 10, 20, 30, 40, 50, 60, 70, 80))
+      labs(title = .$subjectID[[1]])
+      print(plot)
+      ggsave(plot, file=paste0(plotDir,.$subjectID[[1]],'_pt2.pdf'), height = 10, width = 12)
       data.frame()
     })
 }
