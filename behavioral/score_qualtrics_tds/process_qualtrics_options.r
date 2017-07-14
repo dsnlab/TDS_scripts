@@ -21,33 +21,33 @@ if (module == 'TDS2 and TDS3'){
   hasCBCL <- 1 # does the survey include CBCL?
   hasRPI <- 1 # does this survey include RPI?
   hasPDSS <- 1 # does this survey include PDSS?
-  csv_files <- c('/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/CARE_Social_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/RPI_scoring_rubric_1.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/BFNE_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/CBCL_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/PAL2_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/ACE_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/RPI_scoring_rubric_2.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/RSQ_scoring_rubric_2.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/CARE-R_WE_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/PDS_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/CARE-R_EI_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/B-SSS_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/CES-DC_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/SPSRQS_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/RSQ_scoring_rubric_1.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/SCARED_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/BIS_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/PEQ_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/NTS_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/UPPSP_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/SES_scoring_rubric.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds2/YRBS_scoring_rubric.csv')
+  csv_files <- c('/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/CARE_Social_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/RPI_scoring_rubric_1.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/BFNE_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/CBCL_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/PAL2_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/ACE_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/RPI_scoring_rubric_2.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/RSQ_scoring_rubric_2.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/CARE-R_WE_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/PDS_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/CARE-R_EI_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/B-SSS_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/CES-DC_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/SPSRQS_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/RSQ_scoring_rubric_1.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/SCARED_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/BIS_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/PEQ_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/NTS_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/UPPSP_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/SES_scoring_rubric.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds2/YRBS_scoring_rubric.csv')
  
-  csv_wide_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-2-auto_scored_scales_wide.csv"
-  csv_long_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-2-auto_scored_scales_long.csv"
-  csv_longRaw_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-2-auto_raw_qualtrics_long.csv"
-  csv_wideRaw_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-2-auto_raw_qualtrics-"
+  csv_wide_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-2-auto_scored_scales_wide.csv"
+  csv_long_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-2-auto_scored_scales_long.csv"
+  csv_longRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-2-auto_raw_qualtrics_long.csv"
+  csv_wideRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-2-auto_raw_qualtrics-"
 }
 
 if (module == 'TDS1-Pre'){
@@ -65,25 +65,25 @@ if (module == 'TDS1-Pre'){
   hasCBCL <- 1 # does the survey include CBCL?
   hasRPI <- 1 # does this survey include RPI?
   hasPDSS <- 0 # does this survey include PDSS?
-  csv_files <- c('/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/ACE_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/B-SSS_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/BFNE_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/BIS_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/CARE-R_EI_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/CARE-R_WE_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/CBCL_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/NTS_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/PAL2_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/PEQ_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/RPI_scoring_rubric_1_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/RPI_scoring_rubric_2_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/SPSRQS_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/pre/UPPSP_scoring_rubric_TDS1_PRE.csv')
+  csv_files <- c('/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/ACE_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/B-SSS_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/BFNE_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/BIS_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/CARE-R_EI_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/CARE-R_WE_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/CBCL_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/NTS_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/PAL2_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/PEQ_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/RPI_scoring_rubric_1_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/RPI_scoring_rubric_2_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/SPSRQS_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/UPPSP_scoring_rubric_TDS1_PRE.csv')
   
-  csv_wide_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-1-PRE-auto_scored_scales_wide.csv"
-  csv_long_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-1-PRE-auto_scored_scales_long.csv"
-  csv_longRaw_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-1-PRE-auto_raw_qualtrics_long.csv"
-  csv_wideRaw_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-1-PRE-auto_raw_qualtrics-"
+  csv_wide_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_scored_scales_wide.csv"
+  csv_long_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_scored_scales_long.csv"
+  csv_longRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_raw_qualtrics_long.csv"
+  csv_wideRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_raw_qualtrics-"
 }
 
 if (module == 'TDS1-Post'){
@@ -101,30 +101,30 @@ if (module == 'TDS1-Post'){
   hasCBCL <- 1 # does the survey include CBCL?
   hasRPI <- 1 # does this survey include RPI?
   hasPDSS <- 1 # does this survey include PDSS?
-  csv_files <- c('/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/CARE_Social_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/RPI_scoring_rubric_1_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/BFNE_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/CBCL_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/PAL2_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/ACE_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/RPI_scoring_rubric_2_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/RSQ_scoring_rubric_2_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/CARE-R_WE_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/PDS_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/CARE-R_EI_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/B-SSS_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/CES-DC_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/SPSRQS_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/RSQ_scoring_rubric_1_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/SCARED_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/BIS_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/PEQ_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/NTS_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/UPPSP_scoring_rubric_TDS1_POST.csv',
-                 '/Volumes/TDS/Data_Behavioral/Qualtrics/rubrics/tds1/post/YRBS_scoring_rubric_TDS1_POST.csv')
+  csv_files <- c('/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/CARE_Social_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/RPI_scoring_rubric_1_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/BFNE_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/CBCL_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/PAL2_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/ACE_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/RPI_scoring_rubric_2_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/RSQ_scoring_rubric_2_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/CARE-R_WE_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/PDS_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/CARE-R_EI_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/B-SSS_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/CES-DC_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/SPSRQS_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/RSQ_scoring_rubric_1_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/SCARED_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/BIS_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/PEQ_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/NTS_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/UPPSP_scoring_rubric_TDS1_POST.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/post/YRBS_scoring_rubric_TDS1_POST.csv')
   
-  csv_wide_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-1-POST-auto_scored_scales_wide.csv"
-  csv_long_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-1-POST-auto_scored_scales_long.csv"
-  csv_longRaw_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-1-POST-auto_raw_qualtrics_long.csv"
-  csv_wideRaw_path <- "/Volumes/TDS/Data_Behavioral/Qualtrics/TDS-1-POST-auto_raw_qualtrics-"
+  csv_wide_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-POST-auto_scored_scales_wide.csv"
+  csv_long_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-POST-auto_scored_scales_long.csv"
+  csv_longRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-POST-auto_raw_qualtrics_long.csv"
+  csv_wideRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-POST-auto_raw_qualtrics-"
 }

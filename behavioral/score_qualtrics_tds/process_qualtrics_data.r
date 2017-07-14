@@ -19,11 +19,11 @@
 #+ echo=FALSE, results='hide'
 
 ### CHANGE THESE VARIABLES ###
-source('/Users/marge/Documents/tds/behavioral/scripts/score_qualtrics_tds/process_qualtrics_options.r')
+source('/projects/dsnlab/tds/TDS_Scripts/behavioral/score_qualtrics_tds/process_qualtrics_options.r')
 ###############################
 
 ### CHANGE THIS IF NECESSARY###
-credsFile<-'/Users/marge/Documents/tds/behavioral/scripts/score_qualtrics_tds/credentials.yaml.DEFAULT'
+credsFile<-'/Volumes/TDS/behavior/Qualtrics/credentials.yaml.DEFAULT'
 #For example, this is what the yaml file should look like, no leading '#'
 #And it needs a 3rd line that is just blank, don't ask me why. Obviously fake token here.
 #user: tagstudy#oregon
@@ -351,7 +351,7 @@ long_survey_data_nodupes <- long_survey_data %>% ungroup() %>%
 # 'process_qualtrics_data.r' you can look at the output generated in order to help you catch errors
 #that you need to deal with in 'clean_this_study.r'. After you've edited 'clear_this_study.r' to
 #correct those errors, you can rerun this script.
-source('/Users/marge/Documents/tds/behavioral/scripts/score_qualtrics_tds/clean_this_study.r')
+source('/projects/dsnlab/tds/TDS_scripts/behavioral/score_qualtrics_tds/clean_this_study.r')
 
 long_survey_data_filtered<-long_survey_data_nodupes %>% 
   clean_this_study()
