@@ -25,7 +25,118 @@ library(qualtrics)
 rm(packages)
 ```
 
-Prepare the CARE
-```{r Prepare CARE, message=FALSE, warning=FALSE, include=FALSE}
+Prepare uestionnaires
+```{r Prepare Questionnaires, message=FALSE, warning=FALSE, include=FALSE}
+TDS1<-read.csv(paste0(workdir,
+                      "Qualtrics/TDS-1-POST-auto_raw_qualtrics_long.csv"),
+               header = TRUE,
+               stringsAsFactors = FALSE) %>%
+  filter(grepl("CARE",item))
+
+TDS2<-read.csv(paste0(workdir,
+                      "Qualtrics/TDS-2-auto_raw_qualtrics_long.csv"),
+               header = TRUE,
+               stringsAsFactors = FALSE) %>%
+  filter(grepl("CARE",item))
+
+TDS1_IDs<-unique(TDS1$SID)
+TDS2_IDs<-unique(TDS2$SID)
+
+
+# Care R Soc
+CARE_R_SOC<-bind_rows(filter(TDS1, grepl("CARE_S",item)) %>% 
+                        mutate(value=as.numeric(value)) %>% 
+                        filter(!is.na(value)) %>% 
+                        distinct(SID,item,value,survey_name,.keep_all = FALSE) %>% 
+                        spread(item,value),
+                      filter(TDS2, grepl("CARE_S",item)) %>% 
+                        mutate(value=as.numeric(value)) %>% 
+                        filter(!is.na(value)) %>% 
+                        distinct(SID,item,value,survey_name,.keep_all = FALSE) %>% 
+                        spread(item,value))
+
+CARE_R_SOC<-CARE_R_SOC %>%
+  mutate(do_marijuana=CARE_S_1A,
+         av_marijuana=CARE_S_1B,
+         do_otherdrugs=CARE_S_2A,
+         av_otherdrugs=CARE_S_2B,
+         do_alcohol=CARE_S_3A,
+         av_alcohol=CARE_S_3B,
+         do_binge=CARE_S_4A,
+         av_binge=CARE_S_4B,
+         do_drinkgame=CARE_S_5A,
+         av_drinkgame=CARE_S_5B,
+         do_drivedrunk=CARE_S_6A,
+         av_drivedrunk=CARE_S_6B,
+         do_grabpush=CARE_S_7A,
+         av_grabpush=CARE_S_7B,
+         do_graffiti=CARE_S_8A,
+         av_graffiti=CARE_S_8B,
+         do_hitsomeone=CARE_S_9A,
+         av_hitsomeone=CARE_S_9B,
+         do_slapsomeone=CARE_S_10A,
+         av_slapsomeone=CARE_S_10B,
+         do_punchsomeone=CARE_S_11A,
+         av_punchsomeone=CARE_S_11B,
+         do_drivereckless=CARE_S_12A,
+         av_drivereckless=CARE_S_12B,
+         do_textdrive=CARE_S_13A,
+         av_textdrive=CARE_S_13B,
+         do_phonedrive=CARE_S_14A,
+         av_phonedrive=CARE_S_14B) %>%
+  mutate(carersoc_gen=rowMeans(cbind(CARE_S_I,CARE_S_II),na.rm=T),
+         carersoc_dosubstance=round(rowMeans(cbind(CARE_S_2A,CARE_S_3A,CARE_S_4A,CARE_S_5A),na.rm=T),2),
+         carersoc_avoidsubstance=round(rowMeans(cbind(CARE_S_2B,CARE_S_3B,CARE_S_4B,CARE_S_5B),na.rm=T),2),
+         carersoc_doviolence=round(rowMeans(cbind(CARE_S_7A,CARE_S_9A,CARE_S_10A,CARE_S_11A),na.rm=T),2),
+         carersoc_avoidviolence=round(rowMeans(cbind(CARE_S_7B,CARE_S_9B,CARE_S_10B,CARE_S_11B),na.rm=T),2),
+         carersoc_dorecklessdriving=round(rowMeans(cbind(CARE_S_6A,CARE_S_12A,CARE_S_13A,CARE_S_14A),na.rm=T),2),
+         carersoc_avoidrecklessdriving=round(rowMeans(cbind(CARE_S_6B,CARE_S_12B,CARE_S_13B,CARE_S_14B),na.rm=T),2),
+         carersoc_dograffiti=CARE_S_8A,
+         carersoc_avoidgraffiti=CARE_S_8B)  
+
+## Graph it
+CARE_R_SOC_DO<-CARE_R_SOC %>%
+  select(SID,carersoc_dograffiti,carersoc_dosubstance,carersoc_doviolence,carersoc_dorecklessdriving) %>%
+  mutate(Graffiti=carersoc_dograffiti,
+         Substances=carersoc_dosubstance,
+         Violence=carersoc_doviolence,
+         Reckless_Driving=carersoc_dorecklessdriving) %>%
+  gather('item','value',2:length(.)) %>%
+  filter(!grepl("carersoc_",item))
+CARE_R_SOC_DO_graph<-ggplot(CARE_R_SOC_DO, aes(x=value, colour=item)) +
+  geom_density(alpha=.3)+
+  ggtitle(paste0("CARE-R Social: Doing these things would make people 1: like me a lot less to 5: like me a lot more. N= ",length(unique(CARE_R_SOC_DO$SID))," participants"))
+
+
+CARE_R_SOC_DONT<-CARE_R_SOC %>%
+  select(SID,carersoc_avoidgraffiti,
+         carersoc_avoidsubstance,
+         carersoc_avoidviolence,
+         carersoc_avoidrecklessdriving) %>%
+  mutate(Graffiti=carersoc_avoidgraffiti,
+         Substances=carersoc_avoidsubstance,
+         Violence=carersoc_avoidviolence,
+         Reckless_Driving=carersoc_avoidrecklessdriving) %>%
+  gather('item','value',2:length(.)) %>%
+  filter(!grepl("carersoc_",item))
+CARE_R_SOC_DONT_graph<-ggplot(CARE_R_SOC_DONT, aes(x=value, colour=item)) +
+  geom_density(alpha=.3)+
+  ggtitle(paste0("CARE-R Social: NOT doing these things would make people 1: like me a lot less to 5: like me a lot more. N= ",length(unique(CARE_R_SOC_DONT$SID))," participants"))
+
+
+# Histograms of individual items
+hist(CARE_R_SOC$do_alcohol,breaks = 10)
+hist(CARE_R_SOC$av_alcohol,breaks = 10)
+dodge <- position_dodge(width=0.5)  
+alcohol<-ggplot(CARE_R_SOC, aes(do_alcohol,av_alcohol,colour=SID))+
+  geom_point(position=dodge)
+cor.test(CARE_R_SOC$do_alcohol,CARE_R_SOC$av_alcohol)
+
+hist(CARE_R_SOC$do_marijuana,breaks = 10)
+hist(CARE_R_SOC$av_marijuana,breaks = 10)
+dodge <- position_dodge(width=0.5)  
+alcohol<-ggplot(CARE_R_SOC, aes(do_alcohol,av_alcohol,colour=SID))+
+  geom_point(position=dodge)
+cor.test(CARE_R_SOC$do_alcohol,CARE_R_SOC$av_alcohol)
 
 ```
