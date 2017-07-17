@@ -20,9 +20,11 @@ behave_folder<-'behavior/YLG/'
 scans_folder<-paste(tds_folder,'/nonbids_data/fMRI/subjects/',sep='')
 files_folder<-paste(tds_folder,behave_folder,'raw/',sep='')
 folder_to_write_agglom<-paste(tds_folder,behave_folder,'processed/',sep='')
-files_to_read<-as.list(dir(files_folder,recursive=T,pattern='csv_run_output.*csv$'))
 intersection_types_file<-paste(files_folder,'intersection_types.csv',sep='')
 scans_to_count_folder<-paste(scans_folder,sep='')
+
+# These lines will take some time to run because they involve data collection
+files_to_read<-as.list(dir(files_folder,recursive=T,pattern='csv_run_output.*csv$'))
 scans_to_count<-data.table(scan_files=dir(
 	scans_to_count_folder,
 	recursive=T,
@@ -79,6 +81,12 @@ sl_numeric_cols<-c(1:2,4:6,9:12,15,17:18)
 
 ## CHANGE IF NEEDED ##
 # Edits to specific subjects' data
+sl_data[`subject-name`=='127' & `profile-name`=='B', run_index:=3] # missing the 2nd practice run for 127
+sl_data[`subject-name`=='127' & `profile-name`=='E', run_index:=4]
+sl_data[`subject-name`=='127' & `profile-name`=='C', run_index:=5]
+sl_data[`subject-name`=='127' & `profile-name`=='D', run_index:=6]
+sl_data[`subject-name`=='127' & `profile-name`=='A', run_index:=7]
+sl_data[`subject-name`=='127' & `profile-name`=='H', run_index:=8]
 sl_data[`subject-name`=='107C',`subject-name`:='107'] # For some reason this subject has a misnamed run
 sl_data[`subject-name`=='170' & grepl('2015-04-25', `when-run-started`),`subject-name`:='168'] # Accidentaly misnamed subject for all runs
 sl_data[`subject-name`=='174' & grepl('2015-05-02', `when-run-started`),`subject-name`:='172'] # Accidentaly misnamed subject for practice runs only
