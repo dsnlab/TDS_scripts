@@ -101,6 +101,10 @@ regionfile={[VOIdir 'L_NAcc_p75.nii']
     [VOIdir 'R_NAcc_p75.nii']
     };
 
+% regionfile={[VOIdir 'mOFC_view_blur_0_50_-19_p0001.nii'] % change these so they're all different
+%     [VOIdir 'mOFC_view_blur_0_50_-19_p0001.nii']
+%     [VOIdir 'mOFC_view_blur_0_50_-19_p0001.nii']  };
+
 %User input required (region names) These are nicknames you can pick.
 region={'L_NAcc', 'R_NAcc'};
 

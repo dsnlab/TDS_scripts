@@ -9,7 +9,7 @@ library(plyr)
 
 # Inputs
 rm(list=ls())
-rx_directory="/Volumes/research/tds/fMRI/analysis/rx/cyb/catchonly_meanCpmod_noquad_w190/indResid_F_2x2_flexi"
+rx_directory="/projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/regr/cov_puberty/9-bad_go-stop"
 
 # Code
 setwd(rx_directory) 
