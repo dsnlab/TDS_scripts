@@ -1,15 +1,15 @@
 spm fmri
-function ppi_wrapper_20160718_cyb(regionnumber,firstsubject,lastsubject)
+function ppi_wrapper_20170720_ylg(regionnumber,firstsubject,lastsubject)
 
 % To run this for your second seed, ppi_wrapper_20150402(2,1,64). It will
 % exclude the bad subjects listed below
 
-studyDir = '/vxfsvol/home/research/tds/';
-fxModelFolder = 'fx/cyb/events_meanCpmod_noquad_w190/';
-templateSuffix = '_20160718_cyb';
+studyDir = '/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_alone/';
+fxModelFolder = '';
+templateSuffix = '_20170720_ylg';
 exclude = [];
 %User input required (directories and subjects)
-addpath([studyDir 'fMRI/scripts/gPPI/'])
+addpath([studyDir 'TDS_scripts/fMRI/'])
 addpath('/vxfsvol/home/research/dsnlab/matlab/spm8/')
 subDir = [studyDir 'fMRI/subjects/'];
 % Subjects={'INC001','INC002','INC003','INC004'};
