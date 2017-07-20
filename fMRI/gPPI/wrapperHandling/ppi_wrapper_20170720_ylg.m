@@ -1,4 +1,3 @@
-spm fmri
 function ppi_wrapper_20170720_ylg(regionnumber,firstsubject,lastsubject)
 
 % To run this for your second seed, ppi_wrapper_20150402(2,1,64). It will
@@ -122,13 +121,12 @@ for i=firstsubject:lastsubject;
         Directory=[studyDir fxModelFolder Subjects{i}];
         cd(Directory)
         %User input required (directory same as line 23 above)
-        load([studyDir 'fMRI/analysis/ppi/inputStructs/' region{regionnumber} '.mat'])
+        load([studyDir 'fMRI/analysis/ppi/ylg/tds2/inputStructs/' region{regionnumber} '.mat'])
         P.subject=Subjects{i};
         P.directory=Directory;
-        %User input required (change analysis to be more specific)s
-        save([subDir Subjects{i} '/' 'ppi/' region{regionnumber} '.mat'],'P');
-        [subDir Subjects{i} '/' 'ppi/' region{regionnumber} '.mat'] %did this get accidentally added?
-        PPPI([subDir Subjects{i} '/' 'ppi/' region{regionnumber} '.mat']);
+        %User input required (change analysis to be more specific)
+        save([studyDir 'fMRI/analysis/ppi/ylg/tds2/' Subjects{i} '/' region{regionnumber} '.mat'],'P');
+        PPPI([studyDir 'fMRI/analysis/ppi/ylg/tds2/' Subjects{i} '/' region{regionnumber} '.mat']);
     end
 end
 end
