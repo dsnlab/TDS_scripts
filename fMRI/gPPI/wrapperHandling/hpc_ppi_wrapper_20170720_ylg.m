@@ -18,4 +18,3 @@ save([studyDir 'fMRI/analysis/ppi/ylg/tds2/inputStructs/' P.Region '.mat'],'P');
         P.directory=Directory;
         %User input required (change analysis to be more specific)
         save([studyDir 'fMRI/analysis/ppi/ylg/tds2/' '101' '/' P.Region '.mat'],'P');
-        PPPI([studyDir 'fMRI/analysis/ppi/ylg/tds2/' '101' '/' P.Region '.mat']);

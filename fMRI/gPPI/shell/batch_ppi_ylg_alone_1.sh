@@ -18,7 +18,8 @@
 STUDY=/projects/dsnlab/tds/TDS_scripts
 
 # Set subject list
-SUBJLIST=`cat subject_list_ppi_ylg_alone.txt`
+# SUBJLIST=`cat subject_list_ppi_ylg_alone.txt`
+SUBJLIST=`cat subject_list_ppi_ylg_alone_test.txt`
 
 #Which SID should be replaced?
 REPLACESID='101'
@@ -30,7 +31,7 @@ SPM_PATH=/projects/dsnlab/spm8
 SCRIPT=${STUDY}/fMRI/gPPI/wrapperHandling/hpc_ppi_wrapper_20170720_ylg.m
 
 # Tag the results files
-RESULTS_INFIX=ppi_ylg_alone
+RESULTS_INFIX=ppi_ylg_alone_1
 
 # Set output dir
 OUTPUTDIR=${STUDY}/fMRI/gPPI/shell/output/
