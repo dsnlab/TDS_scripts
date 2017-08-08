@@ -3,12 +3,12 @@
 # specify which surveys you want to download: pre- or post-approval.
 
 ### CHANGE ME ###
-module <- 'TDS1-Post'
+module <- 'TDS2 and TDS3'
 #################
 
 if (module == 'TDS2 and TDS3'){
   survey_name_filter <- 'TDS2.*' # survey name filter as a regular expression
-  survey_name_dont_match <- '.*(Session 3).*|.*SHORTENED.*'
+  survey_name_dont_match <- '.*SHORTENED.*' #'.*(Session 3).*|.*SHORTENED.*'
   sid <- 'SID' # subject ID variable name as a regular expression
   age_var <- 'Age' # age variable name. If NA, we skip these steps below
   gender_var <- 'Gender' # gender variable name. If NA, we skip these steps below
@@ -127,4 +127,21 @@ if (module == 'TDS1-Post'){
   csv_long_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-POST-auto_scored_scales_long.csv"
   csv_longRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-POST-auto_raw_qualtrics_long.csv"
   csv_wideRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-POST-auto_raw_qualtrics-"
+}
+
+if (module == 'TDS1_Session_3'){
+  survey_name_filter <- 'TDS1.*Session 3.*' # survey name filter as a regular expression
+  sid <- 'SID' # subject ID variable name as a regular expression
+  age_var <- 'Age' # age variable name. If NA, we skip these steps below
+  gender_var <- 'Gender' # gender variable name. If NA, we skip these steps below
+  gender_female <- 1 # value for female
+  gender_male <- 0 # value for male
+  pdss_gender_code <- c(m=gender_male, f=gender_female)
+  gender_mix <- 'mf' #'mf' for both M and F, 'm' for M only, 'f' for F only
+  exclude_SID <- c('', '999') # subject IDs to exclude
+  identifiableData <- '(DOB|Ethnicity|Work|Grade|School|TEXT|Addl_Probs|Reasons|Decribe|Concerns|BestThings|Describe|Started|Ended)' # exclude when printing duplicates
+  hasCBCL <- 1 # does the survey include CBCL?
+  hasRPI <- 1 # does this survey include RPI?
+  hasPDSS <- 0 # does this survey include PDSS?
+  csv_longRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-SESS2-auto_raw_qualtrics_long.csv"
 }
