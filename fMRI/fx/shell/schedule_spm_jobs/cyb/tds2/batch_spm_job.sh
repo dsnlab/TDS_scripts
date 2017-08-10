@@ -33,7 +33,7 @@ SCRIPT=${STUDY}/fMRI/fx/models/cyb/tds2/fx_tds2_job.m
 RESULTS_INFIX=fx_cyb_tds2
 
 # Set output dir
-OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/cyb/tds2/output/
+OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/cyb/tds2/output
 
 # Set processor
 # use "qsub" for HPC
