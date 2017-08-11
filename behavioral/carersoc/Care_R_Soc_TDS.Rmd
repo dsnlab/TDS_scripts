@@ -83,10 +83,37 @@ long_survey_data<-get_survey_data(survey_info,
                                   pid_col='SID') %>% 
   mutate(value = ifelse(value == -99, NA, value)) %>%
   filter(!grepl("YADS",survey_name))
+
+TDS1_SESS1_PRE<-long_survey_data %>%
+  filter(survey_name=="TDS1 Session 1  - Pre")
+
+TDS1_SESS1_POST<-long_survey_data %>%
+  filter(survey_name=="TDS1 Session 1 - Post")
+
+TDS1_SESS2B_PRE<-long_survey_data %>%
+  filter(survey_name=="TDS1 Session 2 B - Pre")
+
+TDS1_SESS2B_POST<-long_survey_data %>%
+  filter(survey_name=="TDS1 Session 2 B - Post")
+
+TDS1_SESS3<-long_survey_data %>%
+  filter(survey_name=="TDS1, Session 3 - Child")
+
+TDS2_SESS2B<-long_survey_data %>%
+  filter(survey_name=="TDS2 Session 2 B")
+
+TDS2_SESS3<-long_survey_data %>%
+  filter(survey_name=="TDS2 Session 3 - Child")
 ```
 
 Gather the CARE R Social questionnaires
 ```{r}
+# Care R Social questionnaire is obtained in the following surveys:
+# TDS1 Session 1 - Post
+# TDS1, Session 3 - Child
+# TDS2 Session 1
+# TDS2 Session 3 - Child
+
 CARE_R_SOC<-long_survey_data %>%
   filter(grepl("CARE_S",item))
 
@@ -149,17 +176,93 @@ CARE_R_SOC_wide<-CARE_R_SOC_wide %>%
 
 Gather the health risking behaviors
 ```{r}
-marijuana_everused<-long_survey_data %>%
+###### Marijuana #######
+# Marijuana use is assessed in the following questionnaires & surveys:
+# YRBS: TDS1 Session 2 B - Post; TDS1, Session 3 - Child; 
+#       TDS2 Session 2 B; TDS2 Session 3 - Child
+# CARE_EI: TDS1 Session 1 - Pre; TDS1 Session 1 - Post
+# CARE_WE: TDS1 Session 1 - Pre; TDS1 Session 1 - Post
+# CARE_PF: TDS1 Session 2 B - Pre; 
+# PALS2: TDS1, Session 3 - Child;
+#        TDS2 Session 2 B; TDS2 Session 3 - Child
+
+TDS1_SESS1_PRE_Marijuana<-c("CARE_EI_10A","CARE_WE_10A")
+TDS1_SESS1_POST_Marijuana<-c("CARE_WE_1A","CARE_EI_1A")
+TDS1_SESS2B_PRE_Marijuana<-c("CARE_PF_1A","PAL2_12G")
+TDS1_SESS2B_POST_Marijuana<-c("YRBS_20","YRBS_22") # 0 to 6 for past 30 days
+TDS1_SESS3_Marijuana<-c("YRBS_20","YRBS_22","PAL2_12G")
+TDS2_SESS2B_Marijuana<-c("YRBS_20","YRBS_22","CARE_WE_10A", "CARE_EI_10A","PAL2_12G")
+TDS2_SESS3_Marijuana<-c("YRBS_20","YRBS_22","PAL2_12G")
+
+Marijuana<-bind_rows(
+  TDS1_SESS1_PRE %>% filter(grepl(paste0(TDS1_SESS1_PRE_Marijuana, collapse = "|"),item)),
+  TDS1_SESS1_POST %>% filter(grepl(paste0(TDS1_SESS1_POST_Marijuana, collapse = "|"),item)),
+  TDS1_SESS2B_PRE %>% filter(grepl(paste0(TDS1_SESS2B_PRE_Marijuana, collapse = "|"),item)),
+  TDS1_SESS2B_POST %>% filter(grepl(paste0(TDS1_SESS2B_POST_Marijuana, collapse = "|"),item)),
+  TDS1_SESS3 %>% filter(grepl(paste0(TDS1_SESS3_Marijuana, collapse = "|"),item)),
+  TDS2_SESS2B %>% filter(grepl(paste0(TDS2_SESS2B_Marijuana, collapse = "|"),item)),
+  TDS2_SESS3 %>% filter(grepl(paste0(TDS2_SESS3_Marijuana, collapse = "|"),item))
+)
+
+Marijuana_wide<-Marijuana %>%
+  mutate(value=as.numeric(value)) %>% 
+  filter(!is.na(value)) %>%
+  filter(!is.na(SID)) %>%
+  filter(!SID==999,!SID=="") %>%
+distinct(SID,item,value,survey_name,.keep_all = FALSE) %>% 
+  spread(item,value) %>%
+  mutate(mj_everused=YRBS_20,
+         mj_past30days=YRBS_22,
+         mj_willing=ifelse(!is.na(CARE_WE_10A),CARE_WE_10A,
+                           ifelse(!is.na(CARE_WE_1A),CARE_WE_1A,
+                                  NA)),
+         mj_expected=ifelse(!is.na(CARE_EI_10A),CARE_EI_10A,
+                           ifelse(!is.na(CARE_EI_1A),CARE_EI_1A,
+                                  NA)),
+         mj_pastinvlv=CARE_PF_1A,
+         mj_friendsuse=PAL2_12G) %>%
+  select(-contains("YRBS"),-contains("CARE"),-PAL2_12G)
+
+Marijuana_scores <- Marijuana_wide %>%
+  mutate(mj_hypothetical=rowMeans(cbind(mj_willing,mj_expected))) %>%
+  select(-mj_everused,-mj_pastinvlv,-mj_willing,-mj_expected)
+
+###### Alcohol ########
+YRBS_Alcohol<-c("A1", "A9", "A6")
+
+alcohol_everused<-long_survey_data %>%
   filter(grepl("YRBS_20",item)) # 0 = No; 1 = Yes
 
-marijuana_past30days<-long_survey_data %>%
+alcohol_past30days<-long_survey_data %>%
   filter(grepl("YRBS_22",item)) # 0 to 6 scale with 6 = 30 days
 
-marijuana_likelyusenext6months <-long_survey_data %>%
+alcohol_likelyusenext6months <-long_survey_data %>%
   filter(grepl("CARE_EI_10A",item)) # 1 to 7 scale with 7 = extremely likely
 
-marijuana_willingness <-long_survey_data %>%
+alcohol_willingness <-long_survey_data %>%
   filter(grepl("CARE_WE_10A",item)) # 1 to 7 scale with 7 = extremely willing
+
+###### Violence ########
+
+###### Graffiti ########
+
+###### Driving ########
+
+```
+
+Gather other relevant individual variables
+```{r}
+###### Resistance to Peer Influence #######
+# RPI is assessed in the following surveys:
+# TDS1 Session 1  - Pre; TDS1 Session 1 - Post;
+# TDS1, Session 3 - Child;
+
+###### Fear of Negative Evaluation #######
+# BFNE is assessed in the following surveys:
+# TDS1 Session 2 B - Pre; 
+# 
+
+
 ```
 
 Post pre-reg script 
