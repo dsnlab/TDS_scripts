@@ -127,19 +127,21 @@ ylg$condition <- as.factor(ylg$condition)
 # 401-499 = TDS-3
 # >500 = YADS
 # 189 = incomplete dataset and excessive head motion
+# 158 = excessive dropout
+# 139 = excessive head motion during stop 7+8
 # 103, 107, 112, 138, 143, 176, 191 = behavioral
 # 101, 102, 104, 105, 106, 108, 110, 111 = completed old Cyberball version (no hyperinclusion)
-exclude = c(189, 103, 107, 112, 138, 143, 176, 191)
-ylg_tds2_filtered = ylg_tds2 %>% filter(subject.name < 300) %>% 
+exclude = c(189, 158, 139, 103, 107, 112, 138, 143, 176, 191, 101, 102, 104, 105, 106, 108, 110, 111)
+ylg_filtered = ylg %>% filter(subject.name < 300) %>% 
   filter(!subject.name %in% exclude)
-count_trials_per_sub<-ylg_alone_filtered %>% group_by(subject.name) %>% summarize(n()) 
-# 127 only has 60 trials
+count_trials_per_sub<-ylg_filtered %>% group_by(subject.name) %>% summarize(n()) 
+# 127 only has 140 trials (practice run 2 is missing)
 
 # Set labels
-condition_labels = c(`1`='Mock', `2`='MRI')
+condition_labels = c(`1`='Mock', `2`='Alone', `3`='Peer Incl', `4`='Peer Excl')
 
 # Dataset for behavioral analyses 
-df <- merge(demo_filtered, ylg_alone_filtered, by = 'subject.name')
+df <- merge(demo_filtered, ylg_filtered, by = 'subject.name')
 
 # Dataset for analyses involving PDS
 df_pds <- df %>% filter(!is.na(PDS_mean_score))
@@ -155,14 +157,22 @@ df$gender_flip <- as.factor(df$gender_flip)
 # Run effects on the proportion of Go decisions
 null.model <- glmer(go ~ (1|subject.name), data=df, family='binomial')
 run.model <- glmer(go ~ run_index + (1|subject.name), data=df, family='binomial')
-anova(null.model, run.model)         #4.7475      3     0.1913
+anova(null.model, run.model)         #42.751      7  3.727e-07 ***
+summary(run.model) #run_index2   0.009882   0.080147   0.123 0.901873    
+                   #run_index3  -0.123451   0.080585  -1.532 0.125539    
+                   #run_index4  -0.126722   0.080602  -1.572 0.115906    
+                   #run_index5   0.060622   0.079843   0.759 0.447689    
+                   #run_index6   0.028788   0.079941   0.360 0.718759
+                   #run_index7   0.189485   0.079494   2.384 0.017143 *
+                   #run_index8   0.276431   0.079348   3.484 0.000494 ***
 
-# Location effects on the proportion of Go decisions
+# Condition effects on the proportion of Go decisions
 null.model <- glmer(go ~ (1|subject.name), data=df, family='binomial')
-location.model <- glmer(go ~ condition + (1|subject.name), data=df, family='binomial')
-anova(null.model, location.model)         #4.657      1    0.03093 *
-summary(location.model) # (Intercept) -0.47968    0.07560  -6.345 2.22e-10 ***
-                        # condition2  -0.11514    0.05331  -2.160   0.0308 * 
+condition.model <- glmer(go ~ condition + (1|subject.name), data=df, family='binomial')
+anova(null.model, condition.model)         #41.358      3  5.491e-09 ***
+summary(condition.model) # condition2  -0.13000    0.05703  -2.280   0.0226 *  
+                         # condition3   0.03980    0.05653   0.704   0.4814    
+                         # condition4   0.22812    0.05620   4.059 4.93e-05 ***
 ```
 #########################################
 ## Run and Location effects on CRASHES ##
@@ -170,30 +180,80 @@ summary(location.model) # (Intercept) -0.47968    0.07560  -6.345 2.22e-10 ***
 ```{r}
 # Run effects on the proportion of Go decisions that resulted in Crashes
 null.model <- glmer(go_cr ~ (1|subject.name), data=df, family='binomial')
-run.model <- glmer(go_cr ~ run_index + (1|subject.name), data=df, family='binomial')
-anova(null.model, run.model) #2.2151      3      0.529
+run.model <- glmer(go_cr ~ run_index + (1|subject.name), data=df, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(null.model, run.model) #12.569      7    0.08334 .
+summary(run.model) #run_index2   0.02396    0.09626   0.249   0.8034    
+                   #run_index3  -0.07655    0.09756  -0.785   0.4327    
+                   #run_index4   0.01398    0.09626   0.145   0.8846    
+                   #run_index5   0.04616    0.09583   0.482   0.6300    
+                   #run_index6   0.02784    0.09607   0.290   0.7720    
+                   #run_index7   0.16942    0.09428   1.797   0.0723 .  
+                   #run_index8   0.19480    0.09399   2.073   0.0382 *
 
-# Location effects on the proportion of Go decisions that resulted in Crashes
+# Condition effects on the proportion of Go decisions that resulted in Crashes
 null.model <- glmer(go_cr ~ (1|subject.name), data=df, family='binomial')
-location.model <- glmer(go_cr ~ condition + (1|subject.name), data=df, family='binomial')
-anova(null.model, location.model)         #0.5807      1      0.446
+condition.model <- glmer(go_cr ~ condition + (1|subject.name), data=df, family='binomial')
+anova(null.model, condition.model)         #11.534      3   0.009161 **
+summary(condition.model) #condition2  -0.04267    0.06846  -0.623   0.5331    
+                         #condition3   0.02504    0.06780   0.369   0.7119    
+                         #condition4   0.17016    0.06652   2.558   0.0105 *
 ```
 #########################################################
 ## FIGURE 2: Run and Location effects on Task Behavior ##
 #########################################################
 ```{r}
-# Part A: Run and Location effects on Go decisions
-plot_go = df %>% group_by(subject.name, run_index, condition) %>% summarize(mean_go = mean(go), sd_go = sd(go))
+# # Part A: Run and Location effects on Go decisions
+# plot_go = df %>% group_by(subject.name, run_index, condition) %>% summarize(mean_go = mean(go), sd_go = sd(go))
+#   
+# fig_2a <- ggplot(plot_go, aes(x = run_index, y = mean_go)) +
+#   geom_boxplot() +
+#   facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+#   labs(x='Run number', y='Propotion of Go decisions') +
+#   #coord_cartesian(x=c(10.5,17.5)) + 
+#   theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+#         axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
+#   #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+# ggsave('fig_2a.png', fig_2a)
+# 
+# # Part B: Run and Location effects on Crashes
+# plot_go_cr = df %>% group_by(subject.name, run_index, condition) %>% summarize(mean_go_cr = mean(go_cr), sd_go_cr = sd(go_cr))
+#   
+# fig_2b <- ggplot(plot_go_cr, aes(x = run_index, y = mean_go_cr)) +
+#   geom_boxplot() +
+#   facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+#   labs(x='Run number', y='Propotion of Go decisions\nthat resulted in Crashes') +
+#   #coord_cartesian(x=c(10.5,17.5)) + 
+#   theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+#         axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
+#   #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+# ggsave('fig_2b.png', fig_2b)
+```
+#####################################################################
+## FIGURE 2 ALTERNATIVE: Run and Location effects on Task Behavior ##
+#####################################################################
+```{r}
+# Part A: Run and Condition effects on Go decisions
+go_by_sid = df %>% group_by(subject.name, run_index, condition) %>% summarize(mean_go = mean(go))
+plot_group_go = go_by_sid %>% group_by(run_index, condition) %>% summarize(mean=mean(mean_go), 
+                                                                    sd=sd(mean_go), 
+                                                                    n=70, # entered manually (could not be calculated because 127 has 140 trials, whereas all other subjects have 160 trials)
+                                                                    se=sd/sqrt(n), 
+                                                                    ci=qt(0.975, df=n-1)*se) 
   
-fig_2a <- ggplot(plot_go, aes(x = run_index, y = mean_go)) +
-  geom_boxplot() +
+fig_2a <- ggplot(plot_group_go, aes(x = run_index, y = mean)) +
+  geom_point() +
+  geom_line() +
+  geom_line(aes(data=line, aes(x = run_index, y = mean))) +
+  geom_errorbar(aes(ymin = mean-ci, ymax = mean+ci)) +
   facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
   labs(x='Run number', y='Propotion of Go decisions') +
   #coord_cartesian(x=c(10.5,17.5)) + 
-  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
-        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) +
+  #theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        #axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
   #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
 ggsave('fig_2a.png', fig_2a)
+
+## STOPPED HERE 8/28/2017 - UPDATE THE REST BELOW
 
 # Part B: Run and Location effects on Crashes
 plot_go_cr = df %>% group_by(subject.name, run_index, condition) %>% summarize(mean_go_cr = mean(go_cr), sd_go_cr = sd(go_cr))
@@ -204,7 +264,7 @@ fig_2b <- ggplot(plot_go_cr, aes(x = run_index, y = mean_go_cr)) +
   labs(x='Run number', y='Propotion of Go decisions\nthat resulted in Crashes') +
   #coord_cartesian(x=c(10.5,17.5)) + 
   theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
-        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) +
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
   #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
 ggsave('fig_2b.png', fig_2b)
 ```
