@@ -1,0 +1,511 @@
+###############
+## Data prep ##
+###############
+```{r}
+##Check if the packages we need are installed, and if not, install them
+packages<-c('dplyr', 'tidyr', 'data.table', 'R.matlab', 'ggplot2', 'lme4')
+if(length(setdiff(packages, rownames(installed.packages())))>0) {
+  install.packages(setdiff(packages, rownames(installed.packages())))
+}
+lapply(packages, library, character.only=TRUE)
+
+##Set paths (data is located on psi-svr-filer)
+tds_folder<-'/Volumes/TDS/behavior/'
+ylg_folder<-paste(tds_folder, 'YLG/processed/', sep='')
+demo_folder<-paste(tds_folder, 'Redcap/', sep='')
+qualtrics_folder<-paste(tds_folder, 'Qualtrics/', sep='')
+
+##Collect data
+ylg_data<-read.csv(paste(ylg_folder,'tds-all_trial_by_trial.csv',sep=''))
+demo_data<-read.csv(paste(demo_folder,'age_gender_iq.csv',sep=''))
+qualtrics_data<-read.csv(paste(qualtrics_folder, 'TDS-2-auto_scored_scales_wide.csv', sep=''))
+```
+#######################
+## Demographics N=81 ##
+#######################
+```{r}
+# Select Qualtrics data needed
+qualtrics_data_selection <- qualtrics_data %>% select(starts_with("SID"), starts_with("PDS"))
+
+## Merge qualtrics and demo data
+demo <- merge(demo_data, qualtrics_data_selection, by.x = 'subject.name', by.y = 'SID')
+
+## Add variables
+demo <- demo %>%
+  mutate(age_group = ifelse(age < 14.0, 1, 2)) %>% # age groups based on median split
+  mutate(age_c = age-14.1, age_rnd = floor(age), age_sq = age_c^2) %>%   # age variables
+  mutate(iq_c = iq-100, iq_z = iq_c/15) %>%                   # iq variables
+  mutate(PDS_mean_score=ifelse(                               # pds variables
+    is.na(PDS_female_mean_score_score)==TRUE, PDS_male_mean_score_score, PDS_female_mean_score_score)) %>%
+  mutate(PDS_stage = ceiling(PDS_mean_score), pds_group = ifelse(PDS_mean_score < 2.9, 1, 2)) %>%
+  mutate(gender_flip = ifelse(gender==0, 'Male', 'Female'))   # flip gender for correct colors in graph
+
+## Filter demo_data (N=81)
+no_session2 = c(118, 123, 147, 148, 149, 153, 154, 166, 180)
+behaviorals = c(103, 107, 112, 138, 143, 176, 191)
+demo_filtered <- demo %>% filter(subject.name < 300) %>% 
+  filter(!subject.name %in% no_session2) %>% 
+  filter(!subject.name %in% behaviorals)
+
+#demo_filtered %>% group_by(age_group) %>% summarize(n=n()) # n for each age group
+#demo_filtered %>% group_by(pds_group) %>% summarize(n=n())
+
+#PDS_mean_scores <- demo_filtered %>% distinct(subject.name, gender, PDS_pds_gender_score, PDS_mean_score) %>% filter(!grepl("189|158|160|174", subject.name)) 
+#write.csv(PDS_mean_scores, file = 'tds2_PDS_mean_score_n77.csv')
+```
+#############
+## TABLE 1 ##
+#############
+```{r}
+# Age by gender
+age_by_sex<-demo_filtered %>% filter(!is.na(age)) %>% group_by(gender) %>% 
+  summarize(mean = mean(age, na.rm=T), sd = sd(age, na.rm=T), 
+            min = min(age, na.rm=T), max = max(age, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) # n=42 females
+t.test(demo_filtered$age~demo_filtered$gender) #t = -0.87254, df = 78.303, p-value = 0.3856 (m=13.9, f=14.2)
+
+# IQ by gender
+iq_by_sex<-demo_filtered %>% filter(!is.na(iq)) %>% group_by(gender) %>% 
+  summarize(mean = mean(iq, na.rm=T), sd = sd(iq, na.rm=T), 
+            min = min(iq, na.rm=T), max = max(iq, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+t.test(demo_filtered$iq~demo_filtered$gender) #t = 0.05078, df = 78.04, p-value = 0.9596 (m=107.2, f=107.1)
+
+# PDS score by gender
+pds_by_sex<-demo_filtered %>% filter(!is.na(PDS_mean_score)) %>% group_by(gender) %>% 
+  summarize(mean = mean(PDS_mean_score, na.rm=T), sd = sd(PDS_mean_score, na.rm=T),
+            min = min(PDS_mean_score, na.rm=T), max = max(PDS_mean_score, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+t.test(demo_filtered$PDS_mean_score~demo_filtered$gender) #t = -5.3362, df = 76.876, p-value = 9.286e-07 (m=2.4, f=3.1)
+```
+#############################
+## SUPPLEMENTARY FIGURE S1 ##
+#############################
+```{r}
+# Part A: Gender by age distribution
+fig_s1a <- ggplot(demo_filtered, aes(x = age_rnd, fill = gender_flip)) +
+  geom_bar(position = 'dodge') +
+  #facet_grid(.~tds_group, scales='free', labeller=as_labeller(group_labels)) +
+  labs(x='Age', y='Number of participants', fill='Sex') +
+  coord_cartesian(x=c(10.5,17.5)) + theme(text = element_text(size=16)) +
+  scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+ggsave('fig_s1a.png', fig_s1a)
+
+# Part B: Gender by pubertal stage distribution
+fig_s1b <- ggplot(demo_filtered, aes(x = PDS_stage, fill = gender_flip)) +
+  geom_bar(position = 'dodge') +
+  #facet_grid(.~tds_group, scales='free', labeller=as_labeller(group_labels)) +
+  labs(x='Mean PDS score', y='Number of participants', fill='Sex') +
+  theme(text = element_text(size=16)) +
+  scale_y_continuous(breaks = c(0, 4, 8, 12, 16, 20, 24, 28)) + scale_x_continuous(breaks = c(1, 2, 3, 4))
+ggsave('fig_s1b.png', fig_s1b)
+```
+##################
+## YLG behavior ##
+##################
+```{r}
+# Add variables
+ylg = ylg_data %>% 
+  mutate(condition = ifelse(grepl('1|2', run_index), 1,
+                     ifelse(grepl('3|4', run_index), 2,
+                     ifelse(grepl('5|6', run_index), 3, 
+                     ifelse(grepl('7|8', run_index), 4, NA))))) %>%
+  mutate(time=run.time.ms/60000) %>%
+  mutate(go = ifelse(decision=='GO', 1, 0)) %>%
+  mutate(crash = ifelse(scenario=='CRASH', 1, 0)) %>%
+  mutate(go_cr = ifelse(decision=='GO' & scenario=='CRASH', 1, 0))
+
+# Convert to factors
+ylg$run_index <- as.factor(ylg$run_index)
+ylg$condition <- as.factor(ylg$condition)
+
+# Filter out Alone data (stop1-4)
+# ylg_alone<-ylg %>% filter(grepl('1|2|3|4', run_index))
+
+# Filter out subjects for imaging results (N=80)
+# 301-399 = TDS-1
+# 401-499 = TDS-3
+# >500 = YADS
+# 189 = incomplete dataset and excessive head motion
+# 103, 107, 112, 138, 143, 176, 191 = behavioral
+# 101, 102, 104, 105, 106, 108, 110, 111 = completed old Cyberball version (no hyperinclusion)
+exclude = c(189, 103, 107, 112, 138, 143, 176, 191)
+ylg_tds2_filtered = ylg_tds2 %>% filter(subject.name < 300) %>% 
+  filter(!subject.name %in% exclude)
+count_trials_per_sub<-ylg_alone_filtered %>% group_by(subject.name) %>% summarize(n()) 
+# 127 only has 60 trials
+
+# Set labels
+condition_labels = c(`1`='Mock', `2`='MRI')
+
+# Dataset for behavioral analyses 
+df <- merge(demo_filtered, ylg_alone_filtered, by = 'subject.name')
+
+# Dataset for analyses involving PDS
+df_pds <- df %>% filter(!is.na(PDS_mean_score))
+
+# Set as factors
+df$gender <- as.factor(df$gender)
+df$gender_flip <- as.factor(df$gender_flip)
+```
+##############################################
+## Run and Location effects on GO DECISIONS ##
+##############################################
+```{r}
+# Run effects on the proportion of Go decisions
+null.model <- glmer(go ~ (1|subject.name), data=df, family='binomial')
+run.model <- glmer(go ~ run_index + (1|subject.name), data=df, family='binomial')
+anova(null.model, run.model)         #4.7475      3     0.1913
+
+# Location effects on the proportion of Go decisions
+null.model <- glmer(go ~ (1|subject.name), data=df, family='binomial')
+location.model <- glmer(go ~ condition + (1|subject.name), data=df, family='binomial')
+anova(null.model, location.model)         #4.657      1    0.03093 *
+summary(location.model) # (Intercept) -0.47968    0.07560  -6.345 2.22e-10 ***
+                        # condition2  -0.11514    0.05331  -2.160   0.0308 * 
+```
+#########################################
+## Run and Location effects on CRASHES ##
+#########################################
+```{r}
+# Run effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ (1|subject.name), data=df, family='binomial')
+run.model <- glmer(go_cr ~ run_index + (1|subject.name), data=df, family='binomial')
+anova(null.model, run.model) #2.2151      3      0.529
+
+# Location effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ (1|subject.name), data=df, family='binomial')
+location.model <- glmer(go_cr ~ condition + (1|subject.name), data=df, family='binomial')
+anova(null.model, location.model)         #0.5807      1      0.446
+```
+#########################################################
+## FIGURE 2: Run and Location effects on Task Behavior ##
+#########################################################
+```{r}
+# Part A: Run and Location effects on Go decisions
+plot_go = df %>% group_by(subject.name, run_index, condition) %>% summarize(mean_go = mean(go), sd_go = sd(go))
+  
+fig_2a <- ggplot(plot_go, aes(x = run_index, y = mean_go)) +
+  geom_boxplot() +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Go decisions') +
+  #coord_cartesian(x=c(10.5,17.5)) + 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) +
+  #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+ggsave('fig_2a.png', fig_2a)
+
+# Part B: Run and Location effects on Crashes
+plot_go_cr = df %>% group_by(subject.name, run_index, condition) %>% summarize(mean_go_cr = mean(go_cr), sd_go_cr = sd(go_cr))
+  
+fig_2b <- ggplot(plot_go_cr, aes(x = run_index, y = mean_go_cr)) +
+  geom_boxplot() +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Go decisions\nthat resulted in Crashes') +
+  #coord_cartesian(x=c(10.5,17.5)) + 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) +
+  #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+ggsave('fig_2b.png', fig_2b)
+```
+#############################################################################
+## Run and Location effects on GO DECISIONS while controlling for Sex & IQ ##
+#############################################################################
+```{r}
+# Run effects on the proportion of Go decisions
+null.model <- glmer(go ~ gender + iq_z + (1|subject.name), data=df, family='binomial')
+run.model <- glmer(go ~ run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+anova(null.model, run.model)         #4.7554      3     0.1906
+summary(null.model) # no main effects of gender (p=0.42), or IQ (p=0.52)
+
+# Location effects on the proportion of Go decisions
+null.model <- glmer(go ~ gender + iq_z + (1|subject.name), data=df, family='binomial')
+location.model <- glmer(go ~ condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+anova(null.model, location.model)         #4.6666      1    0.03075 *
+summary(location.model) #condition2  -0.11526    0.05331  -2.162 0.030619 * 
+```
+########################################################################
+## Run and Location effects on CRASHES while controlling for Sex & IQ ##
+########################################################################
+```{r}
+# Run effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ gender + iq_z + (1|subject.name), data=df, family='binomial')
+run.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+anova(null.model, run.model) #2.2186      3     0.5283
+
+# Location effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ gender + iq_z + (1|subject.name), data=df, family='binomial')
+location.model <- glmer(go_cr ~ condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+anova(null.model, location.model)         #0.5843      1     0.4446
+summary(null.model) # no main effects of gender (p=0.37), or IQ (p=0.92)
+```
+################################################################
+## Age effects on GO DECISIONS while controlling for Sex & IQ ##
+################################################################
+```{r}
+# Linear Age effects on the proportion of Go decisions (by run_index)
+null.model <- glmer(go ~ run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+main.model <- glmer(go ~ age_c + run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+interaction.model <- glmer(go ~ age_c * run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+
+anova(null.model, main.model)            #0.0588      1     0.8083
+anova(null.model, interaction.model)     #5.5152      4     0.2384
+anova(main.model, interaction.model)     #5.4564      3     0.1413
+
+summary(null.model) # (Intercept) -0.37665    0.11869  -3.173  0.00151 **
+# run_index2  -0.01927    0.07504  -0.257  0.79736   
+# run_index3  -0.13059    0.07530  -1.734  0.08287 . 
+# run_index4  -0.11909    0.07525  -1.583  0.11351   
+# gender1     -0.12181    0.14037  -0.868  0.38552   
+# iq_z        -0.06246    0.09020  -0.692  0.48866
+
+# Linear Age effects on the proportion of Go decisions (by location)
+null.model <- glmer(go ~ condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+main.model <- glmer(go ~ age_c + condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+interaction.model <- glmer(go ~ age_c * condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+
+anova(null.model, main.model)            #0.0588      1     0.8084
+anova(null.model, interaction.model)     #4.3984      2     0.1109
+anova(main.model, interaction.model)     #4.3396      1    0.03724 * (but not better than null.model)
+
+summary(null.model) # (Intercept) -0.38617    0.11274  -3.425 0.000614 ***
+# condition2  -0.11526    0.05331  -2.162 0.030619 *  
+# gender1     -0.12186    0.14032  -0.868 0.385174    
+# iq_z        -0.06248    0.09018  -0.693 0.488388 
+```
+###############
+## FIGURE 4A ##
+###############
+```{r}
+# Part A: Go decisions plotted against Age
+df$pred_go <- predict(interaction.model, newdata=df, re.form=NA, type='response')
+
+fig_4a <- ggplot(data=df, aes(x=age, y=pred_go, color=condition)) +
+  geom_line(aes(group=condition), size=1) +
+  #facet_grid(.~tds_group, scales='free', labeller=as_labeller(group_labels)) +
+  labs(x='Age', y='Predicted probability of Go decisions', color='Location') +
+  theme(text = element_text(size=16)) +
+  #coord_cartesian(x=c(-3, 4)) +
+  scale_colour_discrete(labels=condition_labels)
+ggsave('fig_4a.png', fig_4a)
+
+# pGo <- df %>% group_by(subject.name, condition) %>% summarize(pGo = mean(go))
+# pGo_by_age <- merge(pGo, demo, by = 'subject.name')
+
+# ggplot(pGo_by_age, aes(x = age, y = pGo, color=condition), stat_smooth(method = loess)) +
+#   geom_point() +
+#   geom_line(aes(group=condition), size=1) +
+#   #geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci), width=0.5, position=position_dodge(.2)) +
+#   #facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+#   labs(x='Age (mean-centered)', y='Proportion of Go decisions', color='Location')
+```
+######################################################################
+## Age Group effects on GO DECISIONS while controlling for Sex & IQ ##
+######################################################################
+```{r}
+# Age group effects on the proportion of Go decisions (by run_index)
+null.model <- glmer(go ~ run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+main.model <- glmer(go ~ age_group + run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+interaction.model <- glmer(go ~ age_group * run_index + gender + iq_z + (1|subject.name), data=df, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)            #0.5257      1     0.4684
+anova(null.model, interaction.model)     #3.8862      4     0.4216
+anova(main.model, interaction.model)     #3.3605      3     0.3393
+
+summary(null.model) # n.s.
+
+# Age group effects on the proportion of Go decisions (by location)
+null.model <- glmer(go ~ condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+main.model <- glmer(go ~ age_group + condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+interaction.model <- glmer(go ~ age_group * condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+
+anova(null.model, main.model)            #0.5251      1     0.4687
+anova(null.model, interaction.model)     #2.7297      2     0.2554
+anova(main.model, interaction.model)     #2.2046      1     0.1376
+
+summary(null.model) # n.s.
+```
+###########################################################
+## Age effects on CRASHES while controlling for Sex & IQ ##
+###########################################################
+```{r}
+# Age effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+main.model <- glmer(go_cr ~ age_c + run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+interaction.model <- glmer(go_cr ~ age_c * run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+
+anova(null.model, main.model)            #0.4498      1     0.5024
+anova(null.model, interaction.model)     #3.0608      4     0.5477
+anova(main.model, interaction.model)     #2.6109      3     0.4556
+
+summary(null.model) # (Intercept) -1.3949833  0.1034449 -13.485   <2e-16 ***
+# run_index2  -0.0005003  0.0898800  -0.006    0.996    
+# run_index3  -0.1086843  0.0911633  -1.192    0.233    
+# run_index4   0.0080750  0.0895856   0.090    0.928    
+# gender1     -0.1097066  0.1121266  -0.978    0.328    
+# iq_z        -0.0097465  0.0717803  -0.136    0.892 
+
+# Age effects on the proportion of Go decisions that resulted in Crashes (by location)
+null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+main.model <- glmer(go_cr ~ age_c + condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+interaction.model <- glmer(go_cr ~ age_c * condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+
+anova(null.model, main.model)            #0.4499      1     0.5024
+anova(null.model, interaction.model)     #2.6787      2      0.262
+anova(main.model, interaction.model)     #2.2288      1     0.1355
+
+summary(null.model) # (Intercept) -1.395217   0.093402 -14.938   <2e-16 ***
+# condition2  -0.049043   0.063949  -0.767    0.443    
+# gender1     -0.109682   0.112106  -0.978    0.328    
+# iq_z        -0.009741   0.071764  -0.136    0.892
+```
+###############
+## FIGURE 4B ##
+###############
+```{r}
+# Part B: Crashes
+crashes <- df %>% distinct(subject.name, gender_flip, condition, run_index, crash.count)
+# new.row = c(127, 'Male', 1, 2, NA)
+# crashes <- rbind(crashes, new.row)
+
+plot.crashes <- crashes %>% group_by(gender_flip, condition, run_index) %>%
+  summarize(mean = mean(crash.count), sd = sd(crash.count), n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+
+ggplot(plot.crashes, aes(x = run_index, y = mean, color=gender_flip)) +
+  geom_point(position=position_dodge(.1), size=3) +
+  geom_line(aes(group=gender_flip), size=1) +
+  geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci), width=0.5, position=position_dodge(.2)) +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Crashes', color='Sex') +
+  scale_y_continuous(breaks = c(3, 4, 5))
+```
+#################################################################
+## Age Group effects on CRASHES while controlling for Sex & IQ ##
+#################################################################
+```{r}
+# Age group effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+main.model <- glmer(go_cr ~ age_group + run_index + gender + iq_z + (1|subject.name), data=df, family='binomial')
+interaction.model <- glmer(go_cr ~ age_group * run_index + gender + iq_z + (1|subject.name), data=df, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)            #0.0059      1      0.939
+anova(null.model, interaction.model)     #2.0218      4     0.7318
+anova(main.model, interaction.model)     #2.0159      3     0.5691
+
+summary(null.model) # n.s.
+
+# Age group effects on the proportion of Go decisions that resulted in Crashes (by location)
+null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+main.model <- glmer(go_cr ~ age_group + condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+interaction.model <- glmer(go_cr ~ age_group * condition + gender + iq_z + (1|subject.name), data=df, family='binomial')
+
+anova(null.model, main.model)            #0.0059      1      0.939
+anova(null.model, interaction.model)     #1.5877      2     0.4521
+anova(main.model, interaction.model)     #1.5818      1     0.2085
+
+summary(null.model) # n.s.
+```
+####################################################################
+## Puberty effects on GO DECISIONS while controlling for Sex & IQ ##
+####################################################################
+```{r}
+# Puberty effects on the proportion of Go decisions (by run_index)
+null.model <- glmer(go ~ run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+main.model <- glmer(go ~ PDS_mean_score + run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+interaction.model <- glmer(go ~ PDS_mean_score * run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)            #0.0776      1     0.7805
+anova(null.model, interaction.model)     #3.9486      4      0.413
+anova(main.model, interaction.model)     #3.8709      3     0.2757
+
+summary(null.model) # n.s.
+
+# Puberty effects on the proportion of Go decisions (by location)
+null.model <- glmer(go ~ condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+main.model <- glmer(go ~ PDS_mean_score + condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+interaction.model <- glmer(go ~ PDS_mean_score * condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)            #0.0777      1     0.7805
+anova(null.model, interaction.model)     #0.7075      2      0.702
+anova(main.model, interaction.model)     #0.6299      1     0.4274
+
+summary(null.model) # n.s.
+```
+###############################################################
+## Puberty effects on CRASHES while controlling for Sex & IQ ##
+###############################################################
+```{r}
+# Puberty effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+main.model <- glmer(go_cr ~ PDS_mean_score + run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+interaction.model <- glmer(go_cr ~ PDS_mean_score * run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)            #0.1824      1     0.6694
+anova(null.model, interaction.model)     #2.1622      4      0.706
+anova(main.model, interaction.model)     #1.9798      3     0.5766
+
+summary(null.model) # n.s.
+
+# Puberty effects on the proportion of Go decisions that resulted in Crashes (by location)
+null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+main.model <- glmer(go_cr ~ PDS_mean_score + condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+interaction.model <- glmer(go_cr ~ PDS_mean_score * condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)            #0.1824      1     0.6693
+anova(null.model, interaction.model)     #0.5204      2     0.7709
+anova(main.model, interaction.model)     #0.338      1      0.561
+
+summary(null.model) # n.s.
+```
+######################################################################
+## PDS Group effects on GO DECISIONS while controlling for Sex & IQ ##
+######################################################################
+```{r}
+# PDS group effects on the proportion of Go decisions (by run_index)
+null.model <- glmer(go ~ run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+main.model <- glmer(go ~ pds_group + run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+interaction.model <- glmer(go ~ pds_group * run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)            #0.6227      1       0.43
+anova(null.model, interaction.model)     #2.1901      4     0.7008
+anova(main.model, interaction.model)     #1.5673      3     0.6668
+
+summary(null.model) # n.s.
+
+# Age group effects on the proportion of Go decisions (by location)
+null.model <- glmer(go ~ condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+main.model <- glmer(go ~ pds_group + condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+interaction.model <- glmer(go ~ pds_group * condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+
+anova(null.model, main.model)            #0.624      1     0.4296
+anova(null.model, interaction.model)     #0.6551      2     0.7207
+anova(main.model, interaction.model)     #0.0311      1       0.86
+
+summary(null.model) # n.s.
+```
+#################################################################
+## PDS Group effects on CRASHES while controlling for Sex & IQ ##
+#################################################################
+```{r}
+# PDS group effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+main.model <- glmer(go_cr ~ pds_group + run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+interaction.model <- glmer(go_cr ~ pds_group * run_index + gender + iq_z + (1|subject.name), data=df_pds, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)            #0.5478      1     0.4592
+anova(null.model, interaction.model)     #3.3012      4     0.5087
+anova(main.model, interaction.model)     #2.7535      3     0.4312
+
+summary(null.model) # n.s.
+
+# PDS group effects on the proportion of Go decisions that resulted in Crashes (by location)
+null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+main.model <- glmer(go_cr ~ pds_group + condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+interaction.model <- glmer(go_cr ~ pds_group * condition + gender + iq_z + (1|subject.name), data=df_pds, family='binomial')
+
+anova(null.model, main.model)            #0.5483      1      0.459
+anova(null.model, interaction.model)     #0.8219      2      0.663
+anova(main.model, interaction.model)     #0.2736      1     0.6009
+
+summary(null.model) # n.s.
+```
