@@ -19,7 +19,7 @@ STUDY=/projects/dsnlab/tds/TDS_scripts
 
 # Set subject list
 #SUBJLIST=`cat subject_list_fx_alone.txt`
-SUBJLIST=`cat subject_list_fx_alone_redo.txt`
+SUBJLIST=`cat subject_list_fx_allconds.txt`
 
 #Which SID should be replaced?
 REPLACESID='101'
@@ -28,13 +28,13 @@ REPLACESID='101'
 SPM_PATH=/projects/dsnlab/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/fx/models/ylg/fx_ylg_alone.m
+SCRIPT=${STUDY}/fMRI/fx/models/ylg/fx_ylg_allconds.m
 
 # Tag the results files
-RESULTS_INFIX=fx_ylg_alone
+RESULTS_INFIX=fx_ylg_allconds
 
 # Set output dir
-OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/ylg/tds2/output/
+OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/ylg/tds2_allconds/output/
 
 # Set processor
 # use "qsub" for HPC
