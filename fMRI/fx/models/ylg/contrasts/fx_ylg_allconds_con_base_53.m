@@ -3,7 +3,7 @@
 % spm SPM - SPM12 (6906)
 % cfg_basicio BasicIO - Unknown
 %-----------------------------------------------------------------------
-matlabbatch{1}.spm.stats.con.spmmat = {'/Users/ralph/Documents/tds/tds_repo/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/101/SPM.mat'};
+matlabbatch{1}.spm.stats.con.spmmat = {'/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/101/SPM.mat'};
 matlabbatch{1}.spm.stats.con.consess{1}.tcon.name = 'D_A';
 matlabbatch{1}.spm.stats.con.consess{1}.tcon.weights = [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 matlabbatch{1}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
