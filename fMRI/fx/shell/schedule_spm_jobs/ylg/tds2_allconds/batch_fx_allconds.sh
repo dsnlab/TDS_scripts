@@ -28,7 +28,7 @@ REPLACESID='101'
 SPM_PATH=/projects/dsnlab/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/fx/models/ylg/fx_ylg_allconds.m
+SCRIPT=${STUDY}/fMRI/fx/models/ylg/fx_ylg_allconds_nonorth.m
 
 # Tag the results files
 RESULTS_INFIX=fx_ylg_allconds
