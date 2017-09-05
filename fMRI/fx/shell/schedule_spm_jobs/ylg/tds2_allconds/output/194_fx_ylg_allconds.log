@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------
+194
+Running /projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/fx_ylg_allconds.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2016 The MathWorks, Inc.
+                   R2016b (9.1.0.441655) 64-bit (glnxa64)
+                             September 7, 2016
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+    ----------------------------------------------------
+	Your MATLAB license will expire in 56 days.
+	Please contact your system administrator or
+	MathWorks to renew this license.
+    ----------------------------------------------------
+{Error using textscan
+Invalid file identifier. Use fopen to generate a valid file identifier.
+
+Error in make_sid_matlabbatch (line 2)
+textstuffcell=textscan(fileID, '%[^\n]');
+
+Error in run (line 96)
+evalin('caller', [script ';']);
+} 
+>> 
