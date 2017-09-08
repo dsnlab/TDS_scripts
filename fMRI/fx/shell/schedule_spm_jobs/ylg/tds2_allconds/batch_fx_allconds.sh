@@ -20,6 +20,7 @@ STUDY=/projects/dsnlab/tds/TDS_scripts
 # Set subject list
 #SUBJLIST=`cat subject_list_fx_alone.txt`
 SUBJLIST=`cat subject_list_fx_allconds.txt`
+#SUBJLIST=`cat subject_list_fx_allconds_redo.txt`
 
 #Which SID should be replaced?
 REPLACESID='101'
