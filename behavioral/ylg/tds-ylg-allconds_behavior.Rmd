@@ -115,7 +115,11 @@ ylg = ylg_data %>%
   mutate(crash = ifelse(scenario=='CRASH', 1, 0)) %>%
   mutate(go_cr = ifelse(decision=='GO' & scenario=='CRASH', 1, 0)) %>%
   mutate(stop = ifelse(decision=='STOP', 1, 0)) %>%
-  mutate(stop_nocar = ifelse(decision=='STOP' & scenario=='SAFE', 1, 0))
+  mutate(stop_nocar = ifelse(decision=='STOP' & scenario=='SAFE', 1, 0)) %>%
+  mutate(event = ifelse(decision=='GO' & scenario=='SAFE', 1,
+                 ifelse(decision=='GO' & scenario=='CRASH', 2,
+                 ifelse(decision=='STOP' & scenario=='CROSSCAR', 3,
+                 ifelse(decision=='STOP' & scenario=='SAFE', 4, NA))))) 
 
 # Convert to factors
 ylg$run_index <- as.factor(ylg$run_index)
