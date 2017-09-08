@@ -119,7 +119,19 @@ ylg = ylg_data %>%
   mutate(event = ifelse(decision=='GO' & scenario=='SAFE', 1,
                  ifelse(decision=='GO' & scenario=='CRASH', 2,
                  ifelse(decision=='STOP' & scenario=='CROSSCAR', 3,
-                 ifelse(decision=='STOP' & scenario=='SAFE', 4, NA))))) 
+                 ifelse(decision=='STOP' & scenario=='SAFE', 4, NA))))) %>%
+  mutate(count1 = ifelse(event==1, 1, 0)) %>%
+  mutate(count2 = ifelse(event==2, 1, 0)) %>%
+  mutate(count3 = ifelse(event==3, 1, 0)) %>%
+  mutate(count4 = ifelse(event==4, 1, 0))
+
+# Check if events are present for all subjects
+# events_by_sid <- ylg %>% group_by(subject.name, condition) %>%
+#   summarize(n_good.go = sum(count1, na.rm=TRUE), 
+#             n_bad.go = sum(count2, na.rm=TRUE), 
+#             n_good.stop = sum(count3, na.rm=TRUE), 
+#             n_bad.stop = sum(count4, na.rm=TRUE))
+# write.csv(events_by_sid, "/Volumes/TDS/behavior/YLG/processed/tds_events_by_sid.csv")
 
 # Convert to factors
 ylg$run_index <- as.factor(ylg$run_index)
