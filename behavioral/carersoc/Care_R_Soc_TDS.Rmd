@@ -15,7 +15,8 @@ Load required packages and functions
 ```{r Load packages, message=FALSE, warning=FALSE, include=FALSE}
 ## Load required packages ##
 packages <- c("lme4", "nlme", "ggplot2", "dplyr", "tidyr", "knitr",
-              "parallel", "data.table", "lubridate","xml2","devtools")
+              "parallel", "data.table", "lubridate","xml2","devtools",
+              "rmarkdown")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }
@@ -24,6 +25,8 @@ install_github('jflournoy/qualtrics')
 library(qualtrics)
 rm(packages)
 
+
+dodge <- position_dodge(width=0.5)  
 get_survey_data<-function(surveysDF,pid_col=sid){
   #Takes the data.frame that is returned by `get_surveys`
   #Returns a long format data.frame of survey data with names
@@ -83,10 +86,37 @@ long_survey_data<-get_survey_data(survey_info,
                                   pid_col='SID') %>% 
   mutate(value = ifelse(value == -99, NA, value)) %>%
   filter(!grepl("YADS",survey_name))
+
+TDS1_SESS1_PRE<-long_survey_data %>%
+  filter(survey_name=="TDS1 Session 1  - Pre")
+
+TDS1_SESS1_POST<-long_survey_data %>%
+  filter(survey_name=="TDS1 Session 1 - Post")
+
+TDS1_SESS2B_PRE<-long_survey_data %>%
+  filter(survey_name=="TDS1 Session 2 B - Pre")
+
+TDS1_SESS2B_POST<-long_survey_data %>%
+  filter(survey_name=="TDS1 Session 2 B - Post")
+
+TDS1_SESS3<-long_survey_data %>%
+  filter(survey_name=="TDS1, Session 3 - Child")
+
+TDS2_SESS2B<-long_survey_data %>%
+  filter(survey_name=="TDS2 Session 2 B")
+
+TDS2_SESS3<-long_survey_data %>%
+  filter(survey_name=="TDS2 Session 3 - Child")
 ```
 
 Gather the CARE R Social questionnaires
 ```{r}
+# Care R Social questionnaire is obtained in the following surveys:
+# TDS1 Session 1 - Post
+# TDS1, Session 3 - Child
+# TDS2 Session 1
+# TDS2 Session 3 - Child
+
 CARE_R_SOC<-long_survey_data %>%
   filter(grepl("CARE_S",item))
 
@@ -119,47 +149,116 @@ CARE_R_SOC_wide<-CARE_R_SOC_wide %>%
          av_drinkgame=CARE_S_5B,
          do_drivedrunk=CARE_S_6A,
          av_drivedrunk=CARE_S_6B,
-         do_grabpush=CARE_S_7A,
-         av_grabpush=CARE_S_7B,
-         do_graffiti=CARE_S_8A,
-         av_graffiti=CARE_S_8B,
-         do_hitsomeone=CARE_S_9A,
-         av_hitsomeone=CARE_S_9B,
-         do_slapsomeone=CARE_S_10A,
-         av_slapsomeone=CARE_S_10B,
-         do_punchsomeone=CARE_S_11A,
-         av_punchsomeone=CARE_S_11B,
-         do_drivereckless=CARE_S_12A,
-         av_drivereckless=CARE_S_12B,
-         do_textdrive=CARE_S_13A,
-         av_textdrive=CARE_S_13B,
-         do_phonedrive=CARE_S_14A,
-         av_phonedrive=CARE_S_14B) %>%
+         do_sex=CARE_S_7A,
+         av_sex=CARE_S_7B,
+         do_pregnancyrisk=CARE_S_8A,
+         av_pregnancyrisk=CARE_S_8B,
+         do_STIrisk=CARE_S_9A,
+         av_STIrisk=CARE_S_9B,
+         do_sexstranger=CARE_S_10A,
+         av_sexstranger=CARE_S_10B,
+         do_grabpush=CARE_S_11A,
+         av_grabpush=CARE_S_11B,
+         do_graffiti=CARE_S_12A,
+         av_graffiti=CARE_S_12B,
+         do_hitsomeone=CARE_S_13A,
+         av_hitsomeone=CARE_S_13B,
+         do_slapsomeone=CARE_S_14A,
+         av_slapsomeone=CARE_S_14B,
+         do_punchsomeone=CARE_S_15A,
+         av_punchsomeone=CARE_S_15B,
+         do_drivereckless=CARE_S_16A,
+         av_drivereckless=CARE_S_16B,
+         do_textdrive=CARE_S_17A,
+         av_textdrive=CARE_S_17B,
+         do_phonedrive=CARE_S_18A,
+         av_phonedrive=CARE_S_18B) %>%
   mutate(carersoc_gen=rowMeans(cbind(CARE_S_I,CARE_S_II),na.rm=T),
          carersoc_dosubstance=round(rowMeans(cbind(CARE_S_2A,CARE_S_3A,CARE_S_4A,CARE_S_5A),na.rm=T),2),
          carersoc_avoidsubstance=round(rowMeans(cbind(CARE_S_2B,CARE_S_3B,CARE_S_4B,CARE_S_5B),na.rm=T),2),
-         carersoc_doviolence=round(rowMeans(cbind(CARE_S_7A,CARE_S_9A,CARE_S_10A,CARE_S_11A),na.rm=T),2),
-         carersoc_avoidviolence=round(rowMeans(cbind(CARE_S_7B,CARE_S_9B,CARE_S_10B,CARE_S_11B),na.rm=T),2),
-         carersoc_dorecklessdriving=round(rowMeans(cbind(CARE_S_6A,CARE_S_12A,CARE_S_13A,CARE_S_14A),na.rm=T),2),
-         carersoc_avoidrecklessdriving=round(rowMeans(cbind(CARE_S_6B,CARE_S_12B,CARE_S_13B,CARE_S_14B),na.rm=T),2),
-         carersoc_dograffiti=CARE_S_8A,
-         carersoc_avoidgraffiti=CARE_S_8B) %>%
-  select(-contains("CARE_S_"))
+         carersoc_dosex=CARE_S_7A,
+         carersoc_avoidsex=CARE_S_7B,
+         carersoc_doriskysex=round(rowMeans(cbind(CARE_S_8A,CARE_S_9A,CARE_S_10A),na.rm=T),2),
+         carersoc_avoidriskysex=round(rowMeans(cbind(CARE_S_8B,CARE_S_9B,CARE_S_10B),na.rm=T),2),
+         carersoc_doviolence=round(rowMeans(cbind(CARE_S_11A,CARE_S_12A,CARE_S_13A,CARE_S_14A),na.rm=T),2),
+         carersoc_avoidviolence=round(rowMeans(cbind(CARE_S_11B,CARE_S_12B,CARE_S_13B,CARE_S_14B),na.rm=T),2),
+         carersoc_dorecklessdriving=round(rowMeans(cbind(CARE_S_6A,CARE_S_16A,CARE_S_17A,CARE_S_18A),na.rm=T),2),
+         carersoc_avoidrecklessdriving=round(rowMeans(cbind(CARE_S_6B,CARE_S_16B,CARE_S_17B,CARE_S_18B),na.rm=T),2),
+         carersoc_dograffiti=CARE_S_12A,
+         carersoc_avoidgraffiti=CARE_S_12B) %>%
+  select(-contains("CARE_S_")) %>%
+  mutate(timepoint=ifelse(grepl("Session 1",survey_name),"one",
+                          ifelse(grepl("Session 2",survey_name),"one",
+                                 ifelse(grepl("Session 3",survey_name),"two",NA))))
 ```
 
 Gather the health risking behaviors
 ```{r}
-marijuana_everused<-long_survey_data %>%
-  filter(grepl("YRBS_20",item)) # 0 = No; 1 = Yes
+###### Marijuana #######
+# Marijuana use is assessed in the following questionnaires & surveys:
+# YRBS: TDS1 Session 2 B - Post; TDS1, Session 3 - Child; 
+#       TDS2 Session 2 B; TDS2 Session 3 - Child
+# CARE_EI: TDS1 Session 1 - Pre; TDS1 Session 1 - Post
+# CARE_WE: TDS1 Session 1 - Pre; TDS1 Session 1 - Post
+# CARE_PF: TDS1 Session 2 B - Pre; 
+# PALS2: TDS1, Session 3 - Child;
+#        TDS2 Session 2 B; TDS2 Session 3 - Child
 
-marijuana_past30days<-long_survey_data %>%
-  filter(grepl("YRBS_22",item)) # 0 to 6 scale with 6 = 30 days
+TDS1_SESS1_PRE_Marijuana<-c("CARE_EI_10A","CARE_WE_10A")
+TDS1_SESS1_POST_Marijuana<-c("CARE_WE_10A","CARE_EI_10A")
+TDS1_SESS2B_PRE_Marijuana<-c("CARE_PF_1A","PAL2_12G")
+TDS1_SESS2B_POST_Marijuana<-c("YRBS_20","YRBS_22") # 0 to 6 for past 30 days
+TDS1_SESS3_Marijuana<-c("YRBS_20","YRBS_22","PAL2_12G")
+TDS2_SESS2B_Marijuana<-c("YRBS_20","YRBS_22","CARE_WE_10A", "CARE_EI_10A","PAL2_12G")
+TDS2_SESS3_Marijuana<-c("YRBS_20","YRBS_22","PAL2_12G")
 
-marijuana_likelyusenext6months <-long_survey_data %>%
-  filter(grepl("CARE_EI_10A",item)) # 1 to 7 scale with 7 = extremely likely
+Marijuana<-bind_rows(
+  TDS1_SESS1_PRE %>% filter(grepl(paste0(TDS1_SESS1_PRE_Marijuana, collapse = "|"),item)),
+  TDS1_SESS1_POST %>% filter(grepl(paste0(TDS1_SESS1_POST_Marijuana, collapse = "|"),item)),
+  TDS1_SESS2B_PRE %>% filter(grepl(paste0(TDS1_SESS2B_PRE_Marijuana, collapse = "|"),item)),
+  TDS1_SESS2B_POST %>% filter(grepl(paste0(TDS1_SESS2B_POST_Marijuana, collapse = "|"),item)),
+  TDS1_SESS3 %>% filter(grepl(paste0(TDS1_SESS3_Marijuana, collapse = "|"),item)),
+  TDS2_SESS2B %>% filter(grepl(paste0(TDS2_SESS2B_Marijuana, collapse = "|"),item)),
+  TDS2_SESS3 %>% filter(grepl(paste0(TDS2_SESS3_Marijuana, collapse = "|"),item))
+)
 
-marijuana_willingness <-long_survey_data %>%
-  filter(grepl("CARE_WE_10A",item)) # 1 to 7 scale with 7 = extremely willing
+Marijuana_wide<-Marijuana %>%
+  mutate(value=as.numeric(value)) %>% 
+  filter(!is.na(value)) %>%
+  filter(!is.na(SID)) %>%
+  filter(!SID==999,!SID=="") %>%
+distinct(SID,item,value,survey_name,.keep_all = FALSE) %>% 
+  spread(item,value) %>%
+  mutate(mj_everused=YRBS_20,
+         mj_past30days=YRBS_22,
+         mj_willing=CARE_WE_10A,
+         mj_expected=CARE_EI_10A,
+         mj_pastinvlv=CARE_PF_1A,
+         mj_friendsuse=PAL2_12G) %>%
+  select(-contains("YRBS"),-contains("CARE"),-PAL2_12G)
+
+Marijuana_scores <- Marijuana_wide %>%
+  mutate(mj_hypothetical=rowMeans(cbind(mj_willing,mj_expected))) %>%
+  select(-mj_everused,-mj_pastinvlv,-mj_willing,-mj_expected) %>% 
+  mutate(timepoint=ifelse(grepl("Session 1",survey_name),"one",
+                          ifelse(grepl("Session 2",survey_name),"one",
+                                 ifelse(grepl("Session 3",survey_name),"two",NA))))
+
+```
+
+Gather other relevant individual variables
+```{r}
+###### Resistance to Peer Influence #######
+# RPI is assessed in the following surveys:
+# TDS1 Session 1  - Pre; TDS1 Session 1 - Post;
+# TDS1, Session 3 - Child;
+
+###### Fear of Negative Evaluation #######
+# BFNE is assessed in the following surveys:
+# TDS1 Session 2 B - Pre; 
+# 
+
+
 ```
 
 Post pre-reg script 
@@ -167,9 +266,12 @@ Post pre-reg script
 
 ## Graph distributions
 CARE_R_SOC_DO<-CARE_R_SOC_wide %>%
-  select(SID,carersoc_dograffiti,carersoc_dosubstance,carersoc_doviolence,carersoc_dorecklessdriving) %>%
+  select(SID,carersoc_dograffiti,carersoc_dosubstance,carersoc_doviolence,carersoc_dorecklessdriving,
+         carersoc_dosex,carersoc_doriskysex) %>%
   mutate(Graffiti=carersoc_dograffiti,
          Substances=carersoc_dosubstance,
+         Sex=carersoc_dosex,
+         Risky_Sex=carersoc_doriskysex,
          Violence=carersoc_doviolence,
          Reckless_Driving=carersoc_dorecklessdriving) %>%
   gather('item','value',2:length(.)) %>%
@@ -179,14 +281,18 @@ CARE_R_SOC_DO_graph<-ggplot(CARE_R_SOC_DO, aes(x=value, colour=item)) +
   ggtitle(paste0("CARE-R Social: Doing these things would make people 1: like me a lot less to 5: like me a lot more. N= ",length(unique(CARE_R_SOC_DO$SID))," participants"))
 
 
-CARE_R_SOC_DONT<-CARE_R_SOC %>%
+CARE_R_SOC_DONT<-CARE_R_SOC_wide %>%
   select(SID,carersoc_avoidgraffiti,
          carersoc_avoidsubstance,
          carersoc_avoidviolence,
+         carersoc_avoidsex,
+         carersoc_avoidriskysex,
          carersoc_avoidrecklessdriving) %>%
   mutate(Graffiti=carersoc_avoidgraffiti,
          Substances=carersoc_avoidsubstance,
          Violence=carersoc_avoidviolence,
+         Sex=carersoc_avoidsex,
+         Risky_Sex=carersoc_avoidriskysex,
          Reckless_Driving=carersoc_avoidrecklessdriving) %>%
   gather('item','value',2:length(.)) %>%
   filter(!grepl("carersoc_",item))
@@ -194,5 +300,57 @@ CARE_R_SOC_DONT_graph<-ggplot(CARE_R_SOC_DONT, aes(x=value, colour=item)) +
   geom_density(alpha=.3)+
   ggtitle(paste0("CARE-R Social: NOT doing these things would make people 1: like me a lot less to 5: like me a lot more. N= ",length(unique(CARE_R_SOC_DONT$SID))," participants"))
 
+```
 
+```{r}
+### Tests conducted for SRA abstract submission on September 6, 2017 ####
+Marijuana_Soc_Beh <- left_join((Marijuana_scores %>% select(-survey_name)),(CARE_R_SOC_wide %>% 
+                                 select(do_marijuana,av_marijuana,SID,timepoint)))
+
+Marijuana_Soc_Beh_hypothetical<-Marijuana_Soc_Beh %>%
+  filter(!is.na(mj_hypothetical)) %>%
+  spread(key = timepoint,value = mj_hypothetical) %>%
+  mutate(mj_hypothetical=one) %>%
+  select(-one)
+
+Marijuana_Soc_Beh_past30days<-Marijuana_Soc_Beh %>%
+  filter(!is.na(mj_past30days)) %>%
+  spread(key = timepoint, value = mj_past30days) %>%
+  mutate(mj_friendsuse_tp1=one,
+         mj_friendsuse_tp2=two) %>%
+  select(-one,-two)
+
+# Linear Mixed Models
+## Hypothetical use
+null_model <-lme(mj_hypothetical ~ 1, method="ML", random = ~1|SID, data=(Marijuana_Soc_Beh_hypothetical
+                                                                          %>%filter(!is.na(do_marijuana))))
+do_model<-lme(mj_hypothetical ~ do_marijuana, method="ML", random = ~1|SID, data=(Marijuana_Soc_Beh_hypothetical %>%
+                                                                                    filter(!is.na(do_marijuana))))
+summary(do_model)
+anova(null_model,do_model)
+doav_model<-lme(mj_hypothetical ~ do_marijuana + av_marijuana, method="ML", random = ~1|SID, data=(Marijuana_Soc_Beh_hypothetical %>% filter(!is.na(do_marijuana),!is.na(av_marijuana))))
+anova(null_model,do_model,doav_model)
+
+Marijuana_Hypothetical_Do<-ggplot((Marijuana_Soc_Beh_hypothetical %>% filter(!is.na(do_marijuana))),
+       aes(x=do_marijuana, y=mj_hypothetical, colour=SID)) +
+  geom_point(alpha=.3,position=dodge) +
+    geom_smooth(method=lm,
+                aes(x=do_marijuana,
+                    y=mj_hypothetical),
+                size=.7,
+                alpha=0.2,
+                colour="dodgerblue",
+                fill = "dodgerblue") +
+   xlab("Perceived social outcome benefit from marijuana use")+
+   ylab("Hypothetical marijuana use")+
+  theme_bw() +
+    theme_minimal(base_size = 12, base_family = "Arial") +
+    theme(axis.line = element_line(colour = "black"),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.border = element_blank(),
+          panel.background = element_blank(),
+          legend.position="none") 
+ggsave(filename=paste0(workdir,"/carersoc/Marijuana_Hypothetical_Do.png"),
+       plot=Marijuana_Hypothetical_Do, width=6, height=5, units='in', dpi=300)
 ```
