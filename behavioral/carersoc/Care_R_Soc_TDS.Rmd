@@ -228,19 +228,8 @@ Marijuana_scores <- Marijuana_wide %>%
   select(-mj_everused,-mj_pastinvlv,-mj_willing,-mj_expected)
 
 ###### Alcohol ########
-YRBS_Alcohol<-c("A1", "A9", "A6")
 
-alcohol_everused<-long_survey_data %>%
-  filter(grepl("YRBS_20",item)) # 0 = No; 1 = Yes
-
-alcohol_past30days<-long_survey_data %>%
-  filter(grepl("YRBS_22",item)) # 0 to 6 scale with 6 = 30 days
-
-alcohol_likelyusenext6months <-long_survey_data %>%
-  filter(grepl("CARE_EI_10A",item)) # 1 to 7 scale with 7 = extremely likely
-
-alcohol_willingness <-long_survey_data %>%
-  filter(grepl("CARE_WE_10A",item)) # 1 to 7 scale with 7 = extremely willing
+###### Sex ########
 
 ###### Violence ########
 
@@ -258,6 +247,16 @@ Gather other relevant individual variables
 # TDS1, Session 3 - Child;
 
 ###### Fear of Negative Evaluation #######
+# BFNE is assessed in the following surveys:
+# TDS1 Session 2 B - Pre; 
+# 
+
+###### Self esteem #######
+# BFNE is assessed in the following surveys:
+# TDS1 Session 2 B - Pre; 
+# 
+
+###### Peer victimization #######
 # BFNE is assessed in the following surveys:
 # TDS1 Session 2 B - Pre; 
 # 
