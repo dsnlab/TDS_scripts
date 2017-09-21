@@ -1,0 +1,471 @@
+---
+title: "Strategic brain connectivity"
+author: "Kate Mills & John Flournoy & Theresa Cheng & TDS team"
+date: "September 20, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+```{r Load Required Packages, message=FALSE, warning=FALSE, include=FALSE}
+## Load required packages ##
+packages <-  c("lme4", "nlme", "ggplot2", "dplyr", "tidyr", "knitr",
+              "parallel", "data.table", "lubridate","psych")
+if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+  install.packages(setdiff(packages, rownames(installed.packages())))  
+}
+lapply(packages, library, character.only = TRUE)
+```
+Set working directory
+```{r Set Directory, message=FALSE, warning=FALSE, include=FALSE}
+getwd()
+workdir=as.character(read.table((paste0(getwd(),"/org/workingdirectory.txt")))[[1]])
+```
+
+Extract rsfcMRI preprocessing stats
+```{r Extract and plot run times, echo=TRUE}
+# Set directory
+rsfcMRI_subjects="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
+# create sub list based on folders within the restings state fcMRI subjects folder
+subs<-list.files(path = rsfcMRI_subjects, pattern = "sub")
+# set scrubbing threshold
+scrubbingThreshold=.2
+# extract info
+extract_rsfcMRI_runinfo= function(sub){
+if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))){
+      log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))
+      preproc_complete="yes"
+      blurps<-nrow(log %>% filter(.[[1]]>scrubbingThreshold))
+      potential<-(nrow(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))-(blurps*2))
+      viable<-ifelse(potential>=385,"yes","no")
+      cbind(sub,blurps,potential,viable,preproc_complete)
+    } else {
+      preproc_complete="no"
+      blurps<-NA
+      potential<-NA
+      viable<-"No"
+      cbind(sub,blurps,potential,viable,preproc_complete)
+      }
+}
+extract_rsfcMRI_runinfo= function(sub){
+if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))){
+      log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))
+      preproc_complete="yes"
+      blurps<-nrow(log %>% filter(.[[1]]>scrubbingThreshold))
+      potential<-(nrow(log)-(blurps*2))
+      viable<-ifelse(potential>=385,"yes","no")
+      cbind(sub,blurps,potential,viable,preproc_complete)
+    } else {
+      preproc_complete="no"
+      blurps<-NA
+      potential<-NA
+      viable<-"no"
+      cbind(sub,blurps,potential,viable,preproc_complete)
+      }
+}
+outputlist<-lapply(subs,extract_rsfcMRI_runinfo)
+output.df<-as.data.frame(do.call(rbind,outputlist)) %>% 
+  mutate(blurps=as.numeric(levels(blurps))[blurps],
+         potential=as.numeric(levels(potential))[potential]) %>%
+  mutate(potential=ifelse(potential<0,0,potential))
+
+useable <- ggplot((output.df %>% select(-blurps)),
+                aes(x=sub, y=(potential*.78)/60, fill=viable))
+useable + geom_bar(colour="black", stat="identity") 
+
+sublist<-output.df %>% 
+  filter(viable=="yes") %>%
+  select(sub)
+
+print(paste0(nrow(sublist)," are viable"))
+```
+
+Obtain demographic data
+```{r}
+# Females are 1 and Males are 0
+redcapData <- read.csv(paste0(workdir,"Redcap/ages_at_sessions.csv"), header = TRUE, stringsAsFactors = FALSE) %>%
+  mutate(gender=ifelse(gender==0,"M",
+                       ifelse(gender==1,"F",
+                              NA)),
+         fsiq2=ifelse(is.na(fsiq2),999,fsiq2)) %>%
+  filter(!sid==999) %>%
+  filter(!fsiq2<70) %>% # exclude individuals with IQs less than 70
+  mutate(fsiq2=ifelse(fsiq2==999,NA,fsiq2),
+         sub=paste0("sub-",sid)) %>%
+  mutate(group=ifelse(grepl("-3",sub),"foster",
+                      ifelse(grepl("-4",sub),"juvjus",
+                             ifelse(grepl("-1",sub),"comm",NA))))%>%
+  select(-sid)
+```
+
+Exclude subs with issues
+```{r}
+sublist<- sublist %>%
+  filter(!sub=="sub-192") # sub needs timecourses extracted again
+```
+
+Get timecourses
+```{r timecourses}
+########################
+## Gordon timecourses ##
+########################
+if(!file.exists("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordon_coisDT.RDS")){
+  numcores<-detectCores()[1]
+  scrubbingThreshold<-.2
+  sub_base_dir="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
+  parcellation_list_dir='/projects/dsnlab/TDS/TDS_scripts/sMRI/templates/lists/'
+  gordon_lhparcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"lhlabels.txt"))[[1]]) %>%
+    filter(grepl("lh.Parcel", .[[1]]))%>%
+    mutate(parcel_name=.[[1]]) %>%
+    select(parcel_name)
+  gordon_rhparcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"rhlabels.txt"))[[1]]) %>%
+    filter(grepl("rh.Parcel", .[[1]]))%>%
+    mutate(parcel_name=.[[1]]) %>%
+    select(parcel_name)
+  gordon<-bind_rows(gordon_rhparcels,gordon_lhparcels)
+  
+  collectAndCorTimecourses <- function(sub, parcels, scrubbingThreshold, sub_base_dir) {
+    #below makes a df with every parcel file location, that then reads in the data from that parcel.
+    #result is a long data frame with indexes within each parcel (e.g. volume number 1:514)
+    timecourses <- data.frame(file_location=paste0(sub_base_dir,sub,"/",sub,".results/timecourses/",sub,'_',parcels$parcel_name,'.txt'),
+                              sub=sub,
+                              parcel=parcels$parcel_name,
+                              stringsAsFactors=F) %>%
+      group_by(sub,parcel) %>% do({
+        timecourse<-try(fread(.$file_location, stringsAsFactors=F))
+        if('try-error' %in% class(timecourse)) timecourse <- data.frame(NA)
+        timecourse
+      }) %>%
+      mutate(index=1:n()) %>% filter(!is.na(V1))
+    sub_dir <- paste0(sub_base_dir,sub,"/",sub,".results/")
+    #get the motion information and censor properly
+    fdfile <- data.frame(motion=read.table(paste0(sub_dir,"motion_",sub,"_enorm.1D"))$V1) %>%
+      mutate(index=1:n(),
+             censor_raw=motion>scrubbingThreshold, #censor if over the threshold
+             censor_1after=censor_raw | lag(censor_raw,1, default=F), #censor 1 after any censored vols
+             censor=censor_1after | (lead(censor_1after,1, default=F) & lag(censor_1after,1, default=F))) #censor any vols between censored vols
+    #timecourse length == motion data length error checking
+    fdlength <- dim(fdfile)[1]
+    nada <- timecourses %>% group_by(parcel) %>%
+      summarize(n=n()) %>% group_by(parcel) %>%
+      do(thing=if(.$n != fdlength) stop(paste0('fdfile and timecourse ARE NOT SAME LENGTH!!!',
+                                               sub, ' ', .$parcel, '\n')))
+    #get a summary of motion for filtering later, and just for our info
+    motiondata <- summarize(fdfile,
+                            Blurps=sum(censor_raw),
+                            Numcensored=sum(censor))
+    #remove censored volumes
+    timecourses_censored <- left_join(timecourses, select(fdfile,index,censor)) %>% filter(!censor)
+    #more summary info for filtering subjects later
+    motiondata$Framesremaining <- timecourses_censored %>% group_by(parcel) %>% 
+      summarize(frames_remaining=n()) %>% distinct(frames_remaining) %>%
+      unlist  
+    #make the timecourse data nice for correlations
+    timecourses_censored_w <- timecourses_censored %>% 
+      select(sub, index, parcel, V1) %>% 
+      spread(parcel,V1) %>% ungroup %>% select(-index, -sub)
+    #correlate!
+    CorrelationMatrix<-cor(timecourses_censored_w)
+    #just take the bottom triangle
+    CorrelationMatrix[upper.tri(CorrelationMatrix, diag=TRUE)] <- NA
+    #this gets the names for the rows and columns and assigns each cor value
+    #a name that is the combination of the row and column.
+    CorrDF <- as.data.frame(CorrelationMatrix) %>% #matrix colnames become df column names
+      mutate(var2=rownames(CorrelationMatrix)) %>% #add a column for matrix row names
+      gather(var1, cor, -var2) %>% #make wide cor mat long, but keep indexed by matrix row name
+      filter(!is.na(cor)) %>% #remove NA (upper tri) rows
+      unite(coi, var1, var2) #unite the row and col names, now next to each other, into a single name.
+    ## The CorrDF data frame now looks like, for example:
+    # key                         cor
+    # ---                         -----
+    # lh.Parcel_1_lh.Parcel_10    0.338
+    ##
+    # now we want to add in our summary timecourse info re motion etc, so we just 
+    # add columns to the correlation data frame, and turn it into a data table for
+    # efficiency later on.
+    subjDF <- CorrDF %>% mutate(sub=sub, 
+                                Blurps=motiondata$Blurps,
+                                Numcensored=motiondata$Numcensored,
+                                Framesremaining=motiondata$Framesremaining) %>% as.data.table
+    }
+  
+  # GORDON parcels
+  system.time(gordon_cois<- mclapply(as.list(as.character(sublist$sub)),
+                                     collectAndCorTimecourses, 
+                                     parcels=gordon,
+                                     scrubbingThreshold=scrubbingThreshold, 
+                                     sub_base_dir=sub_base_dir,
+                                     mc.cores=numcores))
+  print(object.size(gordon_cois), quote = FALSE, units = "Mb")
+  
+  # bind list of data.tables into one long data.table and filter by frames remaining (< 5 mins)
+  system.time(gordon_coisDT <- do.call(bind_rows, gordon_cois) %>% 
+                filter(Framesremaining >= 385) %>%
+                select(-Blurps, -Numcensored, -Framesremaining) %>%  
+                as.data.table)
+  print(object.size(gordon_coisDT), quote = FALSE, units = "Mb")
+  rm(gordon_cois);gc() #remove list, and garbage collect
+  save(gordon_coisDT,file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordon_coisDT.RDS")
+} else {
+  load(file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordon_coisDT.RDS")
+}
+
+### APARC parcels
+if(!file.exists("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/aparc_coisDT.RDS")){
+  numcores<-detectCores()[1]
+  scrubbingThreshold<-.2
+  sub_base_dir="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
+  parcellation_list_dir='/projects/dsnlab/TDS/TDS_scripts/sMRI/templates/lists/'
+  aparc_parcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"aparcrois.txt"))[[1]]) %>%
+    mutate(parcel_name=paste0("aparc_",.[[1]])) %>%
+    select(parcel_name)
+  system.time(aparc_cois<- mclapply(as.list(as.character(sublist$sub)),
+                                    collectAndCorTimecourses, 
+                                    parcels=aparc_parcels,
+                                    scrubbingThreshold=scrubbingThreshold, 
+                                    sub_base_dir=sub_base_dir,
+                                    mc.cores=numcores))
+  print(object.size(aparc_cois), quote = FALSE, units = "Mb")
+  
+  
+  # bind list of data.tables into one long data.table and filter by frames remaining (< 5 mins)
+  system.time(aparc_coisDT <- do.call(bind_rows, aparc_cois) %>% 
+                filter(Framesremaining >= 385) %>%
+                select(-Blurps, -Numcensored, -Framesremaining) %>%  
+                as.data.table)
+  print(object.size(aparc_coisDT), quote = FALSE, units = "Mb")
+  rm(aparc_cois);gc() #remove list, and garbage collect
+  save(aparc_coisDT,file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/aparc_coisDT.RDS")
+} else {
+  load(file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/aparc_coisDT.RDS")
+}
+
+
+```
+
+Analysis
+```{r}
+rerun_models=TRUE
+
+gordon_cois<-distinct(gordon_coisDT, coi)
+
+if(rerun_models){
+  # Identify parcels where connectivity differs by group membership
+  system.time(
+    gordon_models<-mclapply(X=as.character(as.list(gordon_cois$coi)), 
+      demodata=redcapData,
+      coidat=gordon_coisDT,
+      mc.cores=numcores,
+      FUN=function(coi_name, demodata, coidat){
+        adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                   demodata,
+                   by='sub',
+                   allow.cartesian=T) %>%
+          filter(!group=="juvjus")
+        null_mod=(lme(cor ~ 1,
+                      method="ML",
+                      random = ~1|sub,
+                      data=adf))
+        group_mod=(lme(cor ~ group,
+                         method="ML",
+                         random = ~1|sub,
+                         data=adf))
+        mod_comp<-anova(null_mod,group_mod)
+        if (mod_comp$'p-value'[2]<.01 &
+            mod_comp$AIC[2]<mod_comp$AIC[1]){
+          coiname<- as.character(coi_name)
+          chisq <- mod_comp[2,8]
+          pval <- round(mod_comp[2,9],4)
+          AIC <- mod_comp[2,4]
+          nullAIC <- mod_comp[1,4]
+          #mod <- list(group_mod)
+          mod_type <- "group difference"
+          retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
+          retDF<-as.data.table(retDF)
+           } else {
+           coiname= as.character(coi_name)
+           chisq <- mod_comp[2,8]
+           pval <- round(mod_comp[2,9],4)
+           AIC <- mod_comp[2,4]
+           nullAIC <- mod_comp[1,4]
+           #mod <- "NA"
+           mod_type <- "null model"
+           retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
+          as.data.table(retDF)
+        }
+      }
+    ))
+  print(object.size(gordon_models), units='Mb')
+  gordon_modelsDT <- rbindlist(gordon_models) #make this into a dataframe
+  print(object.size(gordon_modelsDT), units='Mb')
+  rm(gordon_models);gc()
+  save(gordon_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordon_modelsDT.RDS"))
+} else {
+  #gordon_modelsDT <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordon_modelsDT.RDS"))
+}
+```
+
+
+
+```{r Network Analysis}
+# identify the network of each COI target
+gordon_modelsDT_analysis <- gordon_modelsDT %>%
+  mutate(seed=substring(coiname, 0, 13),
+         target=substring(coiname, 13, length(coiname))) %>%
+  mutate(target=ifelse(grepl("0_lh.",target),
+                       substring(target, 3, length(target)),
+                       ifelse(grepl("0_rh.",target),
+                              substring(target, 3, length(target)),
+                              ifelse(grepl("1_rh.",target),
+                                     substring(target, 3, length(target)),
+                                     ifelse(grepl("1_lh.",target),
+                                            substring(target, 3, length(target)),
+                                            ifelse(grepl("2_rh.",target),
+                                                   substring(target, 3, length(target)),
+                                                   ifelse(grepl("2_lh.",target),
+                                                          substring(target, 3, length(target)),
+                                                          ifelse(grepl("3_rh.",target),
+                                                                 substring(target, 3, length(target)),
+                                                                 ifelse(grepl("3_lh.",target),
+                                                                        substring(target, 3, length(target)),
+                                                                        ifelse(grepl("4_rh.",target),
+                                                                               substring(target, 3, length(target)),
+                                                                               ifelse(grepl("4_lh.",target),
+                                                                                      substring(target, 3, length(target)),
+                                                                                      ifelse(grepl("5_rh.",target),
+                                                                                             substring(target, 3, length(target)),
+                                                                                             ifelse(grepl("5_lh.",target),
+                                                                                                    substring(target, 3, length(target)),
+                                                                                                    ifelse(grepl("6_rh.",target),
+                                                                                                           substring(target, 3, length(target)),
+                                                                                                           ifelse(grepl("6_lh.",target),
+                                                                                                                  substring(target, 3, length(target)),
+                                                                                                                  ifelse(grepl("7_rh.",target),
+                                                                                                                         substring(target, 3, length(target)),
+                                                                                                                         ifelse(grepl("7_lh.",target),
+                                                                                                                                substring(target, 3, length(target)),
+                                                                                                                                ifelse(grepl("8_rh.",target),
+                                                                                                                                       substring(target, 3, length(target)),
+                                                                                                                                       ifelse(grepl("8_lh.",target),
+                                                                                                                                              substring(target, 3, length(target)),
+                                                                                                                                              ifelse(grepl("9_rh.",target),
+                                                                                                                                                     substring(target, 3, length(target)),
+                                                                                                                                                     ifelse(grepl("9_lh.",target),
+                                                                                                                                                            substring(target, 3, length(target)),target))))))))))))))))))))) %>%
+  mutate(target=ifelse(grepl("_lh.",target),
+                       substring(target, 2, length(target)),
+                       ifelse(grepl("_rh.",target),
+                              substring(target, 2, length(target)),target))) %>%
+  mutate(seed=ifelse(grepl("_l",seed),
+                     substring(seed,0,11),
+                     ifelse(grepl("_r",seed),
+                     substring(seed,0,11),
+                     ifelse(substring(seed, nchar(seed))=="_",
+                     substring(seed,0,12),seed))))
+
+## Make dataframe only with significant connections
+gordon_modelsDT_sig<-gordon_modelsDT_analysis %>%
+  filter(!mod_type=="null model")
+
+## Figure out the group differences in connectivity
+  system.time(
+    gordon_differences<-mclapply(X=as.character(as.list(gordon_modelsDT_sig$coiname)), 
+      demodata=redcapData,
+      coidat=gordon_coisDT,
+      mc.cores=numcores,
+      FUN=function(coi_name, demodata, coidat){
+        adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                   demodata,
+                   by='sub',
+                   allow.cartesian=T) %>%
+          filter(!group=="juvjus")
+        group_mod=(lme(cor ~ group,
+                         method="ML",
+                         random = ~1|sub,
+                         data=adf))
+          coiname<- as.character(coi_name)
+          interceptfx <- as.numeric(group_mod$coefficients$fixed[1])
+          groupfx <- as.numeric(group_mod$coefficients$fixed[2])
+          interceptfxSE <- summary(group_mod)$tTable[1,2]
+          groupfxSE <- summary(group_mod)$tTable[2,2]
+          retDF<-cbind(coiname,interceptfx,groupfx,interceptfxSE,groupfxSE)
+          as.data.table(retDF)
+      }
+    )
+  )
+  print(object.size(gordon_differences), units='Mb')
+  gordon_differencesDT <- rbindlist(gordon_differences) #make this into a dataframe
+  print(object.size(gordon_differencesDT), units='Mb')
+  
+  gordon_differencesDT <- left_join(gordon_modelsDT_sig,
+                                    (gordon_differencesDT %>%
+                                       mutate(interceptfx=round(as.numeric(interceptfx),3),
+                                              groupfx=round(as.numeric(groupfx),3),
+                                              interceptfxSE=round(as.numeric(interceptfxSE),3),
+                                              groupfxSE=round(as.numeric(groupfxSE),3))))
+  
+  
+## Make Heat Map
+heatmapdf <- expand.grid(gordon$parcel_name,gordon$parcel_name)
+heatmapdf<- heatmapdf %>% mutate(beta=0)
+heatmapdf$Var1b=0
+heatmapdf$Var2b=0
+for (i in 1:length(gordon_differencesDT$coiname)){
+  row<-which(grepl(gordon_differencesDT$seed[i], heatmapdf$Var1) & grepl(gordon_differencesDT$target[i], heatmapdf$Var2))
+  heatmapdf$beta[row]=as.numeric(gordon_differencesDT$groupfx[i])
+  row2<-which(grepl(gordon_differencesDT$target[i], heatmapdf$Var1) & grepl(gordon_differencesDT$seed[i], heatmapdf$Var2))
+  heatmapdf$beta[row2]=as.numeric(gordon_differencesDT$groupfx[i])}
+View(heatmapdf)
+
+## Rearrange the order of the parcels according to community
+heatmapdf <- heatmapdf %>%
+  arrange(Var1)
+
+# Plot the heat map
+m<-ggplot(data = heatmapdf, aes(x=Var1, y=Var2, fill=beta)) +
+  geom_tile() 
+m + scale_fill_distiller(palette = "Set1")
+
+
+## Load Gordon parcel data
+parcels=read.csv("/projects/dsnlab/tds/TDS_scripts/rsfMRI/Cheng_SAP/Parcels/Parcels.csv")
+parcels$ParcelID=as.character(parcels$ParcelID)
+
+## Match COI target with Gordon parcel #
+gordon_modelsDT=merge(gordon_modelsDT, parcels, by="ParcelID", all.x=TRUE)
+
+# Display the Data
+
+## generate a data frame to plot
+gordon_modelsDT$Community=as.character(gordon_modelsDT$Community) # turn community type into a character
+df_gordon_models= data.frame(cbind("ParcelID"=unlist(gordon_modelsDT$ParcelID), "seed"=unlist(gordon_modelsDT$seed), "mod_type"=unlist(gordon_modelsDT$mod_type), "Community"=unlist(gordon_modelsDT$Community))) 
+df_gordon_models$Community=as.factor(df_gordon_models$Community) # turn community back into a factor
+
+## Make a table 
+
+# calculate percentages
+tbl=group_by(df_gordon_models, seed, mod_type, Community) %>% tally %>% 
+  spread(Community, n, fill = 0)
+kable(tbl, format="pandoc")
+
+tbl=group_by(df_gordon_models, seed, mod_type) %>% tally %>% 
+  spread(seed, n, fill = 0)
+kable(tbl, format="pandoc")
+
+# Plot
+df_gordon_models=filter(df_gordon_models, df_gordon_models$mod_type!="null model") # remove those best explained by the null model
+
+## make the plot
+ggplot(df_gordon_models, aes(x=mod_type, fill=Community)) +
+  geom_bar(position="dodge") +
+  scale_x_discrete(labels=c("group difference")) +
+  facet_grid(seed~.)
+
+```
+
