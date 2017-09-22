@@ -13,6 +13,6 @@ SUBJLIST=`cat subject_list.txt`
 #SUBJLIST=`cat test.txt`
 
 for SUBJ in $SUBJLIST
- do sbatch --export SUBID=${SUBJ} --job-name rsfMRIproc --partition=defq --mem-per-cpu=8G --cpus-per-task=1 -o "${STUDY}"/rsfMRI/output/"${SUBJ}"_rsfMRIproc_output.txt -e "${STUDY}"/rsfMRI/output/"${SUBJ}"_rsfMRIproc_error.txt job_rsfMRIproc.tcsh
+ do sbatch --export SUBID=${SUBJ} --job-name rsfMRIproc --partition=short --mem-per-cpu=8G --cpus-per-task=1 -o "${STUDY}"/rsfMRI/output/"${SUBJ}"_rsfMRIproc_output.txt -e "${STUDY}"/rsfMRI/output/"${SUBJ}"_rsfMRIproc_error.txt job_rsfMRIproc.tcsh
 done
 

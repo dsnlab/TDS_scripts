@@ -1,33 +1,42 @@
 %NEEDS TO BE GENERALIZED 
 % check for correct number of motion regressors, and other things
 
-multicondDir='/Users/ralph/Documents/tds/tds_repo/fMRI/analysis/fx/multicond/ylg/';
-contrastJobMat='/Users/ralph/Documents/tds/tds_repo/fMRI/scripts/fx/models/ylg/contrasts/fx_ylg_allconds_con_base_53_template.mat';
-outputDir='/Users/ralph/Documents/tds/tds_repo/fMRI/scripts/fx/models/ylg/contrasts/fx_ylg_allconds_con_base_53/';
+SPM_PATH='/projects/dsnlab/SPM12/';
+multicondDir='/projects/dsnlab/tds/fMRI/analysis/fx/multicond/ylg';
+contrastJobMat='/projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_con_base_53.m'; %.m file for version control and readability
+outputDir='/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_con_base_53/';
 outprefix='fx_ylg_allconds_';
 outpostfix='.mat';
 outcomeCSV=fullfile(outputDir, 'multicondinfo-base.csv');  
-excludeThese={'101' '102' '104' '105' '106' '108' '110' '111' '178' '189' '350' '356'}; %SPnote: these exclusions based on subjs not in the allconds fx model
+excludeThese={'101' '102' '104' '105' '106' '108' '110' '111' '139' '158' '189'}; % via Jessica
+
+%You shouldn't need to change these options unless the multiple conditions setup has changed substantially
+numCondsWithoutPenalties=4; %this is the number of conditions when one has no penalty conditions (doesn't include pmods either)
+expression='multicond_decout_pmod_(?<pid>[0-9]{3})_stop(?<run>\w+)\.mat'; %regular expression for extracting information from multicond file names.
+prefix='multicond_decout_pmod_';
+midfix='_stop';
+postfix='.mat';
+
+%---
+% No more options below
+%---
+
+addpath(SPM_PATH);
+spm_jobman('initcfg');
 
 mcCSVFID=fopen(outcomeCSV,'w'); 
 fprintf(mcCSVFID, 'pid, run, dec, decgo, good, goodgo, goodnextgo, goodswitch, bad, badgo, badnextgo, badswitch, pendec, penout\n');
 fclose(mcCSVFID);
 
-numCondsWithoutPenalties=4;
-expression='multicond_decout_pmod_(?<pid>[0-9]{3})_stop(?<run>\w+)\.mat';
-prefix='multicond_decout_pmod_';
-midfix='_stop';
-postfix='.mat';
-
-contrastJobBatch=load(contrastJobMat);
+run(contrastJobMat);
+contrastJobBatch.matlabbatch=matlabbatch;
 if(any(cellfun(@(x) length(x.tcon.weights)~=33,...
     contrastJobBatch.matlabbatch{1}.spm.stats.con.consess)));
     error('Template file has wrong length for at least one contrast (all should be 33)');
 end
 %if a multicond has penalty conditions, add 7 zeros, otherwise, add 5
 
-
-dirsearchstring=[multicondDir 'multicond_decout_pmod_*stop*mat'];
+dirsearchstring=fullfile(multicondDir, 'multicond_decout_pmod_*stop*mat');
 
 filenames=dir(dirsearchstring);
 
@@ -43,9 +52,11 @@ uniqueRuns={'ALONE'; 'PEER'; 'EXCL'};
 uniquePIDs=uniquePIDs(~ismember(uniquePIDs, excludeThese));
 
 for(pid_i = 1:length(uniquePIDs))
+    display(['PID index: ', num2str(pid_i)]);
     nExtraConds={0, 0, 0};
     matlabbatch=contrastJobBatch.matlabbatch;
     for(run_i = 1:length(uniqueRuns))
+        display(['Run index: ', num2str(run_i)]);
         filename=[prefix uniquePIDs{pid_i} midfix uniqueRuns{run_i} postfix];
         runConds=load(fullfile(multicondDir,filename), '-mat', 'names','onsets','pmod');
         nNamedConds=length(runConds.names);
@@ -65,11 +76,12 @@ for(pid_i = 1:length(uniquePIDs))
             nPenOut=length(runConds.onsets{6});
         end
         mcCSVFID=fopen(outcomeCSV,'a');  %'a' = append to the prev file
-        %fprintf(mcCSVFID, 'pid, run, dec, decgo, good, goodgo, goodnextgo, goodswitch, bad, badgo, badnextgo, badswitch, pendec, penout\n');
+        %fprintf(mcCSVFID, 'pid, run, dec, decgo, good, goodgo, bad, badgo, pendec, penout\n');
         fprintf(mcCSVFID, '%s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n', ...
-            uniquePIDs{pid_i}, uniqueRuns{run_i}, length(runConds.onsets{1}), sum(runConds.pmod(1).param{1}==.5), ...
-            length(runConds.onsets{2}), sum(runConds.pmod(2).param{1}==.5), sum(runConds.pmod(2).param{2}==.5), sum(runConds.pmod(2).param{3}==.5), ...
-            length(runConds.onsets{3}), sum(runConds.pmod(3).param{1}==.5), sum(runConds.pmod(3).param{2}==.5), sum(runConds.pmod(3).param{3}==.5), ...
+            uniquePIDs{pid_i}, uniqueRuns{run_i}, ...
+            length(runConds.onsets{1}), sum(runConds.pmod(1).param{1}==.5), ...
+            length(runConds.onsets{2}), sum(runConds.pmod(2).param{1}==.5), ...
+            length(runConds.onsets{3}), sum(runConds.pmod(3).param{1}==.5), ...
             nPenDec, nPenOut);
         fclose(mcCSVFID);
     end
