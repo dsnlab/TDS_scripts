@@ -11,7 +11,7 @@ clear all
 %setting directory and listing csv files in matlab directory
 f = '/Volumes/TDS/behavior/CyberBall/multiconds/Summary/tds2/';
 g = '/Volumes/TDS/behavior/CyberBall/multiconds/NOD/tds2';
-d = dir(fullfile(f,'*_2.csv')); %change to _2 for cyb2 (and also change which pmods to generate AND bottom of script where it saves file name)
+d = dir(fullfile(f,'*_1.csv')); %change to _2 for cyb2 (and also change which pmods to generate AND bottom of script where it saves file name)
 
 for k=1:length(d)
 
@@ -106,21 +106,21 @@ y = ct_2P(:,4);
 y = cellstr(y);
 y = str2double(y);
 
-%generate pmods for cyb_1 inclusion %COMMENT OUT IF RUNNING CYB_2; FOR CYB_1 only%
-% pmod = struct('name',{''},'param', {}, 'poly', {});
-% pmod(4).name{1} = 'ct_2P_pmod_more_inc';
-% pmod(4).param{1}=y;
-% pmod(4).poly{1}=1;
+% generate pmods for cyb_1 inclusion %COMMENT OUT IF RUNNING CYB_2; FOR CYB_1 only%
+pmod = struct('name',{''},'param', {}, 'poly', {});
+pmod(4).name{1} = 'ct_2P_pmod_more_inc';
+pmod(4).param{1}=y;
+pmod(4).poly{1}=1;
 
 %generate pmods for cyb_2 exclusion %COMMENT OUT IF RUNNING CYB_1; FOR CYB_2 only%
-pmod = struct('name',{''},'param', {}, 'poly', {});
-pmod(3).name{1} = 'ct_2C_pmod_more_exc';
-pmod(3).param{1}=x;
-pmod(3).poly{1}=1;
+%pmod = struct('name',{''},'param', {}, 'poly', {});
+%pmod(3).name{1} = 'ct_2C_pmod_more_exc';
+%pmod(3).param{1}=x;
+%pmod(3).poly{1}=1;
 
 %% SAVE
 %sub ID
-saveName=strcat(M{2}(1),'_2_NOD.mat') % CHANGE FOR CYB_1 or _2!
+saveName=strcat(M{2}(1),'_1_NOD.mat') % CHANGE FOR CYB_1 or _2!
 cd (g) %need to change this to the output folder
 %save(saveName{1},'names','onsets','durations')
 save(saveName{1},'names','onsets','durations', 'pmod') % Change: Add 'pmod' if using them

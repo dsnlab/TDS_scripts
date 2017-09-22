@@ -44,21 +44,21 @@ library(knitr)
 rm(list=ls())
 
 #define folder locations
-tds_folder<-'/Volumes/research/tds/'
+# tds_folder<-'/Volumes/research/tds/'
 
-setwd("/Volumes/research/tds/behavioral/cyberball/TDS2_cyb_summary/events")
+setwd("/Volumes/TDS/behavior/CyberBall/multiconds/Summary/tds2/")
 
 #list the files 
-listFiles<-list.files(recursive=T, pattern='summary_events_cyb.*_2.csv$') # Can be 1 or 2 to examine inc or exc runs 
+listFiles<-list.files(recursive=F, pattern='summary_events_cyb.*_2.csv$') # Can be 1 or 2 to examine inc or exc runs 
 ```
 
 ```{r, warning=FALSE, echo=FALSE}
 # MERGE ALL SUMMARY FILES
 
-setwd("/Volumes/research/tds/behavioral/cyberball/TDS2_cyb_summary/events")
+setwd("/Volumes/TDS/behavior/CyberBall/multiconds/Summary/tds2/")
 df<-do.call("rbind", lapply(listFiles, read.csv, header = TRUE))
 
-df_pmod <- subset(df,df$names==3) #change to 3 to identify pmods for computer throws (i.e. exclusion)
+df_pmod <- subset(df,df$names==3) #change to 3 to identify pmods for computer throws (i.e. exclusion); 4 for inclusion runs
 
 df_pmod$index = NA
 
