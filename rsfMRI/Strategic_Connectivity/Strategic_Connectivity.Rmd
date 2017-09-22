@@ -116,10 +116,9 @@ Obtain behavior data
 ylg_data<-read.csv(paste('/Volumes/TDS/behavior/YLG/processed/tds-all_trial_by_trial.csv',sep=''))
 
 ylg = ylg_data %>% 
-  mutate(condition = ifelse(grepl('1|2', run_index), 1,
-                     ifelse(grepl('3|4', run_index), 2,
-                     ifelse(grepl('5|6', run_index), 3, 
-                     ifelse(grepl('7|8', run_index), 4, NA))))) %>%
+  mutate(condition = ifelse(grepl('1|2|3|4', run_index), "Alone",
+                     ifelse(grepl('5|6', run_index), "Peer", 
+                     ifelse(grepl('7|8', run_index), "Exclusion", NA)))) %>%
   mutate(time=run.time.ms/60000) %>%
   mutate(go = ifelse(decision=='GO', 1, 0)) %>%
   mutate(crash = ifelse(scenario=='CRASH', 1, 0)) %>%
@@ -136,19 +135,14 @@ ylg = ylg_data %>%
   mutate(count4 = ifelse(event==4, 1, 0))
 
 # Convert to factors
-ylg$run_index <- as.factor(ylg$run_index)
 ylg$condition <- as.factor(ylg$condition)
 
-# 103, 107, 112, 138, 143, 176, 191 = behavioral
-# 101, 102, 104, 105, 106, 108, 110, 111 = completed old Cyberball version (no hyperinclusion)
-
+# exclude people for behavioral issues
 exclude = c(103, 107, 112, 138, 143, 176, 191)
 ylg_filtered = ylg %>% 
   filter(!subject.name %in% exclude)
 
 count_trials_per_sub<-ylg_filtered %>% group_by(subject.name) %>% summarize(n()) 
-# Set labels
-condition_labels = c(`1`='Mock', `2`='Alone', `3`='Peer Incl', `4`='Peer Excl')
 
 ylg_timing<-ylg_filtered %>%
   select(subject.name,run_index,time,condition) %>%
@@ -158,20 +152,19 @@ ylg_timing<-ylg_filtered %>%
                              ifelse(subject.name>400,"jj",NA)))) %>%
   mutate(sub=paste0("sub-",as.factor(subject.name))) %>%
   select(-subject.name) %>%
-  filter(!group=="jj") %>%
-  mutate(run_indexnum=as.numeric(run_index))
+  filter(!group=="jj")
 
 ```
 
 Analyze behavior data
 ```{r}
 
-## Find best fitting polynomial model for full dataset
+## Find best fitting polynomial model for learning across the course of the task
 nullmodel=lme(time ~ 1, method="ML", random = ~1|sub, data=ylg_timing)
-linmodel=lme(time ~ run_indexnum, method="ML", random = ~1|sub, data=ylg_timing)
+linmodel=lme(time ~ run_index, method="ML", random = ~1|sub, data=ylg_timing)
 groupmodel=lme(time ~ group, method="ML", random = ~1|sub, data=ylg_timing)
-lingroupmainmodel=lme(time ~ run_indexnum+group, method="ML", random = ~1|sub, data=ylg_timing)
-lingroupintmodel=lme(time ~ run_indexnum*group, method="ML", random = ~1|sub, data=ylg_timing)
+lingroupmainmodel=lme(time ~ run_index+group, method="ML", random = ~1|sub, data=ylg_timing)
+lingroupintmodel=lme(time ~ run_index*group, method="ML", random = ~1|sub, data=ylg_timing)
 
 # Compare models with run index only
 anova(nullmodel,linmodel,lingroupmainmodel,lingroupintmodel)
@@ -182,19 +175,21 @@ anova(nullmodel,groupmodel,lingroupmainmodel,lingroupintmodel)
 # best model incorporates both main effects of group and run index
 summary(lingroupmainmodel)
 
-###############
+# generate community sample models
 commnullmodel=lme(time ~ 1, method="ML", random = ~1|sub, data=(ylg_timing %>%
                                                                     filter(group=="community")))
-commmodel=lme(time ~ as.numeric(run_index), method="ML", random = ~1|sub, data=(ylg_timing %>%
+commmodel=lme(time ~ run_index, method="ML", random = ~1|sub, data=(ylg_timing %>%
                                                                     filter(group=="community")))
 anova(commnullmodel,commmodel)
+summary(commmodel)
 
+# generate foster sample models
 fosternullmodel=lme(time ~ 1, method="ML", random = ~1|sub, data=(ylg_timing %>%
                                                                     filter(group=="foster")))
-fostermodel=lme(time ~ as.numeric(run_index), method="ML", random = ~1|sub, data=(ylg_timing %>%
+fostermodel=lme(time ~ run_index, method="ML", random = ~1|sub, data=(ylg_timing %>%
                                                                     filter(group=="foster")))
 anova(fosternullmodel,fostermodel)
-
+summary(fostermodel)
 
 # Predicted model
 run_index<-seq(1:8)
@@ -235,9 +230,9 @@ foster.data.pred$time<-foster.data.pred$y.pred
 ## Graph it yo!
 group.colors <- c(community = "forestgreen", foster = "dodgerblue")
 
-ylg_timing_graph<-ggplot(ylg_timing,
+ylg_time_by_learning_graph<-ggplot(ylg_timing,
                          aes(y=time,
-                             x=as.numeric(run_index)))+
+                             x=run_index))+
   geom_line(data=comm.data.pred,
               aes(x=run_index, y=time), size=.7, colour="forestgreen")+
   geom_ribbon(data=comm.data.pred,
@@ -264,18 +259,29 @@ ylg_timing_graph<-ggplot(ylg_timing,
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
         panel.background = element_blank())
-ylg_timing_graph
+ylg_time_by_learning_graph
 
-## Check out if condition impacts time
+###################################################################
+
+## Check out if condition impacts time to complete run
 condition_model=lme(time ~ condition, method="ML", random = ~1|sub, data=ylg_timing)
-condition_runindex_model=lme(time ~ condition+run_indexnum, method="ML", random = ~1|sub, data=ylg_timing)
-condition_intrunindex_model=lme(time ~ condition*run_indexnum, method="ML", random = ~1|sub, data=ylg_timing)
-condition_intrunindex_group_model=lme(time ~ condition*run_indexnum+group, method="ML", random = ~1|sub, data=ylg_timing)
-condition_intrunindex_intgroup_model=lme(time ~ condition*run_indexnum*group, method="ML", random = ~1|sub, data=ylg_timing)
+condition_group_model=lme(time ~ condition+group, method="ML", random = ~1|sub, data=ylg_timing)
+condition_intgroup_model=lme(time ~ condition*group, method="ML", random = ~1|sub, data=ylg_timing)
+anova(condition_model,condition_group_model,condition_intgroup_model)
+# time to complete run varies between conditions by groups in different ways
+summary(condition_group_model)
+
+condition_runindex_model=lme(time ~ condition+run_index, method="ML", random = ~1|sub, data=ylg_timing)
+condition_intrunindex_model=lme(time ~ condition*run_index, method="ML", random = ~1|sub, data=ylg_timing)
+condition_runindex_group_model=lme(time ~ condition+run_index+group, method="ML", random = ~1|sub, data=ylg_timing)
+condition_intrunindex_intgroup_model=lme(time ~ condition*run_index*group, method="ML", random = ~1|sub, data=ylg_timing)
 anova(nullmodel,condition_model,condition_runindex_model,
-      condition_intrunindex_model,condition_intrunindex_group_model,
+      condition_intrunindex_model,condition_runindex_group_model,
       condition_intrunindex_intgroup_model)
 anova(nullmodel,linmodel)
+
+# best model takes into account the main effects of condition, run index, and group
+
 
 ```
 
@@ -424,35 +430,35 @@ if(!file.exists("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/socbr
   load(file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/social_coisDT.RDS")
 }
 
-### APARC parcels
-if(!file.exists("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/aparc_coisDT.RDS")){
-  numcores<-detectCores()[1]
-  scrubbingThreshold<-.2
-  sub_base_dir="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
-  parcellation_list_dir='/projects/dsnlab/TDS/TDS_scripts/sMRI/templates/lists/'
-  aparc_parcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"aparcrois.txt"))[[1]]) %>%
-    mutate(parcel_name=paste0("aparc_",.[[1]])) %>%
-    select(parcel_name)
-  system.time(aparc_cois<- mclapply(as.list(as.character(sublist$sub)),
-                                    collectAndCorTimecourses, 
-                                    parcels=aparc_parcels,
-                                    scrubbingThreshold=scrubbingThreshold, 
-                                    sub_base_dir=sub_base_dir,
-                                    mc.cores=numcores))
-  print(object.size(aparc_cois), quote = FALSE, units = "Mb")
-  
-  
-  # bind list of data.tables into one long data.table and filter by frames remaining (< 5 mins)
-  system.time(aparc_coisDT <- do.call(bind_rows, aparc_cois) %>% 
-                filter(Framesremaining >= 385) %>%
-                select(-Blurps, -Numcensored, -Framesremaining) %>%  
-                as.data.table)
-  print(object.size(aparc_coisDT), quote = FALSE, units = "Mb")
-  rm(aparc_cois);gc() #remove list, and garbage collect
-  save(aparc_coisDT,file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/aparc_coisDT.RDS")
-} else {
-  load(file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/aparc_coisDT.RDS")
-}
+# ### APARC parcels
+# if(!file.exists("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/aparc_coisDT.RDS")){
+#   numcores<-detectCores()[1]
+#   scrubbingThreshold<-.2
+#   sub_base_dir="/Volumes/TDS/bids_data/derivatives/rsfMRI_preproc_noFDscrub/"
+#   parcellation_list_dir='/projects/dsnlab/TDS/TDS_scripts/sMRI/templates/lists/'
+#   aparc_parcels<-as.data.frame(read.table(paste0(parcellation_list_dir,"aparcrois.txt"))[[1]]) %>%
+#     mutate(parcel_name=paste0("aparc_",.[[1]])) %>%
+#     select(parcel_name)
+#   system.time(aparc_cois<- mclapply(as.list(as.character(sublist$sub)),
+#                                     collectAndCorTimecourses, 
+#                                     parcels=aparc_parcels,
+#                                     scrubbingThreshold=scrubbingThreshold, 
+#                                     sub_base_dir=sub_base_dir,
+#                                     mc.cores=numcores))
+#   print(object.size(aparc_cois), quote = FALSE, units = "Mb")
+#   
+#   
+#   # bind list of data.tables into one long data.table and filter by frames remaining (< 5 mins)
+#   system.time(aparc_coisDT <- do.call(bind_rows, aparc_cois) %>% 
+#                 filter(Framesremaining >= 385) %>%
+#                 select(-Blurps, -Numcensored, -Framesremaining) %>%  
+#                 as.data.table)
+#   print(object.size(aparc_coisDT), quote = FALSE, units = "Mb")
+#   rm(aparc_cois);gc() #remove list, and garbage collect
+#   save(aparc_coisDT,file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/aparc_coisDT.RDS")
+# } else {
+#   load(file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/aparc_coisDT.RDS")
+# }
 
 ```
 
@@ -467,25 +473,28 @@ social_cois<-distinct(social_coisDT, coi)
 if(rerun_models){
   # Identify parcels where connectivity differs by group membership
   system.time(
-    gordon_models<-mclapply(X=as.character(as.list(gordon_cois$coi)), 
-      demodata=redcapData,
-      coidat=gordon_coisDT,
+    social_groupdiff_models<-mclapply(X=as.character(as.list(social_cois$coi)), 
+      demodata=ylg_timing,
+      coidat=social_coisDT,
       mc.cores=numcores,
       FUN=function(coi_name, demodata, coidat){
         adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
                    demodata,
                    by='sub',
-                   allow.cartesian=T) %>%
-          filter(!group=="juvjus")
+                   allow.cartesian=T)
         null_mod=(lme(cor ~ 1,
                       method="ML",
                       random = ~1|sub,
                       data=adf))
         group_mod=(lme(cor ~ group,
+                      method="ML",
+                      random = ~1|sub,
+                      data=adf))
+        group_coi_mod=(lme(cor ~ group*time,
                          method="ML",
                          random = ~1|sub,
                          data=adf))
-        mod_comp<-anova(null_mod,group_mod)
+        mod_comp<-anova(null_mod,group_mod,group_coi_mod)
         if (mod_comp$'p-value'[2]<.01 &
             mod_comp$AIC[2]<mod_comp$AIC[1]){
           coiname<- as.character(coi_name)
@@ -493,7 +502,6 @@ if(rerun_models){
           pval <- round(mod_comp[2,9],4)
           AIC <- mod_comp[2,4]
           nullAIC <- mod_comp[1,4]
-          #mod <- list(group_mod)
           mod_type <- "group difference"
           retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
           retDF<-as.data.table(retDF)
@@ -503,29 +511,28 @@ if(rerun_models){
            pval <- round(mod_comp[2,9],4)
            AIC <- mod_comp[2,4]
            nullAIC <- mod_comp[1,4]
-           #mod <- "NA"
            mod_type <- "null model"
            retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
           as.data.table(retDF)
         }
       }
     ))
-  print(object.size(gordon_models), units='Mb')
-  gordon_modelsDT <- rbindlist(gordon_models) #make this into a dataframe
-  print(object.size(gordon_modelsDT), units='Mb')
-  rm(gordon_models);gc()
-  save(gordon_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordon_modelsDT.RDS"))
+  print(object.size(social_groupdiff_models), units='Mb')
+  social_groupdiff_modelsDT <- rbindlist(social_groupdiff_models) #make this into a dataframe
+  print(object.size(social_groupdiff_modelsDT), units='Mb')
+  rm(social_groupdiff_models);gc()
+  save(social_groupdiff_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/social_groupdiff_modelsDT.RDS"))
 } else {
-  #gordon_modelsDT <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordon_modelsDT.RDS"))
+  social_groupdiff_modelsDT<-load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/social_groupdiff_modelsDT.RDS"))
 }
 
 ## Strategy ##
 if(rerun_models){
   # Identify parcels where connectivity differs by group membership
   system.time(
-    gordon_models<-mclapply(X=as.character(as.list(gordon_cois$coi)), 
+    social_strategy_models<-mclapply(X=as.character(as.list(social_cois$coi)), 
       demodata=ylg_timing,
-      coidat=gordon_coisDT,
+      coidat=social_coisDT,
       mc.cores=numcores,
       FUN=function(coi_name, demodata, coidat){
         adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
@@ -533,20 +540,23 @@ if(rerun_models){
                    by='sub',
                    allow.cartesian=T) %>%
         filter(!group=="juvjus")
-        beh_mod=lme(time ~ condition*run_indexnum,
+        beh_mod=lme(time ~ condition+run_index,
                       method="ML",
                       random = ~1|sub,
                       data=adf)
-        group_mod=lme(time ~ condition*run_indexnum+group,
+        group_mod=lme(time ~ condition+run_index+group,
                       method="ML",
                       random = ~1|sub,
                       data=adf)
-        coi_mod=lme(time ~ condition*run_indexnum+cor,
+        coi_mod=lme(time ~ condition+run_index+group+cor,
                          method="ML",
                          random = ~1|sub,
                          data=adf)
-        mod_comp<-anova(beh_mod,coi_mod)
-        behvsgroup<-anova(beh_mod,group_mod)
+        coi_int_mod=lme(time ~ condition+run_index+group*cor,
+                         method="ML",
+                         random = ~1|sub,
+                         data=adf)
+        mod_comp<-anova(group_mod,coi_mod,coi_int_mod,beh_mod)
         if (mod_comp$'p-value'[2]<.05 &
             mod_comp$AIC[2]<mod_comp$AIC[1]){
           coiname<- as.character(coi_name)
