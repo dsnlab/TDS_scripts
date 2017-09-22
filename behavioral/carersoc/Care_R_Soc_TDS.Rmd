@@ -239,10 +239,24 @@ distinct(SID,item,value,survey_name,.keep_all = FALSE) %>%
 
 Marijuana_scores <- Marijuana_wide %>%
   mutate(mj_hypothetical=rowMeans(cbind(mj_willing,mj_expected))) %>%
+<<<<<<< HEAD
+  select(-mj_everused,-mj_pastinvlv,-mj_willing,-mj_expected)
+
+###### Alcohol ########
+
+###### Sex ########
+
+###### Violence ########
+
+###### Graffiti ########
+
+###### Driving ########
+=======
   select(-mj_everused,-mj_pastinvlv,-mj_willing,-mj_expected) %>% 
   mutate(timepoint=ifelse(grepl("Session 1",survey_name),"one",
                           ifelse(grepl("Session 2",survey_name),"one",
                                  ifelse(grepl("Session 3",survey_name),"two",NA))))
+>>>>>>> f8968571808feb8d91c720b469811ca61b549bb5
 
 ```
 
@@ -254,6 +268,16 @@ Gather other relevant individual variables
 # TDS1, Session 3 - Child;
 
 ###### Fear of Negative Evaluation #######
+# BFNE is assessed in the following surveys:
+# TDS1 Session 2 B - Pre; 
+# 
+
+###### Self esteem #######
+# BFNE is assessed in the following surveys:
+# TDS1 Session 2 B - Pre; 
+# 
+
+###### Peer victimization #######
 # BFNE is assessed in the following surveys:
 # TDS1 Session 2 B - Pre; 
 # 

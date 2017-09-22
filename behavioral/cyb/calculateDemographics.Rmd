@@ -1,0 +1,39 @@
+---
+title: "CybDescriptives"
+author: "Nandi"
+date: "September 21, 2017"
+output: html_document
+---
+
+#Load data
+```{r}
+subDir <- '/projects/dsnlab/tds/TDS_scripts/fMRI/fx/shell/schedule_spm_jobs/cyb/tds2'
+sub <- read.csv(paste0(subDir,'/subject_list_fx.txt'), header=F)
+colnames(sub)[1] <- "SID"
+
+demoDir <- '~/Dropbox (PfeiBer Lab)/Cheng'
+demo <- read.csv(paste0(demoDir,'/Cyb_demo.csv'))
+```
+
+#Merge data and calculate age
+```{r}
+demo <- merge(sub,demo,by="SID")
+demo$Gender <- as.factor(demo$Gender)
+demo$ScanDate <- as.Date(demo$ScanDate.1, format='%m/%d/%y')
+demo$DOB <- as.Date(demo$DOB, format='%m/%d/%y')
+demo$Age <- as.numeric((demo$ScanDate - demo$DOB)/365)
+demo$Age_c <- (demo$Age) - (mean(demo$Age))
+demo$Age_c_quad <- (demo$Age_c*demo$Age_c)
+```
+
+#Summary statistics
+```{r}
+mean(demo$Age) #14.22 
+sd(demo$Age) #1.53
+
+summary(demo$Gender) #0:33 1:36
+```
+
+#Write statistics
+```{r}
+write.csv(demo, paste0(demoDir,'/Cyb_centeredAge.csv', row.names=F)
