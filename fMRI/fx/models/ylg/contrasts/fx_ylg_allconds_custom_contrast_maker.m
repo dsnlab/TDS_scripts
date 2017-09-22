@@ -2,9 +2,9 @@
 % check for correct number of motion regressors, and other things
 
 SPM_PATH='/projects/dsnlab/SPM12/';
-multicondDir='/projects/dsnlab/tds/fMRI/analysis/fx/multicond/ylg';
+multicondDir='/projects/dsnlab/tds/fMRI/analysis/fx/multicond/ylg/';
 contrastJobMat='/projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_con_base_53.m'; %.m file for version control and readability
-outputDir='/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_con_base_53/';
+outputDir='/projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_con_base_53/';
 outprefix='fx_ylg_allconds_';
 outpostfix='.mat';
 outcomeCSV=fullfile(outputDir, 'multicondinfo-base.csv');  
@@ -25,7 +25,7 @@ addpath(SPM_PATH);
 spm_jobman('initcfg');
 
 mcCSVFID=fopen(outcomeCSV,'w'); 
-fprintf(mcCSVFID, 'pid, run, dec, decgo, good, goodgo, goodnextgo, goodswitch, bad, badgo, badnextgo, badswitch, pendec, penout\n');
+fprintf(mcCSVFID, 'pid, run, dec, decgo, good, goodgo, bad, badgo, pendec, penout\n');
 fclose(mcCSVFID);
 
 run(contrastJobMat);
@@ -91,7 +91,7 @@ for(pid_i = 1:length(uniquePIDs))
     for(consess_i = 1:length(matlabbatch{1}.spm.stats.con.consess))
         runweights={};
         for(run_i = 1:length(uniqueRuns))
-            runweights{run_i}=[matlabbatch{1}.spm.stats.con.consess{consess_i}.tcon.weights([1:11]+11*(run_i-1)) ...
+            runweights{run_i}=[matlabbatch{1}.spm.stats.con.consess{consess_i}.tcon.weights([1:7]+7*(run_i-1)) ...
                 zeros(1, (5 + nExtraConds{run_i}))];
         end
         newWeights = cell2mat(runweights);
