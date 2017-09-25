@@ -43,26 +43,10 @@ if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_eno
       log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))
       preproc_complete="yes"
       blurps<-nrow(log %>% filter(.[[1]]>scrubbingThreshold))
-      potential<-(nrow(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))-(blurps*2))
-      viable<-ifelse(potential>=385,"yes","no")
-      cbind(sub,blurps,potential,viable,preproc_complete)
-    } else {
-      preproc_complete="no"
-      blurps<-NA
-      potential<-NA
-      viable<-"No"
-      cbind(sub,blurps,potential,viable,preproc_complete)
-      }
-}
-extract_rsfcMRI_runinfo= function(sub){
-if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))){
-      log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))
-      preproc_complete="yes"
-      blurps<-nrow(log %>% filter(.[[1]]>scrubbingThreshold))
       potential<-(nrow(log)-(blurps*2))
       viable<-ifelse(potential>=385,"yes","no")
       cbind(sub,blurps,potential,viable,preproc_complete)
-    } else {
+    } else{
       preproc_complete="no"
       blurps<-NA
       potential<-NA
@@ -70,6 +54,7 @@ if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_eno
       cbind(sub,blurps,potential,viable,preproc_complete)
       }
 }
+
 outputlist<-lapply(subs,extract_rsfcMRI_runinfo)
 output.df<-as.data.frame(do.call(rbind,outputlist)) %>% 
   mutate(blurps=as.numeric(levels(blurps))[blurps],
@@ -90,7 +75,8 @@ print(paste0(nrow(sublist)," are viable"))
 Exclude subs with resting state issues
 ```{r}
 sublist<- sublist %>%
-  filter(!sub=="sub-192") # sub needs timecourses extracted again
+  filter(!sub=="sub-192") %>% # sub needs timecourses extracted again 
+   filter(!sub=="sub-171") #something hella wrong with registration
 ```
 
 Obtain demographic data

@@ -27,22 +27,19 @@ subs<-list.files(path = rsfcMRI_subjects, pattern = "sub")
 # set scrubbing threshold
 scrubbingThreshold=.2
 # extract info
-extract_rsfcMRI_runinfo= function(sub){
-if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))){
-      log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))
-      preproc_complete="yes"
-      blurps<-nrow(log %>% filter(.[[1]]>scrubbingThreshold))
-      potential<-(nrow(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))-(blurps*2))
-      viable<-ifelse(potential>=385,"yes","no")
-      cbind(sub,blurps,potential,viable,preproc_complete)
-    } else{
-      preproc_complete="no"
-      blurps<-NA
-      potential<-NA
-      viable<-"No"
-      cbind(sub,blurps,potential,viable,preproc_complete)
+alignmentissues=function(sub){
+  if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/out.ss_review.",sub,".txt"))){
+      alignment<-(read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/out.ss_review.",sub,".txt")) %>%
+                    filter(grepl("anat/EPI",.[[1]])))
+      alignment<-(as.numeric(substring(as.character(alignment[[1]][1]),29,36)))
+      } else {
+        alignment<-NA
       }
+  cbind(sub,alignment)
 }
+alignmentout<-lapply(subs,alignmentissues                     )
+alignmentout.df<-as.data.frame(do.call(rbind,alignmentout))
+
 extract_rsfcMRI_runinfo= function(sub){
 if (file.exists(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))){
       log<-read.csv(paste0(rsfcMRI_subjects,sub,"/",sub,".results/motion_",sub,"_enorm.1D"))
