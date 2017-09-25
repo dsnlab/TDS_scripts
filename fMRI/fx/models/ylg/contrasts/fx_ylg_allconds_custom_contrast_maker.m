@@ -3,11 +3,13 @@
 
 SPM_PATH='/projects/dsnlab/SPM12/';
 multicondDir='/projects/dsnlab/tds/fMRI/analysis/fx/multicond/ylg/';
-contrastJobMat='/projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_con_base_53.m'; %.m file for version control and readability
-outputDir='/projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_con_base_53/';
+contrastJobMat='/projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_simple.m'; %.m file for version control and readability
+outputDir='/projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_simple/';
 outprefix='fx_ylg_allconds_';
 outpostfix='.mat';
 outcomeCSV=fullfile(outputDir, 'multicondinfo-base.csv');  
+numColsPerRun=7; % how many columns per run in the template file?
+numRuns=3; % how many runs in the template file?
 excludeThese={'101' '102' '104' '105' '106' '108' '110' '111' '139' '158' '189'}; % via Jessica
 
 %You shouldn't need to change these options unless the multiple conditions setup has changed substantially
@@ -30,9 +32,9 @@ fclose(mcCSVFID);
 
 run(contrastJobMat);
 contrastJobBatch.matlabbatch=matlabbatch;
-if(any(cellfun(@(x) length(x.tcon.weights)~=33,...
+if(any(cellfun(@(x) length(x.tcon.weights)~=numColsPerRun*numRuns,...
     contrastJobBatch.matlabbatch{1}.spm.stats.con.consess)));
-    error('Template file has wrong length for at least one contrast (all should be 33)');
+    error(['Template file has wrong length for at least one contrast (all should be ', num2str(numColsPerRun*numRuns), ' )']);
 end
 %if a multicond has penalty conditions, add 7 zeros, otherwise, add 5
 
