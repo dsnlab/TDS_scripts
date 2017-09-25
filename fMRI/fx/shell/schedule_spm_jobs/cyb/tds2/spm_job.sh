@@ -52,4 +52,6 @@ echo "${SUB}"
 echo "Running ${SCRIPT}"
 echo -------------------------------------------------------------------------------
 
-$MATLABCOMMAND -nosplash -nodisplay -nodesktop -noFigureWindows ${ADDITIONALOPTIONS} -r "clear; addpath('$SPM_PATH'); spm_jobman('initcfg'); sub='$SUB'; script_file='$SCRIPT'; replacesid='$REPLACESID'; run('make_sid_matlabbatch.m'); spm_jobman('run',matlabbatch); exit"
+$MATLABCOMMAND -nosplash -nodesktop ${ADDITIONALOPTIONS} -r "clear; addpath('$SPM_PATH'); spm_jobman('initcfg'); sub='$SUB'; script_file='$SCRIPT'; replacesid='$REPLACESID'; run('make_sid_matlabbatch.m'); spm_jobman('run',matlabbatch); exit"
+
+# removed these options due to error warnings: -nodisplay -noFigureWindows
