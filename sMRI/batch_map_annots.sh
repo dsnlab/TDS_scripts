@@ -17,5 +17,5 @@ SUBJLIST=`cat subject_list.txt`
 # 
 for SUBJ in $SUBJLIST
 do
-sbatch --export SUBID=${SUBJ} --job-name mapANNOTs --partition=defq --mem-per-cpu=4G --cpus-per-task=1 -o "${STUDY}"/TDS_scripts/sMRI/output/"${SUBJ}"_mapANNOTs_output.txt -e "${STUDY}"/TDS_scripts/sMRI/output/"${SUBJ}"_mapANNOTs_error.txt job_map_annots.sh
+sbatch --export SUBID=${SUBJ} --job-name mapANNOTs --partition=short --mem-per-cpu=4G --cpus-per-task=1 -o "${STUDY}"/TDS_scripts/sMRI/output/"${SUBJ}"_mapANNOTs_output.txt -e "${STUDY}"/TDS_scripts/sMRI/output/"${SUBJ}"_mapANNOTs_error.txt job_map_annots.sh
 done
