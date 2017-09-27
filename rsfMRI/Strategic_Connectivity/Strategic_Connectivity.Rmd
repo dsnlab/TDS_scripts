@@ -1,6 +1,6 @@
 ---
 title: "Strategic brain connectivity"
-author: "Kate Mills & John Flournoy & Theresa Cheng & TDS team"
+author: "Kate Mills, Zdena Op de Macks, John Flournoy, Theresa Cheng & TDS team"
 date: "September 20, 2017"
 output: html_document
 ---
@@ -72,11 +72,11 @@ sublist<-output.df %>%
 print(paste0(nrow(sublist)," are viable"))
 ```
 
-Exclude subs with resting state issues
+Exclude subs for various reasons
 ```{r}
 sublist<- sublist %>%
-  filter(!sub=="sub-192") %>% # sub needs timecourses extracted again 
-   filter(!sub=="sub-171") #something hella wrong with registration
+  filter(!sub=="sub-192") %>% # sub needs timecourses extracted again
+  filter(!sub=="sub-334")  # IQ lower than 70
 ```
 
 Obtain demographic data
@@ -92,19 +92,26 @@ redcapData <- read.csv(paste0(workdir,"Redcap/ages_at_sessions.csv"), header = T
   mutate(fsiq2=ifelse(fsiq2==999,NA,fsiq2),
          sub=paste0("sub-",sid)) %>%
   mutate(group=ifelse(grepl("-3",sub),"foster",
-                      ifelse(grepl("-4",sub),"juvjus",
-                             ifelse(grepl("-1",sub),"comm",NA))))%>%
-  select(-sid)
+                      ifelse(grepl("-4",sub),"jj",
+                             ifelse(grepl("-1",sub),"community",NA))))%>%
+  select(-sid) #%>%
+  #filter(sub %in% sublist$sub)
+
+print(paste0(length(unique(redcapData$sub))," participants w/ demographic data"))
+print(paste0(length(unique((redcapData %>% filter(group=="community"))$sub))," community participants w/ demographic data"))
+print(paste0(length(unique((redcapData %>% filter(group=="foster"))$sub))," CWS participants w/ demographic data"))
+
 ```
 
 Obtain behavior data
 ```{r}
 ylg_data<-read.csv(paste('/Volumes/TDS/behavior/YLG/processed/tds-all_trial_by_trial.csv',sep=''))
 
-ylg = ylg_data %>% 
-  mutate(condition = ifelse(grepl('1|2|3|4', run_index), "Alone",
+ylg <- ylg_data %>% 
+  mutate(condition = ifelse(grepl('1|2', run_index), "Mock",
+                     ifelse(grepl('3|4', run_index), "Alone",
                      ifelse(grepl('5|6', run_index), "Peer", 
-                     ifelse(grepl('7|8', run_index), "Exclusion", NA)))) %>%
+                     ifelse(grepl('7|8', run_index), "Exclusion", NA))))) %>%
   mutate(time=run.time.ms/60000) %>%
   mutate(go = ifelse(decision=='GO', 1, 0)) %>%
   mutate(crash = ifelse(scenario=='CRASH', 1, 0)) %>%
@@ -138,13 +145,267 @@ ylg_timing<-ylg_filtered %>%
                              ifelse(subject.name>400,"jj",NA)))) %>%
   mutate(sub=paste0("sub-",as.factor(subject.name))) %>%
   select(-subject.name) %>%
-  filter(!group=="jj")
+  filter(!group=="jj") %>%
+  filter(!sub=="sub-334") # IQ lower than 70
+  #filter(sub %in% sublist$sub)
 
+print(paste0(length(unique(ylg_timing$sub))," participants w/ behavioral data"))
+print(paste0(length(unique((ylg_timing %>% filter(group=="community"))$sub))," community participants w/ behavioral data"))
+print(paste0(length(unique((ylg_timing %>% filter(group=="foster"))$sub))," CWS participants w/ behavioral data"))
+
+```
+
+See how the behavioral samples differ With ZDENA's awesome scripts
+```{r}
+# Join together behavioural and demographic data
+ylg_timing<-left_join(x = ylg_timing,y= redcapData,by = c("group", "sub"))
+
+hist_by_age_gender<-ylg_timing %>%
+  distinct(sub, s2_age, gender, group,fsiq2)
+
+#### Statistics #######
+# Age by group (Zdena style)
+age_by_group<-hist_by_age_gender %>%
+  group_by(group) %>% 
+  summarize(mean = mean(s2_age),
+            sd = sd(s2_age), 
+            min = min(s2_age, na.rm=T),
+            max = max(s2_age, na.rm=T),
+            n = n(), se = sd/sqrt(n),
+            ci=qt(0.975, df=n-1)*se)
+n_by_gender<-hist_by_age_gender %>% 
+  group_by(group, gender) %>% 
+  summarize(n=n())
+
+# IQ by group (Zdena style)
+iq_by_group<-hist_by_age_gender %>%
+  group_by(group) %>% 
+  summarize(mean = mean(fsiq2, na.rm=T), sd = sd(fsiq2, na.rm=T), 
+            min = min(fsiq2, na.rm=T), max = max(fsiq2, na.rm=T),
+            n = sum(!is.na(fsiq2)), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+n_by_gender<-hist_by_age_gender %>% 
+  group_by(group, gender) %>% 
+  summarize(sum(!is.na(fsiq2)))
+
+age_ttest<-t.test(hist_by_age_gender$s2_age~hist_by_age_gender$group) 
+iq_ttest<-t.test(hist_by_age_gender$fsiq2~hist_by_age_gender$group) 
+
+# Get ACE data
+qualtrics_folder<-paste(workdir,"Qualtrics/scoring_script_output/", sep='')
+qualtrics2<-read.csv(paste(qualtrics_folder, 'TDS-2-auto_scored_scales_wide.csv', sep=''))
+qualtrics1pre<-read.csv(paste(qualtrics_folder, 'TDS-1-PRE-auto_scored_scales_wide.csv', sep=''))
+qualtrics1post<-read.csv(paste(qualtrics_folder, 'TDS-1-POST-auto_scored_scales_wide.csv', sep=''))
+qualtrics_data<-bind_rows(qualtrics2, qualtrics1pre)
+qualtrics_data<-bind_rows(qualtrics_data, qualtrics1post)
+
+qualtrics_data<-qualtrics_data %>% 
+  mutate(PDS_mean_score=ifelse(is.na(PDS_female_mean_score_score)==TRUE,
+                                                                PDS_male_mean_score_score,
+                                                                PDS_female_mean_score_score),
+         sub=paste0("sub-",SID))
+rm(qualtrics1post,qualtrics1pre,qualtrics2,qualtrics_folder)
+         
+# Merge Qualtrics with YLG and demographic data
+qualtrics_data<-merge(hist_by_age_gender, qualtrics_data, by= 'sub') %>%
+  mutate(ace_total=ACE_ace_total_score*10, ace_abuse=ACE_ace_abuse_score*3,
+                      ace_neglect=ACE_ace_neglect_score*2, ace_maltreatment=ace_abuse+ace_neglect) %>%
+  filter(!is.na(ace_total))
+
+ace<-qualtrics_data %>% 
+  group_by(group) %>%
+  summarize(mean = mean(ace_total, na.rm=T), sd = sd(ace_total, na.rm=T),
+            min = min(ace_total, na.rm=T), max = max(ace_total, na.rm=T),
+            n = sum(!is.na(ace_total)), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+n_by_gender<-qualtrics_data %>% 
+  group_by(group, gender) %>% 
+  summarize(n=sum(!is.na(ace_total)))
+
+t.test(qualtrics_data$ace_total~qualtrics_data$group) 
+t.test(qualtrics_data$ace_maltreatment~qualtrics_data$group) 
+
+  
+
+##### Plots ######
+
+# Make group labels
+group_labels<-c("community"='Community', 
+                "foster"="Child Welfare Services")
+
+# Age by gender by group sampling density (Kate Style)
+gender_age_group_density<-ggplot(hist_by_age_gender,
+                          aes(x=s2_age, fill=gender)) + 
+  xlab("Age") +
+  geom_density(alpha=.3) +
+  facet_grid(.~group,
+             scales='free',
+             labeller=as_labeller(group_labels))+
+  scale_fill_manual(values=c('deeppink', 'dodgerblue'))+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="right")
+gender_age_group_density
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/gender_age_group_density.png"),
+       plot=gender_age_group_density, width=6, height=5, units='in', dpi=300)
+
+
+# Boxplots for demographics 
+box_age_group<-ggplot(qualtrics_data,
+       aes(x=group,
+           y=s2_age,
+           fill=group)) +
+  geom_boxplot(aes(fill=group)) + 
+  labs(y='Age', fill='Sample') +
+  scale_fill_manual(values=c('maroon1', 'maroon4'),
+                      labels=c('Community', 'Child Welfare Services'))+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        axis.text.x=element_blank(),
+        panel.background = element_blank(),
+        legend.position="right")
+box_age_group
+#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_age_group.png"),
+#       plot=box_age_group, width=6, height=5, units='in', dpi=300)
+
+box_pds_group<-ggplot(qualtrics_data,
+       aes(x=group,
+           y=PDS_mean_score,
+           fill=group)) +
+  geom_boxplot(aes(fill=group)) + 
+  labs(y='Pubertal development', fill='Sample') +
+  scale_y_continuous(limits=c(1,4)) +
+  scale_fill_manual(values=c('maroon1', 'maroon4'),
+                      labels=c('Community', 'Child Welfare Services'))+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        axis.text.x=element_blank(),
+        panel.background = element_blank(),
+        legend.position="right")
+box_pds_group
+#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_pds_group.png"),
+#       plot=box_pds_group, width=6, height=5, units='in', dpi=300)
+
+box_iq_group<-ggplot(qualtrics_data,
+       aes(x=group,
+           y=fsiq2,
+           fill=group)) +
+  geom_boxplot(aes(fill=group)) + 
+  labs(y='IQ', fill='Sample') +
+  scale_fill_manual(values=c('maroon1', 'maroon4'),
+                      labels=c('Community', 'Child Welfare Services'))+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        axis.text.x=element_blank(),
+        panel.background = element_blank(),
+        legend.position="right")
+box_iq_group
+#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_iq_group.png"),
+#       plot=box_iq_group, width=6, height=5, units='in', dpi=300)
+
+box_adversity_group<-ggplot(qualtrics_data,
+       aes(x=group,
+           y=ace_total,
+           fill=group)) +
+  geom_boxplot(aes(fill=group)) + 
+  scale_y_continuous(breaks=c(0,5,10)) +
+  labs(y='Adversity', fill='Sample') +
+  scale_fill_manual(values=c('maroon1', 'maroon4'),
+                      labels=c('Community', 'Child Welfare Services'))+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        axis.text.x=element_blank(),
+        panel.background = element_blank(),
+        legend.position="right")
+box_adversity_group
+#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_adversity_group.png"),
+#       plot=box_adversity_group, width=6, height=5, units='in', dpi=300)
+
+box_maltreatment_group<-ggplot(qualtrics_data,
+       aes(x=group,
+           y=ace_maltreatment,
+           fill=group)) +
+  geom_boxplot(aes(fill=group)) + 
+  labs(y='Maltreatment', fill='Sample') +
+  scale_fill_manual(values=c('maroon1', 'maroon4'),
+                      labels=c('Community', 'Child Welfare Services'))+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        axis.text.x=element_blank(),
+        panel.background = element_blank(),
+        legend.position="right")
+box_maltreatment_group
+#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_maltreatment_group.png"),
+#       plot=box_maltreatment_group, width=6, height=5, units='in', dpi=300)
 ```
 
 Analyze behavior data
 ```{r}
+######################
+#### Graph it ########
+### Time across 8 runs ###
 
+group_colors <- c("community" = "maroon1", "foster" = "maroon4")
+
+# Time plotted across all runs by SAMPLE
+time.plot <-
+  ylg_timing %>%
+  group_by(group, condition, run_index) %>% 
+  summarize(mean = mean(time),
+            sd = sd(time),
+            n = n(), 
+            se = sd/sqrt(n),
+            ci=qt(0.975, df=n-1)*se)
+time.plot$condition = factor(time.plot$condition,levels(time.plot$condition)[c(3,1,4,2)])
+
+time_plot<-ggplot(time.plot,
+                  aes(x=run_index, y=mean, color=group)) +
+  geom_point(position=position_dodge(.1), size=3) +
+  geom_line(aes(group=group), size=1) +
+  geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci),
+                width=0.5,
+                position=position_dodge(.2)) +
+  #facet_grid(.~condition, scales='free') +
+  labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample') +
+  scale_colour_manual(values=group_colors,
+                      labels=group_labels)+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="bottom")
+time_plot
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_runindex_group.png"),
+       plot=time_plot, width=7, height=5, units='in', dpi=300)
+
+
+### Stats #####
 ## Find best fitting polynomial model for learning across the course of the task
 nullmodel=lme(time ~ 1, method="ML", random = ~1|sub, data=ylg_timing)
 linmodel=lme(time ~ run_index, method="ML", random = ~1|sub, data=ylg_timing)
@@ -322,7 +583,8 @@ parcellation_list_dir='/projects/dsnlab/TDS/TDS_scripts/sMRI/templates/lists/'
       select(sub, index, parcel, V1) %>% 
       spread(parcel,V1) %>% ungroup %>% select(-index, -sub)
     #correlate!
-    CorrelationMatrix<-cor(timecourses_censored_w)
+    #CorrelationMatrix<-cor(timecourses_censored_w)
+    CorrelationMatrix<-fisherz(cor(timecourses_censored_w))
     #just take the bottom triangle
     CorrelationMatrix[upper.tri(CorrelationMatrix, diag=TRUE)] <- NA
     #this gets the names for the rows and columns and assigns each cor value
@@ -356,11 +618,17 @@ if(!file.exists("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordo
     filter(grepl("rh.Parcel", .[[1]]))%>%
     mutate(parcel_name=.[[1]]) %>%
     select(parcel_name)
+  subcortical<-as.data.frame(c("aseg_26","aseg_58","aseg_18","aseg_54", 
+                 "aseg_11","aseg_12","aseg_13","aseg_50",
+                 "aseg_51","aseg_52","aseg_53","aseg_17")) %>%
+    mutate(parcel_name=.[[1]]) %>%
+    select(parcel_name)
   gordon<-bind_rows(gordon_rhparcels,gordon_lhparcels)
+  gordon_subcortical<-bind_rows(gordon,subcortical)
 
-  system.time(gordon_cois<- mclapply(as.list(as.character(sublist$sub)),
+  system.time(gordon_cois<- mclapply(as.list(as.character(sublist$sub))[1:10],
                                      collectAndCorTimecourses, 
-                                     parcels=gordon,
+                                     parcels=gordon_subcortical,
                                      scrubbingThreshold=scrubbingThreshold, 
                                      sub_base_dir=sub_base_dir,
                                      mc.cores=numcores))

@@ -1,7 +1,7 @@
 ---
-title: "FreeSurfer Stats"
+title: "Resting State PPC Stats"
 author: "Kate"
-date: "26 April 2017"
+date: "26 September 2017"
 output: html_document
 ---
 
