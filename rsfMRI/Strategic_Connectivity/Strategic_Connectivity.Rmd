@@ -1026,24 +1026,47 @@ unique(test_analysis$target)
 
 
 ## Make Heat Map
-gordon_key<-read.csv("./gordon_parcel_key.csv",header = TRUE,stringsAsFactors = F)
+gordon_key<-read.csv("./gordon_subcortical_parcel_key.csv",header = TRUE,stringsAsFactors = F)
 test_analysis_heatmap<-test_analysis %>%
-  select(seed, target, chisq)
-heatmapdf <- expand.grid(gordon_key$parcel_name,gordon_subcortical$parcel_name)
+  select(seed, target, chisq) %>%
+  mutate(chisq=as.numeric(chisq))
+test_analysis_heatmap <- left_join(x = test_analysis_heatmap,y=(gordon_key %>% select(parcel_name,heatmap_name) %>%
+                                                                  mutate(seed=parcel_name)),
+                                  by=c("seed")) %>%
+  mutate(seed_heat=heatmap_name) %>%
+  select(-heatmap_name,-parcel_name)
+test_analysis_heatmap <- left_join(x = test_analysis_heatmap,y=(gordon_key %>% select(parcel_name,heatmap_name) %>%
+                                                                  mutate(target=parcel_name)),
+                                  by=c("target")) %>%
+  mutate(target_heat=heatmap_name) %>%
+  select(-heatmap_name,-parcel_name) %>%
+  arrange(seed_heat,target_heat)
+
+heatmapdf <- expand.grid(gordon_key$heatmap_name,gordon_key$heatmap_name)
 heatmapdf<- heatmapdf %>% mutate(chisq=0)
-heatmapdf$Var1b=0
-heatmapdf$Var2b=0
-for (i in 1:length(test_analysis$seed)){
-  row<-which(grepl(test_analysis$seed[i], heatmapdf$Var1) & grepl(test_analysis$target[i], heatmapdf$Var2))
-  heatmapdf$chisq[row]=as.numeric(test_analysis$chisq[i])
-  row2<-which(grepl(test_analysis$target[i], heatmapdf$Var1) & grepl(test_analysis$seed[i], heatmapdf$Var2))
-  heatmapdf$chisq[row2]=as.numeric(test_analysis$chisq[i])}
+heatmapdf$Var1=0
+heatmapdf$Var2=0
+makeheatmap=function(i){
+  row<-which(grepl(test_analysis_heatmap$seed_heat[i], heatmapdf$Var1)&
+               grepl(test_analysis_heatmap$target_heat[i], heatmapdf$Var2))
+  heatmapdf$chisq[row]=test_analysis_heatmap$chisq[i]
+  row2<-which(grepl(test_analysis_heatmap$target_heat[i], heatmapdf$Var1)&
+                      grepl(test_analysis_heatmap$seed_heat[i], heatmapdf$Var2))
+  heatmapdf$chisq[row2]=test_analysis_heatmap$chisq[i]}
+mclapply(X=(seq(1:59340)),
+         FUN=makeheatmap,
+         mc.cores = numcores)
 View(heatmapdf)
 
+ 
 # Plot the heat map
-m<-ggplot(data = heatmapdf, aes(x=Var1, y=Var2, fill=chisq)) +
+ggplot(data = test_analysis_heatmap, aes(x=seed_heat, y=target_heat, fill=chisq)) + 
+  geom_raster()
+  geom_tile()
+
+m<-ggplot(data = test_analysis_heatmap, aes(x=seed_heat, y=target_heat, fill=chisq)) +
   geom_tile() 
-m + scale_fill_distiller(palette = "Set1")
+m + scale_fill_distiller(palette = )
 
 
 ```
