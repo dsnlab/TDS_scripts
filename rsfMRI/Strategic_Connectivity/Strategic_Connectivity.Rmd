@@ -908,6 +908,14 @@ if(run_condition){
 
 ```
 
+Time by run index effects
+```{r}
+load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
+                    "connectivity_models/strategy_models_DT.RDS"))
+
+
+```
+
 
 Time by condition effects
 ```{r}
@@ -919,49 +927,51 @@ load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
 
 Testing ground
 ```{r}
-gordon_modelsDT_analysis <- gordon_modelsDT %>%
-  mutate(seed=substring(coiname, 0, 13),
-         target=substring(coiname, 13, length(coiname))) %>%
-  mutate(target=ifelse(grepl("0_lh.",target),
+test_analysis <- strategy_modelsDT %>%
+  mutate(seed=ifelse(grepl("aseg",substring(coiname,0,7)),substring(coiname, 0, 7),substring(coiname, 0, 13)),
+         target=ifelse(nchar(coiname)==15,substring(coiname,9,15),coiname))%>%
+  mutate(target=ifelse(grepl("aseg",substring(coiname,0,4)),substring(coiname,9,length(coiname)),substring(coiname, 13, length(coiname)))) %>%
+  mutate(target=ifelse(grepl("0_rh.",target),
                        substring(target, 3, length(target)),
-                       ifelse(grepl("0_rh.",target),
+                       ifelse(grepl("0_lh.",target),
                               substring(target, 3, length(target)),
-                              ifelse(grepl("1_rh.",target),
-                                     substring(target, 3, length(target)),
-                                     ifelse(grepl("1_lh.",target),
-                                            substring(target, 3, length(target)),
-                                            ifelse(grepl("2_rh.",target),
-                                                   substring(target, 3, length(target)),
-                                                   ifelse(grepl("2_lh.",target),
-                                                          substring(target, 3, length(target)),
-                                                          ifelse(grepl("3_rh.",target),
-                                                                 substring(target, 3, length(target)),
-                                                                 ifelse(grepl("3_lh.",target),
-                                                                        substring(target, 3, length(target)),
-                                                                        ifelse(grepl("4_rh.",target),
-                                                                               substring(target, 3, length(target)),
-                                                                               ifelse(grepl("4_lh.",target),
-                                                                                      substring(target, 3, length(target)),
-                                                                                      ifelse(grepl("5_rh.",target),
-                                                                                             substring(target, 3, length(target)),
-                                                                                             ifelse(grepl("5_lh.",target),
-                                                                                                    substring(target, 3, length(target)),
-                                                                                                    ifelse(grepl("6_rh.",target),
-                                                                                                           substring(target, 3, length(target)),
-                                                                                                           ifelse(grepl("6_lh.",target),
-                                                                                                                  substring(target, 3, length(target)),
-                                                                                                                  ifelse(grepl("7_rh.",target),
-                                                                                                                         substring(target, 3, length(target)),
-                                                                                                                         ifelse(grepl("7_lh.",target),
-                                                                                                                                substring(target, 3, length(target)),
-                                                                                                                                ifelse(grepl("8_rh.",target),
-                                                                                                                                       substring(target, 3, length(target)),
-                                                                                                                                       ifelse(grepl("8_lh.",target),
-                                                                                                                                              substring(target, 3, length(target)),
-                                                                                                                                              ifelse(grepl("9_rh.",target),
-                                                                                                                                                     substring(target, 3, length(target)),
-                                                                                                                                                     ifelse(grepl("9_lh.",target),
-                                                                                                                                                            substring(target, 3, length(target)),target))))))))))))))))))))) %>%
+                        ifelse(grepl("1_rh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("1_lh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("2_rh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("2_lh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("3_rh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("3_lh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("4_rh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("4_lh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("5_rh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("5_lh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("6_rh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("6_lh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("7_rh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("7_lh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("8_rh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("8_lh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("9_rh.",target),
+                              substring(target, 3, length(target)),
+                        ifelse(grepl("9_lh.",target),
+                              substring(target, 3, length(target)),
+                              target))))))))))))))))))))) %>%
   mutate(target=ifelse(grepl("_lh.",target),
                        substring(target, 2, length(target)),
                        ifelse(grepl("_rh.",target),
@@ -973,9 +983,9 @@ gordon_modelsDT_analysis <- gordon_modelsDT %>%
                      ifelse(substring(seed, nchar(seed))=="_",
                      substring(seed,0,12),seed))))
 
-## Make dataframe only with significant connections
-gordon_modelsDT_sig<-gordon_modelsDT_analysis %>%
-  filter(!mod_type=="null model")
+# Make sure the coi names are correct
+unique(test_analysis$seed)
+unique(test_analysis$target)
 
 ## Figure out the group differences in connectivity
   system.time(
@@ -1013,23 +1023,29 @@ gordon_modelsDT_sig<-gordon_modelsDT_analysis %>%
                                               interceptfxSE=round(as.numeric(interceptfxSE),3),
                                               groupfxSE=round(as.numeric(groupfxSE),3))))
   
-  
+
+
 ## Make Heat Map
-heatmapdf <- expand.grid(gordon$parcel_name,gordon$parcel_name)
-heatmapdf<- heatmapdf %>% mutate(beta=0)
+gordon_key<-read.csv("./gordon_parcel_key.csv",header = TRUE,stringsAsFactors = F)
+test_analysis_heatmap<-test_analysis %>%
+  select(seed, target, chisq)
+heatmapdf <- expand.grid(gordon_key$parcel_name,gordon_subcortical$parcel_name)
+heatmapdf<- heatmapdf %>% mutate(chisq=0)
 heatmapdf$Var1b=0
 heatmapdf$Var2b=0
-for (i in 1:length(gordon_differencesDT$coiname)){
-  row<-which(grepl(gordon_differencesDT$seed[i], heatmapdf$Var1) & grepl(gordon_differencesDT$target[i], heatmapdf$Var2))
-  heatmapdf$beta[row]=as.numeric(gordon_differencesDT$groupfx[i])
-  row2<-which(grepl(gordon_differencesDT$target[i], heatmapdf$Var1) & grepl(gordon_differencesDT$seed[i], heatmapdf$Var2))
-  heatmapdf$beta[row2]=as.numeric(gordon_differencesDT$groupfx[i])}
+for (i in 1:length(test_analysis$seed)){
+  row<-which(grepl(test_analysis$seed[i], heatmapdf$Var1) & grepl(test_analysis$target[i], heatmapdf$Var2))
+  heatmapdf$chisq[row]=as.numeric(test_analysis$chisq[i])
+  row2<-which(grepl(test_analysis$target[i], heatmapdf$Var1) & grepl(test_analysis$seed[i], heatmapdf$Var2))
+  heatmapdf$chisq[row2]=as.numeric(test_analysis$chisq[i])}
 View(heatmapdf)
 
 # Plot the heat map
-m<-ggplot(data = heatmapdf, aes(x=Var1, y=Var2, fill=beta)) +
+m<-ggplot(data = heatmapdf, aes(x=Var1, y=Var2, fill=chisq)) +
   geom_tile() 
 m + scale_fill_distiller(palette = "Set1")
 
 
 ```
+
+

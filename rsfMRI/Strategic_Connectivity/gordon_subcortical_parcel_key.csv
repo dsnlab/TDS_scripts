@@ -1,0 +1,346 @@
+ParcelID,Hem,Centroid (MNI),Community,parcel_name,heatmap_name
+10,L,-32 -29.3 15.6,Auditory,lh.Parcel_10,Auditory_1
+64,L,-46.3 -41.4 25.9,Auditory,lh.Parcel_64,Auditory_2
+65,L,-35.8 -33.5 19.9,Auditory,lh.Parcel_65,Auditory_3
+66,L,-52.7 -20.6 5.4,Auditory,lh.Parcel_66,Auditory_4
+67,L,-59.6 -38.5 16.5,Auditory,lh.Parcel_67,Auditory_5
+68,L,-58.7 -29.9 11.1,Auditory,lh.Parcel_68,Auditory_6
+69,L,-40.6 -38.3 14.5,Auditory,lh.Parcel_69,Auditory_7
+70,L,-33.7 -21.8 9.9,Auditory,lh.Parcel_70,Auditory_8
+77,L,-37.2 -14 19.4,Auditory,lh.Parcel_77,Auditory_9
+102,L,-52.2 -14.1 15.2,Auditory,lh.Parcel_102,Auditory_10
+104,L,-50.6 -22.4 19.2,Auditory,lh.Parcel_104,Auditory_11
+160,L,-56.5,Auditory,lh.Parcel_160,Auditory_12
+171,R,33.6 -22.3 13,Auditory,rh.Parcel_171,Auditory_13
+224,R,36.4 -30.7 19.4,Auditory,rh.Parcel_224,Auditory_14
+227,R,53.8 -15.8 5.2,Auditory,rh.Parcel_227,Auditory_15
+230,R,59.2 -38.6 14.6,Auditory,rh.Parcel_230,Auditory_16
+232,R,61.7 -24 1.3,Auditory,rh.Parcel_232,Auditory_17
+233,R,60 -25.2 10.2,Auditory,rh.Parcel_233,Auditory_18
+239,R,38.4 -12.2 20,Auditory,rh.Parcel_239,Auditory_19
+244,R,36.6 -10 12.4,Auditory,rh.Parcel_244,Auditory_20
+268,R,60.9 -2.2 10.7,Auditory,rh.Parcel_268,Auditory_21
+269,R,54.2 -13.6 16.9,Auditory,rh.Parcel_269,Auditory_22
+329,R,39.7 -22.5 2.6,Auditory,rh.Parcel_329,Auditory_23
+330,R,55.8 2 -2,Auditory,rh.Parcel_330,Auditory_24
+21,L,-16.6 -36.1 42.7,CinguloOperc,lh.Parcel_21,CinguloOperc_1
+22,L,-9.4 -0.1 42.9,CinguloOperc,lh.Parcel_22,CinguloOperc_2
+27,L,-8.4 14.6 33.8,CinguloOperc,lh.Parcel_27,CinguloOperc_3
+28,L,-9 25.3 27.7,CinguloOperc,lh.Parcel_28,CinguloOperc_4
+34,L,-8 -8.7 62.9,CinguloOperc,lh.Parcel_34,CinguloOperc_5
+40,L,-42.1 -4.5 47.3,CinguloOperc,lh.Parcel_40,CinguloOperc_6
+63,L,-57.7 -40.6 35.8,CinguloOperc,lh.Parcel_63,CinguloOperc_7
+71,L,-60,CinguloOperc,lh.Parcel_71,CinguloOperc_8
+72,L,-52.9,CinguloOperc,lh.Parcel_72,CinguloOperc_9
+76,L,-37.7 2.9 11.7,CinguloOperc,lh.Parcel_76,CinguloOperc_10
+81,L,-36.6 1.4 6.4,CinguloOperc,lh.Parcel_81,CinguloOperc_11
+82,L,-37.3 8.9 -0.9,CinguloOperc,lh.Parcel_82,CinguloOperc_12
+84,L,-28.8 23.7 8.4,CinguloOperc,lh.Parcel_84,CinguloOperc_13
+101,L,-59.8 -4.1 8.8,CinguloOperc,lh.Parcel_101,CinguloOperc_14
+103,L,-55.1 -32.3 23,CinguloOperc,lh.Parcel_103,CinguloOperc_15
+105,L,-58.8 -23.9 31,CinguloOperc,lh.Parcel_105,CinguloOperc_16
+111,L,-51.8 -0.6 5,CinguloOperc,lh.Parcel_111,CinguloOperc_17
+112,L,-48.6 7.5 11.1,CinguloOperc,lh.Parcel_112,CinguloOperc_18
+147,L,-26.6 46.8 20.9,CinguloOperc,lh.Parcel_147,CinguloOperc_19
+153,L,-28.8 38.3 28.2,CinguloOperc,lh.Parcel_153,CinguloOperc_20
+180,R,16.2 -33.1 43.2,CinguloOperc,rh.Parcel_180,CinguloOperc_21
+181,R,6.7 5 55.9,CinguloOperc,rh.Parcel_181,CinguloOperc_22
+185,R,8.6 4.2 40.1,CinguloOperc,rh.Parcel_185,CinguloOperc_23
+187,R,8.8 10.8 45.9,CinguloOperc,rh.Parcel_187,CinguloOperc_24
+188,R,6 21.8 32.4,CinguloOperc,rh.Parcel_188,CinguloOperc_25
+192,R,16.2 0.8 67.5,CinguloOperc,rh.Parcel_192,CinguloOperc_26
+196,R,8 -6.2 63.7,CinguloOperc,rh.Parcel_196,CinguloOperc_27
+198,R,42.5 -2.3 47.2,CinguloOperc,rh.Parcel_198,CinguloOperc_28
+219,R,57.5 -40.3 34.7,CinguloOperc,rh.Parcel_219,CinguloOperc_29
+223,R,54.9 -27 29.6,CinguloOperc,rh.Parcel_223,CinguloOperc_30
+234,R,38.8 -14.4 -5,CinguloOperc,rh.Parcel_234,CinguloOperc_31
+235,R,39.7 1.2 -13.1,CinguloOperc,rh.Parcel_235,CinguloOperc_32
+238,R,36.7 5.2 12.7,CinguloOperc,rh.Parcel_238,CinguloOperc_33
+245,R,39.6 10.4 -1.6,CinguloOperc,rh.Parcel_245,CinguloOperc_34
+246,R,36.5 5.7 6,CinguloOperc,rh.Parcel_246,CinguloOperc_35
+248,R,33.7 22.6 3.7,CinguloOperc,rh.Parcel_248,CinguloOperc_36
+249,R,34 24.4 10,CinguloOperc,rh.Parcel_249,CinguloOperc_37
+274,R,50.1 3 3.9,CinguloOperc,rh.Parcel_274,CinguloOperc_38
+317,R,24.4 50.8 24.3,CinguloOperc,rh.Parcel_317,CinguloOperc_39
+318,R,31.3 39.7 25.6,CinguloOperc,rh.Parcel_318,CinguloOperc_40
+12,L,-6.1 -26 28.5,CinguloParietal,lh.Parcel_12,CinguloParietal_1
+89,L,-12.7 -64.9 31.8,CinguloParietal,lh.Parcel_89,CinguloParietal_2
+93,L,-10.9 -73.4 42.9,CinguloParietal,lh.Parcel_93,CinguloParietal_3
+173,R,7.6 -27 28.4,CinguloParietal,rh.Parcel_173,CinguloParietal_4
+254,R,15.6 -69.5 39.6,CinguloParietal,rh.Parcel_254,CinguloParietal_5
+1,L,-11.2 -52.4 36.5,Default,lh.Parcel_1,Default_1
+4,L,-11.7 26.7 57,Default,lh.Parcel_4,Default_2
+6,L,-47.2 -58 30.8,Default,lh.Parcel_6,Default_3
+25,L,-5.6 42.2 35.1,Default,lh.Parcel_25,Default_4
+26,L,-1.7 -17.7 39.1,Default,lh.Parcel_26,Default_5
+44,L,-19.5 30.1 45.5,Default,lh.Parcel_44,Default_6
+94,L,-39.3 -73.9 38.3,Default,lh.Parcel_94,Default_7
+114,L,-27.5 53.6 0,Default,lh.Parcel_114,Default_8
+116,L,-5.9 54.8 -11.3,Default,lh.Parcel_116,Default_9
+117,L,-6.8 38.2 -9.4,Default,lh.Parcel_117,Default_10
+126,L,-99.1,Default,lh.Parcel_126,Default_11
+127,L,-80.5,Default,lh.Parcel_127,Default_12
+145,L,-15.9 48.6 37.2,Default,lh.Parcel_145,Default_13
+146,L,-19.5 56.3 27.5,Default,lh.Parcel_146,Default_14
+150,L,-6.5 54.7 18.1,Default,lh.Parcel_150,Default_15
+151,L,-15.7 64.7 13.7,Default,lh.Parcel_151,Default_16
+152,L,-6 44.9 6.3,Default,lh.Parcel_152,Default_17
+154,L,-26.2 26.6 38.8,Default,lh.Parcel_154,Default_18
+156,L,-29.3 16.8 50.7,Default,lh.Parcel_156,Default_19
+157,L,-41.7 16.1 47.5,Default,lh.Parcel_157,Default_20
+162,R,12.3 -51.6 34.5,Default,rh.Parcel_162,Default_21
+165,R,11.9 21.9 59.9,Default,rh.Parcel_165,Default_22
+184,R,7.7 44.1 5.5,Default,rh.Parcel_184,Default_23
+186,R,3 -19.6 37.9,Default,rh.Parcel_186,Default_24
+200,R,21.9 21 46.2,Default,rh.Parcel_200,Default_25
+220,R,48.9 -53 28.6,Default,rh.Parcel_220,Default_26
+225,R,62.5 -25.6 -5.5,Default,rh.Parcel_225,Default_27
+257,R,7.4 -69.3 49.9,Default,rh.Parcel_257,Default_28
+259,R,46.5 -67.3 36.2,Default,rh.Parcel_259,Default_29
+278,R,4.8 65.1 -7.1,Default,rh.Parcel_278,Default_30
+279,R,7.2 48.4 -10.1,Default,rh.Parcel_279,Default_31
+290,R,57.5 -7.4 -16.4,Default,rh.Parcel_290,Default_32
+315,R,21 32.8 42.1,Default,rh.Parcel_315,Default_33
+316,R,21.4 42.8 35.1,Default,rh.Parcel_316,Default_34
+321,R,16 61 19.8,Default,rh.Parcel_321,Default_35
+322,R,8.2 53.8 14,Default,rh.Parcel_322,Default_36
+323,R,5.9 54.9 29.4,Default,rh.Parcel_323,Default_37
+324,R,13.8 46.7 42.1,Default,rh.Parcel_324,Default_38
+325,R,6.8 44.5 34.8,Default,rh.Parcel_325,Default_39
+326,R,30.6 18.9 48.7,Default,rh.Parcel_326,Default_40
+331,R,54.4 1.1 -12.9,Default,rh.Parcel_331,Default_41
+41,L,-27.3 -6.8 46.3,DorsalAttn,lh.Parcel_41,DorsalAttn_1
+42,L,-27.3 1.9 52.9,DorsalAttn,lh.Parcel_42,DorsalAttn_2
+43,L,-19.8 6.4 55.7,DorsalAttn,lh.Parcel_43,DorsalAttn_3
+49,L,-21.3 -0.2 62.7,DorsalAttn,lh.Parcel_49,DorsalAttn_4
+51,L,-31.1 -48.9 47.1,DorsalAttn,lh.Parcel_51,DorsalAttn_5
+52,L,-42.9 -45 43,DorsalAttn,lh.Parcel_52,DorsalAttn_6
+55,L,-51.7 -30.9 39.9,DorsalAttn,lh.Parcel_55,DorsalAttn_7
+74,L,-43.6 36.3 8.5,DorsalAttn,lh.Parcel_74,DorsalAttn_8
+87,L,-20.4 -64.6 51.4,DorsalAttn,lh.Parcel_87,DorsalAttn_9
+88,L,-25.8 -65 32.2,DorsalAttn,lh.Parcel_88,DorsalAttn_10
+91,L,-9.9 -56.9 59.8,DorsalAttn,lh.Parcel_91,DorsalAttn_11
+92,L,-7.1 -63.7 54.9,DorsalAttn,lh.Parcel_92,DorsalAttn_12
+95,L,-30 -74.1 36.1,DorsalAttn,lh.Parcel_95,DorsalAttn_13
+100,L,-111.8,DorsalAttn,lh.Parcel_100,DorsalAttn_14
+106,L,-45.2 2.7 32.4,DorsalAttn,lh.Parcel_106,DorsalAttn_15
+107,L,-34.7 5.6 34,DorsalAttn,lh.Parcel_107,DorsalAttn_16
+110,L,-37.6 38.4 17.2,DorsalAttn,lh.Parcel_110,DorsalAttn_17
+113,L,-41.6 8.7 22.2,DorsalAttn,lh.Parcel_113,DorsalAttn_18
+155,L,-35.7 33.1 32,DorsalAttn,lh.Parcel_155,DorsalAttn_19
+189,R,10.3 -57.3 58.3,DorsalAttn,rh.Parcel_189,DorsalAttn_20
+199,R,29.2 1.9 52.4,DorsalAttn,rh.Parcel_199,DorsalAttn_21
+203,R,29.9 -7.8 47.4,DorsalAttn,rh.Parcel_203,DorsalAttn_22
+208,R,22.6 5.6 57.6,DorsalAttn,rh.Parcel_208,DorsalAttn_23
+211,R,38.8 -42.6 40.4,DorsalAttn,rh.Parcel_211,DorsalAttn_24
+236,R,36.8 37.8 13.1,DorsalAttn,rh.Parcel_236,DorsalAttn_25
+250,R,48.1 38.4 2.4,DorsalAttn,rh.Parcel_250,DorsalAttn_26
+252,R,23 -66.4 51.8,DorsalAttn,rh.Parcel_252,DorsalAttn_27
+253,R,32.3 -63.6 33.8,DorsalAttn,rh.Parcel_253,DorsalAttn_28
+262,R,33.5 -48.2 49.4,DorsalAttn,rh.Parcel_262,DorsalAttn_29
+266,R,57 -53.8 -1.1,DorsalAttn,rh.Parcel_266,DorsalAttn_30
+271,R,47.3 2 37.6,DorsalAttn,rh.Parcel_271,DorsalAttn_31
+275,R,46.6 7.8 19.3,DorsalAttn,rh.Parcel_275,DorsalAttn_32
+7,L,-38.1 48.8 10.5,FrontoParietal,lh.Parcel_7,FrontoParietal_1
+9,L,-112.9,FrontoParietal,lh.Parcel_9,FrontoParietal_2
+24,L,-5.5 29.3 44,FrontoParietal,lh.Parcel_24,FrontoParietal_3
+78,L,-40.3 50.4 -4.8,FrontoParietal,lh.Parcel_78,FrontoParietal_4
+96,L,-34.1 -61 42.4,FrontoParietal,lh.Parcel_96,FrontoParietal_5
+108,L,-43 19.4 33.5,FrontoParietal,lh.Parcel_108,FrontoParietal_6
+109,L,-40.2 23.6 23.3,FrontoParietal,lh.Parcel_109,FrontoParietal_7
+148,L,-21.3 63.1 1.9,FrontoParietal,lh.Parcel_148,FrontoParietal_8
+149,L,-28.6 50.9 10.1,FrontoParietal,lh.Parcel_149,FrontoParietal_9
+167,R,47.9 -42.5 41.5,FrontoParietal,rh.Parcel_167,FrontoParietal_10
+168,R,38.1 45.9 7.7,FrontoParietal,rh.Parcel_168,FrontoParietal_11
+170,R,59.7 -41 -10.9,FrontoParietal,rh.Parcel_170,FrontoParietal_12
+182,R,7 25.7 47.3,FrontoParietal,rh.Parcel_182,FrontoParietal_13
+240,R,42.8 48.3 -5.1,FrontoParietal,rh.Parcel_240,FrontoParietal_14
+260,R,41.5 -53.5 44,FrontoParietal,rh.Parcel_260,FrontoParietal_15
+261,R,35.7 -56.7 45.2,FrontoParietal,rh.Parcel_261,FrontoParietal_16
+272,R,37.8 28.7 35.6,FrontoParietal,rh.Parcel_272,FrontoParietal_17
+273,R,41.8 29.1 21.6,FrontoParietal,rh.Parcel_273,FrontoParietal_18
+276,R,38.6 18.8 25.5,FrontoParietal,rh.Parcel_276,FrontoParietal_19
+277,R,28.4 57 -5.1,FrontoParietal,rh.Parcel_277,FrontoParietal_20
+319,R,23.5 59.1 4.9,FrontoParietal,rh.Parcel_319,FrontoParietal_21
+320,R,30.9 52.2 9.9,FrontoParietal,rh.Parcel_320,FrontoParietal_22
+327,R,42.4 19.5 48.2,FrontoParietal,rh.Parcel_327,FrontoParietal_23
+328,R,38.9 9.6 42.7,FrontoParietal,rh.Parcel_328,FrontoParietal_24
+11,L,-29.3 5.3 -27.4,None,lh.Parcel_11,None_1
+18,L,-73.2,None,lh.Parcel_18,None_2
+19,L,-58.8,None,lh.Parcel_19,None_3
+73,L,-33.6 17.2 -31.5,None,lh.Parcel_73,None_4
+115,L,-23.4 61 -6.8,None,lh.Parcel_115,None_5
+118,L,-31.8 2.6 -16.8,None,lh.Parcel_118,None_6
+119,L,-34.7 35.6 -9.6,None,lh.Parcel_119,None_7
+120,L,-22.5 32.1 -13.6,None,lh.Parcel_120,None_8
+121,L,-23.8 52.2 -12.8,None,lh.Parcel_121,None_9
+122,L,-17.3 46.6 -17.9,None,lh.Parcel_122,None_10
+123,L,-13.3 24 -16.4,None,lh.Parcel_123,None_11
+124,L,-8.9 45.5 -20.8,None,lh.Parcel_124,None_12
+125,L,-2.5 33.8 -26.2,None,lh.Parcel_125,None_13
+128,L,-95.4,None,lh.Parcel_128,None_14
+129,L,-44.6 9 -37,None,lh.Parcel_129,None_15
+133,L,-110.9,None,lh.Parcel_133,None_16
+134,L,-81.1,None,lh.Parcel_134,None_17
+135,L,-78.5,None,lh.Parcel_135,None_18
+142,L,-56.8,None,lh.Parcel_142,None_19
+144,L,-61.3,None,lh.Parcel_144,None_20
+159,L,-50.8 6.9 -20.1,None,lh.Parcel_159,None_21
+172,R,32.5 13.6 -30.5,None,rh.Parcel_172,None_22
+178,R,24.9 -35.9 -4.8,None,rh.Parcel_178,None_23
+179,R,19.4 -29.9 -9.7,None,rh.Parcel_179,None_24
+280,R,2.9 18.7 -23.2,None,rh.Parcel_280,None_25
+281,R,35.1 37.3 -8.4,None,rh.Parcel_281,None_26
+282,R,25.4 8.9 -15.7,None,rh.Parcel_282,None_27
+283,R,21.2 30.3 -15.2,None,rh.Parcel_283,None_28
+284,R,21.6 51.1 -14.1,None,rh.Parcel_284,None_29
+285,R,11.9 25.7 -24.8,None,rh.Parcel_285,None_30
+286,R,13.5 20.3 -15.2,None,rh.Parcel_286,None_31
+287,R,10.9 39.1 -19.7,None,rh.Parcel_287,None_32
+288,R,2.2 39 -25.6,None,rh.Parcel_288,None_33
+289,R,62.3 -26.4 -16,None,rh.Parcel_289,None_34
+291,R,54.7 -7.8 -26.9,None,rh.Parcel_291,None_35
+292,R,45.2 13.6 -30.1,None,rh.Parcel_292,None_36
+296,R,20.1 -21.4 -21.5,None,rh.Parcel_296,None_37
+297,R,28 -0.4 -37.3,None,rh.Parcel_297,None_38
+300,R,36.8 7.7 -37.9,None,rh.Parcel_300,None_39
+301,R,54.5 -9.6 -37,None,rh.Parcel_301,None_40
+302,R,56.4 -27 -19.4,None,rh.Parcel_302,None_41
+303,R,31.1 2.2 -46.1,None,rh.Parcel_303,None_42
+304,R,39.5 -11.9 -29.7,None,rh.Parcel_304,None_43
+305,R,31.6 -9.4 -35.5,None,rh.Parcel_305,None_44
+306,R,43.4 -24.1 -20.8,None,rh.Parcel_306,None_45
+312,R,19.5 -10.8 -24.9,None,rh.Parcel_312,None_46
+314,R,30.4 -18.8 -19.4,None,rh.Parcel_314,None_47
+13,L,-14.4 -57.8 18.4,RetrosplenialTemporal,lh.Parcel_13,RetrosplenialTemporal_1
+14,L,-8.8 -49.8 4.2,RetrosplenialTemporal,lh.Parcel_14,RetrosplenialTemporal_2
+130,L,-82.4,RetrosplenialTemporal,lh.Parcel_130,RetrosplenialTemporal_3
+143,L,-74.6,RetrosplenialTemporal,lh.Parcel_143,RetrosplenialTemporal_4
+174,R,13.8 -54.1 10.9,RetrosplenialTemporal,rh.Parcel_174,RetrosplenialTemporal_5
+294,R,34.6 -35.6 -12.3,RetrosplenialTemporal,rh.Parcel_294,RetrosplenialTemporal_6
+295,R,34.6 -23.9 -20.4,RetrosplenialTemporal,rh.Parcel_295,RetrosplenialTemporal_7
+313,R,24.5 -36.2 -13.2,RetrosplenialTemporal,rh.Parcel_313,RetrosplenialTemporal_8
+29,L,-10 33.9 21.5,Salience,lh.Parcel_29,Salience_1
+83,L,-32.5 17.2 -7.8,Salience,lh.Parcel_83,Salience_2
+183,R,8.4 34.7 22.6,Salience,rh.Parcel_183,Salience_3
+247,R,30.6 22.8 -4.7,Salience,rh.Parcel_247,Salience_4
+2,L,-18.8 -48.7 65,SMhand,lh.Parcel_2,SMhand_1
+30,L,-10.7 -47.5 60.3,SMhand,lh.Parcel_30,SMhand_2
+31,L,-15.6 -33.1 66.1,SMhand,lh.Parcel_31,SMhand_3
+32,L,-10.9 -29.3 69.5,SMhand,lh.Parcel_32,SMhand_4
+33,L,-6.6 -20.4 74.2,SMhand,lh.Parcel_33,SMhand_5
+35,L,-10.8 -41.1 64.9,SMhand,lh.Parcel_35,SMhand_6
+36,L,-5 -28.2 60.4,SMhand,lh.Parcel_36,SMhand_7
+37,L,-5.4 -15.9 48.8,SMhand,lh.Parcel_37,SMhand_8
+38,L,-35.8 -29.7 54.5,SMhand,lh.Parcel_38,SMhand_9
+45,L,-36.8 -22.8 61.9,SMhand,lh.Parcel_45,SMhand_10
+46,L,-20.5 -24.9 64.5,SMhand,lh.Parcel_46,SMhand_11
+47,L,-23.4 -13.8 64.2,SMhand,lh.Parcel_47,SMhand_12
+48,L,-17.2 -8.6 67.9,SMhand,lh.Parcel_48,SMhand_13
+50,L,-28.6 -44.7 61.7,SMhand,lh.Parcel_50,SMhand_14
+54,L,-54.1 -21.3 40.8,SMhand,lh.Parcel_54,SMhand_15
+56,L,-35.2 -35.3 42,SMhand,lh.Parcel_56,SMhand_16
+57,L,-27.5 -37.2 61.4,SMhand,lh.Parcel_57,SMhand_17
+58,L,-47.2 -31.4 54.8,SMhand,lh.Parcel_58,SMhand_18
+163,R,20.8 -48.2 66.1,SMhand,rh.Parcel_163,SMhand_19
+190,R,16.5 -32.8 67.7,SMhand,rh.Parcel_190,SMhand_20
+191,R,4.8 -27.1 64.8,SMhand,rh.Parcel_191,SMhand_21
+193,R,11.9 -40.7 67,SMhand,rh.Parcel_193,SMhand_22
+194,R,5.1 -17.1 51.6,SMhand,rh.Parcel_194,SMhand_23
+195,R,6.8 -8.1 50.9,SMhand,rh.Parcel_195,SMhand_24
+201,R,38.1 -22.4 60.3,SMhand,rh.Parcel_201,SMhand_25
+202,R,19.7 -25 65.2,SMhand,rh.Parcel_202,SMhand_26
+204,R,12.4 -28.3 69.6,SMhand,rh.Parcel_204,SMhand_27
+205,R,29.2 -13.5 64.2,SMhand,rh.Parcel_205,SMhand_28
+206,R,17 -16.9 70.9,SMhand,rh.Parcel_206,SMhand_29
+207,R,20.9 -6.4 65,SMhand,rh.Parcel_207,SMhand_30
+209,R,29.5 -42.5 60.4,SMhand,rh.Parcel_209,SMhand_31
+210,R,34.2 -40.6 51.6,SMhand,rh.Parcel_210,SMhand_32
+213,R,39.6 -31.5 39.7,SMhand,rh.Parcel_213,SMhand_33
+214,R,28 -34.8 63.1,SMhand,rh.Parcel_214,SMhand_34
+215,R,39.2 -34.6 57.5,SMhand,rh.Parcel_215,SMhand_35
+216,R,37.3 -25.9 50.9,SMhand,rh.Parcel_216,SMhand_36
+217,R,48.7 -26.1 52.2,SMhand,rh.Parcel_217,SMhand_37
+270,R,53 -22.7 39.1,SMhand,rh.Parcel_270,SMhand_38
+3,L,-51.8 -7.8 38.5,SMmouth,lh.Parcel_3,SMmouth_1
+39,L,-41.5 -12.5 50.4,SMmouth,lh.Parcel_39,SMmouth_2
+53,L,-51.5 -11.9 29.7,SMmouth,lh.Parcel_53,SMmouth_3
+59,L,-46.1 -17.8 52.7,SMmouth,lh.Parcel_59,SMmouth_4
+164,R,49.6 -7.4 36.1,SMmouth,rh.Parcel_164,SMmouth_5
+197,R,42.3 -11 47.3,SMmouth,rh.Parcel_197,SMmouth_6
+212,R,53.9 -8.3 26.1,SMmouth,rh.Parcel_212,SMmouth_7
+218,R,47.8 -15.1 49.3,SMmouth,rh.Parcel_218,SMmouth_8
+23,L,-3.8 12.1 64.6,VentralAttn,lh.Parcel_23,VentralAttn_1
+60,L,-44.8 -54 14.6,VentralAttn,lh.Parcel_60,VentralAttn_2
+61,L,-51.6 -55.9 11.4,VentralAttn,lh.Parcel_61,VentralAttn_3
+62,L,-48.1 -40 2.4,VentralAttn,lh.Parcel_62,VentralAttn_4
+75,L,-50 20.8 10.6,VentralAttn,lh.Parcel_75,VentralAttn_5
+79,L,-47.2 39 -9.1,VentralAttn,lh.Parcel_79,VentralAttn_6
+80,L,-29.1 20.5 -14,VentralAttn,lh.Parcel_80,VentralAttn_7
+85,L,-44.3 33.2 -7.2,VentralAttn,lh.Parcel_85,VentralAttn_8
+86,L,-45.4 28.8 0.8,VentralAttn,lh.Parcel_86,VentralAttn_9
+158,L,-38.7 4.8 48.4,VentralAttn,lh.Parcel_158,VentralAttn_10
+161,L,-80,VentralAttn,lh.Parcel_161,VentralAttn_11
+221,R,57.5 -45.3 9,VentralAttn,rh.Parcel_221,VentralAttn_12
+222,R,60.9 -38.7 1.7,VentralAttn,rh.Parcel_222,VentralAttn_13
+226,R,57.1 -17 -2.6,VentralAttn,rh.Parcel_226,VentralAttn_14
+228,R,47.4 -39.6 13.2,VentralAttn,rh.Parcel_228,VentralAttn_15
+229,R,45.5 -37.3 3.4,VentralAttn,rh.Parcel_229,VentralAttn_16
+231,R,48.5 -26.5 -0.1,VentralAttn,rh.Parcel_231,VentralAttn_17
+237,R,52.5 23.7 10.3,VentralAttn,rh.Parcel_237,VentralAttn_18
+241,R,48.1 38.3 -9.2,VentralAttn,rh.Parcel_241,VentralAttn_19
+242,R,45.2 30.7 -5.6,VentralAttn,rh.Parcel_242,VentralAttn_20
+243,R,27.4 19.7 -14.9,VentralAttn,rh.Parcel_243,VentralAttn_21
+332,R,57.1 -6.3 -7.7,VentralAttn,rh.Parcel_332,VentralAttn_22
+333,R,46.6 -21.5 -8.5,VentralAttn,rh.Parcel_333,VentralAttn_23
+5,L,-18.4 -85.5 21.6,Visual,lh.Parcel_5,Visual_1
+8,L,-82.3,Visual,lh.Parcel_8,Visual_2
+15,L,-11.3 -83.2 3.9,Visual,lh.Parcel_15,Visual_3
+16,L,-22 -58.1 1.5,Visual,lh.Parcel_16,Visual_4
+17,L,-9.6 -58 3,Visual,lh.Parcel_17,Visual_5
+20,L,-66.4,Visual,lh.Parcel_20,Visual_6
+90,L,-13.7 -77.4 26.6,Visual,lh.Parcel_90,Visual_7
+97,L,-31.3 -84.2 9,Visual,lh.Parcel_97,Visual_8
+98,L,-121.3,Visual,lh.Parcel_98,Visual_9
+99,L,-43.4 -67.6 9.7,Visual,lh.Parcel_99,Visual_10
+131,L,-96.7,Visual,lh.Parcel_131,Visual_11
+132,L,-114,Visual,lh.Parcel_132,Visual_12
+136,L,-99.7,Visual,lh.Parcel_136,Visual_13
+137,L,-5.4 -88 18.6,Visual,lh.Parcel_137,Visual_14
+138,L,-89.6,Visual,lh.Parcel_138,Visual_15
+139,L,-119.2,Visual,lh.Parcel_139,Visual_16
+140,L,-130.3,Visual,lh.Parcel_140,Visual_17
+141,L,-116,Visual,lh.Parcel_141,Visual_18
+166,R,22 -84.6 23.7,Visual,rh.Parcel_166,Visual_19
+169,R,22.3 -46.5 -9.9,Visual,rh.Parcel_169,Visual_20
+175,R,15.5 -74.1 9.4,Visual,rh.Parcel_175,Visual_21
+176,R,19.6 -45.3 -4.4,Visual,rh.Parcel_176,Visual_22
+177,R,15.6 -59.6 -5,Visual,rh.Parcel_177,Visual_23
+251,R,26.8 -55 54.2,Visual,rh.Parcel_251,Visual_24
+255,R,17.6 -78.3 34,Visual,rh.Parcel_255,Visual_25
+256,R,7.7 -85.6 31.6,Visual,rh.Parcel_256,Visual_26
+258,R,35.4 -77.1 21.1,Visual,rh.Parcel_258,Visual_27
+263,R,31.7 -85.7 2.4,Visual,rh.Parcel_263,Visual_28
+264,R,43.8 -67.2 2,Visual,rh.Parcel_264,Visual_29
+265,R,47.3 -52.4 -11.7,Visual,rh.Parcel_265,Visual_30
+267,R,49 -54.5 8.8,Visual,rh.Parcel_267,Visual_31
+293,R,31.2 -45.6 -5.8,Visual,rh.Parcel_293,Visual_32
+298,R,26.9 -69.1 -6.6,Visual,rh.Parcel_298,Visual_33
+299,R,34.9 -44 -20,Visual,rh.Parcel_299,Visual_34
+307,R,13.8 -92.3 14.7,Visual,rh.Parcel_307,Visual_35
+308,R,10.5 -73.8 -1.5,Visual,rh.Parcel_308,Visual_36
+309,R,20.4 -87.3 -6.6,Visual,rh.Parcel_309,Visual_37
+310,R,5.1 -80.2 23.1,Visual,rh.Parcel_310,Visual_38
+311,R,14.6 -70.3 23.3,Visual,rh.Parcel_311,Visual_39
+caudate,L,NA,Subcortical,aseg_11,Subcortical_1
+putamen,L,NA,Subcortical,aseg_12,Subcortical_2
+pallidum,L,NA,Subcortical,aseg_13,Subcortical_3
+hippocampus,L,NA,Subcortical,aseg_17,Subcortical_4
+amygdala,L,NA,Subcortical,aseg_18,Subcortical_5
+accumbens,L,NA,Subcortical,aseg_26,Subcortical_6
+caudate,R,NA,Subcortical,aseg_50,Subcortical_7
+putamen,R,NA,Subcortical,aseg_51,Subcortical_8
+pallidum,R,NA,Subcortical,aseg_52,Subcortical_9
+hippocampus,R,NA,Subcortical,aseg_53,Subcortical_10
+amygdala,R,NA,Subcortical,aseg_54,Subcortical_11
+accumbens,R,NA,Subcortical,aseg_58,Subcortical_12
