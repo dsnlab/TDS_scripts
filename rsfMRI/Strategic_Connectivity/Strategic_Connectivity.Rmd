@@ -694,8 +694,8 @@ if(!file.exists("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/conne
 Analysis
 ```{r}
 run_group_differences=FALSE
-run_strategy=TRUE
-run_condition=FALSE
+run_strategy=FALSE
+run_condition=TRUE
 
 gordon_cois<-distinct(gordon_coisDT, coi)
 social_cois<-distinct(social_coisDT, coi)
@@ -826,11 +826,11 @@ if(run_strategy){
                                 }
                               }
     ))
-  print(object.size(gordon_models), units='Mb')
-  gordon_modelsDT <- rbindlist(gordon_models) #make this into a dataframe
-  print(object.size(gordon_modelsDT), units='Mb')
-  rm(gordon_models);gc()
-  save(gordon_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
+  print(object.size(strategy_models), units='Mb')
+  strategy_modelsDT <- rbindlist(strategy_models) #make this into a dataframe
+  print(object.size(strategy_modelsDT), units='Mb')
+  rm(strategy_models);gc()
+  save(strategy_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
                                      "connectivity_models/strategymodels_DT.RDS"))
 } else {
   load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
@@ -840,69 +840,85 @@ if(run_strategy){
 ## Strategy: Time by condition ##
 if(run_condition){
   system.time(
-    condition_models<-mclapply(X=as.character(as.list(gordon_cois$coi)), 
-                               demodata=ylg_timing,
-                               coidat=gordon_coisDT,
-                               mc.cores=numcores,
-                               FUN=function(coi_name, demodata, coidat){
-                                 adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
-                                            demodata,
-                                            by='sub',
-                                            allow.cartesian=T) %>%
-                                   filter(!group=="juvjus")
-                                 beh_mod=lme(time ~ condition+run_index,
-                                             method="ML",
-                                             random = ~1|sub,
-                                             data=adf)
-                                 group_mod=lme(time ~ condition+run_index+group,
-                                               method="ML",
-                                               random = ~1|sub,
-                                               data=adf)
-                                 coi_mod=lme(time ~ condition+run_index+group+cor,
-                                             method="ML",
-                                             random = ~1|sub,
-                                             data=adf)
-                                 coi_int_mod=lme(time ~ condition+run_index+group*cor,
-                                                 method="ML",
-                                                 random = ~1|sub,
-                                                 data=adf)
-                                 mod_comp<-anova(group_mod,coi_mod,coi_int_mod,beh_mod)
-                                 if (mod_comp$'p-value'[2]<.05 &
-                                     mod_comp$AIC[2]<mod_comp$AIC[1]){
-                                   coiname<- as.character(coi_name)
-                                   chisq <- mod_comp[2,8]
-                                   pval <- round(mod_comp[2,9],4)
-                                   AIC <- mod_comp[2,4]
-                                   nullAIC <- mod_comp[1,4]
-                                   mod_type <- "group difference"
-                                   retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
-                                   retDF<-as.data.table(retDF)
-                                 } else {
-                                   coiname= as.character(coi_name)
-                                   chisq <- mod_comp[2,8]
-                                   pval <- round(mod_comp[2,9],4)
-                                   AIC <- mod_comp[2,4]
-                                   nullAIC <- mod_comp[1,4]
-                                   mod_type <- "null model"
-                                   retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
-                                   as.data.table(retDF)
-                                 }
-                               }
+    condition_models<-mclapply(X=as.character(as.list(social_cois$coi)), 
+                              demodata=ylg_timing,
+                              coidat=social_coisDT,
+                              mc.cores=numcores,
+                              FUN=function(coi_name, demodata, coidat){
+                                adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                                           demodata,
+                                           by='sub',
+                                           allow.cartesian=T)
+                                beh_mod=lme(time ~ run_index*condition+group,
+                                            method="ML",
+                                            random = ~1|sub,
+                                            data=adf)
+                                coi_mod=lme(time ~ run_index*condition+group+cor,
+                                            method="ML",
+                                            random = ~1|sub,
+                                            data=adf)
+                                coi_int_mod=lme(time ~ run_index*condition+group*cor,
+                                                method="ML",
+                                                random = ~1|sub,
+                                                data=adf)
+                                mod_comp<-anova(beh_mod,coi_mod,coi_int_mod)
+                                if (mod_comp$'p-value'[3]<.05 &
+                                    mod_comp$AIC[3]<mod_comp$AIC[2] &
+                                    mod_comp$AIC[3]<mod_comp$AIC[1]){
+                                  coiname<- as.character(coi_name)
+                                  chisq <- round(mod_comp[3,8],2)
+                                  pval <- round(mod_comp[3,9],4)
+                                  AIC <- round(mod_comp[3,4],2)
+                                  nullAIC <- round(mod_comp[1,4],2)
+                                  mod_type <- "coi int model"
+                                  retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
+                                  retDF<-as.data.table(retDF)
+                                } else if (mod_comp$'p-value'[2]<.05 &
+                                           mod_comp$AIC[2]<mod_comp$AIC[1]){
+                                  coiname <- as.character(coi_name)
+                                  chisq <- round(mod_comp[2,8],2)
+                                  pval <- round(mod_comp[2,9],4)
+                                  AIC <- round(mod_comp[2,4],2)
+                                  nullAIC <- round(mod_comp[1,4],2)
+                                  mod_type <- "coi main model"
+                                  retDF <- cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
+                                  retDF <- as.data.table(retDF)
+                                } else {
+                                  coiname <- as.character(coi_name)
+                                  chisq <- round(mod_comp[2,8],2)
+                                  pval <- round(mod_comp[2,9],4)
+                                  AIC <- round(mod_comp[2,4],2)
+                                  nullAIC <- round(mod_comp[1,4],2)
+                                  mod_type <- NA
+                                  retDF <- cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
+                                  as.data.table(retDF)
+                                }
+                              }
     ))
-  print(object.size(gordon_models), units='Mb')
-  gordon_modelsDT <- rbindlist(gordon_models) #make this into a dataframe
-  print(object.size(gordon_modelsDT), units='Mb')
-  rm(gordon_models);gc()
-  save(gordon_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordoncois_strategymodels_DT.RDS"))
+  print(object.size(condition_models), units='Mb')
+  condition_modelsDT <- rbindlist(condition_models) #make this into a dataframe
+  print(object.size(condition_modelsDT), units='Mb')
+  rm(condition_models);gc()
+  save(condition_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
+                                     "connectivity_models/condition_models_DT.RDS"))
 } else {
-  load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/gordoncois_strategymodels_DT.RDS"))
+  load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
+                    "connectivity_models/condition_models_DT.RDS"))
 }
 
 ```
 
 
+Time by condition effects
 ```{r}
+load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
+                    "connectivity_models/condition_models_DT.RDS"))
 
+
+```
+
+Testing ground
+```{r}
 gordon_modelsDT_analysis <- gordon_modelsDT %>%
   mutate(seed=substring(coiname, 0, 13),
          target=substring(coiname, 13, length(coiname))) %>%
@@ -971,8 +987,7 @@ gordon_modelsDT_sig<-gordon_modelsDT_analysis %>%
         adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
                    demodata,
                    by='sub',
-                   allow.cartesian=T) %>%
-          filter(!group=="juvjus")
+                   allow.cartesian=T) 
         group_mod=(lme(cor ~ group,
                          method="ML",
                          random = ~1|sub,
