@@ -10,7 +10,7 @@
 #SBATCH --mem-per-cpu=4000
 #SBATCH --partition=short,fat
 
-module load afni R
+module load prl R/3.3.3 afni
 
 cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME 
 3dMVM -prefix OutcomesXContextTDS2 -jobs 28 \
