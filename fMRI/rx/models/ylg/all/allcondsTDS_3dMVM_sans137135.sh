@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=4000
-#SBATCH --partition=fat
+#SBATCH --partition=short,fat
 
 module load afni R
 
