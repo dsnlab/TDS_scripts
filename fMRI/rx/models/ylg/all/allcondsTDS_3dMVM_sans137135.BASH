@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=age_exclusions
-#SBATCH --output=output/age_exclusions.log
+#SBATCH --job-name=TDS_allconds_3dMVM
+#SBATCH --output=output/allcons_3dMVM.log
 #SBATCH --time=1-00:00:00
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1
