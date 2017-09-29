@@ -909,7 +909,6 @@ if(run_condition){
 
 ```
 
-
 Unpack strategy models
 ```{r}
 redoprepheat=FALSE
@@ -1032,7 +1031,196 @@ strategy_heatmap<-ggplot(data = prepheat,
 #       plot=strategy_heatmap, width=6, height=5, units='in', dpi=300)
 
 ## Make example graph
-coi_name="lh.Parcel_29_rh.Parcel_183" # "lh.Parcel_29_rh.Parcel_247""
+coi_name="lh.Parcel_71_rh.Parcel_173" # 
+
+demodata=ylg_timing
+coidat=gordon_coisDT
+adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                                           demodata,
+                                           by='sub',
+                                           allow.cartesian=T)
+
+commmodel=lme(time ~ run_index*cor, method="ML", random = ~1|sub, data=(adf %>%
+                                                                    filter(group=="community")))
+summary(commmodel)
+fostermodel=lme(time ~ run_index*cor, method="ML", random = ~1|sub, data=(adf %>%
+                                                                    filter(group=="foster")))
+summary(fostermodel)
+
+# Predicted model
+cor=seq((mean(adf$cor)-sd(adf$cor)),
+            (mean(adf$cor)+sd(adf$cor)),
+            length.out = 3)
+
+corcomm=seq((mean((adf %>% filter(group=="community"))$cor)-sd((adf %>% filter(group=="community"))$cor)),
+            (mean((adf %>% filter(group=="community"))$cor)+sd((adf %>% filter(group=="community"))$cor)),
+            length.out = 3)
+
+corfoster=seq((mean((adf %>% filter(group=="foster"))$cor)-sd((adf %>% filter(group=="foster"))$cor)),
+            (mean((adf %>% filter(group=="foster"))$cor)+sd((adf %>% filter(group=="foster"))$cor)),
+            length.out = 3)
+
+
+    assign(paste0("comm_graphs"),
+           lapply(X=cor,
+                  FUN=function(COR){
+             assign(paste0("frame",COR),
+                    data.frame(run_index=run_index,
+                               cor=COR))
+             assign(paste0("frame",COR,"predvalue"),
+                    predict(commmodel, get(paste0("frame",COR)), level=0))
+             assign(paste0("designmat",COR),
+                    model.matrix(eval(eval(commmodel$call$fixed)[-2]),
+                                 get(paste0("frame",COR))[-3]))
+             assign(paste0("frame",COR,"SDvalue"),
+                    sqrt(diag(get(paste0("designmat",COR)) 
+                              %*% commmodel$varFix 
+                              %*% t(get(paste0("designmat",COR)))))) 
+             assign("lowerCIvalue",
+                    (get(paste0("frame",COR,"predvalue"))-
+                       (1.96*get(paste0("frame",COR,"SDvalue")))))
+            assign("upperCIvalue",
+                   (get(paste0("frame",COR,"predvalue"))+
+                      (1.96*get(paste0("frame",COR,"SDvalue")))))
+             assign("time",
+                    get(paste0("frame",COR,"predvalue")))
+             cbind(get(paste0("frame",COR)),
+                   time,
+                   upperCIvalue,
+                   lowerCIvalue,
+                   run_index)
+           }))
+    
+    assign(paste0("foster_graphs"),
+           lapply(X=cor,
+                  FUN=function(COR){
+             assign(paste0("frame",COR),
+                    data.frame(run_index=run_index,
+                               cor=COR))
+             assign(paste0("frame",COR,"predvalue"),
+                    predict(fostermodel, get(paste0("frame",COR)), level=0))
+             assign(paste0("designmat",COR),
+                    model.matrix(eval(eval(fostermodel$call$fixed)[-2]),
+                                 get(paste0("frame",COR))[-3]))
+             assign(paste0("frame",COR,"SDvalue"),
+                    sqrt(diag(get(paste0("designmat",COR)) 
+                              %*% fostermodel$varFix 
+                              %*% t(get(paste0("designmat",COR)))))) 
+             assign("lowerCIvalue",
+                    (get(paste0("frame",COR,"predvalue"))-
+                       (1.96*get(paste0("frame",COR,"SDvalue")))))
+            assign("upperCIvalue",
+                   (get(paste0("frame",COR,"predvalue"))+
+                      (1.96*get(paste0("frame",COR,"SDvalue")))))
+             assign("time",
+                    get(paste0("frame",COR,"predvalue")))
+             cbind(get(paste0("frame",COR)),
+                   time,
+                   upperCIvalue,
+                   lowerCIvalue,
+                   run_index)
+           }))
+    
+    assign(paste0("community_coi_graph"),
+           ggplot(data=NULL,
+                  aes(x=run_index,
+                      y=time)) +
+             ylim(2,3)+
+             labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample') +
+             geom_line(data=(adf %>% filter(group=="community")),
+                       aes(group=sub),size=.2,alpha=0.1, colour="maroon1")+
+             geom_point(data=(adf %>% filter(group=="community")),
+                        aes(group=sub),size=.7,alpha=0.1, colour="maroon1")+
+           geom_line(data=as.data.frame(comm_graphs[[1]]),
+                     aes(x=run_index,
+                      y=time),
+                     size=1,
+                     colour="hotpink") +
+             geom_ribbon(data=as.data.frame(comm_graphs[[1]]),
+                         aes(ymin=lowerCIvalue,
+                             ymax=upperCIvalue),
+                         alpha=0.2, fill="hotpink") +
+           geom_line(data=as.data.frame(comm_graphs[[2]]),
+                     aes(x=run_index,
+                      y=time),
+                     size=1,
+                     colour="hotpink3") +
+             geom_ribbon(data=as.data.frame(comm_graphs[[2]]),
+                         aes(ymin=lowerCIvalue,
+                             ymax=upperCIvalue),
+                         alpha=0.2, fill="hotpink3") +
+                        geom_line(data=as.data.frame(comm_graphs[[3]]),
+                     aes(x=run_index,
+                      y=time),
+                     size=1,
+                     colour="hotpink4") +
+             geom_ribbon(data=as.data.frame(comm_graphs[[3]]),
+                         aes(ymin=lowerCIvalue,
+                             ymax=upperCIvalue),
+                         alpha=0.2, fill="hotpink4") +
+             theme_bw() +
+             theme_minimal(base_size = 12, base_family = "Arial") +
+             theme(axis.line.x = element_line(colour = "black", size=.5),
+                   axis.line.y = element_line(colour = "black", size=.5),
+                   panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   panel.border = element_blank(),
+                   panel.background = element_blank(),
+                   legend.position="none"))
+           get(paste0("community_coi_graph"))
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/community_coi_graph.png"),
+       plot=community_coi_graph, width=6, height=5, units='in', dpi=300)
+
+
+assign(paste0("foster_coi_graph"),
+           ggplot(data=NULL,
+                  aes(x=run_index,
+                      y=time)) +
+             ylim(2,3)+
+             labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample') +
+             geom_line(data=(adf %>% filter(group=="foster")),
+                       aes(group=sub),size=.2,alpha=0.1, colour="maroon4")+
+             geom_point(data=(adf %>% filter(group=="foster")),
+                        aes(group=sub),size=.7,alpha=0.1, colour="maroon4")+
+           geom_line(data=as.data.frame(foster_graphs[[1]]),
+                     aes(x=run_index,
+                      y=time),
+                     size=1,
+                     colour="hotpink") +
+             geom_ribbon(data=as.data.frame(foster_graphs[[1]]),
+                         aes(ymin=lowerCIvalue,
+                             ymax=upperCIvalue),
+                         alpha=0.2, fill="hotpink") +
+           geom_line(data=as.data.frame(foster_graphs[[2]]),
+                     aes(x=run_index,
+                      y=time),
+                     size=1,
+                     colour="hotpink3") +
+             geom_ribbon(data=as.data.frame(foster_graphs[[2]]),
+                         aes(ymin=lowerCIvalue,
+                             ymax=upperCIvalue),
+                         alpha=0.2, fill="hotpink3") +
+                        geom_line(data=as.data.frame(foster_graphs[[3]]),
+                     aes(x=run_index,
+                      y=time),
+                     size=1,
+                     colour="hotpink4") +
+             geom_ribbon(data=as.data.frame(foster_graphs[[3]]),
+                         aes(ymin=lowerCIvalue,
+                             ymax=upperCIvalue),
+                         alpha=0.2, fill="hotpink4") +
+             theme_bw() +
+             theme_minimal(base_size = 12, base_family = "Arial") +
+             theme(axis.line.x = element_line(colour = "black", size=.5),
+                   axis.line.y = element_line(colour = "black", size=.5),
+                   panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   panel.border = element_blank(),
+                   panel.background = element_blank(),
+                   legend.position="none"))
+           get(paste0("foster_coi_graph"))
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/foster_coi_graph.png"),
+       plot=foster_coi_graph, width=6, height=5, units='in', dpi=300)
 
 
 ```
