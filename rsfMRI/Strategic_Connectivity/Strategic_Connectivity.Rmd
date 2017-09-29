@@ -982,7 +982,7 @@ parcel_key=read.csv(paste0("./gordon_subcortical_parcel_key.csv"))
 
 if(redoprepheat){
   prepheat<-strategy_modelsDT %>%
-    select(mod_type, seed, target)
+    select(mod_type, seed, target,coiname,chisq,pval,AIC,nullAIC)
   prepheat<-left_join(prepheat, (parcel_key %>%
                                    mutate(seed=parcel_name) %>%
                                    select(seed,Community)),
@@ -993,11 +993,10 @@ if(redoprepheat){
                                    mutate(target=parcel_name) %>%
                                    select(target,Community)),
                       by="target") %>%
-    mutate(target_community=Community)%>%
+    mutate(target_community=Community) %>%
     select(-Community,-seed,-target) %>%
     mutate(connection=paste(seed_community,"_",target_community),
-           model=ifelse(!is.na(mod_type),1,0)) %>%
-    mutate(connection=ifelse())
+           model=ifelse(!is.na(mod_type),1,0)) 
   
   count_connections<-prepheat %>% 
     group_by(connection) %>% summarize(n()) 
@@ -1032,6 +1031,8 @@ strategy_heatmap<-ggplot(data = prepheat,
 #ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/strategy_corrmatrix.png"),
 #       plot=strategy_heatmap, width=6, height=5, units='in', dpi=300)
 
+## Make example graph
+coi_name="lh.Parcel_29_rh.Parcel_183" # "lh.Parcel_29_rh.Parcel_247""
 
 
 ```
