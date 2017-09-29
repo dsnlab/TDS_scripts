@@ -408,7 +408,8 @@ time_plot
 #       plot=time_plot, width=7, height=5, units='in', dpi=300)
 
 
-### Stats #####
+#################
+#### Models #####
 ## Find best fitting polynomial model for learning across the course of the task
 nullmodel=lme(time ~ 1, method="ML", random = ~1|sub, data=ylg_timing)
 linmodel=lme(time ~ run_index, method="ML", random = ~1|sub, data=ylg_timing)
@@ -478,38 +479,38 @@ foster.data.pred = cbind.data.frame(foster.data.pred,
 foster.data.pred$time<-foster.data.pred$y.pred
 
 ## Graph it yo!
-group.colors <- c(community = "forestgreen", foster = "dodgerblue")
+group_colors <- c("community" = "maroon1", "foster" = "maroon4")
 
-ylg_time_by_learning_graph<-ggplot(ylg_timing,
+model_time_by_runindex<-ggplot(ylg_timing,
                          aes(y=time,
                              x=run_index))+
   geom_line(data=comm.data.pred,
-              aes(x=run_index, y=time), size=.7, colour="forestgreen")+
+              aes(x=run_index, y=time), size=1, colour="maroon1")+
   geom_ribbon(data=comm.data.pred,
-              aes(ymin=y.lower, ymax=y.upper), alpha=0.2, fill="forestgreen")+
+              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill="maroon1")+
   geom_line(data=foster.data.pred,
-              aes(x=run_index, y=time), size=.7, colour="dodgerblue")+
+              aes(x=run_index, y=time), size=1, colour="maroon4")+
   geom_ribbon(data=foster.data.pred,
-              aes(ymin=y.lower, ymax=y.upper), alpha=0.2, fill="dodgerblue")+
+              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill="maroon4")+
   geom_line(data=ylg_timing,
-            aes(colour=group, group=sub),size=.3,alpha=0.3)+
-  scale_colour_manual(values = c("forestgreen", "dodgerblue"))+
+            aes(colour=group, group=sub),size=.2,alpha=0.2)+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
   geom_point(data=ylg_timing,
-             aes(colour=group, group=sub),size=2,alpha=0.3)+
-  ylab("Time to complete run") +
-  xlab("Run index")+
+             aes(colour=group, group=sub),size=1,alpha=0.2)+
+   labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample')+
   theme_bw() +
-  theme_minimal(base_size = 18,
-                base_family = "Arial") +
+  theme_minimal(base_size = 20, base_family = "Arial") +
   theme(axis.line = element_line(colour = "black"),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        legend.position="bottom",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank())
-ylg_time_by_learning_graph
+        panel.background = element_blank(),
+        legend.position="bottom")
+model_time_by_runindex
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_runindex.png"),
+       plot=model_time_by_runindex, width=7, height=5, units='in', dpi=300)
+
 
 ###################################################################
 
@@ -908,26 +909,15 @@ if(run_condition){
 
 ```
 
-Time by run index effects
+
+Unpack strategy models
 ```{r}
+redoprepheat=FALSE
+
 load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
                     "connectivity_models/strategymodels_DT.RDS"))
 
-
-```
-
-
-Time by condition effects
-```{r}
-load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
-                    "connectivity_models/condition_models_DT.RDS"))
-
-
-```
-
-Testing ground
-```{r}
-test_analysis <- strategy_modelsDT %>%
+strategy_modelsDT<-strategy_modelsDT %>%
   mutate(seed=ifelse(grepl("aseg",substring(coiname,0,7)),substring(coiname, 0, 7),substring(coiname, 0, 13)),
          target=ifelse(nchar(coiname)==15,substring(coiname,9,15),coiname))%>%
   mutate(target=ifelse(grepl("aseg",substring(coiname,0,4)),substring(coiname,9,length(coiname)),substring(coiname, 13, length(coiname)))) %>%
@@ -984,20 +974,110 @@ test_analysis <- strategy_modelsDT %>%
                      substring(seed,0,12),seed))))
 
 # Make sure the coi names are correct
-unique(test_analysis$seed)
-unique(test_analysis$target)
+unique(strategy_modelsDT$seed)
+unique(strategy_modelsDT$target)
+
+# See how many connections between/within networks were significant
+parcel_key=read.csv(paste0("./gordon_subcortical_parcel_key.csv"))
+
+if(redoprepheat){
+  prepheat<-strategy_modelsDT %>%
+    select(mod_type, seed, target)
+  prepheat<-left_join(prepheat, (parcel_key %>%
+                                   mutate(seed=parcel_name) %>%
+                                   select(seed,Community)),
+                      by="seed") %>%
+    mutate(seed_community=Community)%>%
+    select(-Community)
+  prepheat<-left_join(prepheat, (parcel_key %>%
+                                   mutate(target=parcel_name) %>%
+                                   select(target,Community)),
+                      by="target") %>%
+    mutate(target_community=Community)%>%
+    select(-Community,-seed,-target) %>%
+    mutate(connection=paste(seed_community,"_",target_community),
+           model=ifelse(!is.na(mod_type),1,0)) %>%
+    mutate(connection=ifelse())
+  
+  count_connections<-prepheat %>% 
+    group_by(connection) %>% summarize(n()) 
+  write.csv(count_connections,file = paste0(workdir,"../bids_data/derivatives/strategic_connectivity/tables/",
+                                            "connection_count.csv"))
+  count_sig_connections<-prepheat %>% 
+    filter(!is.na(mod_type)) %>%
+    group_by(connection) %>% summarize(n()) 
+  
+  write.csv(count_sig_connections,file = paste0(workdir,"../bids_data/derivatives/strategic_connectivity/tables/",
+                                                "sig_connection_count.csv"))
+}
 
 # Make a heat map YO!
-heatmap<-matrix(data = test_analysis_heatmap$chisq,nrow=345,ncol=345)
-rownames(heatmap)<-gordon_key$heatmap_name
-colnames(heatmap)<-gordon_key$heatmap_name
+prepheat<-read.csv(file=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/tables/",
+                                          "strategy_heatmap.csv"),header=TRUE,stringsAsFactors = FALSE)
 
-cormatrix <- cor(heatmap)
-corrplot(cormatrix, method="color")
+strategy_heatmap<-ggplot(data = prepheat,
+       aes(x=seed_community, y=target_community, fill=ratio)) + 
+  scale_fill_distiller(palette = "RdPu")+
+  geom_tile()+
+  theme_minimal()+ 
+ theme(
+  axis.text.x = element_text(angle = 45, vjust = 1, size = 10, hjust = 1),
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.grid.major = element_blank(),
+  panel.border = element_blank(),
+  panel.background = element_blank(),
+  axis.ticks = element_blank())+
+ coord_fixed()
+#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/strategy_corrmatrix.png"),
+#       plot=strategy_heatmap, width=6, height=5, units='in', dpi=300)
 
-lattice::levelplot(heatmap[1:ncol(heatmap),ncol(heatmap):1])
-new.palette=colorRampPalette(c("black","red","yellow","white"),space="rgb") 
-lattice::levelplot(heatmap[1:ncol(heatmap),ncol(heatmap):1],col.regions=new.palette(20))
+
+
 ```
 
 
+Time by condition effects
+```{r}
+load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
+                    "connectivity_models/condition_models_DT.RDS"))
+
+
+```
+
+Theresa Scripts
+```{r}
+
+## Load Gordon parcel data
+parcels=read.csv(paste0("./gordon_subcortical_parcel_key.csv"))
+parcels$target=as.character(parcels$parcel_name)
+
+## Match COI target with Gordon parcel #
+strategy_modelsDT_matched<-left_join(strategy_modelsDT,
+                                     parcels, by=c("target"))
+# Display the Data
+
+## generate a data frame to plot
+strategy_modelsDT_matched$Community=as.character(strategy_modelsDT_matched$Community) # turn community type into a character
+df_strategy_models= data.frame(cbind("target"=unlist(strategy_modelsDT_matched$target),
+                                     "seed"=unlist(strategy_modelsDT_matched$seed),
+                                     "mod_type"=unlist(strategy_modelsDT_matched$mod_type),
+                                     "Community"=unlist(strategy_modelsDT_matched$Community))) 
+df_strategy_models$Community=as.factor(df_strategy_models$Community) # turn community back into a factor
+
+## Make a table 
+
+# calculate percentages
+tbl=group_by(df_strategy_models, seed, mod_type, Community) %>% tally %>% 
+  spread(Community, n, fill = 0)
+kable(tbl, format="pandoc")
+
+tbl=group_by(df_strategy_models, seed, mod_type) %>% tally %>% 
+  spread(seed, n, fill = 0)
+kable(tbl, format="pandoc")
+
+# Plot
+df_strategy_models=filter(df_strategy_models, !is.na(mod_type)) # remove those best explained by the null model
+
+
+```
