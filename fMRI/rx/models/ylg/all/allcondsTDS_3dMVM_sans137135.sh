@@ -1,13 +1,16 @@
 #!/bin/bash
+#--------------------------------------------------------------
+#
 #SBATCH --job-name=TDS_allconds_3dMVM
 #SBATCH --output=output/allcons_3dMVM.log
+#SBATCH --error=output/aallcons_3dMVM_error.log
 #SBATCH --time=1-00:00:00
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=4000
-#SBATCH --partition=defq,fat
+#SBATCH --partition=fat
 
-module load prl afni R
+module load afni R
 
 cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME 
 3dMVM -prefix OutcomesXContextTDS2 -jobs 28 \
