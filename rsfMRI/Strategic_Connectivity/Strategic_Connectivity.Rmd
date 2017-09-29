@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 ```{r Load Required Packages, message=FALSE, warning=FALSE, include=FALSE}
 ## Load required packages ##
 packages <-  c("lme4", "nlme", "ggplot2", "dplyr", "tidyr", "knitr",
-              "parallel", "data.table", "lubridate","psych")
+              "parallel", "data.table", "lubridate","psych","corrplot")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }
@@ -911,7 +911,7 @@ if(run_condition){
 Time by run index effects
 ```{r}
 load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
-                    "connectivity_models/strategy_models_DT.RDS"))
+                    "connectivity_models/strategymodels_DT.RDS"))
 
 
 ```
@@ -987,88 +987,17 @@ test_analysis <- strategy_modelsDT %>%
 unique(test_analysis$seed)
 unique(test_analysis$target)
 
-## Figure out the group differences in connectivity
-  system.time(
-    gordon_differences<-mclapply(X=as.character(as.list(gordon_modelsDT_sig$coiname)), 
-      demodata=redcapData,
-      coidat=gordon_coisDT,
-      mc.cores=numcores,
-      FUN=function(coi_name, demodata, coidat){
-        adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
-                   demodata,
-                   by='sub',
-                   allow.cartesian=T) 
-        group_mod=(lme(cor ~ group,
-                         method="ML",
-                         random = ~1|sub,
-                         data=adf))
-          coiname<- as.character(coi_name)
-          interceptfx <- as.numeric(group_mod$coefficients$fixed[1])
-          groupfx <- as.numeric(group_mod$coefficients$fixed[2])
-          interceptfxSE <- summary(group_mod)$tTable[1,2]
-          groupfxSE <- summary(group_mod)$tTable[2,2]
-          retDF<-cbind(coiname,interceptfx,groupfx,interceptfxSE,groupfxSE)
-          as.data.table(retDF)
-      }
-    )
-  )
-  print(object.size(gordon_differences), units='Mb')
-  gordon_differencesDT <- rbindlist(gordon_differences) #make this into a dataframe
-  print(object.size(gordon_differencesDT), units='Mb')
-  
-  gordon_differencesDT <- left_join(gordon_modelsDT_sig,
-                                    (gordon_differencesDT %>%
-                                       mutate(interceptfx=round(as.numeric(interceptfx),3),
-                                              groupfx=round(as.numeric(groupfx),3),
-                                              interceptfxSE=round(as.numeric(interceptfxSE),3),
-                                              groupfxSE=round(as.numeric(groupfxSE),3))))
-  
+# Make a heat map YO!
+heatmap<-matrix(data = test_analysis_heatmap$chisq,nrow=345,ncol=345)
+rownames(heatmap)<-gordon_key$heatmap_name
+colnames(heatmap)<-gordon_key$heatmap_name
 
+cormatrix <- cor(heatmap)
+corrplot(cormatrix, method="color")
 
-## Make Heat Map
-gordon_key<-read.csv("./gordon_subcortical_parcel_key.csv",header = TRUE,stringsAsFactors = F)
-test_analysis_heatmap<-test_analysis %>%
-  select(seed, target, chisq) %>%
-  mutate(chisq=as.numeric(chisq))
-test_analysis_heatmap <- left_join(x = test_analysis_heatmap,y=(gordon_key %>% select(parcel_name,heatmap_name) %>%
-                                                                  mutate(seed=parcel_name)),
-                                  by=c("seed")) %>%
-  mutate(seed_heat=heatmap_name) %>%
-  select(-heatmap_name,-parcel_name)
-test_analysis_heatmap <- left_join(x = test_analysis_heatmap,y=(gordon_key %>% select(parcel_name,heatmap_name) %>%
-                                                                  mutate(target=parcel_name)),
-                                  by=c("target")) %>%
-  mutate(target_heat=heatmap_name) %>%
-  select(-heatmap_name,-parcel_name) %>%
-  arrange(seed_heat,target_heat)
-
-heatmapdf <- expand.grid(gordon_key$heatmap_name,gordon_key$heatmap_name)
-heatmapdf<- heatmapdf %>% mutate(chisq=0)
-heatmapdf$Var1=0
-heatmapdf$Var2=0
-makeheatmap=function(i){
-  row<-which(grepl(test_analysis_heatmap$seed_heat[i], heatmapdf$Var1)&
-               grepl(test_analysis_heatmap$target_heat[i], heatmapdf$Var2))
-  heatmapdf$chisq[row]=test_analysis_heatmap$chisq[i]
-  row2<-which(grepl(test_analysis_heatmap$target_heat[i], heatmapdf$Var1)&
-                      grepl(test_analysis_heatmap$seed_heat[i], heatmapdf$Var2))
-  heatmapdf$chisq[row2]=test_analysis_heatmap$chisq[i]}
-mclapply(X=(seq(1:59340)),
-         FUN=makeheatmap,
-         mc.cores = numcores)
-View(heatmapdf)
-
- 
-# Plot the heat map
-ggplot(data = test_analysis_heatmap, aes(x=seed_heat, y=target_heat, fill=chisq)) + 
-  geom_raster()
-  geom_tile()
-
-m<-ggplot(data = test_analysis_heatmap, aes(x=seed_heat, y=target_heat, fill=chisq)) +
-  geom_tile() 
-m + scale_fill_distiller(palette = )
-
-
+lattice::levelplot(heatmap[1:ncol(heatmap),ncol(heatmap):1])
+new.palette=colorRampPalette(c("black","red","yellow","white"),space="rgb") 
+lattice::levelplot(heatmap[1:ncol(heatmap),ncol(heatmap):1],col.regions=new.palette(20))
 ```
 
 
