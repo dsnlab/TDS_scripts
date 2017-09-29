@@ -16,7 +16,6 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME
 3dMVM -prefix OutcomesXContextTDS2 -jobs 28 \
 	-wsVars  "Outcome*Context" \
 	-SS_type 3 \
-	-resid all_residuals \
 	-num_glf 1 \
 	-glfLabel 1 'tds2_outByContext' -glfCode 1 'Context : 1*AL -1*PR & 1*AL -1*SE Outcome : 1*Good -1*Bad' \
 	-num_glt 3 \
