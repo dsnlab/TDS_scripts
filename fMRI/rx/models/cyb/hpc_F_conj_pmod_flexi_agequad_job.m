@@ -1,5 +1,5 @@
 %-----------------------------------------------------------------------
-% Job saved on 27-Sep-2017 14:05:34 by cfg_util (rev $Rev: 6460 $)
+% Job saved on 28-Sep-2017 20:24:29 by cfg_util (rev $Rev: 6460 $)
 % spm SPM - SPM12 (6470)
 % cfg_basicio BasicIO - Unknown
 %-----------------------------------------------------------------------
@@ -718,5 +718,5 @@ matlabbatch{1}.spm.stats.factorial_design.globalc.g_omit = 1;
 matlabbatch{1}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
 matlabbatch{1}.spm.stats.factorial_design.globalm.glonorm = 1;
 matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep('Factorial design specification: SPM.mat File', substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','spmmat'));
-matlabbatch{2}.spm.stats.fmri_est.write_residuals = 0;
+matlabbatch{2}.spm.stats.fmri_est.write_residuals = 1;
 matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;

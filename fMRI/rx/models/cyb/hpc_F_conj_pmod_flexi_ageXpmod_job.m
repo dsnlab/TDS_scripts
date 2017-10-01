@@ -1,568 +1,536 @@
 %-----------------------------------------------------------------------
-% Job saved on 27-Sep-2017 14:05:07 by cfg_util (rev $Rev: 6460 $)
+% Job saved on 28-Sep-2017 20:23:28 by cfg_util (rev $Rev: 6460 $)
 % spm SPM - SPM12 (6470)
 % cfg_basicio BasicIO - Unknown
 %-----------------------------------------------------------------------
-matlabbatch{1}.spm.stats.factorial_design.dir = {'/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69/F_conj_pmod_flexi_ageXpmod'};
+matlabbatch{1}.spm.stats.factorial_design.dir = {'/vxfsvol/home/research/tds/fMRI/analysis/rx/cyb/catchonly_meanCpmod_noquad_w190/F_conj_pmod_flexi_ageXpmod'};
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fac.name = 'pmod';
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fac.dept = 1;
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fac.variance = 1;
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fac.gmsca = 0;
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fac.ancova = 0;
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(1).scans = {
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/109/con_0007.nii'
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/109/con_0011.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t113/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t113/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                   };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(1).conds = [1
                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(2).scans = {
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/113/con_0007.nii'
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/113/con_0011.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t114/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t114/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                   };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(2).conds = [1
                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(3).scans = {
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/114/con_0007.nii'
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/114/con_0011.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t115/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t115/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                   };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(3).conds = [1
                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(4).scans = {
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/115/con_0007.nii'
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/115/con_0011.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t116/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t116/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                   };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(4).conds = [1
                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(5).scans = {
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/116/con_0007.nii'
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/116/con_0011.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t117/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t117/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                   };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(5).conds = [1
                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(6).scans = {
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/117/con_0007.nii'
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/117/con_0011.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t119/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t119/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                   };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(6).conds = [1
                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(7).scans = {
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/119/con_0007.nii'
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/119/con_0011.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t121/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t121/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                   };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(7).conds = [1
                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(8).scans = {
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/120/con_0007.nii'
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/120/con_0011.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t125/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t125/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                   };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(8).conds = [1
                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(9).scans = {
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/121/con_0007.nii'
-                                                                                  '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/121/con_0011.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t126/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                  '/vxfsvol/home/research/tds/fMRI/subjects/t126/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                   };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(9).conds = [1
                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(10).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/122/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/122/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t127/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t127/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(10).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(11).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/124/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/124/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t128/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t128/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(11).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(12).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/125/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/125/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t129/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t129/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(12).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(13).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/126/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/126/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t130/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t130/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(13).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(14).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/127/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/127/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t131/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t131/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(14).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(15).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/128/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/128/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t132/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t132/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(15).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(16).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/129/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/129/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t133/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t133/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(16).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(17).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/130/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/130/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t134/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t134/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(17).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(18).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/131/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/131/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t135/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t135/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(18).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(19).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/132/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/132/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t136/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t136/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(19).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(20).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/133/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/133/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t137/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t137/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(20).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(21).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/134/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/134/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t139/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t139/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(21).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(22).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/135/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/135/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t140/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t140/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(22).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(23).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/136/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/136/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t141/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t141/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(23).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(24).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/137/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/137/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t142/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t142/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(24).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(25).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/139/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/139/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t144/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t144/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(25).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(26).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/140/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/140/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t145/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t145/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(26).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(27).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/141/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/141/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t146/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t146/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(27).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(28).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/142/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/142/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t150/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t150/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(28).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(29).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/144/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/144/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t151/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t151/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(29).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(30).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/145/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/145/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t152/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t152/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(30).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(31).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/146/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/146/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t155/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t155/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(31).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(32).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/150/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/150/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t156/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t156/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(32).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(33).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/151/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/151/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t157/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t157/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(33).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(34).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/152/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/152/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t158/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t158/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(34).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(35).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/155/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/155/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t159/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t159/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(35).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(36).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/156/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/156/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t160/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t160/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(36).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(37).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/157/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/157/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t161/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t161/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(37).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(38).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/159/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/159/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t162/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t162/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(38).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(39).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/160/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/160/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t163/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t163/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(39).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(40).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/162/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/162/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t164/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t164/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(40).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(41).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/163/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/163/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t165/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t165/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(41).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(42).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/164/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/164/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t167/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t167/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(42).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(43).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/165/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/165/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t168/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t168/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(43).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(44).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/167/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/167/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t169/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t169/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(44).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(45).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/168/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/168/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t170/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t170/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(45).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(46).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/169/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/169/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t171/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t171/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(46).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(47).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/170/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/170/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t172/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t172/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(47).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(48).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/171/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/171/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t173/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t173/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(48).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(49).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/172/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/172/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t175/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t175/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(49).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(50).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/173/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/173/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t177/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t177/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(50).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(51).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/174/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/174/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t179/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t179/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(51).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(52).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/175/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/175/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t181/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t181/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(52).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(53).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/177/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/177/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t182/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t182/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(53).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(54).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/179/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/179/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t183/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t183/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(54).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(55).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/181/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/181/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t184/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t184/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(55).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(56).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/182/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/182/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t185/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t185/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(56).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(57).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/183/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/183/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t186/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t186/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(57).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(58).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/184/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/184/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t187/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t187/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(58).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(59).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/185/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/185/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t188/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t188/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(59).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(60).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/186/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/186/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t189/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t189/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(60).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(61).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/187/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/187/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t192/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t192/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(61).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(62).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/188/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/188/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t193/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t193/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(62).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(63).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/190/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/190/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t196/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t196/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(63).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(64).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/192/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/192/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t190/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t190/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(64).conds = [1
                                                                                    2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(65).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/193/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/193/con_0011.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t174/fx/cyb/events_meanCpmod_noquad_w190/con_0007.nii'
+                                                                                   '/vxfsvol/home/research/tds/fMRI/subjects/t174/fx/cyb/events_meanCpmod_noquad_w190/con_0011.nii'
                                                                                    };
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(65).conds = [1
                                                                                    2];
-matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(66).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/194/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/194/con_0011.nii'
-                                                                                   };
-matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(66).conds = [1
-                                                                                   2];
-matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(67).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/195/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/195/con_0011.nii'
-                                                                                   };
-matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(67).conds = [1
-                                                                                   2];
-matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(68).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/196/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/196/con_0011.nii'
-                                                                                   };
-matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(68).conds = [1
-                                                                                   2];
-matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(69).scans = {
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/197/con_0007.nii'
-                                                                                   '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/197/con_0011.nii'
-                                                                                   };
-matlabbatch{1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(69).conds = [1
-                                                                                   2];
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.maininters{1}.fmain.fnum = 1;
 %%
-matlabbatch{1}.spm.stats.factorial_design.cov.c = [-1.305261068
-                                                   -1.305261068
-                                                   0.467341672
-                                                   0.467341672
-                                                   0.590629343
-                                                   0.590629343
-                                                   1.949533452
-                                                   1.949533452
-                                                   -0.735398054
-                                                   -0.735398054
-                                                   1.196108795
-                                                   1.196108795
-                                                   0.27556085
-                                                   0.27556085
-                                                   -1.275124082
-                                                   -1.275124082
-                                                   -1.855946
-                                                   -1.855946
-                                                   0.387889617
-                                                   0.387889617
-                                                   -2.340877506
-                                                   -2.340877506
-                                                   1.398848521
-                                                   1.398848521
-                                                   -0.302521342
-                                                   -0.302521342
-                                                   -0.376493945
-                                                   -0.376493945
-                                                   -0.365535041
-                                                   -0.365535041
-                                                   0.231725233
-                                                   0.231725233
-                                                   -0.061425452
-                                                   -0.061425452
-                                                   -1.453206274
-                                                   -1.453206274
-                                                   -2.398411753
-                                                   -2.398411753
-                                                   0.774190987
-                                                   0.774190987
-                                                   -3.143617232
-                                                   -3.143617232
-                                                   -0.223069287
-                                                   -0.223069287
-                                                   3.135834822
-                                                   3.135834822
-                                                   0.971451261
-                                                   0.971451261
-                                                   2.174190987
-                                                   2.174190987
-                                                   2.552273178
-                                                   2.552273178
-                                                   -0.102521342
-                                                   -0.102521342
-                                                   0.886519754
-                                                   0.886519754
-                                                   3.412547151
-                                                   3.412547151
-                                                   -2.549096685
-                                                   -2.549096685
-                                                   0.264601946
-                                                   0.264601946
-                                                   0.587889617
-                                                   0.587889617
-                                                   2.294738932
-                                                   2.294738932
-                                                   1.374190987
-                                                   1.374190987
-                                                   -1.486082986
-                                                   -1.486082986
-                                                   0.001588247
-                                                   0.001588247
-                                                   -0.253206274
-                                                   -0.253206274
-                                                   -0.080603534
-                                                   -0.080603534
-                                                   -0.661425452
-                                                   -0.661425452
-                                                   1.664601946
-                                                   1.664601946
-                                                   1.535834822
-                                                   1.535834822
-                                                   1.47556085
-                                                   1.47556085
-                                                   -0.836767917
-                                                   -0.836767917
-                                                   3.387889617
-                                                   3.387889617
-                                                   -1.864165178
-                                                   -1.864165178
-                                                   1.66186222
-                                                   1.66186222
-                                                   -1.401151479
-                                                   -1.401151479
-                                                   -0.888822712
-                                                   -0.888822712
-                                                   -1.162795315
-                                                   -1.162795315
-                                                   3.442684137
-                                                   3.442684137
-                                                   1.722136192
-                                                   1.722136192
-                                                   -0.886082986
-                                                   -0.886082986
-                                                   -0.751836411
-                                                   -0.751836411
-                                                   -0.954576137
-                                                   -0.954576137
-                                                   -0.751836411
-                                                   -0.751836411
-                                                   -1.318959698
-                                                   -1.318959698
-                                                   -0.576493945
-                                                   -0.576493945
-                                                   -2.264165178
-                                                   -2.264165178
-                                                   -2.614850109
-                                                   -2.614850109
-                                                   0.267341672
-                                                   0.267341672
-                                                   -0.565535041
-                                                   -0.565535041
-                                                   -1.606630931
-                                                   -1.606630931
-                                                   -1.549096685
-                                                   -1.549096685
-                                                   -0.754576137
-                                                   -0.754576137
-                                                   0.344054
-                                                   0.344054
-                                                   0.176930713
-                                                   0.176930713
-                                                   0.064601946
-                                                   0.064601946
-                                                   1.064601946
-                                                   1.064601946
-                                                   -0.017589835
-                                                   -0.017589835];
+matlabbatch{1}.spm.stats.factorial_design.cov.c = [14.68
+                                                   14.68
+                                                   14.8
+                                                   14.8
+                                                   16.16
+                                                   16.16
+                                                   13.48
+                                                   13.48
+                                                   15.41
+                                                   15.41
+                                                   14.49
+                                                   14.49
+                                                   12.36
+                                                   12.36
+                                                   15.6
+                                                   15.6
+                                                   13.91
+                                                   13.91
+                                                   13.83
+                                                   13.83
+                                                   13.84
+                                                   13.84
+                                                   14.44
+                                                   14.44
+                                                   14.15
+                                                   14.15
+                                                   12.76
+                                                   12.76
+                                                   11.81
+                                                   11.81
+                                                   14.99
+                                                   14.99
+                                                   11.07
+                                                   11.07
+                                                   13.99
+                                                   13.99
+                                                   17.34
+                                                   17.34
+                                                   15.19
+                                                   15.19
+                                                   16.38
+                                                   16.38
+                                                   16.76
+                                                   16.76
+                                                   14.11
+                                                   14.11
+                                                   15.09
+                                                   15.09
+                                                   17.62
+                                                   17.62
+                                                   11.66
+                                                   11.66
+                                                   14.48
+                                                   14.48
+                                                   14.8
+                                                   14.8
+                                                   16.51
+                                                   16.51
+                                                   15.59
+                                                   15.59
+                                                   12.73
+                                                   12.73
+                                                   14.22
+                                                   14.22
+                                                   13.96
+                                                   13.96
+                                                   16.05
+                                                   16.05
+                                                   14.14
+                                                   14.14
+                                                   13.56
+                                                   13.56
+                                                   11.63
+                                                   11.63
+                                                   15.88
+                                                   15.88
+                                                   15.75
+                                                   15.75
+                                                   15.69
+                                                   15.69
+                                                   13.38
+                                                   13.38
+                                                   17.6
+                                                   17.6
+                                                   12.35
+                                                   12.35
+                                                   15.87
+                                                   15.87
+                                                   12.81
+                                                   12.81
+                                                   13.33
+                                                   13.33
+                                                   13.05
+                                                   13.05
+                                                   17.66
+                                                   17.66
+                                                   13.33
+                                                   13.33
+                                                   13.46
+                                                   13.46
+                                                   13.26
+                                                   13.26
+                                                   13.46
+                                                   13.46
+                                                   12.89
+                                                   12.89
+                                                   13.64
+                                                   13.64
+                                                   11.95
+                                                   11.95
+                                                   11.6
+                                                   11.6
+                                                   14.48
+                                                   14.48
+                                                   13.65
+                                                   13.65
+                                                   12.61
+                                                   12.61
+                                                   13.83
+                                                   13.83
+                                                   13.46
+                                                   13.46
+                                                   14.56
+                                                   14.56
+                                                   15.28
+                                                   15.28
+                                                   12.67
+                                                   12.67
+                                                   15.93
+                                                   15.93];
 %%
 matlabbatch{1}.spm.stats.factorial_design.cov.cname = 'age';
 matlabbatch{1}.spm.stats.factorial_design.cov.iCFI = 2;

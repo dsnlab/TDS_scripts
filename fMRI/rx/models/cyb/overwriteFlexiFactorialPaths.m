@@ -7,7 +7,7 @@ clear all
 
 %% Define these variables
 rx_folder = '~/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb';
-rx_scripts = {'F_conj_pmod_flexi_agequad'}; % 'F_2x2_age.mat'; do NOT incldude the .mat
+rx_scripts = {'F_2x2_agequadXcontext'}; % 'F_2x2_age.mat'; do NOT incldude the .mat
     % 'F_2x2', 'F_2x2_age', 'F_2x2_ageXcontext', 'F_2x2_ageXthrow', 'F_2x2_agequad', 'F_2x2_agequadXcontext', 'F_2x2_agequadXthrow', 'F_conj_pmod_flexi', 'F_conj_pmod_flexi_age', 'F_conj_pmod_flexi_agequad', 'F_conj_pmod_flexi_agequadXpmod', 'F_conj_pmod_flexi_ageXpmod'
 analysis_folder = '/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69/';  % Make sure that the desired rx directories exist within this analysis folder! Make sure this ends with '/'
 
@@ -45,6 +45,7 @@ cd(rx_folder) % location of rx file folder
 for i = 1:length(rx_scripts) % for each rx script of interest
     load(strcat(char(rx_scripts(i)),'.mat'));  % load the rx .mat script
     matlabbatch{1, 1}.spm.stats.factorial_design.dir = {strcat(analysis_folder, (char(rx_scripts(i))))} % overwrite directory
+    matlabbatch{2}.spm.stats.fmri_est.write_residuals = 1
     if contains(char(rx_scripts(i)), '2x2') %% Replace con files and age values for F_2x2 scripts
         for j = 1: length(subject_list)     % replace existing con files 
             for k = 1: length(con_list_2x2)
@@ -77,11 +78,8 @@ for i = 1:length(rx_scripts) % for each rx script of interest
         end
     else
     end
+    save(strcat(rx_folder, '/hpc_', char(rx_scripts(i))), 'matlabbatch')
 end
-
-%% Save the file
-
-save(strcat(rx_folder, '/hpc_', char(rx_scripts(i))), 'matlabbatch')
 
 %% Replaces called con files for existing data
 
