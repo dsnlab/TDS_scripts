@@ -11,8 +11,8 @@
 %hpc_F_2x2_ageXthrow
 %cd('/Users/theresacheng/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
 %hpc_F_2x2_agequad
-cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
-hpc_F_2x2_agequadXcontext
+%cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
+%hpc_F_2x2_agequadXcontext
 %cd('/Users/theresacheng/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
 %hpc_F_2x2_agequadXthrow
 cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
@@ -24,3 +24,4 @@ hpc_F_conj_pmod_flexi_ageXpmod
 cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
 hpc_F_conj_pmod_flexi_agequad
 cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
+hpc_F_conj_pmod_flexi_agequadXpmod

@@ -6,8 +6,8 @@
 clear all
 
 %% Define these variables
-rx_folder = '~/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb';
-rx_scripts = {'F_2x2_agequadXcontext'}; % 'F_2x2_age.mat'; do NOT incldude the .mat
+rx_folder = '/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb';
+rx_scripts = {'F_conj_pmod_flexi_ageXpmod'}; % 'F_2x2_age.mat'; do NOT incldude the .mat
     % 'F_2x2', 'F_2x2_age', 'F_2x2_ageXcontext', 'F_2x2_ageXthrow', 'F_2x2_agequad', 'F_2x2_agequadXcontext', 'F_2x2_agequadXthrow', 'F_conj_pmod_flexi', 'F_conj_pmod_flexi_age', 'F_conj_pmod_flexi_agequad', 'F_conj_pmod_flexi_agequadXpmod', 'F_conj_pmod_flexi_ageXpmod'
 analysis_folder = '/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69/';  % Make sure that the desired rx directories exist within this analysis folder! Make sure this ends with '/'
 
@@ -17,7 +17,7 @@ con_list_conj= {'con_0007.nii','con_0011.nii'};
 conds_2x2 = [1,1;1,2;2,1;2,2];
 conds_conj= [1;2];
 
-fileID= fopen('~/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb/tds2_N69_subject-list.txt') % create file identifier for subject list
+fileID= fopen('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb/tds2_N69_subject-list.txt') % create file identifier for subject list
 char_in_SID= 3 % number of characters per SID, in TDS this is 3
 
     % Create subject list vector
@@ -46,7 +46,7 @@ for i = 1:length(rx_scripts) % for each rx script of interest
     load(strcat(char(rx_scripts(i)),'.mat'));  % load the rx .mat script
     matlabbatch{1, 1}.spm.stats.factorial_design.dir = {strcat(analysis_folder, (char(rx_scripts(i))))} % overwrite directory
     matlabbatch{2}.spm.stats.fmri_est.write_residuals = 1
-    if contains(char(rx_scripts(i)), '2x2') %% Replace con files and age values for F_2x2 scripts
+    if strfind(char(rx_scripts(i)), '2x2') %% Replace con files and age values for F_2x2 scripts
         for j = 1: length(subject_list)     % replace existing con files 
             for k = 1: length(con_list_2x2)
                 matlabbatch{1,1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(j).scans{k,1}= ...
@@ -54,14 +54,14 @@ for i = 1:length(rx_scripts) % for each rx script of interest
                 matlabbatch{1,1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(j).conds=conds_2x2;
             end
         end
-        if contains(char(rx_scripts(1)), 'agequad') % replace existing age + agequad values
+        if strfind(char(rx_scripts(1)), 'agequad') % replace existing age + agequad values
             matlabbatch{1, 1}.spm.stats.factorial_design.cov(1).c =age_reps_2x2
             matlabbatch{1, 1}.spm.stats.factorial_design.cov(2).c = agequad_reps_2x2 
-        elseif contains(char(rx_scripts(i)), 'age') % replace existing age values ONLY
+        elseif strfind(char(rx_scripts(i)), 'age') % replace existing age values ONLY
             matlabbatch{1, 1}.spm.stats.factorial_design.cov.c = age_reps_2x2 %replace covariates with age_c values
         else 
         end
-    elseif contains (char(rx_scripts(i)), 'conj') %% Replace con files and age values for CONJ PMOD scripts
+    elseif strfind (char(rx_scripts(i)), 'conj') %% Replace con files and age values for CONJ PMOD scripts
               for j = 1: length(subject_list)     % replace existing con files 
             for k = 1: length(con_list_conj)
                 matlabbatch{1,1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(j).scans{k,1}= ...
@@ -69,10 +69,10 @@ for i = 1:length(rx_scripts) % for each rx script of interest
                 matlabbatch{1,1}.spm.stats.factorial_design.des.fblock.fsuball.fsubject(j).conds=conds_conj;
             end
         end
-        if contains(char(rx_scripts(i)), 'agequad') % replace existing age values
+        if strfind(char(rx_scripts(i)), 'agequad') % replace existing age values
             matlabbatch{1, 1}.spm.stats.factorial_design.cov(1).c =age_reps_conj
             matlabbatch{1, 1}.spm.stats.factorial_design.cov(2).c = agequad_reps_conj
-        elseif contains(char(rx_scripts(i)), 'age')
+        elseif strfind(char(rx_scripts(i)), 'age')
             matlabbatch{1, 1}.spm.stats.factorial_design.cov.c = age_reps_conj %replace covariates with age_c values
         else 
         end

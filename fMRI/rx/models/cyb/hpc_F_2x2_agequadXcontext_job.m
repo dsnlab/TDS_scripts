@@ -1,7 +1,6 @@
 %-----------------------------------------------------------------------
-% Job saved on 30-Sep-2017 18:22:19 by cfg_util (rev $Rev: 6460 $)
-% spm SPM - SPM12 (6470)
-% cfg_basicio BasicIO - Unknown
+% Job saved on 30-Sep-2017 18:39:25 by cfg_util (rev $Rev: 6460 $)
+% spm SPM - SPM12 (6685)
 %-----------------------------------------------------------------------
 matlabbatch{1}.spm.stats.factorial_design.dir = {'/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69/F_2x2_agequadXcontext'};
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fac(1).name = 'context';
