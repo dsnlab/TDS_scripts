@@ -1,7 +1,6 @@
 %-----------------------------------------------------------------------
-% Job saved on 27-Sep-2017 14:01:07 by cfg_util (rev $Rev: 6460 $)
-% spm SPM - SPM12 (6470)
-% cfg_basicio BasicIO - Unknown
+% Job saved on 30-Sep-2017 18:39:25 by cfg_util (rev $Rev: 6460 $)
+% spm SPM - SPM12 (6685)
 %-----------------------------------------------------------------------
 matlabbatch{1}.spm.stats.factorial_design.dir = {'/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69/F_2x2_agequadXcontext'};
 matlabbatch{1}.spm.stats.factorial_design.des.fblock.fac(1).name = 'context';
@@ -1276,5 +1275,5 @@ matlabbatch{1}.spm.stats.factorial_design.globalc.g_omit = 1;
 matlabbatch{1}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
 matlabbatch{1}.spm.stats.factorial_design.globalm.glonorm = 1;
 matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep('Factorial design specification: SPM.mat File', substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','spmmat'));
-matlabbatch{2}.spm.stats.fmri_est.write_residuals = 0;
+matlabbatch{2}.spm.stats.fmri_est.write_residuals = 1;
 matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
