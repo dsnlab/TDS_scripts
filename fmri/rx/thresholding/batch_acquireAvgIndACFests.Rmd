@@ -13,7 +13,8 @@ rm(list=ls())
 ```
 
 ```{bash acquireIndACFests}
-export PATH=/usr/local/packages/afni_16.1.06:${PATH} # set path to latest AFNI version
+#!/bin/bash
+export PATH=/Users/blinky/abin/afni_16.1.06:${PATH} # set path to latest AFNI version
 
 rx_path=/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69
 
