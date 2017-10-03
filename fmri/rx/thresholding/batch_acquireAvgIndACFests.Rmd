@@ -14,24 +14,23 @@ rm(list=ls())
 
 ```{bash acquireIndACFests}
 #!/bin/bash
-export PATH=/Users/blinky/abin/afni_16.1.06:${PATH} # set path to latest AFNI version
+export PATH=/usr/local/packages/afni/17.1.01/:${PATH} # set path to latest AFNI version
 
-rx_path=/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69
+rx_path=/projects/dsnlab/tds/fMRI/analysis/rx/cyb/tds2_N69
 
-declare -a rx_list=("F_2x2" 
-"F_2x2_age" 
-)
+declare -a rx_list=("F_2x2"
+"F_2x2_ageXthrow" 
+"F_2x2_ageXcontext" 
+"F_2x2_agequad" 
+"F_2x2_agequadXcontext" 
+"F_2x2_agequadXthrow" 
+"F_conj_pmod_flexi" 
+"F_conj_pmod_flexi_age" 
+"F_conj_pmod_flexi_ageXpmod" 
+"F_conj_pmod_flexi_agequad" 
+"F_conj_pmod_flexi_agequadXpmod")
 
-#"F_2x2_ageXthrow" 
-#"F_2x2_ageXcontext" 
-#"F_2x2_agequad" 
-#"F_2x2_agequadXcontext" 
-#"F_2x2_agequadXthrow" 
-#"F_conj_pmod_flexi" 
-#"F_conj_pmod_flexi_age" 
-#"F_conj_pmod_flexi_ageXpmod" 
-#"F_conj_pmod_flexi_agequad" 
-#"F_conj_pmod_flexi_agequadXpmod"
+# DONE 10.02.2017: "F_2x2_age"
 
 echo "${rx_list[@]}"
 
@@ -39,16 +38,45 @@ i=1
 for i in "${rx_list[@]}"
   do
     cd $rx_path/$i
-    for i in Res_*  # estimate acf parameters for per subject and save this output to a log file
+    for k in Res_*  # estimate acf parameters for per subject and save this output to a log file
       do 
-        j=${i:0:8}
-        3dFWHMx -acf -mask mask.nii $i >> log_$j.txt
+        j=${k:0:8}
+        3dFWHMx -acf -mask mask.nii $k >> log_$j.txt
       done
 done
-
 ```
 
 
+```{r average ACF estimates}
+
+# Average individual level acf estimates
+# Authors: Theresa W. Cheng, Nandita Vijayakumar
+# Date created; 11/21/2016; Last modified: 6/16/2017
+
+# This script should be run after "acquireACFest.sh". It outputs the mean and median of the individual level acf estimates from second level residuals. The decision to use the mean versus the median is up to the researcher, and might be based on the usual considerations (e.g., examining the distribution and/or presence of outliers). The first three values of either the mean or median are the input for 3dClustSim. 
+
+library(plyr)
+
+# Inputs
+rm(list=ls())
+rx_directory="/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69/"
+rx_models=c("F_2x2", "F_2x2_age", "F_2x2_ageXthrow" , "F_2x2_ageXcontext", "F_2x2_agequad", "F_2x2_agequadXcontext", "F_2x2_agequadXthrow", "F_conj_pmod_flexi", "F_conj_pmod_flexi_age", "F_conj_pmod_flexi_ageXpmod", "F_conj_pmod_flexi_agequad", "F_conj_pmod_flexi_agequadXpmod")
+  
+# Code
+
+for i in 1:length(rx_models){
+  setwd(rx_directory/rx_models[i])
+  logs=list.files(pattern='log*') # list log files
+  
+  df.logs=lapply(logs, read.table) # read in the list of files
+  df.logs=ldply(df.logs, data.frame) # combine the list into one dataframe
+  
+  df.logs.acf=df.logs[(seq(2,to=nrow(df.logs),by=2)),] #take even rows (aka use acf values and ignore fwhm values)
+  
+  summarise(df.logs, mean1=mean(df.logs.acf$V1), mean2=mean(df.logs.acf$V2), mean3=mean(df.logs.acf$V3), mean4=mean(df.logs.acf$V4)) #summarise results: mean
+  
+  summarise(df.logs, median1=median(df.logs.acf$V1), median2=median(df.logs.acf$V2), median3=median(df.logs.acf$V3), mean4=median(df.logs.acf$V4)) #summarise results: median
+}
 
 
 ```
