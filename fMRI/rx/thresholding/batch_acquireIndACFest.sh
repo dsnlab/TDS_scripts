@@ -18,17 +18,6 @@ declare -a rx_list=("F_2x2_ageXcontext"
 #"F_conj_pmod_flexi_agequad"
 #"F_conj_pmod_flexi_agequadXpmod")
 
-cat batch_indACFest_summary.csv
-
-
-while IFS=, read m1 m2 m3 m4 m5
-do 
-	echo $m2
-	echo $m3
-	echo $m4
-	echo $m5
-done < batch_indACFest_summary.csv
-
 echo "${rx_list[@]}"
 
 i=1
