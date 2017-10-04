@@ -508,31 +508,158 @@ model_time_by_runindex<-ggplot(ylg_timing,
         panel.background = element_blank(),
         legend.position="bottom")
 model_time_by_runindex
-ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_runindex.png"),
-       plot=model_time_by_runindex, width=7, height=5, units='in', dpi=300)
+#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_runindex.png"),
+#       plot=model_time_by_runindex, width=7, height=5, units='in', dpi=300)
 
 
 ###################################################################
 
 ## Check out if condition impacts time to complete run
-condition_model=lme(time ~ condition, method="ML", random = ~1|sub, data=ylg_timing)
-condition_group_model=lme(time ~ condition+group, method="ML", random = ~1|sub, data=ylg_timing)
-condition_intgroup_model=lme(time ~ condition*group, method="ML", random = ~1|sub, data=ylg_timing)
-anova(condition_model,condition_group_model,condition_intgroup_model)
-# time to complete run varies between conditions by groups in different ways
-summary(condition_group_model)
+conditions_timing<-ylg_timing %>% filter(!condition=="Mock")
+condition_model=lme(time ~ condition, method="ML", random = ~1|sub, data=conditions_timing)
+run_index_model=lme(time ~ run_index, method="ML", random = ~1|sub, data=conditions_timing)
 
-condition_runindex_model=lme(time ~ condition+run_index, method="ML", random = ~1|sub, data=ylg_timing)
-condition_intrunindex_model=lme(time ~ condition*run_index, method="ML", random = ~1|sub, data=ylg_timing)
-condition_intrunindex_group_model=lme(time ~ condition*run_index+group, method="ML", random = ~1|sub, data=ylg_timing)
-condition_intrunindex_intgroup_model=lme(time ~ condition*run_index*group, method="ML", random = ~1|sub, data=ylg_timing)
-anova(nullmodel,condition_model,condition_runindex_model,
+anova(condition_model,run_index_model)
+condition_group_model=lme(time ~ condition+group, method="ML", random = ~1|sub, data=conditions_timing)
+condition_intgroup_model=lme(time ~ condition*group, method="ML", random = ~1|sub, data=conditions_timing)
+anova(condition_model,condition_group_model,condition_intgroup_model)
+# 
+summary(condition_model)
+
+nullcondmodel=lme(time ~ 1, method="ML", random = ~1|sub, data=conditions_timing)
+condition_runindex_model=lme(time ~ condition+run_index, method="ML", random = ~1|sub, data=conditions_timing)
+condition_intrunindex_model=lme(time ~ condition*run_index, method="ML", random = ~1|sub, data=conditions_timing)
+condition_intrunindex_group_model=lme(time ~ condition*run_index+group, method="ML", random = ~1|sub, data=conditions_timing)
+condition_intrunindex_intgroup_model=lme(time ~ condition*run_index*group, method="ML", random = ~1|sub, data=conditions_timing)
+anova(nullcondmodel,condition_model,condition_runindex_model,
       condition_intrunindex_model,condition_intrunindex_group_model,
       condition_intrunindex_intgroup_model)
 anova(nullmodel,linmodel)
 
-# best model takes into account the main effects of condition, run index, and group
-summary(condition_intrunindex_group_model)
+# best model takes into account the main effects of condition
+summary(condition_model)
+
+# Time plotted across all runs by condition and sample
+condition.plot <-
+  ylg_timing %>%
+  group_by(group, condition, run_index) %>% 
+  filter(!condition=="Mock") %>%
+  summarize(mean = mean(time),
+            sd = sd(time),
+            n = n(), 
+            se = sd/sqrt(n),
+            ci=qt(0.975, df=n-1)*se)
+condition_plot<-ggplot(condition.plot,
+                  aes(x=run_index, y=mean, color=group)) +
+  geom_point(position=position_dodge(.1), size=3) +
+  geom_line(aes(group=group), size=1) +
+  geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci),
+                width=0.5,
+                position=position_dodge(.2)) +
+  facet_grid(.~condition, scales='free') +
+  labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample') +
+  scale_colour_manual(values=group_colors,
+                      labels=group_labels)+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        axis.text.x=element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="bottom")
+condition_plot
+#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_condition_runindex_group.png"),
+#       plot=condition_plot, width=7, height=5, units='in', dpi=300)
+
+# Predicted model
+# generate community sample models
+commnullmodel=lme(time ~ 1, method="ML", random = ~1|sub, data=(conditions_timing %>%
+                                                                    filter(group=="community")))
+commmodel=lme(time ~ condition, method="ML", random = ~1|sub, data=(conditions_timing %>%
+                                                                    filter(group=="community")))
+anova(commnullmodel,commmodel)
+summary(commmodel)
+
+# generate foster sample models
+fosternullmodel=lme(time ~ 1, method="ML", random = ~1|sub, data=(conditions_timing %>%
+                                                                    filter(group=="foster")))
+fostermodel=lme(time ~ condition, method="ML", random = ~1|sub, data=(conditions_timing %>%
+                                                                    filter(group=="foster")))
+anova(fosternullmodel,fostermodel)
+summary(fostermodel)
+condition<-c("Alone","Peer","Exclusion")
+comm.data.pred = cbind.data.frame(condition)
+y.pred = predict(commmodel,
+                   comm.data.pred,
+                   level=0)
+comm.data.pred = cbind.data.frame(comm.data.pred,
+                               y.pred)
+scale = 1.96
+designmat<-model.matrix(eval(eval(commmodel$call$fixed)[-2]),
+                          comm.data.pred[-3]) #make design matrix
+SDvalue<-sqrt(diag(designmat %*% commmodel$varFix %*% t(designmat))) #calculate standard deviation for each point for each model
+y.lower<-y.pred-(scale*SDvalue) #calculate confidence intervals - lower
+y.upper<-y.pred+(scale*SDvalue) #calculate confidence intervals - upper
+comm.data.pred = cbind.data.frame(comm.data.pred,
+                               y.lower,
+                               y.upper)
+comm.data.pred$time<-comm.data.pred$y.pred
+
+foster.data.pred = cbind.data.frame(condition)
+y.pred = predict(fostermodel,
+                   foster.data.pred,
+                   level=0)
+foster.data.pred = cbind.data.frame(foster.data.pred,
+                               y.pred)
+scale = 1.96
+designmat<-model.matrix(eval(eval(fostermodel$call$fixed)[-2]),
+                          foster.data.pred[-3]) #make design matrix
+SDvalue<-sqrt(diag(designmat %*% fostermodel$varFix %*% t(designmat))) #calculate standard deviation for each point for each model
+y.lower<-y.pred-(scale*SDvalue) #calculate confidence intervals - lower
+y.upper<-y.pred+(scale*SDvalue) #calculate confidence intervals - upper
+foster.data.pred = cbind.data.frame(foster.data.pred,
+                               y.lower,
+                               y.upper)
+foster.data.pred$time<-foster.data.pred$y.pred
+
+## Graph it yo!
+group_colors <- c("community" = "maroon1", "foster" = "maroon4")
+
+model_time_by_condition<-ggplot(conditions_timing,
+                         aes(y=time,
+                             x=condition,
+                             group=1))+
+  geom_line(data=comm.data.pred,
+              aes(x=condition, y=time,group=1), size=1, colour="maroon1")+
+  geom_ribbon(data=comm.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill="maroon1")+
+  geom_line(data=foster.data.pred,
+              aes(x=condition, y=time,group=1), size=1, colour="maroon4")+
+  geom_ribbon(data=foster.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill="maroon4")+
+  geom_line(data=conditions_timing,
+            aes(colour=group, group=sub),size=.2,alpha=0.2)+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
+  geom_point(data=conditions_timing,
+             aes(colour=group, group=sub),size=1,alpha=0.2)+
+   labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="bottom")
+model_time_by_condition
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_condition.png"),
+       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)
+
+
+
 ```
 
 Get timecourses
@@ -692,11 +819,11 @@ if(!file.exists("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/conne
 }
 ```
 
-Analysis
+Connectivity Analysis
 ```{r}
 run_group_differences=FALSE
 run_strategy=FALSE
-run_condition=TRUE
+run_condition=FALSE
 
 gordon_cois<-distinct(gordon_coisDT, coi)
 social_cois<-distinct(social_coisDT, coi)
@@ -714,48 +841,36 @@ if(run_group_differences){
                                                    demodata,
                                                    by='sub',
                                                    allow.cartesian=T)
-                                        group_mod=(lme(time ~ group,
+                                        null_mod=(lme(cor ~ 1,
                                                        method="ML",
                                                        random = ~1|sub,
                                                        data=adf))
-                                        group_coi_mod=(lme(time ~ group+coi,
+                                        group_coi_mod=(lme(cor ~ group,
                                                            method="ML",
                                                            random = ~1|sub,
                                                            data=adf))
-                                        group_coi_intmod=(lme(time ~ group*coi,
-                                                              method="ML",
-                                                              random = ~1|sub,
-                                                              data=adf))
-                                        mod_comp<-anova(group_mod,group_coi_mod,group_coi_intmod)
-                                        if (mod_comp$'p-value'[3]<.05 &
-                                            mod_comp$AIC[3]<mod_comp$AIC[2] &
-                                            mod_comp$AIC[3]<mod_comp$AIC[1]){
-                                          coiname<- as.character(coi_name)
-                                          chisq <- round(mod_comp[2,8],2)
-                                          pval <- round(mod_comp[2,9],4)
-                                          AIC <- round(mod_comp[2,4],2)
-                                          nullAIC <- round(mod_comp[1,4],2)
-                                          mod_type <- "coi int model"
-                                          retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
-                                          retDF<-as.data.table(retDF)
-                                        } else if (mod_comp$'p-value'[2]<.05 &
-                                                   mod_comp$AIC[2]<mod_comp$AIC[1]){
+                                        mod_comp<-anova(null_mod,group_coi_mod)
+                                        if (mod_comp$'p-value'[2]<.05 &
+                                            mod_comp$AIC[2]<mod_comp$AIC[1] &
+                                           anova(group_coi_mod)$`p-value`[2]<.05){
                                           coiname <- as.character(coi_name)
                                           chisq <- round(mod_comp[2,8],2)
                                           pval <- round(mod_comp[2,9],4)
                                           AIC <- round(mod_comp[2,4],2)
                                           nullAIC <- round(mod_comp[1,4],2)
-                                          mod_type <- "coi main model"
-                                          retDF <- cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
+                                          fostereffect<-round(summary(group_coi_mod)$coefficients$fixed[2],3)
+                                          mod_type <- "group difference"
+                                          retDF <- cbind(coiname,fostereffect,chisq,pval,AIC,nullAIC,mod_type)
                                           retDF <- as.data.table(retDF)
                                         } else {
                                           coiname <- as.character(coi_name)
                                           chisq <- round(mod_comp[2,8],2)
                                           pval <- round(mod_comp[2,9],4)
                                           AIC <- round(mod_comp[2,4],2)
+                                          fostereffect<-NA
                                           nullAIC <- round(mod_comp[1,4],2)
                                           mod_type <- NA
-                                          retDF <- cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
+                                          retDF <- cbind(coiname,fostereffect,chisq,pval,AIC,nullAIC,mod_type)
                                           as.data.table(retDF)
                                         }
                                       }
@@ -764,9 +879,11 @@ if(run_group_differences){
   social_groupdiff_modelsDT <- rbindlist(social_groupdiff_models) #make this into a dataframe
   print(object.size(social_groupdiff_modelsDT), units='Mb')
   rm(social_groupdiff_models);gc()
-  save(social_groupdiff_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/social_groupdiff_modelsDT.RDS"))
+  save(social_groupdiff_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/connectivity_models/",
+                                               "social_groupdiff_modelsDT.RDS"))
 } else {
-  social_groupdiff_modelsDT<-load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/social_groupdiff_modelsDT.RDS"))
+  social_groupdiff_modelsDT<-load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/connectivity_models/",
+                                               "social_groupdiff_modelsDT.RDS"))
 }
 
 ## Strategy: Time by run index ##
@@ -842,7 +959,7 @@ if(run_strategy){
 if(run_condition){
   system.time(
     condition_models<-mclapply(X=as.character(as.list(social_cois$coi)), 
-                              demodata=ylg_timing,
+                              demodata=conditions_timing,
                               coidat=social_coisDT,
                               mc.cores=numcores,
                               FUN=function(coi_name, demodata, coidat){
@@ -850,20 +967,36 @@ if(run_condition){
                                            demodata,
                                            by='sub',
                                            allow.cartesian=T)
-                                beh_mod=lme(time ~ run_index*condition+group,
+                                beh_mod=lme(time ~ condition,
                                             method="ML",
                                             random = ~1|sub,
                                             data=adf)
-                                coi_mod=lme(time ~ run_index*condition+group+cor,
+                                coi_mod=lme(time ~ condition+cor,
                                             method="ML",
                                             random = ~1|sub,
                                             data=adf)
-                                coi_int_mod=lme(time ~ run_index*condition+group*cor,
+                                coi_int_mod=lme(time ~ condition*cor,
                                                 method="ML",
                                                 random = ~1|sub,
                                                 data=adf)
-                                mod_comp<-anova(beh_mod,coi_mod,coi_int_mod)
-                                if (mod_comp$'p-value'[3]<.05 &
+                                coi_int_group_mod=lme(time ~ condition*cor*group,
+                                                method="ML",
+                                                random = ~1|sub,
+                                                data=adf)
+                                mod_comp<-anova(beh_mod,coi_mod,coi_int_mod,coi_int_group_mod)
+                                if (mod_comp$'p-value'[4]<.05 &
+                                    mod_comp$AIC[4]<mod_comp$AIC[3] &
+                                    mod_comp$AIC[4]<mod_comp$AIC[2] &
+                                    mod_comp$AIC[4]<mod_comp$AIC[1]){
+                                  coiname<- as.character(coi_name)
+                                  chisq <- round(mod_comp[3,8],2)
+                                  pval <- round(mod_comp[3,9],4)
+                                  AIC <- round(mod_comp[3,4],2)
+                                  nullAIC <- round(mod_comp[1,4],2)
+                                  mod_type <- "coi int group model"
+                                  retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type)
+                                  retDF<-as.data.table(retDF)
+                                } else if (mod_comp$'p-value'[3]<.05 &
                                     mod_comp$AIC[3]<mod_comp$AIC[2] &
                                     mod_comp$AIC[3]<mod_comp$AIC[1]){
                                   coiname<- as.character(coi_name)
@@ -901,10 +1034,10 @@ if(run_condition){
   print(object.size(condition_modelsDT), units='Mb')
   rm(condition_models);gc()
   save(condition_modelsDT, file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
-                                     "connectivity_models/condition_models_DT.RDS"))
+                                     "connectivity_models/condition_modelsDT.RDS"))
 } else {
   load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
-                    "connectivity_models/condition_models_DT.RDS"))
+                    "connectivity_models/condition_modelsDT.RDS"))
 }
 
 ```
@@ -1225,48 +1358,277 @@ ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/
 
 ```
 
-
-Time by condition effects
+Unpack condition models
 ```{r}
-load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/",
-                    "connectivity_models/condition_models_DT.RDS"))
+redoprepheat=FALSE
 
+load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/connectivity_models/",
+                                               "social_groupdiff_modelsDT.RDS"))
 
-```
+load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/connectivity_models/",
+                    "condition_modelsDT.RDS"))
 
-Theresa Scripts
-```{r}
+# How many coi models that differ between groups also explain variance in condition effects on time?
+overlapping_cois<-intersect(x=(social_groupdiff_modelsDT %>% filter(!is.na(mod_type)))$coiname,
+                            y=(condition_modelsDT %>% filter(!is.na(mod_type)))$coiname)
+condition_group_coi_models<-condition_modelsDT %>% filter(coiname %in% overlapping_cois)
 
-## Load Gordon parcel data
-parcels=read.csv(paste0("./gordon_subcortical_parcel_key.csv"))
-parcels$target=as.character(parcels$parcel_name)
+# Check out sig. condition coi models 
+# MAIN
+mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi main model"))$coiname), 
+         demodata=conditions_timing,
+         coidat=social_coisDT,
+         mc.cores=numcores,
+         FUN=function(coi_name, demodata, coidat){
+           adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                      demodata,
+                      by='sub',
+                      allow.cartesian=T)
+           cat(coi_name)
+           summary(lme(time ~ condition+cor, method="ML",random = ~1|sub,data=adf))})
 
-## Match COI target with Gordon parcel #
-strategy_modelsDT_matched<-left_join(strategy_modelsDT,
-                                     parcels, by=c("target"))
-# Display the Data
+# INTERACTION
+mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi int model"))$coiname), 
+         demodata=conditions_timing,
+         coidat=social_coisDT,
+         mc.cores=numcores,
+         FUN=function(coi_name, demodata, coidat){
+           adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                      demodata,
+                      by='sub',
+                      allow.cartesian=T)
+           cat(coi_name)
+           summary(lme(time ~ condition*cor, method="ML",random = ~1|sub,data=adf))})
 
-## generate a data frame to plot
-strategy_modelsDT_matched$Community=as.character(strategy_modelsDT_matched$Community) # turn community type into a character
-df_strategy_models= data.frame(cbind("target"=unlist(strategy_modelsDT_matched$target),
-                                     "seed"=unlist(strategy_modelsDT_matched$seed),
-                                     "mod_type"=unlist(strategy_modelsDT_matched$mod_type),
-                                     "Community"=unlist(strategy_modelsDT_matched$Community))) 
-df_strategy_models$Community=as.factor(df_strategy_models$Community) # turn community back into a factor
+## Make example graphs
+# MAIN
+mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi main model"))$coiname), 
+         demodata=conditions_timing,
+         coidat=social_coisDT,
+         mc.cores=numcores,
+         FUN=function(coi_name, demodata, coidat){
+           adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                      demodata,
+                      by='sub',
+                      allow.cartesian=T)
+           groupmodel=lme(time ~ condition+cor, method="ML", random = ~1|sub, data=adf)
+           #summary(groupmodel)
+           
+           # Predicted model
+           cor=seq((mean(adf$cor)-sd(adf$cor)),
+                   (mean(adf$cor)+sd(adf$cor)),
+                   length.out = 3)
+           
+           condition<-c("Alone","Peer","Exclusion")
+           
+           assign(paste0("coi_condition_predictions"),
+                  lapply(X=cor,
+                         FUN=function(COR){
+                           assign(paste0("frame",COR),
+                                  data.frame(condition=condition,
+                                             cor=COR))
+                           assign(paste0("frame",COR,"predvalue"),
+                                  predict(groupmodel, get(paste0("frame",COR)), level=0))
+                           assign(paste0("designmat",COR),
+                                  model.matrix(eval(eval(groupmodel$call$fixed)[-2]),
+                                               get(paste0("frame",COR))[-3]))
+                           assign(paste0("frame",COR,"SDvalue"),
+                                  sqrt(diag(get(paste0("designmat",COR)) 
+                                            %*% groupmodel$varFix 
+                                            %*% t(get(paste0("designmat",COR)))))) 
+                           assign("lowerCIvalue",
+                                  (get(paste0("frame",COR,"predvalue"))-
+                                     (1.96*get(paste0("frame",COR,"SDvalue")))))
+                           assign("upperCIvalue",
+                                  (get(paste0("frame",COR,"predvalue"))+
+                                     (1.96*get(paste0("frame",COR,"SDvalue")))))
+                           assign("time",
+                                  get(paste0("frame",COR,"predvalue")))
+                           cbind(get(paste0("frame",COR)),
+                                 time,
+                                 upperCIvalue,
+                                 lowerCIvalue,
+                                 condition)
+                         }))
+           
+           assign(paste0("coi_condition_graph"),
+                  ggplot(data=NULL,
+                         aes(x=condition,
+                             y=time,
+                             group=1)) +
+                    ylim(2,2.75)+
+                    labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample') +
+                    geom_line(data=(adf %>% filter(group=="community")),
+                              aes(group=sub),size=.2,alpha=0.1, colour="maroon1")+
+                    geom_point(data=(adf %>% filter(group=="community")),
+                               aes(group=sub),size=.7,alpha=0.1, colour="maroon1")+
+                    geom_line(data=(adf %>% filter(group=="foster")),
+                              aes(group=sub),size=.2,alpha=0.1, colour="maroon4")+
+                    geom_point(data=(adf %>% filter(group=="foster")),
+                               aes(group=sub),size=.7,alpha=0.1, colour="maroon4")+
+                    geom_line(data=as.data.frame(coi_condition_predictions[[1]]),
+                              aes(x=condition,
+                                  y=time,
+                                  group=1),
+                              size=1,
+                              colour="hotpink") +
+                    geom_ribbon(data=as.data.frame(coi_condition_predictions[[1]]),
+                                aes(ymin=lowerCIvalue,
+                                    ymax=upperCIvalue,
+                                    group=1),
+                                alpha=0.2, fill="hotpink") +
+                    geom_line(data=as.data.frame(coi_condition_predictions[[2]]),
+                              aes(x=condition,
+                                  y=time,
+                                  group=1),
+                              size=1,
+                              colour="hotpink3") +
+                    geom_ribbon(data=as.data.frame(coi_condition_predictions[[2]]),
+                                aes(ymin=lowerCIvalue,
+                                    ymax=upperCIvalue,
+                                    group=1),
+                                alpha=0.2, fill="hotpink3") +
+                    geom_line(data=as.data.frame(coi_condition_predictions[[3]]),
+                              aes(x=condition,
+                                  y=time,
+                                  group=1),
+                              size=1,
+                              colour="hotpink4") +
+                    geom_ribbon(data=as.data.frame(coi_condition_predictions[[3]]),
+                                aes(ymin=lowerCIvalue,
+                                    ymax=upperCIvalue,
+                                    group=1),
+                                alpha=0.2, fill="hotpink4") +
+                    theme_bw() +
+                    theme_minimal(base_size = 12, base_family = "Arial") +
+                    theme(axis.line.x = element_line(colour = "black", size=.5),
+                          axis.line.y = element_line(colour = "black", size=.5),
+                          panel.grid.major = element_blank(),
+                          panel.grid.minor = element_blank(),
+                          panel.border = element_blank(),
+                          panel.background = element_blank(),
+                          legend.position="none"))
+           get(paste0("coi_condition_graph"))
+           ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/",
+                                  "graphs/condition_coi_predicted_graphs/",
+                                  "coi_condition_graph_",coi_name,".png"),
+                  plot=coi_condition_graph, width=6, height=5, units='in', dpi=300)
+         })
 
-## Make a table 
+# INTERACTION
+mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi int model"))$coiname), 
+         demodata=conditions_timing,
+         coidat=social_coisDT,
+         mc.cores=numcores,
+         FUN=function(coi_name, demodata, coidat){
+           adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                      demodata,
+                      by='sub',
+                      allow.cartesian=T)
+           groupmodel=lme(time ~ condition*cor, method="ML", random = ~1|sub, data=adf)
+           #summary(groupmodel)
+           
+           # Predicted model
+           cor=seq((mean(adf$cor)-sd(adf$cor)),
+                   (mean(adf$cor)+sd(adf$cor)),
+                   length.out = 3)
+           
+           condition<-c("Alone","Peer","Exclusion")
+           
+           assign(paste0("coi_condition_predictions"),
+                  lapply(X=cor,
+                         FUN=function(COR){
+                           assign(paste0("frame",COR),
+                                  data.frame(condition=condition,
+                                             cor=COR))
+                           assign(paste0("frame",COR,"predvalue"),
+                                  predict(groupmodel, get(paste0("frame",COR)), level=0))
+                           assign(paste0("designmat",COR),
+                                  model.matrix(eval(eval(groupmodel$call$fixed)[-2]),
+                                               get(paste0("frame",COR))[-3]))
+                           assign(paste0("frame",COR,"SDvalue"),
+                                  sqrt(diag(get(paste0("designmat",COR)) 
+                                            %*% groupmodel$varFix 
+                                            %*% t(get(paste0("designmat",COR)))))) 
+                           assign("lowerCIvalue",
+                                  (get(paste0("frame",COR,"predvalue"))-
+                                     (1.96*get(paste0("frame",COR,"SDvalue")))))
+                           assign("upperCIvalue",
+                                  (get(paste0("frame",COR,"predvalue"))+
+                                     (1.96*get(paste0("frame",COR,"SDvalue")))))
+                           assign("time",
+                                  get(paste0("frame",COR,"predvalue")))
+                           cbind(get(paste0("frame",COR)),
+                                 time,
+                                 upperCIvalue,
+                                 lowerCIvalue,
+                                 condition)
+                         }))
+           
+           assign(paste0("coi_condition_graph"),
+                  ggplot(data=NULL,
+                         aes(x=condition,
+                             y=time,
+                             group=1)) +
+                    ylim(2,2.75)+
+                    labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample') +
+                    geom_line(data=(adf %>% filter(group=="community")),
+                              aes(group=sub),size=.2,alpha=0.1, colour="maroon1")+
+                    geom_point(data=(adf %>% filter(group=="community")),
+                               aes(group=sub),size=.7,alpha=0.1, colour="maroon1")+
+                    geom_line(data=(adf %>% filter(group=="foster")),
+                              aes(group=sub),size=.2,alpha=0.1, colour="maroon4")+
+                    geom_point(data=(adf %>% filter(group=="foster")),
+                               aes(group=sub),size=.7,alpha=0.1, colour="maroon4")+
+                    geom_line(data=as.data.frame(coi_condition_predictions[[1]]),
+                              aes(x=condition,
+                                  y=time,
+                                  group=1),
+                              size=1,
+                              colour="hotpink") +
+                    geom_ribbon(data=as.data.frame(coi_condition_predictions[[1]]),
+                                aes(ymin=lowerCIvalue,
+                                    ymax=upperCIvalue,
+                                    group=1),
+                                alpha=0.2, fill="hotpink") +
+                    geom_line(data=as.data.frame(coi_condition_predictions[[2]]),
+                              aes(x=condition,
+                                  y=time,
+                                  group=1),
+                              size=1,
+                              colour="hotpink3") +
+                    geom_ribbon(data=as.data.frame(coi_condition_predictions[[2]]),
+                                aes(ymin=lowerCIvalue,
+                                    ymax=upperCIvalue,
+                                    group=1),
+                                alpha=0.2, fill="hotpink3") +
+                    geom_line(data=as.data.frame(coi_condition_predictions[[3]]),
+                              aes(x=condition,
+                                  y=time,
+                                  group=1),
+                              size=1,
+                              colour="hotpink4") +
+                    geom_ribbon(data=as.data.frame(coi_condition_predictions[[3]]),
+                                aes(ymin=lowerCIvalue,
+                                    ymax=upperCIvalue,
+                                    group=1),
+                                alpha=0.2, fill="hotpink4") +
+                    theme_bw() +
+                    theme_minimal(base_size = 12, base_family = "Arial") +
+                    theme(axis.line.x = element_line(colour = "black", size=.5),
+                          axis.line.y = element_line(colour = "black", size=.5),
+                          panel.grid.major = element_blank(),
+                          panel.grid.minor = element_blank(),
+                          panel.border = element_blank(),
+                          panel.background = element_blank(),
+                          legend.position="none"))
+           get(paste0("coi_condition_graph"))
+           ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/",
+                                  "graphs/condition_coi_predicted_graphs/",
+                                  "coi_condition_graph_",coi_name,".png"),
+                  plot=coi_condition_graph, width=6, height=5, units='in', dpi=300)
+         })
 
-# calculate percentages
-tbl=group_by(df_strategy_models, seed, mod_type, Community) %>% tally %>% 
-  spread(Community, n, fill = 0)
-kable(tbl, format="pandoc")
-
-tbl=group_by(df_strategy_models, seed, mod_type) %>% tally %>% 
-  spread(seed, n, fill = 0)
-kable(tbl, format="pandoc")
-
-# Plot
-df_strategy_models=filter(df_strategy_models, !is.na(mod_type)) # remove those best explained by the null model
 
 
 ```
