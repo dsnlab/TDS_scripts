@@ -11,7 +11,7 @@ subDir <- '/projects/dsnlab/tds/TDS_scripts/fMRI/fx/shell/schedule_spm_jobs/cyb/
 sub <- read.csv(paste0(subDir,'/subject_list_fx.txt'), header=F)
 colnames(sub)[1] <- "SID"
 
-demoDir <- '~/Dropbox (PfeiBer Lab)/Cheng'
+demoDir <- '/Volumes/TDS/behavior/CyberBall/tds2_demographics'
 demo <- read.csv(paste0(demoDir,'/Cyb_demo.csv'))
 ```
 
@@ -36,4 +36,4 @@ summary(demo$Gender) #0:33 1:36
 
 #Write statistics
 ```{r}
-write.csv(demo, paste0(demoDir,'/Cyb_centeredAge.csv', row.names=F)
+#write.csv(demo, paste0(demoDir,'/Cyb_centeredAge.csv', row.names=F)

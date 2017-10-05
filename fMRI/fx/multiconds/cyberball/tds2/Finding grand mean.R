@@ -52,14 +52,14 @@ summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
 setwd(summary_files_folder)
 
 #list the files 
-listFiles<-list.files(recursive=T, pattern='summary_events_cyb.*_1.csv$') # Can be 1 or 2 to examine inc or exc runs 
+listFiles<-list.files(recursive=T, pattern='summary_events_cyb.*_2.csv$') # Can be 1 or 2 to examine inc or exc runs 
 ```
 
 ```{r, warning=FALSE, echo=FALSE}
 # MERGE ALL SUMMARY FILES
 df<-do.call("rbind", lapply(listFiles, read.csv, header = TRUE))
 
-df_pmod <- subset(df,df$names==4) #change to 3 to identify pmods for computer throws (i.e. exclusion) or 4 to identify pmods for inclusion.
+df_pmod <- subset(df,df$names==3) #change to 3 to identify pmods for computer throws (i.e. exclusion) or 4 to identify pmods for inclusion.
 
 df_pmod$index = NA
 

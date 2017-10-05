@@ -35,44 +35,43 @@ if(!require(ggplot2)){
 ```{r, warning=FALSE, echo=FALSE, eval=FALSE} 
 rm(list=ls())
 
-# list of subject IDs (65 in cyb analysis)
-setwd("/Volumes/research/tds/behavioral/raw/cyberball")
-subjectList=as.data.frame(read.csv("SubjectList_full.csv", header=FALSE))
-colnames(subjectList)=c("SID","age")
+# list of subject IDs (69 in cyb analysis)
+subDir <- '/projects/dsnlab/tds/TDS_scripts/fMRI/fx/shell/schedule_spm_jobs/cyb/tds2'
+subjectList <- read.csv(paste0(subDir,'/subject_list_fx.txt'), header=F)
+colnames(subjectList)[1] <- "SID"
 ```
 
 # Find relevant NTS scores
 ```{r}
 # scored need threat scale
-setwd("/Volumes/research/tds/behavioral/processed/qualtrics/copies")
+setwd("/Volumes/TDS/behavior/Qualtrics/scoring_script_output")
 df=as.data.frame(read.csv("TDS-2-auto_scored_scales_wide.csv", header=TRUE)) # input all scored data
 df.nts=df[,grepl("NTS", names(df))] # subset by NTS relevant
 df.nts$SID=df$SID
-df.nts=merge(df.nts, subjectList) #subset by 65 subjects in cyb analysis
+df.nts=merge(df.nts, subjectList) #subset by 69 subjects in cyb analysis
 
 # group average
 mean_ntsBelongingness=mean(df.nts$NTS_belongingness_score, na.rm=TRUE)/df.nts$NTS_belongingness_n_items[1]
-
 mean_ntsControl=mean(df.nts$NTS_control_score, na.rm=TRUE)/df.nts$NTS_control_n_items[1]
 mean_ntsMeaningfulExist=mean(df.nts$NTS_meaningful_existence_score, na.rm=TRUE)/df.nts$NTS_meaningful_existence_n_items[1]
 mean_ntsSelfEsteem=mean(df.nts$NTS_self.esteem_score, na.rm=TRUE)/df.nts$NTS_self.esteem_n_items[1]
-mean_ntsTotal=mean(df.nts$NTS_total_score_score, na.rm=TRUE)/df.nts$NTS_total_score_n_items[1]
-sd_ntsTotal=sd(df.nts$NTS_total_score_score,na.rm=TRUE)/df.nts$NTS_total_score_n_items[1]
+mean_ntsTotal=mean(df.nts$NTS_total_score_score, na.rm=TRUE)
+sd_ntsTotal=sd(df.nts$NTS_total_score_score,na.rm=TRUE)
 
 # individual averages
 df.nts.ind=as.data.frame(df.nts$SID)
-df.nts.ind$total=df.nts$NTS_mean_score_score
+df.nts.ind$total=df.nts$NTS_total_score_score
 colnames(df.nts.ind)=c("SID","NTS")
 
-setwd("/Volumes/research/tds/behavioral/processed/cyberball")
-write.csv(df.nts.ind, "NTS.csv")
+#setwd("/Volumes/research/tds/behavioral/processed/cyberball")
+#write.csv(df.nts.ind, "NTS.csv")
 
 ```
 
 # Find relevant TES scores
 ```{r}
-setwd("/Users/theresacheng/Dropbox (PfeiBer Lab)/TDS/TDS-II/data/Qualtrics/Scored_Qualtrics/TDS2_Master")
-df.tes=as.data.frame(read.csv("TDS2_Master_Scores.csv", header=TRUE)) 
+setwd("/Users/theresacheng/Dropbox (PfeiBer Lab)/TDS/Archive/TDS2_Scored_Qualtrics/TDS2_Master")
+df.tes=as.data.frame(read.csv("TDS2_Master_Scores.csv", header=TRUE))
 
 df.tes=merge(subjectList, df.tes)
 df.tes$Believed=mapvalues(df.tes$Believed, c("MISSING TES"), c(NA))
