@@ -3,12 +3,12 @@
 
 %cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
 %hpc_F_2x2
-%cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
-%hpc_F_2x2_age
+cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
+hpc_F_2x2_age
 cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
 hpc_F_2x2_ageXcontext
-%cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
-%hpc_F_2x2_ageXthrow
+cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
+hpc_F_2x2_ageXthrow
 cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
 hpc_F_2x2_agequad
 %cd('/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/cyb') % directory with rx models
