@@ -38,46 +38,55 @@ library(ggplot2)
 rm(list=ls())
 
 #### PARAMETERS ####
-subjectList= c("113","114","115","116","117","119","121","125","126","127","128","129","130","131","132","133","134","135","136","137","139","140","141","142","144","145","146","150","151","152","155","156","157","158","159","160","161","162","163","164","165","167","168","169","170","171","172","173","174","175","177","179","181","182","183","184","185","186","187","188","189","190","192","193","196")
+subjectList= c("109", "113", "114", "115", "116", "117", "119", "120", "121", "122", "124", "125", "126", "127", "128", "129", "130", "131", "132", "133", "134", "135", "136", "137", "139", "140", "141", "142", "144", "145", "146", "150", "151", "152", "155", "156", "157", "159", "160", "162", "163", "164", "165", "167", "168", "169", "170", "171", "172", "173", "174", "175", "177", "179", "181", "182", "183", "184", "185", "186", "187", "188", "190", "192", "193", "194", "195", "196", "197")
 
 # ROIs in the order they appear in the .csv file 
-roiList=c("-8 6 38")
+roiList=c("ROI1","ROI2","ROI3","ROI4","ROI5","ROI6","ROI7","ROI8")
 
 # Set pmod_lowerlim:pmod_upperlim
 pmodRange= -4:7
 
 # If you tested more than 1 pmod, then all of the pmod parameters of one type should be listed, followed by all of the pmod parameters of another type. Change n to represent which pmod you'd like to change. e.g., in Cyberball, 1: inclusion pmod; 2: exclusion pmod.
-totalPmods=2
 pmodNames=c("Increasing_Inclusion", "Increasing_Exclusion")
 
 #### LOAD DATA ####
 # Set working directory to where marsbar ROI summary time course .csv files are kept
-setwd("/Volumes/research/tds/fMRI/analysis/roi/cyb/cyb_events/noage_covariate/catch_meanCpmod_linear_w190/F_pmod/meta")
+setwd("/Volumes/TDS/nonbids_data/derivatives/fMRI/parcellations/cyb/tds2_N69")
 
 # Load file - NEED TO CREATE THE SUMMARY TIME COURSE FILE!
-df.raw<-read.csv("summary_meta_AdolNonClin.csv", header=FALSE)
+df_raw<-read.csv("summary_F_conj_pmod_flexi_craddock.csv", header=FALSE)
 ```
 
 # Organize data
 ```{r}
-# Label the rows and columns
-colnames(df.raw)=roiList # label each column with the ROI
-df.raw$SID=subjectList # add the list of SIDs
-df.raw=df.raw[,c("SID", roiList)] # rearrange with SIDs on the left
 
-# Calculate parameter estimate averages per ROI per pmod
-df.avg=data.frame(matrix(rep(NA, length(roiList)*totalPmods), nrow=totalPmods), row.names=pmodNames)
-colnames(df.avg)=c(roiList)
+# Label the rows and columns
+colnames(df_raw)=roiList
+df_raw=gather(df_raw, key=roiList, value=value)
+df_raw$SID=rep(subjectList, each=length(pmodNames)) # add the list of SIDs
+df_raw$pmod=rep(pmodNames, length(subjectList)) # for a flexi-factorial model, use length(subjectList); for a standard model, use each=length(subjectList)
+#df_raw$roi= rep(roiList, each=length(roiList))
+df_raw=df_raw[,c("SID", "pmod", "roiList", "value")] # rearrange with SIDs on the left
+
+# Calculate parameter estimate mean and sd per ROI per pmod
+df_avg=df_raw %>% group_by(pmod, roiList) %>% dplyr::summarise(mean=mean(value), sem=sd(value)/sqrt(length(subjectList))) 
+
+```
+
+```{r t-tests}
 
 for (i in 1:length(roiList)){
-  for (j in 1:totalPmods){
-    df.avg[j,i]=mean(df.raw[(j-1)+1:length(subjectList)*j,i+1], na.rm=TRUE)
-  }
+  II = filter(df_raw, pmod=="Increasing_Inclusion" & roiList== paste0("ROI",i))$value
+  IE= filter(df_raw, pmod=="Increasing_Exclusion" & roiList== paste0("ROI",i))$value
+  assign(paste0(roiList[i], '_II_ttest'), t.test(II, alternative="two.sided"))
+  assign(paste0(roiList[i], '_IE_ttest'), t.test(IE, alternative="two.sided"))
+  assign(paste0(roiList[i], '_IEvII_ttest'), t.test(IE, II, alternative="two.sided", paired=TRUE))
 }
+
 ```
 
 # Graph pmods
-```{r}
+```{r echo=FALSE}
 
 # Set up a null dataframe called df.graph for summarizing plot parameters
 df.graph=as.data.frame(matrix(rep(NA, length(pmodRange)*(totalPmods+1)), nrow=length(pmodRange), ncol=(totalPmods+1)))
@@ -87,7 +96,7 @@ df.graph$pmodRange=pmodRange
 # Populate df.graph and graph each pmod for each ROI
 for (i in 1:length(roiList)){
     for (j in 1:totalPmods) {
-    df.graph[,j+1]=df.avg[j,i]*pmodRange
+    df.graph[,j+1]=df_avg[j,i]*pmodRange
     print(ggplot(df.graph, aes_string(x=pmodRange, y=pmodNames[j])) +
       geom_point(shape=1) +
       geom_smooth() +

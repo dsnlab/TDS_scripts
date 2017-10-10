@@ -1,1 +1,9 @@
-parcellation,hemisphere,region168,bilateral,dACC_BA2480,bilateral,dACC_BA2462,left,rostralACC_BA32172,right,rostralACC_BA32222,left,perigenualACC_BA3226,right,perigenualACC_BA3298,bilateral,subACCmedOFC_BA11145,bilateral,subACC_BA25
+parcellation,hemisphere,region,ROI number
+168,bilateral,dACC_BA24,1
+80,bilateral,dACC_BA24,2
+62,left,rostralACC_BA32,3
+172,right,rostralACC_BA32,4
+222,left,perigenualACC_BA32,5
+26,right,perigenualACC_BA32,6
+98,bilateral,subACCmedOFC_BA11,7
+145,bilateral,subACC_BA25,8
