@@ -1,10 +1,31 @@
 #!/bin/bash
-3dMVM -prefix test -jobs 8 \
-	-wsVars  "Outcome*Context" \
+#--------------------------------------------------------------
+#
+#SBATCH --job-name=TDS_allconds_3dMVM
+#SBATCH --output=output/allcons_3dMVM.log
+#SBATCH --error=output/aallcons_3dMVM_error.log
+#SBATCH --time=1-00:00:00
+#SBATCH --cpus-per-task=28
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=4000
+#SBATCH --partition=short,fat
+
+module load prl afni
+
+cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME 
+	3dLME -prefix OutcomesXContextTDS2 \
+	-jobs 28 \
+	-model  "Outcome*Context" \
+	-ranEff "~1" \
 	-SS_type 3 \
-	-num_glt 1	\
-	-gltLabel 1 'outcome' -gltCode  1 'Outcome : 1*Good -1*Bad' \
-	-mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr.nii \
+	-resid	all2_residuals	\
+	-num_glf 1 \
+	-glfLabel 1 'tds2_outByContext' -glfCode 1 'Context : 1*AL -1*PR & 1*AL -1*SE Outcome : 1*Good -1*Bad' \
+	-num_glt 3 \
+	-gltLabel 1 'OG-OB_AL-SE' -gltCode  1 'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
+	-gltLabel 2 'OG-OB_AL-PR' -gltCode  2 'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
+	-gltLabel 3 'OG-OB_PR-SE' -gltCode  3 'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
+	-mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj	Outcome	Context Group InputFile \
 	109	Good	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/109/con_0005.nii \
@@ -85,6 +106,9 @@
 	126	Bad	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/126/con_0008.nii \
 	126	Bad	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/126/con_0018.nii \
 	126	Bad	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/126/con_0028.nii \
+	127	Good	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/127/con_0005.nii \
+	127	Good	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/127/con_0016.nii \
+	127	Bad	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/127/con_0019.nii \
 	128	Good	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/128/con_0005.nii \
 	128	Good	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/128/con_0015.nii \
 	128	Good	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/128/con_0025.nii \
@@ -126,13 +150,27 @@
 	134	Good	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/134/con_0025.nii \
 	134	Bad	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/134/con_0008.nii \
 	134	Bad	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/134/con_0018.nii \
-	134	Bad	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/134/con_0028.nii \
+	134	Bad	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/134/con_0028.nii \	
+	135	Good	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/135/con_0012.nii \
+	135	Good	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/135/con_0022.nii \
+	135	Bad	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/135/con_0005.nii \
+	135	Bad	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/135/con_0015.nii \
+	135	Bad	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/135/con_0025.nii \
 	136	Good	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/136/con_0005.nii \
 	136	Good	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/136/con_0015.nii \
 	136	Good	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/136/con_0025.nii \
 	136	Bad	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/136/con_0008.nii \
 	136	Bad	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/136/con_0018.nii \
 	136	Bad	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/136/con_0028.nii \
+	137	Good	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/137/con_0012.nii \
+	137	Good	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/137/con_0022.nii \
+	137	Bad	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/137/con_0005.nii \
+	137	Bad	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/137/con_0015.nii \
+	137	Bad	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/137/con_0025.nii \
+	139	Good	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/139/con_0005.nii \
+	139	Good	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/139/con_0015.nii \
+	139	Bad	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/139/con_0008.nii \
+	139	Bad	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/139/con_0018.nii \
 	140	Good	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/140/con_0005.nii \
 	140	Good	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/140/con_0015.nii \
 	140	Good	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/140/con_0025.nii \
