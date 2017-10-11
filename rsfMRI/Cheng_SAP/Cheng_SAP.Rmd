@@ -173,8 +173,7 @@ if(!file.exists("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS"
                                Numcensored=motiondata$Numcensored,
                                Framesremaining=motiondata$Framesremaining) %>% as.data.table
 
-  # subjDF <- subjDF %>%
-   #  filter(grepl("aseg", coi)) #this filter step selects connections to amygdala, hippocampus nly; note that `& grepl("lh.L_a24", coi) & grepl("rh.R_a24", coi)))' doesn't work
+  subjDF <- subjDF %>% filter(grepl("aseg", coi)) #this filter step selects connections to amygdala, hippocampus nly; note that `& grepl("lh.L_a24", coi) & grepl("rh.R_a24", coi)))' doesn't work
 } # end of function
  
  # aseg_17: L hippocampus
