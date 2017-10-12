@@ -13,9 +13,9 @@
 module load prl afni
 
 cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes 
-	3dLME -prefix DecXOutcomesXContextTDS2 \
+	3dLME -prefix DecXOutcomesXContextTDS2T \
 	-jobs 28 \
-	-model  "Dec*Outcome*ContextT" \
+	-model  "Dec*Outcome*Context" \
 	-ranEff "~1" \
 	-SS_type 3 \
 	-resid	all2_residuals	\
