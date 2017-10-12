@@ -19,9 +19,8 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes
 	-ranEff "~1" \
 	-SS_type 3 \
 	-resid	all2_residuals	\
-	#-num_glf 1 \
-	#-glfLabel 1 'tds2_GoByOutcomeByContext' 
-	#-glfCode 1 'Context : 1*AL -1*PR & 1*AL -1*SE Outcome : 1*Good -1*Bad Go : 1*Go - 1*Stop' \
+	-num_glf 1 \
+	-glfLabel 1 'tds2_GoByOutcomeByContext' -glfCode 1 'Context : 1*AL -1*PR & 1*AL -1*SE Outcome : 1*Good -1*Bad Go : 1*Go - 1*Stop' \
 	-num_glt 9 \
 	-gltLabel 1 'OGG-OGS_AL-SE' -gltCode  1 'Go : 1*Go - 1*Stop Outcome : 1*Good Context : 1*AL -1*SE' \
 	-gltLabel 2 'OGG-OGS_AL-PR' -gltCode  2 'Go : 1*Go - 1*Stop Outcome : 1*Good Context : 1*AL -1*PR' \
@@ -404,7 +403,7 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes
 	150	Stop Good	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/150/con_0027.nii \
 	150	Stop Bad	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/150/con_0010.nii \
 	150	Stop Bad	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/150/con_0020.nii \
-	150	Stop Bad	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/150/con_0030.nii 
+	150	Stop Bad	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/150/con_0030.nii \
 	151	Go Good	AL	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/151/con_0006.nii \
 	151	Go Good	PR	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/151/con_0016.nii \
 	151	Go Good	SE	control	/projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/151/con_0026.nii \
