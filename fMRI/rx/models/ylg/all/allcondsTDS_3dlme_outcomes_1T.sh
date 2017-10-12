@@ -12,7 +12,7 @@
 
 module load prl afni
 
-cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes 
+cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes/OutcomesT 
 	3dLME -prefix DecXOutcomesXContextTDS2T \
 	-jobs 28 \
 	-model  "Dec*Outcome*Context" \
