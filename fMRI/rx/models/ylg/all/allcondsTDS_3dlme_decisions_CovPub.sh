@@ -15,13 +15,13 @@ module load prl afni
 cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/DecisionsCovPds
 	3dLME -prefix DecisionXContextXPdsTDS2 \
 	-jobs 28 \
-	-model  "Decision*Context*age_c+Decision*Context*age_c2" \
+	-model  "Decision*Context*pds" \
 	-ranEff "~1+pds" \
 	-SS_type 3 \
 	-qVars "pds" \
 	-qVarCenters "0,0" \
 	-resid	all2_residuals	\
-	-num_glt 9 \
+	-num_glt 6 \
 	-gltLabel 1 'DG-DS_AL-SE' -gltCode  1 'Decision : 1*Go -1*Stop Context : 1*AL -1*SE' \
 	-gltLabel 2 'DG-DS_AL-PR' -gltCode  2 'Decision : 1*Go -1*Stop Context : 1*AL -1*PR' \
 	-gltLabel 3 'DG-DS_PR-SE' -gltCode  3 'Decision : 1*Go -1*Stop Context : 1*PR -1*SE' \
