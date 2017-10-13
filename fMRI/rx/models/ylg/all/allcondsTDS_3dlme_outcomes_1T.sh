@@ -20,7 +20,7 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes/OutcomesT
 	-SS_type 3 \
 	-resid	all2_residuals	\
 	-num_glt 1 \
-	-gltLabel 1 'OG-OS_AL-SE' -gltCode  1 'Outcome : 1*Good Context : 1*AL -1*SE' \
+	-gltLabel 1 'OG-OS_AL-SE' -gltCode  1 'Dec : 1*Go Context : 1*AL -1*SE' \
 	-mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Dec Outcome Context Group InputFile \
