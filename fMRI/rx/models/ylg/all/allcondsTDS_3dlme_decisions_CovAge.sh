@@ -194,12 +194,12 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/DecisionsC
 	141	Stop	AL	control	  0.01     00E-04  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/141/con_0003.nii \
 	141	Stop	PR	control	  0.01     00E-04  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/141/con_0013.nii \
 	141	Stop	SE	control	  0.01     00E-04  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/141/con_0023.nii \
-	142	Go	AL	control		      1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0002.nii \
-	142	Go	PR	control		      1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0012.nii \
-	142	Go	SE	control		      1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0022.nii \
-	142	Stop	AL	control	      1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0003.nii \
-	142	Stop	PR	control	      1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0013.nii \
-	142	Stop	SE	control	      1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0023.nii \
+	142	Go	AL	control		    1  1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0002.nii \
+	142	Go	PR	control		    1  1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0012.nii \
+	142	Go	SE	control		    1  1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0022.nii \
+	142	Stop	AL	control	    1  1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0003.nii \
+	142	Stop	PR	control	    1  1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0013.nii \
+	142	Stop	SE	control	    1  1  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/142/con_0023.nii \
 	144	Go	AL	control		  3.52    2.3904  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/144/con_0002.nii \
 	144	Go	PR	control		  3.52    2.3904  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/144/con_0012.nii \
 	144	Go	SE	control		  3.52    2.3904  /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/144/con_0022.nii \
