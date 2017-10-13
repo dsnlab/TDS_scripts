@@ -21,16 +21,10 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/DecisionsC
 	-qVars "age_c,age_c2" \
 	-qVarCenters "0,0" \
 	-resid	all2_residuals	\
-	-num_glt 9 \
+	-num_glt 3 \
 	-gltLabel 1 'DG-DS_AL-SE' -gltCode  1 'Decision : 1*Go -1*Stop Context : 1*AL -1*SE' \
 	-gltLabel 2 'DG-DS_AL-PR' -gltCode  2 'Decision : 1*Go -1*Stop Context : 1*AL -1*PR' \
 	-gltLabel 3 'DG-DS_PR-SE' -gltCode  3 'Decision : 1*Go -1*Stop Context : 1*PR -1*SE' \
-	-gltLabel 4 'age.DG-DS_AL-SE' -gltCode  4 'Decision : 1*Go -1*Stop Context : 1*AL -1*SE age_c' \
-	-gltLabel 5 'age.DG-DS_AL-PR' -gltCode  5 'Decision : 1*Go -1*Stop Context : 1*AL -1*PR age_c' \
-	-gltLabel 6 'age.DG-DS_PR-SE' -gltCode  6 'Decision : 1*Go -1*Stop Context : 1*PR -1*SE age_c' \
-	-gltLabel 7 'age2.DG-DS_AL-SE' -gltCode  7 'Decision : 1*Go -1*Stop Context : 1*AL -1*SE age_c2' \
-	-gltLabel 8 'age2.DG-DS_AL-PR' -gltCode  8 'Decision : 1*Go -1*Stop Context : 1*AL -1*PR age_c2' \
-	-gltLabel 9 'age2.DG-DS_PR-SE' -gltCode  9 'Decision : 1*Go -1*Stop Context : 1*PR -1*SE age_c2' \
 	-mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj	Decision	Context Group age_c	age_c2 InputFile \
