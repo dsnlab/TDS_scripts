@@ -329,12 +329,6 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/DecisionsC
 	173	Stop	AL	control	  3.4    /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/173/con_0003.nii \
 	173	Stop	PR	control	  3.4    /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/173/con_0013.nii \
 	173	Stop	SE	control	  3.4    /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/173/con_0023.nii \
-	174	Go	AL	control		  NA   /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/174/con_0002.nii \
-	174	Go	PR	control		  NA   /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/174/con_0012.nii \
-	174	Go	SE	control		  NA   /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/174/con_0022.nii \
-	174	Stop	AL	control	  NA   /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/174/con_0003.nii \
-	174	Stop	PR	control	  NA   /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/174/con_0013.nii \
-	174	Stop	SE	control	  NA   /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/174/con_0023.nii \
 	175	Go	AL	control		  1.6    /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/175/con_0002.nii \
 	175	Go	PR	control		  1.6    /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/175/con_0012.nii \
 	175	Go	SE	control		  1.6    /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/175/con_0022.nii \
