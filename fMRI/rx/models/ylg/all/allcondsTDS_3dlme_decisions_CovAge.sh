@@ -12,8 +12,8 @@
 
 module load prl afni
 
-cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions
-	3dLME -prefix DecisionXContextTDS2 \
+cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/DecisionsCovAge
+	3dLME -prefix DecisionXContextXAgeTDS2 \
 	-jobs 28 \
 	-model  "Decision*Context*age_c+Decision*Context*age_c2" \
 	-ranEff "~1+age_c" \
