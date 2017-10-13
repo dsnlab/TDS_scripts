@@ -19,21 +19,25 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes
 	-ranEff "~1" \
 	-SS_type 3 \
 	-resid	all2_residuals	\
-	-num_glf 1 \
-	-glfLabel 1 'tds2_DecByOutcomeByContext' -glfCode 1 'Context : 1*AL -1*PR & 1*AL -1*SE Outcome : 1*Good -1*Bad Dec : 1*Go - 1*Stop' \
-	-num_glt 12 \
-	-gltLabel 1 'OGG-OGS_AL-SE' -gltCode  1 'Dec : 1*Go - 1*Stop Outcome : 1*Good Context : 1*AL -1*SE' \
-	-gltLabel 2 'OGG-OGS_AL-PR' -gltCode  2 'Dec : 1*Go - 1*Stop Outcome : 1*Good Context : 1*AL -1*PR' \
-	-gltLabel 3 'OGG-OGS_PR-SE' -gltCode  3 'Dec : 1*Go - 1*Stop Outcome : 1*Good Context : 1*PR -1*SE' \
-	-gltLabel 4 'OBG-OBS_AL-SE' -gltCode  4 'Dec : 1*Go - 1*Stop Outcome : 1*Bad Context : 1*AL -1*SE' \
-	-gltLabel 5 'OBG-OBS_AL-PR' -gltCode  5 'Dec : 1*Go - 1*Stop Outcome : 1*Bad Context : 1*AL -1*PR' \
-	-gltLabel 6 'OBG-OBS_PR-SE' -gltCode  6 'Dec : 1*Go - 1*Stop Outcome : 1*Bad Context : 1*PR -1*SE' \
-	-gltLabel 7 'OGG-OBG_AL-SE' -gltCode  7 'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
-	-gltLabel 8 'OGG-OBG_AL-PR' -gltCode  8 'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
-	-gltLabel 9 'OGG-OBG_PR-SE' -gltCode  9 'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
-	-gltLabel 10 'OGS-OBS_AL-SE' -gltCode  10 'Dec : 1*Stop Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
-	-gltLabel 11 'OGS-OBS_AL-PR' -gltCode  11 'Dec : 1*Stop Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
-	-gltLabel 12 'OGS-OBS_PR-SE' -gltCode  12 'Dec : 1*Stop Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
+	-num_glf 18 \
+	-glfLabel 1 'OG-OB_G_AL-SE' -glfCode 1  'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
+	-glfLabel 2 'OG-OB_G_AL-PR' -glfCode 2  'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
+	-glfLabel 3 'OG-OB_G_PR-SE' -glfCode 3  'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
+	-glfLabel 4 'OG-OB_S_AL-SE' -glfCode 4  'Dec : 1*Stop Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
+	-glfLabel 5 'OG-OB_S_AL-PR' -glfCode 5  'Dec : 1*Stop Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
+	-glfLabel 6 'OG-OB_S_PR-SE' -glfCode 6  'Dec : 1*Stop Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
+	-glfLabel 7 'G_S_OG_AL-SE'  -glfCode 7  'Dec : 1*Go -1*Stop Outcome : 1*Good Context : 1*AL -1*SE' \
+	-glfLabel 8 'G_S_OG_AL-PR'  -glfCode 8  'Dec : 1*Go -1*Stop Outcome : 1*Good Context : 1*AL -1*PR' \
+	-glfLabel 9 'G_S_OG_PR-SE'  -glfCode 9  'Dec : 1*Go -1*Stop Outcome : 1*Good Context : 1*PR -1*SE' \
+	-glfLabel 10 'S_G_OG_AL-SE' -glfCode 10 'Dec : 1*Stop -1*Go Outcome : 1*Good Context : 1*AL -1*SE' \
+	-glfLabel 11 'S_G_OG_AL-PR' -glfCode 11 'Dec : 1*Stop -1*Go Outcome : 1*Good Context : 1*AL -1*PR' \
+	-glfLabel 12 'S_G_OG_PR-SE' -glfCode 12 'Dec : 1*Stop -1*Go Outcome : 1*Good Context : 1*PR -1*SE' \
+	-glfLabel 13 'G_S_OB_AL-SE' -glfCode 13 'Dec : 1*Go -1*Stop Outcome : 1*Bad Context : 1*AL -1*SE' \
+	-glfLabel 14 'G_S_OB_AL-PR' -glfCode 14 'Dec : 1*Go -1*Stop Outcome : 1*Bad Context : 1*AL -1*PR' \
+	-glfLabel 15 'G_S_OB_PR-SE' -glfCode 15 'Dec : 1*Go -1*Stop Outcome : 1*Bad Context : 1*PR -1*SE' \
+	-glfLabel 16 'S_G_OB_AL-SE' -glfCode 16 'Dec : 1*Stop -1*Go Outcome : 1*Bad Context : 1*AL -1*SE' \
+	-glfLabel 17 'S_G_OB_AL-PR' -glfCode 17 'Dec : 1*Stop -1*Go Outcome : 1*Bad Context : 1*AL -1*PR' \
+	-glfLabel 18 'S_G_OB_PR-SE' -glfCode 18 'Dec : 1*Stop -1*Go Outcome : 1*Bad Context : 1*PR -1*SE' \
 	-mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Dec Outcome Context Group InputFile \
