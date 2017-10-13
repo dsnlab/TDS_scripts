@@ -12,7 +12,7 @@
 
 module load prl afni
 
-cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decision 
+cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions
 	3dLME -prefix DecisionXContextTDS2 \
 	-jobs 28 \
 	-model  "Decision*Context" \
