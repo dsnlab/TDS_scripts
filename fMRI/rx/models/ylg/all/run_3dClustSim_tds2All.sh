@@ -6,7 +6,7 @@
 # Specify variables
 # ------------------------------------------------------------------------------------------
 # thresholding code directory
-outputDir=/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output
+#outputDir=/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output
 
 # RX directories (where model masks can be found)
 OutcomesTDSall=/projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes
@@ -15,7 +15,9 @@ mask=/projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_averag
 
 # Run 3dClustSim
 # ------------------------------------------------------------------------------------------
-3dClustSim -mask $mask $OutcomesTDSall/DecXOutcomesXContextTDS2+tlrc.BRIK -acf  0.525663  5.05339  13.3831 > $outputDir/3dClustStim_results_AFNI_OutcomesTDS2all.txt
+cd $OutcomesTDSall
+3dClustSim -mask $mask DecXOutcomesXContextTDS2+tlrc.BRIK -acf  0.525663  5.05339  13.3831 > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/3dClustStim_results_AFNI_OutcomesTDS2all.txt
 
-3dClustSim -mask $mask $DecisionsTDSall/DecisionXContextTDS2+tlrc.BRIK -acf  0.220568  4.04762  8.00892 > $outputDir/3dClustStim_results_AFNI_DecisionsTDS2all.txt
+cd $DecisionsTDSall
+3dClustSim -mask $mask DecisionXContextTDS2+tlrc.BRIK -acf  0.220568  4.04762  8.00892 > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/3dClustStim_results_AFNI_DecisionsTDS2all.txt
 
