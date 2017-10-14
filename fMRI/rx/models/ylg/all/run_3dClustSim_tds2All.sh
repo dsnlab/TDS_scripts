@@ -16,8 +16,8 @@ mask=/projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_averag
 # Run 3dClustSim
 # ------------------------------------------------------------------------------------------
 cd $OutcomesTDSall
-3dClustSim -mask $mask DecXOutcomesXContextTDS2+tlrc.BRIK -acf  0.525663  5.05339  13.3831 > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/3dClustStim_results_AFNI_OutcomesTDS2all.txt
+3dClustSim -mask $mask -acf  0.525663  5.05339  13.3831 > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/3dClustStim_results_AFNI_OutcomesTDS2all.txt
 
 cd $DecisionsTDSall
-3dClustSim -mask $mask DecisionXContextTDS2+tlrc.BRIK -acf  0.220568  4.04762  8.00892 > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/3dClustStim_results_AFNI_DecisionsTDS2all.txt
+3dClustSim -mask $mask -acf  0.220568  4.04762  8.00892 > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/3dClustStim_results_AFNI_DecisionsTDS2all.txt
 
