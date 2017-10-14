@@ -23,4 +23,4 @@ cd $OutcomesTDSall
 3dFWHMx -acf NULL -mask $mask DecXOutcomesXContextTDS2+tlrc.BRIK all2_residuals+tlrc.BRIK > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/DecXOutcomesXContextTDS2_acf.txt
 
 cd $DecisionsTDSall
-3dFWHMx -acf NULL -mask $mask DecXOutcomesXContextTDS2+tlrc.BRIK all2_residuals+tlrc.BRIK > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/DecXContextTDS2_acf.txt
+3dFWHMx -acf NULL -mask $mask DecisionXContextTDS2+tlrc.BRIK all2_residuals+tlrc.BRIK > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/DecisionXContextTDS2_acf.txt
