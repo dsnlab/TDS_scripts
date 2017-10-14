@@ -19,6 +19,7 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/DecisionsC
 	-ranEff "~1+YRBS" \
 	-SS_type 3 \
 	-qVars "YRBS" \
+	-qVarCenters "0" \
 	-resid	all2_residuals	\
 	-num_glt 3 \
 	-gltLabel 1 'DG-DS_AL-SE' -gltCode  1 'Decision : 1*Go -1*Stop Context : 1*AL -1*SE' \
@@ -444,7 +445,7 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/DecisionsC
 	197	Go	SE	control		  0.090909091        /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/197/con_0022.nii \
 	197	Stop	AL	control	  0.090909091        /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/197/con_0003.nii \
 	197	Stop	PR	control	  0.090909091        /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/197/con_0013.nii \
-	197	Stop	SE	control	  0.090909091.         /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/197/con_0023.nii \
+	197	Stop	SE	control	  0.090909091         /projects/dsnlab/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/197/con_0023.nii \
 	
 	
 	
