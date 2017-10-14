@@ -24,9 +24,6 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/DecisionsC
 	-gltLabel 1 'DG-DS_AL-SE' -gltCode  1 'Decision : 1*Go -1*Stop Context : 1*AL -1*SE' \
 	-gltLabel 2 'DG-DS_AL-PR' -gltCode  2 'Decision : 1*Go -1*Stop Context : 1*AL -1*PR' \
 	-gltLabel 3 'DG-DS_PR-SE' -gltCode  3 'Decision : 1*Go -1*Stop Context : 1*PR -1*SE' \
-	-gltLabel 4 'pds.DG-DS_AL-SE' -gltCode  4 'Decision : 1*Go -1*Stop Context : 1*AL -1*SE pds' \
-	-gltLabel 5 'pds.DG-DS_AL-PR' -gltCode  5 'Decision : 1*Go -1*Stop Context : 1*AL -1*PR pds' \
-	-gltLabel 6 'pds.DG-DS_PR-SE' -gltCode  6 'Decision : 1*Go -1*Stop Context : 1*PR -1*SE pds' \
 	-mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj	Decision	Context Group pds InputFile \
