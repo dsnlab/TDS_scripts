@@ -7,11 +7,11 @@
 # Specify variables
 # ------------------------------------------------------------------------------------------
 # thresholding code directory
-codeDir=/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/
+#codeDir=/projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/
 
 # RX directories (where the residual files are)
-OutcomesTDSall=/projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes/
-DecisionsTDSall=/projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/
+OutcomesTDSall=/projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes
+DecisionsTDSall=/projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions
 mask=/projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii
 
 # AFNI 3dLME model names
