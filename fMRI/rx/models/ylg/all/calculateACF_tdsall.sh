@@ -19,8 +19,8 @@ mask=/projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_averag
 
 # Estimate acf parameters for AFNI 3dLME models and save this output
 # ------------------------------------------------------------------------------------------
-cd OutcomesTDSall
+cd $OutcomesTDSall
 3dFWHMx -acf NULL -mask $mask DecXOutcomesXContextTDS2+tlrc.BRIK all2_residuals+tlrc.BRIK > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/DecXOutcomesXContextTDS2_acf.txt
 
-cd DecisionsTDSall
+cd $DecisionsTDSall
 3dFWHMx -acf NULL -mask $mask DecXOutcomesXContextTDS2+tlrc.BRIK all2_residuals+tlrc.BRIK > /projects/dsnlab/tds/TDS_scripts/fMRI/rx/models/ylg/all/output/DecXContextTDS2_acf.txt
