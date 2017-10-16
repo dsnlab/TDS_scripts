@@ -19,12 +19,9 @@ lapply(packages, library, character.only = TRUE)
 # set scientific notation off unless >6 digits
 options(scipen=6) 
 
-#rm(list=ls())
+rm(list=ls())
 
-model_fit= "AIC" # "BIC", "logLik"
-
-#load(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_", model_fit, ".RDS"))
-
+gordon_modelsDT_AIC = readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC.RDS")
 ```
 
 
@@ -53,7 +50,12 @@ gordon_modelsDT_AIC=merge(gordon_modelsDT_AIC, parcels, by="ParcelID", all.x=TRU
 ## generate a data frame to plot
 gordon_modelsDT_AIC$Community=as.character(gordon_modelsDT_AIC$Community) # turn community type into a character
 df_gordon_models= data.frame(cbind("ParcelID"=unlist(gordon_modelsDT_AIC$ParcelID), "seed"=unlist(gordon_modelsDT_AIC$seed), "mod_type"=unlist(gordon_modelsDT_AIC$mod_type), "Community"=unlist(gordon_modelsDT_AIC$Community))) 
-df_gordon_models$Community=as.factor(gordon_modelsDT_AIC$Community) # turn community back into a factor
+
+# turn NA community values into "None"/factor #7
+df_gordon_models$Community= ifelse(is.na(df_gordon_models$Community), 7, df_gordon_models$Community)
+sum(is.na(df_gordon_models$Community))
+as.factor(df_gordon_models$Community)
+levels(df_gordon_models$Community) <- c("Auditory", "CinguloOperc", "CinguloParietal", "Default", "DorsalAttn", "FrontoParietal", "None","RetrosplenialTemporal", "Salience", "SMhand", "SMmouth", "VentralAttn", "Visual")
 
 ## Make a table 
 
@@ -69,36 +71,66 @@ kable(tbl, format="pandoc")
 tbl= as.data.frame.list(group_by(df_gordon_models, mod_type, Community) %>% summarise(mod_type= count(mod_type)))
 kable(tbl, format="pandoc")
 
-tbl= as.data.frame.list(group_by(df_gordon_models, Community) %>% summarise(mod_type= count(Community)))
-kable(tbl, format="pandoc")
+community_tally= as.data.frame.list(group_by(df_gordon_models, Community) %>% summarise(mod_type= count(Community)))
+kable(community_tally, format="pandoc")
 
-# Plot
-df_gordon_models_nonull=filter(df_gordon_models, df_gordon_models$mod_type!="null model") # remove those best explained by the null model
+## PLOT THE RAW DATA, SANS NULL MODELS
 
-for (i in 1:nlevels(df_gordon_models$mod_type)) {
-  for (j in 1:nlevels(df_gordon_models$Community)) {
-  test=filter(df_gordon_models, mod_type==mod_type[1], Community==Community[2])
-  }
-}
+# relevel the mod_type factor
+df_gordon_models$mod_type= factor(df_gordon_models$mod_type,levels(df_gordon_models$mod_type)[c(1,4,3,2,5)])
 
-(mod_type, Community) %>% summarise(count= tally(mod_type)/tally(Community))
+# plot remove models those best explained by the null model
+df_gordon_models_nonull=filter(df_gordon_models, df_gordon_models$mod_type!="null model") 
+as.factor(df_gordon_models_nonull$mod_type)
 
-## Plot the raw data, sans null models
+# plot raw data sans null models
 ggplot(df_gordon_models_nonull, aes(x=mod_type, fill=Community)) +
   geom_bar(position="dodge") +
-  scale_x_discrete(labels=c("N by A", "N and A","N only","null")) +
+  scale_x_discrete(labels=c("A", "N", "N & A", "N X A", "null")) +
   facet_grid(seed~.) + 
   ggtitle("Count of model types by network and seed")
 
-## make the plot of the proportion of data
+## PLOT PERCENTAGES, INCLUDING NULL MODELS
 
+test= df_gordon_models %>% group_by(seed, Community=as.factor(Community), mod_type) %>% tally # removed: complete(mod_type, nesting(Community)), fill=list(n=0)
+test$comm_total=test$Community
+test$comm_total=mapvalues(test$comm_total, c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"), community_tally$mod_type.freq)
+test$pct=test$n/as.numeric(test$comm_total)
+
+test2=filter(test, mod_type!="null model") # percentages sans the null models
+
+# plot across ALL communities by seed region
+ggplot(test2, aes(x=mod_type, y= pct, fill=Community)) + # fill=Community)) +
+  geom_bar(position="dodge", stat="identity") +
+  scale_x_discrete(labels=c("A", "N", "N & A", "N X A")) + # removed "null"
+  facet_grid(seed~.) + 
+  ggtitle("Percent of model types by network and seed")
+
+## other ways of viewing proportioned data
 ggplot(df_gordon_models,aes(x = mod_type, fill = Community)) + 
   geom_bar(position = "fill") +
-  scale_x_discrete(labels=c("N by A", "N and A","N only","null"))
+  scale_x_discrete(labels=c("A", "N", "N & A", "N X A", "null"))
+
+ggplot(df_gordon_models_nonull,aes(x = Community, fill = mod_type)) + 
+  geom_bar(position = "fill") +
+  scale_x_discrete(labels=c("A", "CO","CP","D", "DA","FP","NA","RT","S","h","m","VA","V"))
+
+ggplot(df_gordon_models,aes(x = Community, fill = mod_type)) + 
+  geom_bar(position = "fill") +
+  scale_x_discrete(labels=c("A", "CO","CP","D", "DA","FP","NA","RT","S","h","m","VA","V"))
+
+ggplot(df_gordon_models_nonull, aes(x=mod_type, fill=Community)) +
+  geom_bar(aes(y = (..count..)/sum(..count..)), position="dodge") +
+  scale_x_discrete(labels=c("A", "N", "N & A", "N X A", "null")) +
+  facet_grid(seed~.) + 
+  ggtitle("Count of model types by network and seed")
+
+# for reference, these are the levels
+print(levels(df_gordon_models$Community))
 
 ggplot(df_gordon_models_nonull, aes(x=mod_type, fill=Community)) +
   geom_bar(position="dodge") +
-  scale_x_discrete(labels=c("N by A", "N and A","N only","null")) +
+  scale_x_discrete(labels=c("A", "N", "N & A", "N X A", "null")) +
   facet_grid(seed~.) + 
   ggtitle("Proportion of model types by network and seed")
 
