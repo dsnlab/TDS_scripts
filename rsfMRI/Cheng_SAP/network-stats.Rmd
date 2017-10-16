@@ -1,0 +1,105 @@
+---
+title: "network-stats"
+author: "Theresa Cheng"
+date: "October 15, 2017"
+output: html_document
+---
+
+```{r setup, message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Load required packages ##
+packages <-  c("lme4", "nlme", "zoo", "plyr", "dplyr", "tidyr", "ggplot2", "knitr",
+              "parallel", "data.table", "lubridate","psych")
+if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+  install.packages(setdiff(packages, rownames(installed.packages())))  
+}
+lapply(packages, library, character.only = TRUE)
+
+# set scientific notation off unless >6 digits
+options(scipen=6) 
+
+#rm(list=ls())
+
+model_fit= "AIC" # "BIC", "logLik"
+
+#load(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_", model_fit, ".RDS"))
+
+```
+
+
+```{r network analysis, include=FALSE}
+
+# identify the network of each COI target
+
+## identify COI seed
+gordon_modelsDT_AIC$seed=gsub('(^\\w{4,9}_\\d{2,3})_.*','\\1',gordon_modelsDT_AIC$coiname)
+
+## identify COI target
+gordon_modelsDT_AIC$ParcelID= 
+  ifelse(startsWith((gsub('aseg_\\d\\d_(.*)','\\1',gordon_modelsDT_AIC$coiname)), "aseg"), # if it starts with aseg
+       gsub('aseg_\\d\\d_(aseg_\\d\\d)','\\1',gordon_modelsDT_AIC$coiname), # then call coitarget aseg_##
+       gsub('aseg_\\d\\d_\\wh.Parcel_(.*)','\\1',gordon_modelsDT_AIC$coiname)) # but if not, coitarget is the Gordon parcel number
+
+## Load Gordon parcel data
+parcels=read.csv("/projects/dsnlab/tds/TDS_scripts/rsfMRI/Cheng_SAP/Parcels/Parcels.csv")
+parcels$ParcelID=as.character(parcels$ParcelID)
+
+## Match COI target with Gordon parcel #
+gordon_modelsDT_AIC=merge(gordon_modelsDT_AIC, parcels, by="ParcelID", all.x=TRUE)
+
+# Display the Data
+
+## generate a data frame to plot
+gordon_modelsDT_AIC$Community=as.character(gordon_modelsDT_AIC$Community) # turn community type into a character
+df_gordon_models= data.frame(cbind("ParcelID"=unlist(gordon_modelsDT_AIC$ParcelID), "seed"=unlist(gordon_modelsDT_AIC$seed), "mod_type"=unlist(gordon_modelsDT_AIC$mod_type), "Community"=unlist(gordon_modelsDT_AIC$Community))) 
+df_gordon_models$Community=as.factor(gordon_modelsDT_AIC$Community) # turn community back into a factor
+
+## Make a table 
+
+# calculate percentages
+tbl=group_by(df_gordon_models, seed, mod_type, Community) %>% tally %>% 
+  spread(Community, n, fill = 0)
+kable(tbl, format="pandoc")
+
+tbl=group_by(df_gordon_models, seed, mod_type) %>% tally %>% 
+  spread(seed, n, fill = 0)
+kable(tbl, format="pandoc")
+
+tbl= as.data.frame.list(group_by(df_gordon_models, mod_type, Community) %>% summarise(mod_type= count(mod_type)))
+kable(tbl, format="pandoc")
+
+tbl= as.data.frame.list(group_by(df_gordon_models, Community) %>% summarise(mod_type= count(Community)))
+kable(tbl, format="pandoc")
+
+# Plot
+df_gordon_models_nonull=filter(df_gordon_models, df_gordon_models$mod_type!="null model") # remove those best explained by the null model
+
+for (i in 1:nlevels(df_gordon_models$mod_type)) {
+  for (j in 1:nlevels(df_gordon_models$Community)) {
+  test=filter(df_gordon_models, mod_type==mod_type[1], Community==Community[2])
+  }
+}
+
+(mod_type, Community) %>% summarise(count= tally(mod_type)/tally(Community))
+
+## Plot the raw data, sans null models
+ggplot(df_gordon_models_nonull, aes(x=mod_type, fill=Community)) +
+  geom_bar(position="dodge") +
+  scale_x_discrete(labels=c("N by A", "N and A","N only","null")) +
+  facet_grid(seed~.) + 
+  ggtitle("Count of model types by network and seed")
+
+## make the plot of the proportion of data
+
+ggplot(df_gordon_models,aes(x = mod_type, fill = Community)) + 
+  geom_bar(position = "fill") +
+  scale_x_discrete(labels=c("N by A", "N and A","N only","null"))
+
+ggplot(df_gordon_models_nonull, aes(x=mod_type, fill=Community)) +
+  geom_bar(position="dodge") +
+  scale_x_discrete(labels=c("N by A", "N and A","N only","null")) +
+  facet_grid(seed~.) + 
+  ggtitle("Proportion of model types by network and seed")
+
+```
