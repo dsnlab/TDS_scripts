@@ -1,0 +1,142 @@
+---
+title: "beta-stats"
+author: "Theresa Cheng"
+date: "October 17, 2017"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, echo=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+
+## Load required packages ##
+packages <-  c("lme4", "nlme", "zoo", "plyr", "dplyr", "tidyr", "ggplot2", "knitr", "parallel", "data.table", "lubridate","psych")
+if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+  install.packages(setdiff(packages, rownames(installed.packages())))  
+}
+lapply(packages, library, character.only = TRUE)
+
+# set scientific notation off unless >6 digits
+options(scipen=6) 
+
+rm(list=ls())
+
+regmodels = readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/regmodels.RDS")
+```
+
+```{r id coi target networks, include=TRUE}
+
+## identify COI seed
+regmodels$seed=gsub('(^\\w{4,9}_\\d{2,3})_.*','\\1',regmodels$coi)
+
+## identify COI target
+regmodels$ParcelID= 
+  ifelse(startsWith((gsub('aseg_\\d\\d_(.*)','\\1',regmodels$coi)), "aseg"), # if it starts with aseg
+       gsub('aseg_\\d\\d_(aseg_\\d\\d)','\\1',regmodels$coi), # then call coitarget aseg_##
+       gsub('aseg_\\d\\d_\\wh.Parcel_(.*)','\\1',regmodels$coi)) # but if not, coitarget is the Gordon parcel number
+
+## Load Gordon parcel data
+parcels=read.csv("/projects/dsnlab/tds/TDS_scripts/rsfMRI/Cheng_SAP/Parcels/Parcels.csv")
+parcels$ParcelID=as.character(parcels$ParcelID)
+
+## Match COI target with Gordon parcel #
+regmodels=merge(regmodels, parcels, by="ParcelID", all.x=TRUE)
+
+# turn NA community values into "None"/factor #7
+regmodels$Community= ifelse(is.na(regmodels$Community), 7, regmodels$Community)
+sum(is.na(regmodels$Community))
+regmodels$Community= as.factor(mapvalues(regmodels$Community, c(1:13), c("Auditory", "CinguloOperc", "CinguloParietal", "Default", "DorsalAttn", "FrontoParietal", "None", "RetrosplenialTemporal", "Salience", "SMhand", "SMmouth", "VentralAttn", "Visual")))
+
+unfactorize<-c("AIC","BIC","logLik","intercept", "pval_intercept", "n_beta","pval_n","a_beta","pval_a","aXn_beta","pval_aXn")
+
+regmodels=as.data.frame(regmodels)
+regmodels[,unfactorize]= as.numeric(as.character(unlist(regmodels[,unfactorize])))
+
+```
+
+## Are both abuse and neglect associated with altered brain connectivity?
+To establish that the network is indeed altered, you would probably want to test these numbers against chance (I can help with how if needed).
+
+```{r prop network change with abuse and neglect}
+
+regmodels_NandA= regmodels %>% filter(mod_type=="neglect_abuse") %>% mutate(sig_n=ifelse(pval_n<.05, 1, 0), sig_a=ifelse(pval_a<.05, 1, 0), sig_both=ifelse((sig_n==1 & sig_a==1), 1, 0)) # for the neglect & abuse models, establish a matrix of 1s and 0s indicating whether the beta terms for neglect, abuse, and both are significant
+
+tbl_community= regmodels %>% group_by(Community, seed) %>% summarise(mod_type= n())
+tbl_community$mod_type=round(tbl_community$mod_type/5,2) # acquire the Community totals -- this value is divided by 5 because the community count by 5 models per seed
+
+summary_NandA = regmodels_NandA %>% group_by(Community,seed) %>% summarize(sum_sig_n=sum(sig_n), sum_sig_a=sum(sig_a), sum_sig_both=sum(sig_both)) # count the # of significant N, A, and boths
+
+# now divide by the totals to acquire percentages
+summary_NandA$comm_total=tbl_community$mod_type
+summary_NandA$pct_n= round(summary_NandA$sum_sig_n/summary_NandA$comm_total, 2)
+summary_NandA$pct_a= round(summary_NandA$sum_sig_a/summary_NandA$comm_total, 2)
+summary_NandA$pct_both= round(summary_NandA$sum_sig_both/summary_NandA$comm_total, 2)
+
+summary_NandA= summary_NandA %>% gather(pct_n, pct_a, pct_both, key="model_prop", value="percent")
+summary_NandA$model_prop <- factor(summary_NandA$model_prop)
+
+kable(summary_NandA, format="pandoc", caption= "proportion of connections driven \n by neglect, abuse, or both (by community)")
+```
+
+### Plot
+
+```{r plot, echo=FALSE}
+         
+ggplot(summary_NandA, aes(x=Community, y=percent, fill=model_prop)) +
+  geom_bar(position="dodge", stat="identity") +
+  scale_x_discrete(labels=c("A", "CO","CP","D", "DA","FP","NA","RT","S","h","m","VA","V")) +
+  ggtitle("%age of sig beta values across seeds")
+
+ggplot(summary_NandA, aes(x=Community, y= percent, fill=Community)) +
+  geom_bar(position="dodge", stat="identity") +
+  scale_x_discrete(labels=c("A", "CO","CP","D", "DA","FP","NA","RT","S","h","m","VA","V")) +
+  facet_grid(seed ~ model_prop) +
+  ggtitle("%age of sig beta values across parameters & seeds")
+```
+
+## 1.a. Are all connections affected equally or are they affected differentially for different networks?
+
+Count the significant connections, or % connections, within each network separately, for A and N separately. You could use chi-square test to test for significance of differences between networks or between N & A. (Perhaps significance tests not necessary for the first pass, simple descriptives may be already telling).
+
+TC: I think this analysis was run above, unless by A and N separately you mean in the separate neglect and abuse models. To do next: Run chi-square test. 
+
+You could use this data to evaluate whether previously reported effects of abuse are consistent with this analysis once you control for neglect etc.
+
+TC note to self: pull up and compare with existing literature.
+
+# 2. Do the effects of abuse and neglect interact?
+
+For this question, you would use the full model and determine the number of connections that have a significant interaction term.
+
+You can look at what specific pattern that interaction has for each connection (or each family of connections - although I’m not sure if averaging across connections would be appropriate for this analysis).
+
+```{r}
+regmodels_NXA= regmodels %>% filter(mod_type=="neglect_abuse_int") %>% mutate(sig_aXn=ifelse(pval_aXn<.05, 1, 0))
+
+tbl_community= regmodels_NXA %>% group_by(Community, seed) %>% summarise(mod_type= n())
+
+summary_NXA = regmodels_NXA %>% group_by(Community,seed) %>% summarize(sum_sig_aXn=sum(sig_aXn))
+summary_NXA$comm_total=tbl_community$mod_type
+summary_NXA$pct_aXn= round(summary_NXA$sum_sig_aXn/summary_NXA$comm_total, 2)
+
+kable(summary_NXA, format="pandoc", caption= "proportion of connections driven \n by neglect X abuse interactions (by community)")
+```
+
+```{r plot interactions}
+ggplot(summary_NXA, aes(x=Community, y=pct_aXn, fill=Community)) +
+  geom_bar(position="dodge", stat="identity") +
+  scale_x_discrete(labels=c("A", "CO","CP","D", "DA","FP","NA","RT","S","h","m","VA","V")) +
+  ggtitle("%age of sig beta values across seeds")
+
+ggplot(summary_NXA, aes(x=Community, y= pct_aXn, fill=Community)) +
+  geom_bar(position="dodge", stat="identity") +
+  scale_x_discrete(labels=c("A", "CO","CP","D", "DA","FP","NA","RT","S","h","m","VA","V")) +
+  facet_grid(seed~.) +
+  ggtitle("%age of sig beta values across parameters & seeds")
+
+# next: need to plot directionality in more detail
+
+```
+
+

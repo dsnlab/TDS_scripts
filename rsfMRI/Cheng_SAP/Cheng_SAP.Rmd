@@ -207,9 +207,9 @@ system.time(gordon_coisDT <- do.call(bind_rows, gordon_cois) %>%
 ```
 
 
-Analysis
+# Analysis
 
-```{r}
+```{r run models}
 
 gordon_cois<-distinct(gordon_coisDT, coi)
 
@@ -354,7 +354,7 @@ neglect_abuse_int_models<-mclapply(X=as.list(gordon_cois$coi),
 
 ```
 
-```{r test}
+```{r test, include= FALSE}
 
 adf<-merge(as.data.table(filter(gordon_coisDT,coi=="aseg_17_aseg_18")),
                    demographicsDF,
@@ -381,11 +381,15 @@ adf<-merge(as.data.table(filter(gordon_coisDT,coi=="aseg_17_aseg_18")),
                                   random = ~1|sub,
                                   data=adf))
        
-       mod_comp<-anova(null_mod,neglect_mod,abuse_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
-       
-       i=1 # based on model_fit_stats[i], in this case AIC
+       mod_comp_neglect<-anova(null_mod,neglect_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
+       mod_comp_abuse<-anova(null_mod,abuse_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
+
+       i=3 # based on model_fit_stats[i], in this case AIC
        criteria <- model_fit_stats[i]
-       if (which.min(mod_comp[[i+3]]) == 5) {
+       if (mod_comp_neglect[[4]][2]<mod_comp_neglect[[4]][3] &  # if AIC_neglect<AIC_abuse
+           mod_comp_neglect$`p-value`[2]<.05 & # neglect model is sig better than null
+           mod_comp_neglect$`p-value`[3]>.05 & # main effects model is not better than neglect
+           mod_comp_neglect$`p-value`[4]>.05) { # int model isn't significant based on LL
          coiname<- "aseg_17_aseg_18" #as.character(coi_name)
          chisq <- mod_comp[5,8]; pval <- round(mod_comp[5,9],4)
          AIC <- mod_comp[5,4]; nullAIC <- mod_comp[1,4]
@@ -533,10 +537,9 @@ if(rerun_modelCompare){
 
 ```
 
-
 ```{r model comparison BIC}
 
-rerun_modelCompare=TRUE
+rerun_modelCompare=FALSE
 model_fit_stats=c("AIC", "BIC", "LL")
 
 if(rerun_modelCompare){
@@ -576,7 +579,7 @@ if(rerun_modelCompare){
       mod_comp<-anova(null_mod,neglect_mod,abuse_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
        
       # Determine which model is the best fit
-       i=2 # based on model_fit_stats[i], in this case AIC
+       i=2 # based on model_fit_stats[i], in this case BIC
        criteria <- model_fit_stats[i]
        if (which.min(mod_comp[[i+3]]) == 5) {
          coiname<- as.character(coi_name)
@@ -585,7 +588,7 @@ if(rerun_modelCompare){
          logLik <- mod_comp[5,6]; nulllogLik <- mod_comp[1,6]
          #mod <- list(neglect_abuse_int_mod); 
          mod_type <- "neglect and abuse interaction model"
-         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
          as.data.table(retDF)
        } else if (which.min(mod_comp[[i+3]]) == 4) {
          coiname<- as.character(coi_name)
@@ -594,7 +597,7 @@ if(rerun_modelCompare){
          logLik <- mod_comp[4,6]; nulllogLik <- mod_comp[1,6]
          #mod <- list(neglect_abuse_main_mod); 
          mod_type <- "neglect and abuse main model"
-         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
          as.data.table(retDF)
        } else if (which.min(mod_comp[[i+3]]) == 3) {
          coiname<- as.character(coi_name)
@@ -603,7 +606,7 @@ if(rerun_modelCompare){
          logLik <- mod_comp[3,6]; nulllogLik <- mod_comp[1,6]
          #mod <- list(abuse_mod); 
          mod_type <- "abuse model"
-         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
          as.data.table(retDF) 
          } else if (which.min(mod_comp[[i+3]]) == 2) {
          coiname<- as.character(coi_name)
@@ -612,7 +615,7 @@ if(rerun_modelCompare){
          logLik <- mod_comp[2,6]; nulllogLik <- mod_comp[1,6]
          #mod <- list(neglect_mod); 
          mod_type <- "neglect model"
-         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
          as.data.table(retDF) 
          } else if (which.min(mod_comp[[i+3]]) == 1) {
          coiname<- as.character(coi_name)
@@ -621,7 +624,7 @@ if(rerun_modelCompare){
          logLik <- "NA" ; nulllogLik <- mod_comp[1,6]
          #mod <- list(null_mod); 
          mod_type <- "null model"
-         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
          as.data.table(retDF) 
          }
         }
@@ -632,10 +635,9 @@ if(rerun_modelCompare){
   rm(gordon_models_BIC);gc()
   saveRDS(gordon_modelsDT_BIC, "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_BIC.RDS")
 } else {
-  readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_BIC.RDS")
+  BIC=readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_BIC.RDS")
 }
 ```
-
 
 ```{r model comparison logLik}
 
@@ -681,8 +683,11 @@ if(rerun_modelCompare){
       # Determine which model is the best fit
        i=3 # based on model_fit_stats[i], in this case AIC
        criteria <- model_fit_stats[i]
-       if (which.min(mod_comp[[i+3]]) == 5) {
+       if (mod_comp$'p-value'[4]<.05 {
          coiname<- as.character(coi_name)
+         chisq=
+         pval=
+        
          AIC <- mod_comp[5,4]; nullAIC <- mod_comp[1,4]
          BIC <- mod_comp[5,5]; nullBIC <- mod_comp[1,5]
          logLik <- mod_comp[5,6]; nulllogLik <- mod_comp[1,6]
