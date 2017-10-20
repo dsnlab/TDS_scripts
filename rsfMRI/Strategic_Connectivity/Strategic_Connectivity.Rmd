@@ -29,6 +29,32 @@ getwd()
 workdir=as.character(read.table((paste0(getwd(),"/org/workingdirectory.txt")))[[1]])
 ```
 
+Set graph/plot options
+```{r}
+theme_kate <- function () { 
+    theme_bw() +
+  theme_minimal(base_size = 14, base_family = "Avenir") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="none")
+}
+
+resave_plots=TRUE
+
+heatmap_color_palette <- colorRampPalette(c("#fde0dd", "#fa9fb5", "#c51b8a"))
+
+group_labels<-c("community"='Community', 
+                "foster"="Child Welfare Services")
+
+colour_labels=c("#fa9fb5", "#ae017e")
+
+
+group_colors <- c("community" = "#fa9fb5", "foster" = "#ae017e")
+```
+
 Extract rsfcMRI preprocessing stats
 ```{r Extract and plot run times, echo=TRUE}
 # Set directory
@@ -231,19 +257,15 @@ t.test(qualtrics_data$ace_maltreatment~qualtrics_data$group)
 
 ##### Plots ######
 
-# Make group labels
-group_labels<-c("community"='Community', 
-                "foster"="Child Welfare Services")
-
 # Age by gender by group sampling density (Kate Style)
-gender_age_group_density<-ggplot(hist_by_age_gender,
+if(resave_plots){gender_age_group_density<-ggplot(hist_by_age_gender,
                           aes(x=s2_age, fill=gender)) + 
   xlab("Age") +
-  geom_density(alpha=.3) +
+  geom_density(alpha=.5) +
   facet_grid(.~group,
              scales='free',
              labeller=as_labeller(group_labels))+
-  scale_fill_manual(values=c('deeppink', 'dodgerblue'))+
+  scale_fill_manual(values=c("deeppink","dodgerblue"))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
   theme(axis.line = element_line(colour = "black"),
@@ -253,18 +275,18 @@ gender_age_group_density<-ggplot(hist_by_age_gender,
         panel.background = element_blank(),
         legend.position="right")
 gender_age_group_density
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/gender_age_group_density.png"),
-#       plot=gender_age_group_density, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/gender_age_group_density.png"),
+      plot=gender_age_group_density, width=6, height=5, units='in', dpi=300)}
 
 
 # Boxplots for demographics 
-box_age_group<-ggplot(qualtrics_data,
+if(resave_plots){box_age_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=s2_age,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   labs(y='Age', fill='Sample') +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -276,17 +298,17 @@ box_age_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_age_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_age_group.png"),
-#       plot=box_age_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_age_group.png"),
+       plot=box_age_group, width=6, height=5, units='in', dpi=300)}
 
-box_pds_group<-ggplot(qualtrics_data,
+if(resave_plots){box_pds_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=PDS_mean_score,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   labs(y='Pubertal development', fill='Sample') +
   scale_y_continuous(limits=c(1,4)) +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -298,16 +320,16 @@ box_pds_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_pds_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_pds_group.png"),
-#       plot=box_pds_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_pds_group.png"),
+       plot=box_pds_group, width=6, height=5, units='in', dpi=300)}
 
-box_iq_group<-ggplot(qualtrics_data,
+if(resave_plots){box_iq_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=fsiq2,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   labs(y='IQ', fill='Sample') +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -319,17 +341,17 @@ box_iq_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_iq_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_iq_group.png"),
-#       plot=box_iq_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_iq_group.png"),
+      plot=box_iq_group, width=6, height=5, units='in', dpi=300)}
 
-box_adversity_group<-ggplot(qualtrics_data,
+if(resave_plots){box_adversity_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=ace_total,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   scale_y_continuous(breaks=c(0,5,10)) +
   labs(y='Adversity', fill='Sample') +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -341,16 +363,16 @@ box_adversity_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_adversity_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_adversity_group.png"),
-#       plot=box_adversity_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_adversity_group.png"),
+       plot=box_adversity_group, width=6, height=5, units='in', dpi=300)}
 
-box_maltreatment_group<-ggplot(qualtrics_data,
+if(resave_plots){box_maltreatment_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=ace_maltreatment,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   labs(y='Maltreatment', fill='Sample') +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -362,8 +384,8 @@ box_maltreatment_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_maltreatment_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_maltreatment_group.png"),
-#       plot=box_maltreatment_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_maltreatment_group.png"),
+       plot=box_maltreatment_group, width=6, height=5, units='in', dpi=300)}
 ```
 
 Analyze behavior data
@@ -372,10 +394,8 @@ Analyze behavior data
 #### Graph it ########
 ### Time across 8 runs ###
 
-group_colors <- c("community" = "maroon1", "foster" = "maroon4")
-
 # Time plotted across all runs by SAMPLE
-time.plot <-
+if(resave_plots){time.plot <-
   ylg_timing %>%
   group_by(group, condition, run_index) %>% 
   summarize(mean = mean(time),
@@ -404,8 +424,8 @@ time_plot<-ggplot(time.plot,
         panel.background = element_blank(),
         legend.position="bottom")
 time_plot
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_runindex_group.png"),
-#       plot=time_plot, width=7, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_runindex_group.png"),
+       plot=time_plot, width=7, height=5, units='in', dpi=300)}
 
 
 #################
@@ -479,26 +499,25 @@ foster.data.pred = cbind.data.frame(foster.data.pred,
 foster.data.pred$time<-foster.data.pred$y.pred
 
 ## Graph it yo!
-group_colors <- c("community" = "maroon1", "foster" = "maroon4")
 
-model_time_by_runindex<-ggplot(ylg_timing,
+if(resave_plots){model_time_by_runindex<-ggplot(ylg_timing,
                          aes(y=time,
                              x=run_index))+
-  geom_line(data=comm.data.pred,
-              aes(x=run_index, y=time), size=1, colour="maroon1")+
-  geom_ribbon(data=comm.data.pred,
-              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill="maroon1")+
-  geom_line(data=foster.data.pred,
-              aes(x=run_index, y=time), size=1, colour="maroon4")+
-  geom_ribbon(data=foster.data.pred,
-              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill="maroon4")+
   geom_line(data=ylg_timing,
             aes(colour=group, group=sub),size=.2,alpha=0.2)+
-  scale_fill_manual(values = group_colors)+
-  scale_colour_manual(values = group_colors)+
   geom_point(data=ylg_timing,
              aes(colour=group, group=sub),size=1,alpha=0.2)+
+  geom_line(data=comm.data.pred,
+              aes(x=run_index, y=time), size=1, colour=colour_labels[1])+
+  geom_ribbon(data=comm.data.pred,
+              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill=colour_labels[1])+
+  geom_line(data=foster.data.pred,
+              aes(x=run_index, y=time), size=1, colour=colour_labels[2])+
+  geom_ribbon(data=foster.data.pred,
+              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill=colour_labels[2])+
    labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample')+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
   theme(axis.line = element_line(colour = "black"),
@@ -508,8 +527,8 @@ model_time_by_runindex<-ggplot(ylg_timing,
         panel.background = element_blank(),
         legend.position="bottom")
 model_time_by_runindex
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_runindex.png"),
-#       plot=model_time_by_runindex, width=7, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_runindex.png"),
+       plot=model_time_by_runindex, width=7, height=5, units='in', dpi=300)}
 
 
 ###################################################################
