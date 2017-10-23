@@ -42,7 +42,7 @@ theme_kate <- function () {
         legend.position="none")
 }
 
-resave_plots=TRUE
+resave_plots=FALSE
 
 heatmap_color_palette <- colorRampPalette(c("#fde0dd", "#fa9fb5", "#c51b8a"))
 
@@ -51,6 +51,7 @@ group_labels<-c("community"='Community',
 
 colour_labels=c("#fa9fb5", "#ae017e")
 
+purple_colours=c("#bcbddc","#756bb1","#54278f")
 
 group_colors <- c("community" = "#fa9fb5", "foster" = "#ae017e")
 ```
@@ -559,7 +560,7 @@ anova(nullmodel,linmodel)
 summary(condition_model)
 
 # Time plotted across all runs by condition and sample
-condition.plot <-
+if(resave_plots){condition.plot <-
   ylg_timing %>%
   group_by(group, condition, run_index) %>% 
   filter(!condition=="Mock") %>%
@@ -568,7 +569,8 @@ condition.plot <-
             n = n(), 
             se = sd/sqrt(n),
             ci=qt(0.975, df=n-1)*se)
-condition_plot<-ggplot(condition.plot,
+
+if(resave_plots){condition_plot<-ggplot(condition.plot,
                   aes(x=run_index, y=mean, color=group)) +
   geom_point(position=position_dodge(.1), size=3) +
   geom_line(aes(group=group), size=1) +
@@ -589,8 +591,8 @@ condition_plot<-ggplot(condition.plot,
         panel.background = element_blank(),
         legend.position="bottom")
 condition_plot
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_condition_runindex_group.png"),
-#       plot=condition_plot, width=7, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_condition_runindex_group.png"),
+       plot=condition_plot, width=7, height=5, units='in', dpi=300)}
 
 # Predicted model
 # generate community sample models
@@ -643,28 +645,26 @@ foster.data.pred = cbind.data.frame(foster.data.pred,
                                y.upper)
 foster.data.pred$time<-foster.data.pred$y.pred
 
-## Graph it yo!
-group_colors <- c("community" = "maroon1", "foster" = "maroon4")
 
-model_time_by_condition<-ggplot(conditions_timing,
-                         aes(y=time,
-                             x=condition,
-                             group=1))+
-  geom_line(data=comm.data.pred,
-              aes(x=condition, y=time,group=1), size=1, colour="maroon1")+
-  geom_ribbon(data=comm.data.pred,
-              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill="maroon1")+
-  geom_line(data=foster.data.pred,
-              aes(x=condition, y=time,group=1), size=1, colour="maroon4")+
-  geom_ribbon(data=foster.data.pred,
-              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill="maroon4")+
+if(resave_plots){model_time_by_condition<-ggplot(conditions_timing,
+                                aes(y=time,
+                                    x=condition,
+                                    group=1))+
   geom_line(data=conditions_timing,
             aes(colour=group, group=sub),size=.2,alpha=0.2)+
-  scale_fill_manual(values = group_colors)+
-  scale_colour_manual(values = group_colors)+
   geom_point(data=conditions_timing,
              aes(colour=group, group=sub),size=1,alpha=0.2)+
-   labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
+  geom_line(data=foster.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[2])+
+  geom_ribbon(data=foster.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[2])+
+  geom_line(data=comm.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[1])+
+  geom_ribbon(data=comm.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[1])+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
+  labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
   theme(axis.line = element_line(colour = "black"),
@@ -675,7 +675,7 @@ model_time_by_condition<-ggplot(conditions_timing,
         legend.position="bottom")
 model_time_by_condition
 ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_condition.png"),
-       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)
+       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)}
 
 
 
@@ -1163,11 +1163,13 @@ if(redoprepheat){
 
 # Make a heat map YO!
 prepheat<-read.csv(file=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/tables/",
-                                          "strategy_heatmap.csv"),header=TRUE,stringsAsFactors = FALSE)
+                                          "strategy_heatmap_int_percent.csv"),header=TRUE,stringsAsFactors = FALSE)
 
 strategy_heatmap<-ggplot(data = prepheat,
-       aes(x=seed_community, y=target_community, fill=ratio)) + 
-  scale_fill_distiller(palette = "RdPu")+
+       aes(x=seed_community, y=target_community, fill=percent_interaction)) + 
+  scale_fill_distiller(palette = "PuRd",
+                       limits=c(.5,1))+
+  labs(fill="ratio")+
   geom_tile()+
   theme_minimal()+ 
  theme(
@@ -1179,8 +1181,8 @@ strategy_heatmap<-ggplot(data = prepheat,
   panel.background = element_blank(),
   axis.ticks = element_blank())+
  coord_fixed()
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/strategy_corrmatrix.png"),
-#       plot=strategy_heatmap, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/strategy_corrmatrix_int_percent.png"),
+       plot=strategy_heatmap, width=6, height=5, units='in', dpi=300)
 
 ## Make example graph
 coi_name="lh.Parcel_71_rh.Parcel_173" # 
@@ -1280,36 +1282,36 @@ corfoster=seq((mean((adf %>% filter(group=="foster"))$cor)-sd((adf %>% filter(gr
              ylim(2,3)+
              labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample') +
              geom_line(data=(adf %>% filter(group=="community")),
-                       aes(group=sub),size=.2,alpha=0.1, colour="maroon1")+
+                       aes(group=sub),size=.2,alpha=0.1, colour=group_colors[1])+
              geom_point(data=(adf %>% filter(group=="community")),
-                        aes(group=sub),size=.7,alpha=0.1, colour="maroon1")+
+                        aes(group=sub),size=.7,alpha=0.1, colour=group_colors[1])+
            geom_line(data=as.data.frame(comm_graphs[[1]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink") +
+                     colour=purple_colours[1]) +
              geom_ribbon(data=as.data.frame(comm_graphs[[1]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink") +
+                         alpha=0.2, fill=purple_colours[1]) +
            geom_line(data=as.data.frame(comm_graphs[[2]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink3") +
+                     colour=purple_colours[2]) +
              geom_ribbon(data=as.data.frame(comm_graphs[[2]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink3") +
+                         alpha=0.2, fill=purple_colours[2]) +
                         geom_line(data=as.data.frame(comm_graphs[[3]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink4") +
+                     colour=purple_colours[3]) +
              geom_ribbon(data=as.data.frame(comm_graphs[[3]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink4") +
+                         alpha=0.2, fill=purple_colours[3]) +
              theme_bw() +
              theme_minimal(base_size = 12, base_family = "Arial") +
              theme(axis.line.x = element_line(colour = "black", size=.5),
@@ -1331,36 +1333,36 @@ assign(paste0("foster_coi_graph"),
              ylim(2,3)+
              labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample') +
              geom_line(data=(adf %>% filter(group=="foster")),
-                       aes(group=sub),size=.2,alpha=0.1, colour="maroon4")+
+                       aes(group=sub),size=.2,alpha=0.1, colour=group_colors[2])+
              geom_point(data=(adf %>% filter(group=="foster")),
-                        aes(group=sub),size=.7,alpha=0.1, colour="maroon4")+
+                        aes(group=sub),size=.7,alpha=0.1, colour=group_colors[2])+
            geom_line(data=as.data.frame(foster_graphs[[1]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink") +
+                     colour=purple_colours[1]) +
              geom_ribbon(data=as.data.frame(foster_graphs[[1]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink") +
+                         alpha=0.2, fill=purple_colours[1]) +
            geom_line(data=as.data.frame(foster_graphs[[2]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink3") +
+                     colour=purple_colours[2]) +
              geom_ribbon(data=as.data.frame(foster_graphs[[2]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink3") +
+                         alpha=0.2, fill=purple_colours[2]) +
                         geom_line(data=as.data.frame(foster_graphs[[3]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink4") +
+                     colour=purple_colours[3]) +
              geom_ribbon(data=as.data.frame(foster_graphs[[3]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink4") +
+                         alpha=0.2, fill=purple_colours[3]) +
              theme_bw() +
              theme_minimal(base_size = 12, base_family = "Arial") +
              theme(axis.line.x = element_line(colour = "black", size=.5),
@@ -1478,46 +1480,46 @@ mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi main 
                     ylim(2,2.75)+
                     labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample') +
                     geom_line(data=(adf %>% filter(group=="community")),
-                              aes(group=sub),size=.2,alpha=0.1, colour="maroon1")+
+                              aes(group=sub),size=.2,alpha=0.1, colour=group_colors[1])+
                     geom_point(data=(adf %>% filter(group=="community")),
-                               aes(group=sub),size=.7,alpha=0.1, colour="maroon1")+
+                               aes(group=sub),size=.7,alpha=0.1, colour=group_colors[1])+
                     geom_line(data=(adf %>% filter(group=="foster")),
-                              aes(group=sub),size=.2,alpha=0.1, colour="maroon4")+
+                              aes(group=sub),size=.2,alpha=0.1, colour=group_colors[2])+
                     geom_point(data=(adf %>% filter(group=="foster")),
-                               aes(group=sub),size=.7,alpha=0.1, colour="maroon4")+
+                               aes(group=sub),size=.7,alpha=0.1, colour=group_colors[2])+
                     geom_line(data=as.data.frame(coi_condition_predictions[[1]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink") +
+                              colour=purple_colours[1]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[1]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink") +
+                                alpha=0.2, fill=purple_colours[1]) +
                     geom_line(data=as.data.frame(coi_condition_predictions[[2]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink3") +
+                              colour=purple_colours[2]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[2]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink3") +
+                                alpha=0.2, fill=purple_colours[2]) +
                     geom_line(data=as.data.frame(coi_condition_predictions[[3]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink4") +
+                              colour=purple_colours[3]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[3]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink4") +
+                                alpha=0.2, fill=purple_colours[3]) +
                     theme_bw() +
                     theme_minimal(base_size = 12, base_family = "Arial") +
                     theme(axis.line.x = element_line(colour = "black", size=.5),
@@ -1592,46 +1594,46 @@ mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi int m
                     ylim(2,2.75)+
                     labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample') +
                     geom_line(data=(adf %>% filter(group=="community")),
-                              aes(group=sub),size=.2,alpha=0.1, colour="maroon1")+
+                              aes(group=sub),size=.2,alpha=0.1, colour=group_colors[1])+
                     geom_point(data=(adf %>% filter(group=="community")),
-                               aes(group=sub),size=.7,alpha=0.1, colour="maroon1")+
+                               aes(group=sub),size=.7,alpha=0.1, colour=group_colors[1])+
                     geom_line(data=(adf %>% filter(group=="foster")),
-                              aes(group=sub),size=.2,alpha=0.1, colour="maroon4")+
+                              aes(group=sub),size=.2,alpha=0.1, colour=group_colors[2])+
                     geom_point(data=(adf %>% filter(group=="foster")),
-                               aes(group=sub),size=.7,alpha=0.1, colour="maroon4")+
+                               aes(group=sub),size=.7,alpha=0.1, colour=group_colors[2])+
                     geom_line(data=as.data.frame(coi_condition_predictions[[1]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink") +
+                              colour=purple_colours[1]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[1]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink") +
+                                alpha=0.2, fill=purple_colours[1]) +
                     geom_line(data=as.data.frame(coi_condition_predictions[[2]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink3") +
+                              colour=purple_colours[2]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[2]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink3") +
+                                alpha=0.2, fill=purple_colours[2]) +
                     geom_line(data=as.data.frame(coi_condition_predictions[[3]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink4") +
+                              colour=purple_colours[3]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[3]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink4") +
+                                alpha=0.2, fill=purple_colours[3]) +
                     theme_bw() +
                     theme_minimal(base_size = 12, base_family = "Arial") +
                     theme(axis.line.x = element_line(colour = "black", size=.5),
