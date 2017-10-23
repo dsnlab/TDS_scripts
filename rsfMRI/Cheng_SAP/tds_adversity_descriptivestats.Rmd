@@ -7,6 +7,8 @@ html_document: default
 pdf_document: default
 ---
 
+# NOTE: Edited on 10/19 to subset to the Cheng_SAP N=102 sample
+
 #### Evaluate the distribution of responses to questionnaire items pertaining to abuse, neglect, household dysfunction, and economic deprivation in the community, child welfare, and juvenile justice samples of TDS
 
 ```{r setup, include=FALSE}
@@ -14,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 rm(list=ls())
 
-povline_impute=1 # if this is set to 1 (true), household size will be imputed with the mean for each group, rounded down (4 for the community sample and 5 for the dhs and jj samples), affecting the income:needs ratio calculation; otherwise set to 0
+povline_impute=TRUE # if this is set to 1 (true), household size will be imputed with the mean for each group, rounded down (4 for the community sample and 5 for the dhs and jj samples), affecting the income:needs ratio calculation; otherwise set to 0
 
 ```
 
@@ -29,13 +31,11 @@ if(!require(VennDiagram)){install.packages('VennDiagram')} ; library(VennDiagram
 if(!require(GGally)){install.packages('GGally')} ; library(GGally)
 ```
 
-```{r Load data, include=FALSE}
+```{r load ACES data, include=FALSE}
 
-setwd("/Users/theresacheng/Documents/tds_rsfc/Qualtrics") # need to change path to wherever qualtrics data is
+setwd("/Users/theresacheng/Documents/tds_rsfc/Qualtrics") # change path to wherever qualtrics data is
 
-# ACES
-
-## TDS1: This data is stored within pre- and post- files, relative to IRB approval of additional questionnaires
+## TDS1: This data is stored in pre- and post- files, relative to IRB approval of additional questionnaires
 df1= rbind.fill(read.csv("TDS-1-PRE-auto_scored_scales_wide.csv", header=TRUE),  read.csv("TDS-1-POST-auto_scored_scales_wide.csv", header=TRUE)) # load pre/post, remove blank rows, and merge
 df1=cbind(SID=df1$SID, select(df1,starts_with("ACE_ace_abuse")), select(df1,starts_with("ACE_ace_neglect")), select(df1,starts_with("ACE_ace_hh")), select(df1,starts_with("ACE_ace_hh"))) # subset relevant items: abuse, neglect, hh
 
@@ -50,6 +50,32 @@ fn <- substr(df_aces$SID,1,1)
 df_aces$group= ifelse(fn %in% "1", "comm", 
                ifelse(fn %in% "3", "dhs",
                "jj"))
+```
+
+```{r acquire age and sex}
+
+setwd("/Volumes/TDS/behavior/Redcap")
+df_demo=read.csv("age_gender_iq.csv")
+```
+
+```{r subset participants}
+
+subset=TRUE
+
+if (subset==TRUE) {
+  # Subset to Cheng_SAP participants, N=102
+  load("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS") 
+  subjectList= as.data.frame(unique(gordon_coisDT$sub))
+  subjectList=(separate(subjectList, col=1, into=c("junk", "sub"), sep="-"))[,-1]
+  
+  df_aces$SID= as.character(df_aces$SID) 
+  df_aces= df_aces %>% filter(SID %in% subjectList) # filter df_aces by those who have gordon_cois
+  df_demo= df_demo %>% filter(subject.name %in% subjectList)
+}
+```
+
+```{r load ses data}
+setwd("/Users/theresacheng/Documents/tds_rsfc/Qualtrics") # need to change path to wherever qualtrics data is
 
 # Economic Deprivation 
 #### Notes: PAL2_5 a score of 4= Not enough to get by; PAL2_7 is # of people in household
@@ -130,23 +156,26 @@ df_ed$povline= as.integer(ifelse(df_ed$Income %in% c("1", "2"), "1",
 df_aces$ACE_abuse_num= ifelse(df_aces$ACE_ace_abuse_n_missing<=1, mapvalues(df_aces$ACE_ace_abuse_score, from=c("0","0.333333333333333", "0.666666666666667","1"), to=c("0", "1","2","3")), "NA")
 df_aces$ACE_abuse_num= as.factor(df_aces$ACE_abuse_num)
 
-df_aces$ACE_neglect_num= ifelse(df_aces$ACE_ace_neglect_n_missing<=1, mapvalues(df_aces$ACE_ace_neglect_score, from=c("0","0.5","1.0"), to=c("0", "1","2")), "NA")
+df_aces$ACE_neglect_num= ifelse(df_aces$ACE_ace_neglect_n_missing<=1, mapvalues(df_aces$ACE_ace_neglect_score, from=c("0","0.5","1"), to=c("0", "1","2")), "NA")
 df_aces$ACE_neglect_num=as.factor(df_aces$ACE_neglect_num)
 
 df_aces$ACE_hh_dysf_num= ifelse(df_aces$ACE_ace_hh_dysf_n_missing<=1, mapvalues(df_aces$ACE_ace_hh_dysf_score, from=c("0","0.25", "0.333333333333333", "0.5", "0.666666666666667", "0.75", "1"), to=c("0", "1","1", "2","2","3","4")), "NA")
 df_aces$ACE_hh_dysf_num= as.factor(df_aces$ACE_hh_dysf_num)
 
+df_aces=filter(df_aces, !is.na(ACE_abuse_num))
+
 ```
 
 ## How much missing data is there?
-
-```{r Missing data, echo=FALSE}
+```{r missing data, echo=FALSE}
 
 ## ACES
-df_aces_mi = df_aces %>% group_by(group) %>% summarise(abuse_mi = sum(ACE_ace_abuse_n_missing, na.rm=TRUE), 
+df_aces_mi = df_aces %>% 
+  group_by(group) %>% 
+  summarise(abuse_mi = sum(ACE_ace_abuse_n_missing, na.rm=TRUE), 
                       neglect_mi = sum(ACE_ace_neglect_n_missing, na.rm=TRUE), 
                       hh_mi = sum(ACE_ace_hh_dysf_n_missing, na.rm=TRUE))
-kable(df_aces_mi, caption="ACES")
+kable(df_aces_mi, caption="ACES") 
 
 ## Economic deprivation
 df_ed_mi = df_ed %>% group_by(group) %>% summarise(income_mi=sum(is.na(Income)), enough_mi=sum(is.na(PAL2_5)), hhsize_mi=sum(is.na(PAL2_7)),povline_mi=sum(is.na(povline)))
@@ -154,21 +183,23 @@ kable(df_ed_mi, caption="Economic Deprivation")
 ```
 
 ## How many subjects are in each group?
-```{r Total per group, echo=FALSE}
+```{r total per group, echo=FALSE}
 
 # Merge dataframes 
+df_ed$SID=as.character(df_ed$SID)
+df_aces$SID=as.character(df_aces$SID)
 df=left_join(df_aces, df_ed, by=c("SID","group"))
-
-rm(list=setdiff(ls(), c("df")))
+#rm(list=setdiff(ls(), c("df", "df_demo")))
 
 # rename PAL2_5 to "enough"as in, did participants have enough to get by
-df = df %>% rename("enough"=PAL2_5, "hhsize"=PAL2_7)
+df = df %>% dplyr::rename("enough"=PAL2_5, "hhsize"=PAL2_7)
 
 # make group a factor
 df$group=as.factor(df$group)
 
 tbl=ddply(df, .(group), summarize, count=NROW(SID))
 kable(tbl, format="pandoc")
+
 ```
 
 ## What are the basic descriptive stats and distributions for our variables of interest? [Economic Deprivation]
@@ -219,14 +250,14 @@ ggplot(df, aes(x=ACE_hh_dysf_num, fill=group)) +
 tbl=ddply(df, .(group), summarize, mean_abuse=mean(ACE_ace_abuse_score, na.rm=TRUE), sd_abuse=sd(ACE_ace_abuse_score, na.rm=TRUE), mean_neglect=mean(ACE_ace_neglect_score, na.rm=TRUE), sd_neglect=sd(ACE_ace_neglect_score, na.rm=TRUE), mean_hh_dysf=mean(ACE_ace_hh_dysf_score, na.rm=TRUE), sd_hh_dysf=sd(ACE_ace_hh_dysf_score, na.rm=TRUE))
 kable(tbl)
 ```
+
 # Continuous Data
 ```{r correlations, warning=FALSE}
-df_pairs=cbind.data.frame(df$ACE_ace_abuse_score, df$ACE_ace_neglect_score, df$ACE_ace_hh_dysf_score, df$income_to_needs, df$group)
-colnames(df_pairs)=c("A","N","H","ItN", "group")
+df_pairs=cbind.data.frame(df$ACE_ace_abuse_score, df$ACE_ace_neglect_score,  df$group)
+colnames(df_pairs)=c("abuse","neglect", "group") #df$ACE_ace_hh_dysf_score, df$income_to_needs, "H","ItN",
 
 ggpairs(df_pairs)
 ```
-
 
 # Categorical Data
 ##What is the overlap of ACE scores across groups?
@@ -264,13 +295,20 @@ df_binary=as.data.frame(cbind(SID=df$SID,
 
 df_binary$SID=as.character(df_binary$SID)
 colnames(df_binary)=c("SID", "group", "A", "N", "H", "P")
-df_binary$group=factor(df_binary$group, levels=c("1","2","3"), labels=c("comm","dhs","jj"))
-df_binary$A=factor(df_binary$A, levels=c("0","1"), labels=c("","A"))
-df_binary$N=factor(df_binary$N, levels=c("0","1"), labels=c("","N"))
-df_binary$H=factor(df_binary$H, levels=c("0","1"), labels=c("","H"))
-df_binary$P=factor(df_binary$P, levels=c("0","1"), labels=c("","P"))
+df_binary$group=factor(df_binary$group, levels=c("1","2"), labels=c("comm","dhs"))
+df_binary$A=factor(df_binary$A, levels=c("FALSE","TRUE"), labels=c("","A"))
+df_binary$N=factor(df_binary$N, levels=c("FALSE","TRUE"), labels=c("","N"))
 
-ggplot(df_binary, aes(x=interaction(A,N,H,P), fill=interaction(A,N,H,P))) +
+# What is the distribution of the ACE abuse X neglect scores by group?
+ggplot(df_binary, aes(x=interaction(N, A), fill=interaction(N, A))) + 
+  geom_bar(position="dodge") + 
+  guides(fill=FALSE) +
+  scale_fill_discrete(name="",labels=c("None", "N", "A","N&A")) +
+  scale_x_discrete(labels=c("None", "N", "A","N&A")) + 
+  labs(x="categories")
+  #ggtitle(paste0("ACES items endorsed by group (N=", nrow(df), ")"))
+
+ggplot(df_binary, aes(x=interaction(A,N,H,P), fill=interaction(A,N,H,P))) + 
   geom_bar() + 
   theme(axis.text.x= element_text(size=rel(.7))) + 
   scale_fill_discrete(name="", labels=c("None", "A","N","AN", "H","AH","NH","ANH", "P","NP","ANP","HP","AHP","NHP","ANHP")) + 
@@ -295,6 +333,19 @@ ggplot(df_binary, aes(x=interaction(A,N,P), fill=interaction(A,N,P))) +
 
 #ggplot(df_binary, aes(x=interaction(A,N,H,P), y=interaction(A,N,H,P))) + 
  # geom_tile(aes(fill=interaction(A,N,H,P)))
+
+```
+
+## What are the basic descriptive stats and distributions for demographic variables?
+```{r descriptive stats}
+
+colnames(df_demo)[1] = ("SID")
+df=join(df_demo, df, by="SID")
+
+df_pairs=cbind.data.frame(df$ACE_ace_abuse_score, df$ACE_ace_neglect_score,  df$group, df$age, df$gender, df$iq)
+colnames(df_pairs)=c("abuse","neglect", "group", "age", "gender", "IQ") #df$ACE_ace_hh_dysf_score, df$income_to_needs, "H","ItN",
+
+ggpairs(df_pairs)
 
 ```
 
