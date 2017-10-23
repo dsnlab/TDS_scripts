@@ -61,7 +61,6 @@ df_gordon_models$mod_type= factor(df_gordon_models$mod_type,levels(df_gordon_mod
 
 # Model Selection Analysis
 ##Tables 
-
 ```{r descriptive tables}
 tbl_community= df_gordon_models %>% group_by(Community) %>% dplyr::summarise(mod_type= n())
 tbl_community$mod_type=round(tbl_community$mod_type/4,0)
@@ -101,6 +100,7 @@ ggplot(df_nonull, aes(x=mod_type, fill=Community)) +
 ```{r plot prop, include = TRUE}
 
 df_prop= df_gordon_models %>% group_by(seed, Community=as.factor(Community), mod_type) %>% tally # removed: complete(mod_type, nesting(Community)), fill=list(n=0), this include 0% in the tallies; 
+levels(df_prop$seed)=c("L hipp", "L amyg", "R hipp", "R amyg")
 df_prop$comm_total=df_prop$Community
 df_prop$comm_total=as.character(df_prop$comm_total)
 df_prop$comm_total=mapvalues(df_prop$comm_total, c("Auditory", "CinguloOperc", "CinguloParietal", "Default", "DorsalAttn", "FrontoParietal", "None", "RetrosplenialTemporal", "Salience", "SMhand", "SMmouth", "VentralAttn", "Visual"), tbl_community$mod_type)
@@ -121,8 +121,8 @@ ggplot(df_prop_nonull, aes(x=mod_type, y= pct, fill=Community)) + # fill=Communi
   geom_bar(position="dodge", stat="identity") +
   scale_x_discrete(labels=c("A", "N", "N & A", "N X A")) + # removed "null"
   facet_grid(seed~.) + 
-  ggtitle("Percent of model types by network and seed (no null models")
-
+  ggtitle("Percent of model types by network and seed (no null models)")
+    
 ## other ways of viewing proportioned data
 ggplot(df_gordon_models,aes(x = mod_type, fill = Community)) + 
   geom_bar(position = "fill") +
@@ -142,5 +142,79 @@ ggplot(df_nonull,aes(x = Community, fill = mod_type)) +
 
 # for reference, these are the levels
 print(levels(df_gordon_models$Community))
+
+```
+
+```{r investigate interactions}
+
+#reg_models <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/regmodels.RDS"))
+#reg_models$seed=gsub('(^\\w{4,9}_\\d{2,3})_.*','\\1', reg_models$coi)
+
+# identify COI target
+# reg_models$ParcelID= 
+# ifelse(startsWith((gsub('aseg_\\d\\d_(.*)','\\1',reg_models$coi)), "aseg"), # if it starts with aseg
+#         gsub('aseg_\\d\\d_(aseg_\\d\\d)','\\1',reg_models$coi), # then call coitarget aseg_##
+#         gsub('aseg_\\d\\d_\\wh.Parcel_(.*)','\\1',reg_models$coi)) # but if not, coitarget is the Gordon #parcel number
+
+## Match COI target with Gordon parcel #
+#reg_models=merge(reg_models, parcels, by="ParcelID", all.x=TRUE)
+
+# turn NA community values into "None"/factor #7
+# reg_models$Community= ifelse(is.na(reg_models$Community), 7, reg_models$Community)
+
+# reg_models$Community= as.factor(mapvalues(reg_models$Community, c(1:13), c("Auditory", "CinguloOperc", "CinguloParietal", "Default", "DorsalAttn", "FrontoParietal", "None", "RetrosplenialTemporal", "Salience", "SMhand", "SMmouth", "VentralAttn", "Visual")))
+
+# SUBSET DOWN TO MODELS WITH INTERACTION
+
+# reg_models$intercept= as.numeric(as.character(reg_models$intercept))
+# reg_models$n_beta= as.numeric(as.character(reg_models$n_beta))
+# reg_models$a_beta= as.numeric(as.character(reg_models$a_beta))
+# reg_models$aXn_beta= as.numeric(as.character(reg_models$aXn_beta))
+
+colnames(gordon_modelsDT)[2]="coi"
+
+df_int= gordon_modelsDT %>% filter(mod_type=="neglect and abuse interaction model") %>% merge(reg_models,  by="coi") %>% filter(mod_type.y=="neglect_abuse_int")
+
+load("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")
+load("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/demographicsDF.csv")
+
+i=1
+
+adf=merge(as.data.table(subset(gordon_coisDT, coi %in% df_int$coi)), # generate "a dataframe""
+                   demographicsDF,
+                   by='sub',
+                   allow.cartesian=T)
+
+adf$abuse=as.factor(adf$abuse)
+adf$neglect=as.factor(adf$neglect)
+
+adf$seed=gsub('(^\\w{4,9}_\\d{2,3})_.*','\\1', adf$coi)
+
+# identify COI target
+adf$ParcelID= 
+  ifelse(startsWith((gsub('aseg_\\d\\d_(.*)','\\1',adf$coi)), "aseg"), # if it starts with aseg
+         gsub('aseg_\\d\\d_(aseg_\\d\\d)','\\1',adf$coi), # then call coitarget aseg_##
+         gsub('aseg_\\d\\d_\\wh.Parcel_(.*)','\\1',adf$coi)) # but if not, coitarget is the Gordon #parcel number
+
+## Match COI target with Gordon parcel #
+adf=merge(adf, parcels, by="ParcelID", all.x=TRUE)
+
+# turn NA community values into "None"/factor #7
+adf$Community= ifelse(is.na(adf$Community), 7, adf$Community)
+
+adf$Community= as.factor(mapvalues(adf$Community, c(1:13), c("Auditory", "CinguloOperc", "CinguloParietal", "Default", "DorsalAttn", "FrontoParietal", "None", "RetrosplenialTemporal", "Salience", "SMhand", "SMmouth", "VentralAttn", "Visual")))
+
+adf$coi = as.factor(adf$coi)
+
+# lazy rush hard coded for simplicity :()
+for (i in 1:8) {
+    temp= adf %>% filter(Community==unique(adf$Community)[i]) %>% subset(coi %in% df_int$coi) %>% group_by(abuse, neglect, coi) %>% summarise(mean=mean(cor), se=sd(cor)/(sqrt(nrow(adf)/77)), community=unique(adf$Community)[i])
+    print(ggplot(temp, aes(x=interaction(abuse,neglect), y=mean, fill=interaction(abuse,neglect))) + 
+    geom_dotplot(binaxis="y", stackdir = "center", dotsize=.5, stackratio=.5) +
+    geom_line(group=temp$coi, size=.1) +
+    scale_x_discrete(labels=c("None", "A", "N", "N X A")) +
+    ggtitle(paste0("Interaction plot for ", unique(adf$Community)[i], " network")) + 
+    theme(legend.position = "none"))
+}
 
 ```

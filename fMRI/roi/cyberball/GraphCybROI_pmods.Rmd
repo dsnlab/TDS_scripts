@@ -87,18 +87,19 @@ for (i in 1:length(roiList)) {
   }
     print(ggplot(df.graph, aes(x = pmodRange)) +
           geom_line(aes(y = Increasing_Inclusion, colour = "to participant (inclusion)"),size=2) +
-          geom_line(aes(y=Increasing_Exclusion, colour = "not to participant (exclusion)"),size=2) + 
+          geom_line(aes(y=Increasing_Exclusion, colour = "not to participant (exclusion)"),size=2) +
           scale_color_manual("", breaks = c("to participant (inclusion)","not to participant (exclusion)"),values = c("to participant (inclusion)"="#9999CC","not to participant (exclusion)"="#66CC99")) + 
           scale_x_continuous(name="Increasing Throws", breaks=seq(-4,12,2)) +
           scale_y_continuous(name="Signal", limit = c(-2,2)) + #heme(axis.text=element_text(size=24)) + #axis.title=element_text(size=28), egend.text=element_text(size=28), legend.position="bottom") +
           scale_size_manual(values=c(1,4)) +
           ggtitle(roiList[i]) +
-          guides(colour = guide_legend(nrow=2,byrow=TRUE)))
+          guides(colour = guide_legend(nrow=2,byrow=TRUE)) + 
+       theme(legend.position = "none"))
     
     print(ggplot((filter(df.avg, roi==roiList[i])), aes(x=pmod, y=mean, fill=pmod)) + 
             geom_bar(stat="identity", aes(fill=pmod)) +
             geom_errorbar(aes(ymin=mean-1.96*sem, ymax=mean+1.96*sem), width=.3) +
-            ggtitle(paste("Mean beta estimates by condition for ROI", roiList[i], sep=" ")) +
+            ggtitle(paste("Mean beta estimates by condition for", roiList[i], sep=" ")) +
             guides(fill=FALSE) +
             scale_fill_manual(breaks=c("Increasing_Inclusion", "Increasing_Exclusion"), values= c("Increasing_Inclusion"="#9999CC","Increasing_Exclusion"="#66CC99")) +
               #breaks = c("Increasing_Inclusion","Increasing_Exclusion"),values =  + 
