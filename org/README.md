@@ -4,6 +4,8 @@ This contains helpers and information general to the entire projects, such as sc
 
 ## Dicom Convert
 
+You will run the dicom conversion locally on a machine that has McVerter and parallel installed. We've used Ralph before. You can mount the PSI file server in order to access the raw dicoms, and then you should copy the converted `nii` files back to the proper place on both the PSI file server and, if you need to do analysis, Talapas.
+
 Relevant files are
 
 - `dicom_convert_01-batch_convert_dicoms.sh` which gets options from
