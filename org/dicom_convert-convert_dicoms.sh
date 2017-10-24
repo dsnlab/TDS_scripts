@@ -30,7 +30,7 @@ SUBID=$3
 
 # EDIT IF NECESSARY ---
 DICOMDIR=$(echo "/Volumes/TDS/${DICOM_PATH}/${SUBID_DICOM}")
-OUTPUTDIR="/projects/dsnlab/tds/"
+OUTPUTDIR="/Volumes/TDS/nonbids_data"
 tasks=`cat /projects/dsnlab/tds/TDS_scripts/org/tasks_template.txt`
 # ---
 

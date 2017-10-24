@@ -1,0 +1,20 @@
+
+Converting 377
+
+Setting Up mcverter
+
+Study directory is /Volumes/TDS/nonbids_data
+
+Dicom directory is /Volumes/TDS/DICOMS/DICOMS_CR_BU/TDS377_20170808
+
+Converting anatomical mprage into nifti
+sMRI dir: /Volumes/TDS/nonbids_data/sMRI/subjects/377
+
+Converting resting state into 4D nifti
+rsfMRI dir: /Volumes/TDS/nonbids_data/rsfMRI/subjects/377
+For Series: 1.3.12.2.1107.5.2.19.45348.2017080813473010262375277.0.0.0
+Volume interval differs from RepetitionTime by > 0.05%
+TR: 0 retval: 0.780001
+For Series: 1.3.12.2.1107.5.2.19.45348.2017080813473010262375277.0.0.0
+Volume interval differs from RepetitionTime by > 0.05%
+TR: 0 retval: 0.780001
