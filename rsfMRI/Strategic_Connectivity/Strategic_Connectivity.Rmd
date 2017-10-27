@@ -560,8 +560,7 @@ anova(nullmodel,linmodel)
 summary(condition_model)
 
 # Time plotted across all runs by condition and sample
-if(resave_plots){condition.plot <-
-  ylg_timing %>%
+if(resave_plots){condition.plot <- ylg_timing %>%
   group_by(group, condition, run_index) %>% 
   filter(!condition=="Mock") %>%
   summarize(mean = mean(time),
@@ -1383,6 +1382,8 @@ Unpack condition models
 ```{r}
 redoprepheat=FALSE
 
+load(file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/connectivity_data/Social_noWBVR_FishersZ_coisDT.RDS")
+
 load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/connectivity_models/",
                                                "social_groupdiff_modelsDT.RDS"))
 
@@ -1649,6 +1650,123 @@ mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi int m
                                   "coi_condition_graph_",coi_name,".png"),
                   plot=coi_condition_graph, width=6, height=5, units='in', dpi=300)
          })
+
+### Graphs for ORI talk
+conditions_timing<-ylg_timing %>% filter(!condition=="Mock")
+condition_model=lme(time ~ condition, method="ML", random = ~1|sub, data=conditions_timing)
+condition<-c("Alone","Peer","Exclusion")
+data.pred = cbind.data.frame(condition)
+y.pred = predict(condition_model,
+                   data.pred,
+                   level=0)
+data.pred = cbind.data.frame(data.pred,
+                               y.pred)
+scale = 1.96
+designmat<-model.matrix(eval(eval(condition_model$call$fixed)[-2]),
+                          data.pred[-3]) #make design matrix
+SDvalue<-sqrt(diag(designmat %*% condition_model$varFix %*% t(designmat))) #calculate standard deviation for each point for each model
+y.lower<-y.pred-(scale*SDvalue) #calculate confidence intervals - lower
+y.upper<-y.pred+(scale*SDvalue) #calculate confidence intervals - upper
+data.pred = cbind.data.frame(data.pred,
+                               y.lower,
+                               y.upper)
+data.pred$time<-data.pred$y.pred
+
+# Time plotted across all runs by condition and sample
+condition.plot <- ylg_timing %>%
+  group_by(condition) %>% 
+  filter(!condition=="Mock") %>%
+  summarize(mean = mean(time),
+            sd = sd(time),
+            n = n(), 
+            se = sd/sqrt(n),
+            ci=qt(0.975, df=n-1)*se) %>%
+  mutate(time=mean)
+
+condition_plot<-ggplot(condition.plot,
+                  aes(x=condition, y=time)) +
+  geom_point(data=condition.plot,color="dodgerblue", size=0) +
+  geom_errorbar(data=condition.plot,aes(ymax=time + ci, ymin=time - ci),
+                width=0.5,color="dodgerblue") +
+  geom_line(data=data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour="dodgerblue")+
+  geom_ribbon(data=data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill="dodgerblue")+
+   geom_line(data=conditions_timing,
+             aes(group=sub,colour=sub),size=.2,alpha=0.5)+
+   geom_point(data=conditions_timing,
+              aes(group=sub,colour=sub),size=.5,alpha=0.5)+
+  labs(x='Condition', y='Run completion time\n(in minutes)') +
+  ylim(2,2.75)+
+  theme_kate()
+condition_plot
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/ORI/condition_behavior_model_withsubs.png"),
+       plot=condition_plot, width=5, height=4, units='in', dpi=300)
+
+# Predicted model
+if(resave_plots){model_time_by_condition<-ggplot(conditions_timing,
+                                aes(y=time,
+                                    x=condition,
+                                    group=1))+
+  geom_line(data=conditions_timing,
+            aes(colour="dodgerblue", group=sub),size=.2,alpha=0.2)+
+  geom_point(data=conditions_timing,
+             aes(colour="dodgerblue", group=sub),size=1,alpha=0.2)+
+  geom_line(data=foster.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[2])+
+  geom_ribbon(data=foster.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[2])+
+  geom_line(data=comm.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[1])+
+  geom_ribbon(data=comm.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[1])+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
+  labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="bottom")
+model_time_by_condition
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_condition.png"),
+       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)}
+
+
+if(resave_plots){model_time_by_condition<-ggplot(conditions_timing,
+                                aes(y=time,
+                                    x=condition,
+                                    group=1))+
+  geom_line(data=conditions_timing,
+            aes(colour="dodgerblue", group=sub),size=.2,alpha=0.2)+
+  geom_point(data=conditions_timing,
+             aes(colour="dodgerblue", group=sub),size=1,alpha=0.2)+
+  geom_line(data=foster.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[2])+
+  geom_ribbon(data=foster.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[2])+
+  geom_line(data=comm.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[1])+
+  geom_ribbon(data=comm.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[1])+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
+  labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="bottom")
+model_time_by_condition
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_condition.png"),
+       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)}
+
 
 
 
