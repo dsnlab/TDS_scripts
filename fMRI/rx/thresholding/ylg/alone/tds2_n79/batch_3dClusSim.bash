@@ -15,4 +15,6 @@ echo $dir
 acfparams=`Rscript --vanilla \
     /projects/dsnlab/tds/TDS_scripts/fMRI/rx/thresholding/AvgIndACFest.R $dir`
 echo "$acfparams"
-srun 3dClustSim -acf $acfparams -mask "${dir}/mask.nii"
+srun 3dClustSim -pthr .005 .001 .0001 \
+    -athr .05 .025 .01667 .0125 .01 .00833 .00625 \
+    -nodec -acf $acfparams -mask "${dir}/mask.nii"
