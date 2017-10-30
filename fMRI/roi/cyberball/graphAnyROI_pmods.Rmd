@@ -89,18 +89,18 @@ for (i in 1:length(roiList)){
 ```{r echo=FALSE}
 
 # Set up a null dataframe called df.graph for summarizing plot parameters
-df.graph=as.data.frame(matrix(rep(NA, length(pmodRange)*(totalPmods+1)), nrow=length(pmodRange), ncol=(totalPmods+1)))
+df.graph=as.data.frame(matrix(rep(NA, length(pmodRange)*(length(pmodNames)+1)), nrow=length(pmodRange), ncol=(length(pmodNames)+1)))
 colnames(df.graph)=c("pmodRange",pmodNames)
 df.graph$pmodRange=pmodRange
 
 # Populate df.graph and graph each pmod for each ROI
 for (i in 1:length(roiList)){
-    for (j in 1:totalPmods) {
-    df.graph[,j+1]=df_avg[j,i]*pmodRange
-    print(ggplot(df.graph, aes_string(x=pmodRange, y=pmodNames[j])) +
-      geom_point(shape=1) +
-      geom_smooth() +
-      ggtitle(paste("Graph of", pmodNames[j], "for", roiList[i], sep=" ")))
+    for (j in 1:length(pmodNames)) {
+      df.graph[,j+1] = (filter(df_avg, roiList==roiList[i] & pmod== pmodNames[j])$mean)*pmodRange
+      print(ggplot(df.graph, aes_string(x=pmodRange, y=pmodNames[j])) +
+              geom_point(shape=1) +
+              geom_smooth() +
+              ggtitle(paste("Graph of", pmodNames[j], "for", roiList[i], sep=" ")))
     }
 }
 

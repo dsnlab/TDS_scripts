@@ -35,11 +35,7 @@ library(data.table)
 if(!require(R.matlab)){
   install.packages('R.matlab',repos=osuRepo)
 }
-
-if(!require(chron)){
-  install.packages('R.matlab',repos=osuRepo)
-}
-library(chron)
+#library(chron)
 library(R.matlab)
 library(ggplot2)
 ```

@@ -14,11 +14,12 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 }
 lapply(packages, library, character.only = TRUE)
 
+options(scipen=6)
+
 rm(list=ls())
 ```
 
-
-Get behavioral data together
+# Get behavioral data together
 ```{r demographicsDF}
 # ACES
 
@@ -66,6 +67,8 @@ coi_subs$sub= as.character(coi_subs$sub)
 # how many subjects are in the analysis? (has behavior AND resting state data)
 sum(demographicsDF$sub %in% coi_subs$sub)
 
+save(demographicsDF, file="/Volumes/TDS/bids_data/derivatives/Cheng_SAP/demographicsDF.csv")
+
 ```
 
 Filter subs if needed
@@ -77,10 +80,10 @@ preprocessedcomplete<- preprocessedcomplete %>%
   filter(!sub=="sub-363")
 ```
 
-Get timecourses
+# Get timecourses
 ```{r timecourses}
 
-#detach("package:plyr", unload=TRUE) 
+detach("package:plyr", unload=TRUE) 
 
 if(!file.exists("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")) {
  numcores<-detectCores()[1]
@@ -204,16 +207,41 @@ system.time(gordon_coisDT <- do.call(bind_rows, gordon_cois) %>%
 
 ```
 
-
-Analysis
-```{r}
-rerun_models=TRUE
+# Analysis
+```{r run models}
 
 gordon_cois<-distinct(gordon_coisDT, coi)
+rerun_modelStat=FALSE
 
-if(rerun_models){
-  system.time(
-    gordon_models<-mclapply(X=as.list(gordon_cois$coi), 
+if(rerun_modelStat){
+# Create null_models and write parameters to a dataframe
+null_models<-mclapply(X=as.list(gordon_cois$coi), 
+      demodata=demographicsDF,
+      coidat=gordon_coisDT,
+      mc.cores=1,
+      FUN=function(coi_name, demodata, coidat){
+        adf<-merge(as.data.table(filter(coidat,coi==coi_name)), # generate "a dataframe""
+                   demodata,
+                   by='sub',
+                   allow.cartesian=T)
+        
+        null_mod_stats = # generate a null model and collect summary statistics on it
+          null_mod= (lme(cor ~ 1,
+                         method="ML",
+                         random = ~1|sub,
+                         data=adf)) %>% summary(.)  
+        coi=as.character(coi_name); mod_type="null" # save COI name and model type
+        AIC=null_mod_stats$AIC; BIC=null_mod_stats$BIC; logLik=null_mod_stats$logLik # save model fit stats
+        intercept=null_mod_stats[[4]]$fixed[[1]]; pval_intercept=null_mod_stats$tTable[1,5] # intercept + pvalue
+        n_beta=NA; pval_n=NA # neglect beta + pval
+        a_beta=NA; pval_a=NA # abuse beta + pval
+        aXn_beta=NA; pval_aXn=NA # neglect by abuse interaction term beta + pval
+        mod_summary_null<-as.data.frame(cbind(coi,mod_type,AIC,BIC,logLik,intercept,pval_intercept,n_beta,pval_n, a_beta, pval_a, aXn_beta, pval_aXn)) # save all of the above as a dataframe for each coi/model
+       })
+  null_test=rbindlist(null_models) # turn the list into a dataframe
+
+# Create abuse_models and write parameters to a dataframe
+abuse_models<-mclapply(X=as.list(gordon_cois$coi), 
       demodata=demographicsDF,
       coidat=gordon_coisDT,
       mc.cores=1,
@@ -222,131 +250,503 @@ if(rerun_models){
                    demodata,
                    by='sub',
                    allow.cartesian=T)
-        null_mod=(lme(cor ~ 1,
-                      method="ML",
-                      random = ~1|sub,
-                      data=adf))
-        neglect_mod=(lme(cor ~ neglect,
+        
+        abuse_mod_stats = 
+          abuse_mod= (lme(cor ~ abuse,
                          method="ML",
                          random = ~1|sub,
-                         data=adf))
-        neglect_abuse_main_mod=(lme(cor ~ neglect + abuse,
-                                    method="ML",
-                                    random = ~1|sub,
-                                    data=adf))
-        neglect_abuse_int_mod=(lme(cor ~ neglect * abuse,
+                         data=adf)) %>% summary(.)  
+        coi=as.character(coi_name); mod_type="abuse" 
+        AIC=abuse_mod_stats$AIC; BIC=abuse_mod_stats$BIC; logLik=abuse_mod_stats$logLik
+        intercept=abuse_mod_stats[[4]]$fixed[[1]]; pval_intercept=abuse_mod_stats$tTable[1,5]
+        n_beta=NA; pval_n=NA
+        a_beta=abuse_mod_stats$tTable[2]; pval_a=abuse_mod_stats$tTable[2, 5]
+        aXn_beta=NA; pval_aXn=NA
+        mod_summary_abuse<-as.data.frame(cbind(coi,mod_type,AIC,BIC,logLik,intercept,pval_intercept,n_beta,pval_n, a_beta, pval_a, aXn_beta, pval_aXn))
+      })
+abuse_test=rbindlist(abuse_models)
+
+# Create neglect_models and write parameters to a dataframe
+neglect_models<-mclapply(X=as.list(gordon_cois$coi), 
+      demodata=demographicsDF,
+      coidat=gordon_coisDT,
+      mc.cores=1,
+      FUN=function(coi_name, demodata, coidat){
+        adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                   demodata,
+                   by='sub',
+                   allow.cartesian=T)
+        
+        neglect_mod_stats = 
+          neglect_mod= (lme(cor ~ neglect,
+                         method="ML",
+                         random = ~1|sub,
+                         data=adf)) %>% summary(.)  
+        coi=as.character(coi_name); mod_type="neglect"
+        AIC=neglect_mod_stats$AIC; BIC=neglect_mod_stats$BIC; logLik=neglect_mod_stats$logLik
+        intercept=neglect_mod_stats[[4]]$fixed[[1]]; pval_intercept=neglect_mod_stats$tTable[1,5]
+        n_beta=neglect_mod_stats$tTable[2]; pval_n=neglect_mod_stats$tTable[2,5]
+        a_beta=NA; pval_a=NA
+        aXn_beta=NA; pval_aXn=NA
+        mod_summary_neglect<-as.data.frame(cbind(coi,mod_type,AIC,BIC,logLik,intercept,pval_intercept,n_beta,pval_n, a_beta, pval_a, aXn_beta, pval_aXn))
+       })
+  neglect_test=rbindlist(neglect_models)
+
+# Create neglect and abuse as main effects models and write parameters to a dataframe
+neglect_abuse_models<-mclapply(X=as.list(gordon_cois$coi), 
+      demodata=demographicsDF,
+      coidat=gordon_coisDT,
+      mc.cores=1,
+      FUN=function(coi_name, demodata, coidat){
+        adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                   demodata,
+                   by='sub',
+                   allow.cartesian=T)
+        
+        neglect_abuse_mod_stats = 
+          neglect_abuse_mod= (lme(cor ~ neglect + abuse,
+                         method="ML",
+                         random = ~1|sub,
+                         data=adf)) %>% summary(.)  
+        coi=as.character(coi_name); mod_type="neglect_abuse"
+        AIC=neglect_abuse_mod_stats$AIC; BIC=neglect_abuse_mod_stats$BIC; logLik=neglect_abuse_mod_stats$logLik; 
+        intercept=neglect_abuse_mod_stats[[4]]$fixed[[1]]; pval_intercept=neglect_abuse_mod_stats$tTable[1,5]
+        n_beta=neglect_abuse_mod_stats$tTable[2]; pval_n=neglect_abuse_mod_stats$tTable[2,5]
+        a_beta=neglect_abuse_mod_stats$tTable[3]; pval_a=neglect_abuse_mod_stats$tTable[3,5]
+        aXn_beta=NA; pval_aXn=NA
+        mod_summary_neglect_abuse<-as.data.frame(cbind(coi,mod_type,AIC,BIC,logLik,intercept,pval_intercept,n_beta,pval_n, a_beta, pval_a, aXn_beta, pval_aXn))
+       })
+  neglect_abuse_test=rbindlist(neglect_abuse_models)
+
+# Create a model with neglect and abuse as an interaction term
+neglect_abuse_int_models<-mclapply(X=as.list(gordon_cois$coi), 
+      demodata=demographicsDF,
+      coidat=gordon_coisDT,
+      mc.cores=1,
+      FUN=function(coi_name, demodata, coidat){
+        adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                   demodata,
+                   by='sub',
+                   allow.cartesian=T)
+        neglect_abuse_int_mod_stats = 
+          neglect_abuse_int_mod= (lme(cor ~ neglect*abuse,
+                         method="ML",
+                         random = ~1|sub,
+                         data=adf)) %>% summary(.)  
+        coi=as.character(coi_name); mod_type="neglect_abuse_int" 
+        AIC=neglect_abuse_int_mod_stats$AIC; BIC=neglect_abuse_int_mod_stats$BIC; logLik=neglect_abuse_int_mod_stats$logLik 
+        intercept=neglect_abuse_int_mod_stats[[4]]$fixed[[1]]; pval_intercept= neglect_abuse_int_mod_stats$tTable[1,5]
+        n_beta=neglect_abuse_int_mod_stats$tTable[2]; pval_n=neglect_abuse_int_mod_stats$tTable[2,5]
+        a_beta=neglect_abuse_int_mod_stats$tTable[3]; pval_a=neglect_abuse_int_mod_stats$tTable[3,5]
+        aXn_beta=neglect_abuse_int_mod_stats$tTable[4]; pval_aXn=neglect_abuse_int_mod_stats$tTable[4,5]
+        mod_summary_neglect_abuse_int<-as.data.frame(cbind(coi,mod_type,AIC,BIC,logLik,intercept,pval_intercept,n_beta,pval_n, a_beta, pval_a, aXn_beta, pval_aXn))
+       })
+  neglect_abuse_int_test=rbindlist(neglect_abuse_int_models)
+
+  reg_models <- rbind(null_test, neglect_test, abuse_test, neglect_abuse_test, neglect_abuse_int_test) # combine rows from all models into the reg_models df
+  print(object.size(reg_models), units='Mb')
+  saveRDS(reg_models, paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/regmodels.RDS"))
+} else {
+  reg_models <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/regmodels.RDS"))
+}
+
+```
+
+```{r test, include= FALSE}
+
+adf<-merge(as.data.table(filter(gordon_coisDT,coi=="aseg_17_aseg_18")),
+                   demographicsDF,
+                   by='sub',
+                   allow.cartesian=T)
+  null_mod=(lme(cor ~ 1,
+                      method="ML",
+                      random = ~1|sub,
+                     data=adf))
+        abuse_mod=(lme(cor ~ abuse,
+                       method= "ML",
+                       random= ~1|sub, 
+                       data=adf))
+        neglect_mod=(lme(cor ~ neglect,
+                        method="ML",
+                        random = ~1|sub,
+                        data=adf))
+       neglect_abuse_main_mod=(lme(cor ~ neglect + abuse,
                                    method="ML",
                                    random = ~1|sub,
                                    data=adf))
-        mod_comp<-anova(null_mod,neglect_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
-        if (mod_comp$'p-value'[4]<.05 &
-            mod_comp$AIC[4]<mod_comp$AIC[3] &
-            mod_comp$AIC[4]<mod_comp$AIC[2] &
-            mod_comp$AIC[4]<mod_comp$AIC[1]){
-          coiname<- as.character(coi_name)
-          chisq <- mod_comp[4,8]
-          pval <- round(mod_comp[4,9],4)
-          AIC <- mod_comp[4,4]
-          nullAIC <- mod_comp[1,4]
-          mod <- list(neglect_abuse_main_mod)
-          mod_type <- "neglect and abuse interaction model"
-          retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type,mod)
-          retDF<-as.data.table(retDF)
-        } else if (mod_comp$'p-value'[3]<.05 &
-                   mod_comp$AIC[3]<mod_comp$AIC[2] &
-                   mod_comp$AIC[3]<mod_comp$AIC[1]) {
-          coiname<- as.character(coi_name)
-          chisq <- mod_comp[3,8]
-          pval <- round(mod_comp[3,9],4)
-          AIC <- mod_comp[3,4]
-          nullAIC <- mod_comp[1,4]
-          mod <- list(neglect_abuse_main_mod)
-          mod_type <- "neglect and abuse main model"
-          retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type,mod)
-          as.data.table(retDF)
-        } else if (mod_comp$'p-value'[2]<.05 &
-                   mod_comp$AIC[2]<mod_comp$AIC[1]){
-          coiname<- as.character(coi_name)
-          chisq <- mod_comp[2,8]
-          pval <- round(mod_comp[2,9],4)
-          AIC <- mod_comp[2,4]
-          nullAIC <- mod_comp[1,4]
-          mod <- list(neglect_mod)
-          mod_type <- "neglect only model"
-          retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type,mod)
-          as.data.table(retDF)
-        } else {
-          coiname= as.character(coi_name)
-          chisq <- "NA"
-          pval <- "NA"
-          AIC <- "NA"
-          nullAIC <- mod_comp[1,4]
-          mod <- "NA"
-          mod_type <- "null model"
-          retDF<-cbind(coiname,chisq,pval,AIC,nullAIC,mod_type,mod)
-          as.data.table(retDF)
+       neglect_abuse_int_mod=(lme(cor ~ neglect*abuse,
+                                  method="ML",
+                                  random = ~1|sub,
+                                  data=adf))
+       
+       mod_comp <- anova(null_mod,neglect_mod,abuse_mod, neglect_abuse_main_mod,neglect_abuse_int_mod)
+       mod_comp_neglect<-anova(null_mod,neglect_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
+       mod_comp_abuse<-anova(null_mod,abuse_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
+
+       i=1 # based on model_fit_stats[i]
+       
+       if (which.min(mod_comp[[i+3]]) == 4 & 
+         any(round(mod_comp[,4]- mod_comp[4,4], 1) > 1.99)
+         
+         mod_comp_neglect[[4]][2]<mod_comp_neglect[[4]][3] &  # if AIC_neglect<AIC_abuse
+           mod_comp_neglect$`p-value`[2]<.05 & # neglect model is sig better than null
+           mod_comp_neglect$`p-value`[3]>.05 & # main effects model is not better than neglect
+           mod_comp_neglect$`p-value`[4]>.05) { # int model isn't significant based on LL
+         coiname<- "aseg_17_aseg_18" #as.character(coi_name)
+         chisq <- mod_comp[5,8]; pval <- round(mod_comp[5,9],4)
+         AIC <- mod_comp[5,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[5,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[5,6]; nulllogLik <- mod_comp[1,6]
+         mod <- list(neglect_abuse_int_mod); mod_type <- "neglect and abuse interaction model"
+         retDF<-cbind(coiname, criteria, chisq, pval, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type, mod)
+         as.data.table(retDF)
+       } else if (which.min(mod_comp[[i+3]]) == 4) {
+         coiname<- "aseg_17_aseg_18" #as.character(coi_name)
+         AIC <- mod_comp[4,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[4,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[4,6]; nulllogLik <- mod_comp[1,6]
+         mod <- list(neglect_abuse_main_mod); mod_type <- "neglect and abuse main model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type, mod)
+         as.data.table(retDF)
+       } else if (which.min(mod_comp[[i+3]]) == 3) {
+         coiname<- "aseg_17_aseg_18" #as.character(coi_name)
+         AIC <- mod_comp[3,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[3,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[3,6]; nulllogLik <- mod_comp[1,6]
+         mod <- list(abuse_mod); mod_type <- "abuse model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type, mod)
+         as.data.table(retDF) 
+         } else if (which.min(mod_comp[[i+3]]) == 2) {
+         coiname<- "aseg_17_aseg_18" #as.character(coi_name)
+         AIC <- mod_comp[2,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[2,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[2,6]; nulllogLik <- mod_comp[1,6]
+         mod <- list(neglect_mod); mod_type <- "neglect model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type, mod)
+         as.data.table(retDF) 
+         } else if (which.min(mod_comp[[i+3]]) == 1) {
+         coiname<- "aseg_17_aseg_18" #as.character(coi_name)
+         AIC <- "NA" ; nullAIC <- mod_comp[1,4]
+         BIC <- "NA" ; nullBIC <- mod_comp[1,5]
+         logLik <- "NA" ; nulllogLik <- mod_comp[1,6]
+         mod <- list(null_mod); mod_type <- "null model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type, mod)
+         as.data.table(retDF) 
+         }
+
+```
+
+```{r model comparison AIC}
+
+rerun_modelCompare=TRUE
+model_fit_stats=c("AIC", "BIC", "logLik")
+
+if(rerun_modelCompare){
+  system.time(
+    gordon_models_AIC<-mclapply(X=as.list(gordon_cois$coi), 
+      demodata=demographicsDF,
+      coidat=gordon_coisDT,
+      mc.cores=1,
+      FUN=function(coi_name, demodata, coidat){
+        # Create dataframe 
+        adf<-merge(as.data.table(filter(gordon_coisDT,coi==coi_name)),
+                   demodata,
+                   by='sub',
+                   allow.cartesian=T)
+        # Create models
+        null_mod=(lme(cor ~ 1,
+                      method="ML",
+                      random = ~ 1|sub,
+                     data=adf))
+        abuse_mod=(lme(cor ~ abuse,
+                       method= "ML",
+                       random= ~1|sub, 
+                       data=adf))
+        neglect_mod=(lme(cor ~ neglect,
+                        method="ML",
+                        random = ~1|sub,
+                        data=adf))
+       neglect_abuse_main_mod=(lme(cor ~ neglect + abuse,
+                                   method="ML",
+                                   random = ~1|sub,
+                                   data=adf))
+       neglect_abuse_int_mod=(lme(cor ~ neglect*abuse,
+                                  method="ML",
+                                  random = ~1|sub,
+                                  data=adf))
+       # Compare models
+      mod_comp<-anova(null_mod,neglect_mod,abuse_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
+       
+      # Determine which model is the best fit
+       i=1 # based on model_fit_stats[i], in this case AIC
+       criteria <- model_fit_stats[i]
+       if (which.min(mod_comp[[i+3]]) == 5 &&
+           any(round(mod_comp[,4]- mod_comp[5,4], 1) > 1.99)) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[5,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[5,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[5,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(neglect_abuse_int_mod); 
+         mod_type <- "neglect and abuse interaction model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF)
+       } else if (which.min(mod_comp[[i+3]][-5]) == 4 &&
+           any(round(mod_comp[,4]- mod_comp[4,4], 1) > 1.99)) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[4,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[4,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[4,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(neglect_abuse_main_mod); 
+         mod_type <- "neglect and abuse main model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF)
+       } else if (which.min(mod_comp[[i+3]][-4:-5]) == 3 &&
+           any(round(mod_comp[,4]- mod_comp[3,4], 1) > 1.99)) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[3,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[3,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[3,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(abuse_mod); 
+         mod_type <- "abuse model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF) 
+         } else if (which.min(mod_comp[[i+3]])[-3:-5] == 2 &&
+                    any(round(mod_comp[,4]- mod_comp[2,4], 1) > 1.99)) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[2,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[2,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[2,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(neglect_mod); 
+         mod_type <- "neglect model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF) 
+         } else {
+         coiname<- as.character(coi_name)
+         AIC <- "NA" ; nullAIC <- mod_comp[1,4]
+         BIC <- "NA" ; nullBIC <- mod_comp[1,5]
+         logLik <- "NA" ; nulllogLik <- mod_comp[1,6]
+         #mod <- list(null_mod); 
+         mod_type <- "null model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF) 
+         }
         }
-      }
     ))
-  print(object.size(gordon_models), units='Mb')
-  gordon_modelsDT <- rbindlist(gordon_models) #make this into a dataframe
-  print(object.size(gordon_modelsDT), units='Mb')
-  rm(gordon_models);gc()
-  #saveRDS(gordon_modelsDT, paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT.RDS"))
+  print(object.size(gordon_models_AIC), units='Mb')
+  gordon_modelsDT_AIC <- rbindlist(gordon_models_AIC) #make this into a dataframe
+  print(object.size(gordon_modelsDT_AIC), units='Mb')
+  rm(gordon_models_AIC);gc()
+  saveRDS(gordon_modelsDT_AIC, "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC.RDS")
 } else {
-  #gordon_modelsDT <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT.RDS"))
+  readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC.RDS")
 }
 
-# Search for subgenual ACC parcels
-
-
 ```
 
-```{r Network Analysis}
+```{r model comparison BIC}
 
-# identify the network of each COI target
+rerun_modelCompare=FALSE
+model_fit_stats=c("AIC", "BIC", "LL")
 
-## identify COI seed
-gordon_modelsDT$seed=gsub('(^\\w{4,9}_\\d{2,3})_.*','\\1',gordon_modelsDT$coiname)
-
-## identify COI target
-gordon_modelsDT$ParcelID= 
-  ifelse(startsWith((gsub('aseg_\\d\\d_(.*)','\\1',gordon_modelsDT$coiname)), "aseg"), # if it starts with aseg
-       gsub('aseg_\\d\\d_(aseg_\\d\\d)','\\1',gordon_modelsDT$coiname), # then call coitarget aseg_##
-       gsub('aseg_\\d\\d_\\wh.Parcel_(.*)','\\1',gordon_modelsDT$coiname)) # but if not, coitarget is the Gordon parcel number
-
-## Load Gordon parcel data
-parcels=read.csv("/Users/theresacheng/projects/dsnlab/tds/TDS_scripts/rsfMRI/Cheng_SAP/Parcels/Parcels.csv")
-parcels$ParcelID=as.character(parcels$ParcelID)
-
-## Match COI target with Gordon parcel #
-gordon_modelsDT=merge(gordon_modelsDT, parcels, by="ParcelID", all.x=TRUE)
-
-# Display the Data
-
-## generate a data frame to plot
-gordon_modelsDT$Community=as.character(gordon_modelsDT$Community) # turn community type into a character
-df_gordon_models= data.frame(cbind("ParcelID"=unlist(gordon_modelsDT$ParcelID), "seed"=unlist(gordon_modelsDT$seed), "mod_type"=unlist(gordon_modelsDT$mod_type), "Community"=unlist(gordon_modelsDT$Community))) 
-df_gordon_models$Community=as.factor(df_gordon_models$Community) # turn community back into a factor
-
-## Make a table 
-
-# calculate percentages
-tbl=group_by(df_gordon_models, seed, mod_type, Community) %>% tally %>% 
-  spread(Community, n, fill = 0)
-kable(tbl, format="pandoc")
-
-tbl=group_by(df_gordon_models, seed, mod_type) %>% tally %>% 
-  spread(seed, n, fill = 0)
-kable(tbl, format="pandoc")
-
-# Plot
-df_gordon_models=filter(df_gordon_models, df_gordon_models$mod_type!="null model") # remove those best explained by the null model
-
-## make the plot
-ggplot(df_gordon_models, aes(x=mod_type, fill=Community)) +
-  geom_bar(position="dodge") +
-  scale_x_discrete(labels=c("N by A", "N and A","N only","null")) +
-  facet_grid(seed~.)
-
+if(rerun_modelCompare){
+  system.time(
+    gordon_models_BIC<-mclapply(X=as.list(gordon_cois$coi), 
+      demodata=demographicsDF,
+      coidat=gordon_coisDT,
+      mc.cores=1,
+      FUN=function(coi_name, demodata, coidat){
+        # Create dataframe 
+        adf<-merge(as.data.table(filter(gordon_coisDT,coi==coi_name)),
+                   demodata,
+                   by='sub',
+                   allow.cartesian=T)
+        # Create models
+        null_mod=(lme(cor ~ 1,
+                      method="ML",
+                      random = ~1|sub,
+                     data=adf))
+        abuse_mod=(lme(cor ~ abuse,
+                       method= "ML",
+                       random= ~1|sub, 
+                       data=adf))
+        neglect_mod=(lme(cor ~ neglect,
+                        method="ML",
+                        random = ~1|sub,
+                        data=adf))
+       neglect_abuse_main_mod=(lme(cor ~ neglect + abuse,
+                                   method="ML",
+                                   random = ~1|sub,
+                                   data=adf))
+       neglect_abuse_int_mod=(lme(cor ~ neglect*abuse,
+                                  method="ML",
+                                  random = ~1|sub,
+                                  data=adf))
+       # Compare models
+      mod_comp<-anova(null_mod,neglect_mod,abuse_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
+       
+      # Determine which model is the best fit
+       i=2 # based on model_fit_stats[i], in this case BIC
+       criteria <- model_fit_stats[i]
+       if (which.min(mod_comp[[i+3]]) == 5) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[5,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[5,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[5,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(neglect_abuse_int_mod); 
+         mod_type <- "neglect and abuse interaction model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF)
+       } else if (which.min(mod_comp[[i+3]]) == 4) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[4,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[4,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[4,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(neglect_abuse_main_mod); 
+         mod_type <- "neglect and abuse main model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF)
+       } else if (which.min(mod_comp[[i+3]]) == 3) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[3,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[3,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[3,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(abuse_mod); 
+         mod_type <- "abuse model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF) 
+         } else if (which.min(mod_comp[[i+3]]) == 2) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[2,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[2,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[2,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(neglect_mod); 
+         mod_type <- "neglect model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF) 
+         } else if (which.min(mod_comp[[i+3]]) == 1) {
+         coiname<- as.character(coi_name)
+         AIC <- "NA" ; nullAIC <- mod_comp[1,4]
+         BIC <- "NA" ; nullBIC <- mod_comp[1,5]
+         logLik <- "NA" ; nulllogLik <- mod_comp[1,6]
+         #mod <- list(null_mod); 
+         mod_type <- "null model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, BIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF) 
+         }
+        }
+    ))
+  print(object.size(gordon_models_BIC), units='Mb')
+  gordon_modelsDT_BIC <- rbindlist(gordon_models_BIC) #make this into a dataframe
+  print(object.size(gordon_modelsDT_BIC), units='Mb')
+  rm(gordon_models_BIC);gc()
+  saveRDS(gordon_modelsDT_BIC, "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_BIC.RDS")
+} else {
+  BIC=readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_BIC.RDS")
+}
 ```
+
+```{r model comparison logLik}
+
+rerun_modelCompare=FALSE
+model_fit_stats=c("AIC", "BIC", "logLik")
+
+if(rerun_modelCompare){
+  system.time(
+    gordon_models_LL<-mclapply(X=as.list(gordon_cois$coi), 
+      demodata=demographicsDF,
+      coidat=gordon_coisDT,
+      mc.cores=1,
+      FUN=function(coi_name, demodata, coidat){
+        # Create dataframe 
+        adf<-merge(as.data.table(filter(gordon_coisDT,coi==coi_name)),
+                   demodata,
+                   by='sub',
+                   allow.cartesian=T)
+        # Create models
+        null_mod=(lme(cor ~ 1,
+                      method="ML",
+                      random = ~1|sub,
+                     data=adf))
+        abuse_mod=(lme(cor ~ abuse,
+                       method= "ML",
+                       random= ~1|sub, 
+                       data=adf))
+        neglect_mod=(lme(cor ~ neglect,
+                        method="ML",
+                        random = ~1|sub,
+                        data=adf))
+       neglect_abuse_main_mod=(lme(cor ~ neglect + abuse,
+                                   method="ML",
+                                   random = ~1|sub,
+                                   data=adf))
+       neglect_abuse_int_mod=(lme(cor ~ neglect*abuse,
+                                  method="ML",
+                                  random = ~1|sub,
+                                  data=adf))
+       # Compare models
+      mod_comp<-anova(null_mod,neglect_mod,abuse_mod,neglect_abuse_main_mod,neglect_abuse_int_mod)
+       
+      # Determine which model is the best fit
+       i=3 # based on model_fit_stats[i], in this case AIC
+       criteria <- model_fit_stats[i]
+       if (mod_comp$'p-value'[4]<.05 {
+         coiname<- as.character(coi_name)
+         chisq=
+         pval=
+        
+         AIC <- mod_comp[5,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[5,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[5,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(neglect_abuse_int_mod); 
+         mod_type <- "neglect and abuse interaction model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF)
+       } else if (which.min(mod_comp[[i+3]]) == 4) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[4,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[4,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[4,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(neglect_abuse_main_mod); 
+         mod_type <- "neglect and abuse main model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF)
+       } else if (which.min(mod_comp[[i+3]]) == 3) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[3,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[3,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[3,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(abuse_mod); 
+         mod_type <- "abuse model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF) 
+         } else if (which.min(mod_comp[[i+3]]) == 2) {
+         coiname<- as.character(coi_name)
+         AIC <- mod_comp[2,4]; nullAIC <- mod_comp[1,4]
+         BIC <- mod_comp[2,5]; nullBIC <- mod_comp[1,5]
+         logLik <- mod_comp[2,6]; nulllogLik <- mod_comp[1,6]
+         #mod <- list(neglect_mod); 
+         mod_type <- "neglect model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF) 
+         } else if (which.min(mod_comp[[i+3]]) == 1) {
+         coiname<- as.character(coi_name)
+         AIC <- "NA" ; nullAIC <- mod_comp[1,4]
+         BIC <- "NA" ; nullBIC <- mod_comp[1,5]
+         logLik <- "NA" ; nulllogLik <- mod_comp[1,6]
+         #mod <- list(null_mod); 
+         mod_type <- "null model"
+         retDF<-cbind(coiname, criteria, AIC, nullAIC, nullBIC, logLik, nulllogLik, mod_type)
+         as.data.table(retDF) 
+         }
+        }
+    ))
+  print(object.size(gordon_models_LL), units='Mb')
+  gordon_modelsDT_LL <- rbindlist(gordon_models_LL) #make this into a dataframe
+  print(object.size(gordon_modelsDT_LL), units='Mb')
+  rm(gordon_models_LL);gc()
+  saveRDS(gordon_modelsDT_LL, "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_LL.RDS")
+} else {
+  readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_LL.RDS")
+}
+```
+

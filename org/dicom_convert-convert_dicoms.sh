@@ -1,5 +1,18 @@
 #!/bin/bash
 #
+# This script is called by dicom_convert_01-batch_convert_dicoms.sh.
+# It takes 3 command line arguments:
+#   DICOM_PATH is the path _on psi_ of the dicoms. This will be added
+#     to the local mount point like "/Volumes/TDS/${DICOM_PATH}/".
+#   SUBID_DICOM is the specific sub-directory containing the dicom
+#     for that subject. It will be added to the path like
+#     "/Volumes/TDS/${DICOM_PATH}/${SUBID_DICOM}".
+#   SUBID is the clean subject id that will be used in creating new
+#     directories.
+#
+# You should ensure that the call in dicom_convert_01-batch_convert_dicoms.sh
+# makes sense. You should also edit the
+#
 # This script uses the lovely mcverter tool 
 # to convert dicoms to niftis. First, you'll
 # need to make sure the sequences and directory
@@ -9,22 +22,25 @@
 # Be sure to write your task names in tasks.txt
 #
 
+# DO NOT EDIT ---
 DICOM_PATH=$1
 SUBID_DICOM=$2
 SUBID=$3
+# ---
 
-## First make sure these directories are right ##
+# EDIT IF NECESSARY ---
 DICOMDIR=$(echo "/Volumes/TDS/${DICOM_PATH}/${SUBID_DICOM}")
-OUTPUTDIR="/projects/dsnlab/tds/"
+OUTPUTDIR="/Volumes/TDS/nonbids_data"
 tasks=`cat /projects/dsnlab/tds/TDS_scripts/org/tasks_template.txt`
+# ---
 
-## No need to change this part ##
+
+# DO NOT EDIT ---
 echo -e "\nConverting ${SUBID}"
 echo -e "\nSetting Up mcverter"
 #module load mriconvert
 echo -e "\nStudy directory is $OUTPUTDIR"
 echo -e "\nDicom directory is $DICOMDIR"
-########################
 
 ## Run the modules present in your study ##
 # possible modules =(mprage SVC DRS field Resting)

@@ -29,6 +29,33 @@ getwd()
 workdir=as.character(read.table((paste0(getwd(),"/org/workingdirectory.txt")))[[1]])
 ```
 
+Set graph/plot options
+```{r}
+theme_kate <- function () { 
+    theme_bw() +
+  theme_minimal(base_size = 14, base_family = "Avenir") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="none")
+}
+
+resave_plots=FALSE
+
+heatmap_color_palette <- colorRampPalette(c("#fde0dd", "#fa9fb5", "#c51b8a"))
+
+group_labels<-c("community"='Community', 
+                "foster"="Child Welfare Services")
+
+colour_labels=c("#fa9fb5", "#ae017e")
+
+purple_colours=c("#bcbddc","#756bb1","#54278f")
+
+group_colors <- c("community" = "#fa9fb5", "foster" = "#ae017e")
+```
+
 Extract rsfcMRI preprocessing stats
 ```{r Extract and plot run times, echo=TRUE}
 # Set directory
@@ -231,19 +258,15 @@ t.test(qualtrics_data$ace_maltreatment~qualtrics_data$group)
 
 ##### Plots ######
 
-# Make group labels
-group_labels<-c("community"='Community', 
-                "foster"="Child Welfare Services")
-
 # Age by gender by group sampling density (Kate Style)
-gender_age_group_density<-ggplot(hist_by_age_gender,
+if(resave_plots){gender_age_group_density<-ggplot(hist_by_age_gender,
                           aes(x=s2_age, fill=gender)) + 
   xlab("Age") +
-  geom_density(alpha=.3) +
+  geom_density(alpha=.5) +
   facet_grid(.~group,
              scales='free',
              labeller=as_labeller(group_labels))+
-  scale_fill_manual(values=c('deeppink', 'dodgerblue'))+
+  scale_fill_manual(values=c("deeppink","dodgerblue"))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
   theme(axis.line = element_line(colour = "black"),
@@ -253,18 +276,18 @@ gender_age_group_density<-ggplot(hist_by_age_gender,
         panel.background = element_blank(),
         legend.position="right")
 gender_age_group_density
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/gender_age_group_density.png"),
-#       plot=gender_age_group_density, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/gender_age_group_density.png"),
+      plot=gender_age_group_density, width=6, height=5, units='in', dpi=300)}
 
 
 # Boxplots for demographics 
-box_age_group<-ggplot(qualtrics_data,
+if(resave_plots){box_age_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=s2_age,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   labs(y='Age', fill='Sample') +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -276,17 +299,17 @@ box_age_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_age_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_age_group.png"),
-#       plot=box_age_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_age_group.png"),
+       plot=box_age_group, width=6, height=5, units='in', dpi=300)}
 
-box_pds_group<-ggplot(qualtrics_data,
+if(resave_plots){box_pds_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=PDS_mean_score,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   labs(y='Pubertal development', fill='Sample') +
   scale_y_continuous(limits=c(1,4)) +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -298,16 +321,16 @@ box_pds_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_pds_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_pds_group.png"),
-#       plot=box_pds_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_pds_group.png"),
+       plot=box_pds_group, width=6, height=5, units='in', dpi=300)}
 
-box_iq_group<-ggplot(qualtrics_data,
+if(resave_plots){box_iq_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=fsiq2,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   labs(y='IQ', fill='Sample') +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -319,17 +342,17 @@ box_iq_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_iq_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_iq_group.png"),
-#       plot=box_iq_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_iq_group.png"),
+      plot=box_iq_group, width=6, height=5, units='in', dpi=300)}
 
-box_adversity_group<-ggplot(qualtrics_data,
+if(resave_plots){box_adversity_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=ace_total,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   scale_y_continuous(breaks=c(0,5,10)) +
   labs(y='Adversity', fill='Sample') +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -341,16 +364,16 @@ box_adversity_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_adversity_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_adversity_group.png"),
-#       plot=box_adversity_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_adversity_group.png"),
+       plot=box_adversity_group, width=6, height=5, units='in', dpi=300)}
 
-box_maltreatment_group<-ggplot(qualtrics_data,
+if(resave_plots){box_maltreatment_group<-ggplot(qualtrics_data,
        aes(x=group,
            y=ace_maltreatment,
            fill=group)) +
   geom_boxplot(aes(fill=group)) + 
   labs(y='Maltreatment', fill='Sample') +
-  scale_fill_manual(values=c('maroon1', 'maroon4'),
+  scale_fill_manual(values=colour_labels,
                       labels=c('Community', 'Child Welfare Services'))+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
@@ -362,8 +385,8 @@ box_maltreatment_group<-ggplot(qualtrics_data,
         panel.background = element_blank(),
         legend.position="right")
 box_maltreatment_group
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_maltreatment_group.png"),
-#       plot=box_maltreatment_group, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/box_maltreatment_group.png"),
+       plot=box_maltreatment_group, width=6, height=5, units='in', dpi=300)}
 ```
 
 Analyze behavior data
@@ -372,10 +395,8 @@ Analyze behavior data
 #### Graph it ########
 ### Time across 8 runs ###
 
-group_colors <- c("community" = "maroon1", "foster" = "maroon4")
-
 # Time plotted across all runs by SAMPLE
-time.plot <-
+if(resave_plots){time.plot <-
   ylg_timing %>%
   group_by(group, condition, run_index) %>% 
   summarize(mean = mean(time),
@@ -404,8 +425,8 @@ time_plot<-ggplot(time.plot,
         panel.background = element_blank(),
         legend.position="bottom")
 time_plot
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_runindex_group.png"),
-#       plot=time_plot, width=7, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_runindex_group.png"),
+       plot=time_plot, width=7, height=5, units='in', dpi=300)}
 
 
 #################
@@ -479,26 +500,25 @@ foster.data.pred = cbind.data.frame(foster.data.pred,
 foster.data.pred$time<-foster.data.pred$y.pred
 
 ## Graph it yo!
-group_colors <- c("community" = "maroon1", "foster" = "maroon4")
 
-model_time_by_runindex<-ggplot(ylg_timing,
+if(resave_plots){model_time_by_runindex<-ggplot(ylg_timing,
                          aes(y=time,
                              x=run_index))+
-  geom_line(data=comm.data.pred,
-              aes(x=run_index, y=time), size=1, colour="maroon1")+
-  geom_ribbon(data=comm.data.pred,
-              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill="maroon1")+
-  geom_line(data=foster.data.pred,
-              aes(x=run_index, y=time), size=1, colour="maroon4")+
-  geom_ribbon(data=foster.data.pred,
-              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill="maroon4")+
   geom_line(data=ylg_timing,
             aes(colour=group, group=sub),size=.2,alpha=0.2)+
-  scale_fill_manual(values = group_colors)+
-  scale_colour_manual(values = group_colors)+
   geom_point(data=ylg_timing,
              aes(colour=group, group=sub),size=1,alpha=0.2)+
+  geom_line(data=comm.data.pred,
+              aes(x=run_index, y=time), size=1, colour=colour_labels[1])+
+  geom_ribbon(data=comm.data.pred,
+              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill=colour_labels[1])+
+  geom_line(data=foster.data.pred,
+              aes(x=run_index, y=time), size=1, colour=colour_labels[2])+
+  geom_ribbon(data=foster.data.pred,
+              aes(ymin=y.lower, ymax=y.upper), alpha=0.4, fill=colour_labels[2])+
    labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample')+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
   theme(axis.line = element_line(colour = "black"),
@@ -508,8 +528,8 @@ model_time_by_runindex<-ggplot(ylg_timing,
         panel.background = element_blank(),
         legend.position="bottom")
 model_time_by_runindex
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_runindex.png"),
-#       plot=model_time_by_runindex, width=7, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_runindex.png"),
+       plot=model_time_by_runindex, width=7, height=5, units='in', dpi=300)}
 
 
 ###################################################################
@@ -540,8 +560,7 @@ anova(nullmodel,linmodel)
 summary(condition_model)
 
 # Time plotted across all runs by condition and sample
-condition.plot <-
-  ylg_timing %>%
+if(resave_plots){condition.plot <- ylg_timing %>%
   group_by(group, condition, run_index) %>% 
   filter(!condition=="Mock") %>%
   summarize(mean = mean(time),
@@ -549,7 +568,8 @@ condition.plot <-
             n = n(), 
             se = sd/sqrt(n),
             ci=qt(0.975, df=n-1)*se)
-condition_plot<-ggplot(condition.plot,
+
+if(resave_plots){condition_plot<-ggplot(condition.plot,
                   aes(x=run_index, y=mean, color=group)) +
   geom_point(position=position_dodge(.1), size=3) +
   geom_line(aes(group=group), size=1) +
@@ -570,8 +590,8 @@ condition_plot<-ggplot(condition.plot,
         panel.background = element_blank(),
         legend.position="bottom")
 condition_plot
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_condition_runindex_group.png"),
-#       plot=condition_plot, width=7, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/time_by_condition_runindex_group.png"),
+       plot=condition_plot, width=7, height=5, units='in', dpi=300)}
 
 # Predicted model
 # generate community sample models
@@ -624,28 +644,26 @@ foster.data.pred = cbind.data.frame(foster.data.pred,
                                y.upper)
 foster.data.pred$time<-foster.data.pred$y.pred
 
-## Graph it yo!
-group_colors <- c("community" = "maroon1", "foster" = "maroon4")
 
-model_time_by_condition<-ggplot(conditions_timing,
-                         aes(y=time,
-                             x=condition,
-                             group=1))+
-  geom_line(data=comm.data.pred,
-              aes(x=condition, y=time,group=1), size=1, colour="maroon1")+
-  geom_ribbon(data=comm.data.pred,
-              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill="maroon1")+
-  geom_line(data=foster.data.pred,
-              aes(x=condition, y=time,group=1), size=1, colour="maroon4")+
-  geom_ribbon(data=foster.data.pred,
-              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill="maroon4")+
+if(resave_plots){model_time_by_condition<-ggplot(conditions_timing,
+                                aes(y=time,
+                                    x=condition,
+                                    group=1))+
   geom_line(data=conditions_timing,
             aes(colour=group, group=sub),size=.2,alpha=0.2)+
-  scale_fill_manual(values = group_colors)+
-  scale_colour_manual(values = group_colors)+
   geom_point(data=conditions_timing,
              aes(colour=group, group=sub),size=1,alpha=0.2)+
-   labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
+  geom_line(data=foster.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[2])+
+  geom_ribbon(data=foster.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[2])+
+  geom_line(data=comm.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[1])+
+  geom_ribbon(data=comm.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[1])+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
+  labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
   theme_bw() +
   theme_minimal(base_size = 20, base_family = "Arial") +
   theme(axis.line = element_line(colour = "black"),
@@ -656,7 +674,7 @@ model_time_by_condition<-ggplot(conditions_timing,
         legend.position="bottom")
 model_time_by_condition
 ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_condition.png"),
-       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)
+       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)}
 
 
 
@@ -1144,11 +1162,13 @@ if(redoprepheat){
 
 # Make a heat map YO!
 prepheat<-read.csv(file=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/tables/",
-                                          "strategy_heatmap.csv"),header=TRUE,stringsAsFactors = FALSE)
+                                          "strategy_heatmap_int_percent.csv"),header=TRUE,stringsAsFactors = FALSE)
 
 strategy_heatmap<-ggplot(data = prepheat,
-       aes(x=seed_community, y=target_community, fill=ratio)) + 
-  scale_fill_distiller(palette = "RdPu")+
+       aes(x=seed_community, y=target_community, fill=percent_interaction)) + 
+  scale_fill_distiller(palette = "PuRd",
+                       limits=c(.5,1))+
+  labs(fill="ratio")+
   geom_tile()+
   theme_minimal()+ 
  theme(
@@ -1160,8 +1180,8 @@ strategy_heatmap<-ggplot(data = prepheat,
   panel.background = element_blank(),
   axis.ticks = element_blank())+
  coord_fixed()
-#ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/strategy_corrmatrix.png"),
-#       plot=strategy_heatmap, width=6, height=5, units='in', dpi=300)
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/strategy_corrmatrix_int_percent.png"),
+       plot=strategy_heatmap, width=6, height=5, units='in', dpi=300)
 
 ## Make example graph
 coi_name="lh.Parcel_71_rh.Parcel_173" # 
@@ -1261,36 +1281,36 @@ corfoster=seq((mean((adf %>% filter(group=="foster"))$cor)-sd((adf %>% filter(gr
              ylim(2,3)+
              labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample') +
              geom_line(data=(adf %>% filter(group=="community")),
-                       aes(group=sub),size=.2,alpha=0.1, colour="maroon1")+
+                       aes(group=sub),size=.2,alpha=0.1, colour=group_colors[1])+
              geom_point(data=(adf %>% filter(group=="community")),
-                        aes(group=sub),size=.7,alpha=0.1, colour="maroon1")+
+                        aes(group=sub),size=.7,alpha=0.1, colour=group_colors[1])+
            geom_line(data=as.data.frame(comm_graphs[[1]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink") +
+                     colour=purple_colours[1]) +
              geom_ribbon(data=as.data.frame(comm_graphs[[1]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink") +
+                         alpha=0.2, fill=purple_colours[1]) +
            geom_line(data=as.data.frame(comm_graphs[[2]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink3") +
+                     colour=purple_colours[2]) +
              geom_ribbon(data=as.data.frame(comm_graphs[[2]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink3") +
+                         alpha=0.2, fill=purple_colours[2]) +
                         geom_line(data=as.data.frame(comm_graphs[[3]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink4") +
+                     colour=purple_colours[3]) +
              geom_ribbon(data=as.data.frame(comm_graphs[[3]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink4") +
+                         alpha=0.2, fill=purple_colours[3]) +
              theme_bw() +
              theme_minimal(base_size = 12, base_family = "Arial") +
              theme(axis.line.x = element_line(colour = "black", size=.5),
@@ -1312,36 +1332,36 @@ assign(paste0("foster_coi_graph"),
              ylim(2,3)+
              labs(x='Run number', y='Run completion time\n(in minutes)', color='Sample') +
              geom_line(data=(adf %>% filter(group=="foster")),
-                       aes(group=sub),size=.2,alpha=0.1, colour="maroon4")+
+                       aes(group=sub),size=.2,alpha=0.1, colour=group_colors[2])+
              geom_point(data=(adf %>% filter(group=="foster")),
-                        aes(group=sub),size=.7,alpha=0.1, colour="maroon4")+
+                        aes(group=sub),size=.7,alpha=0.1, colour=group_colors[2])+
            geom_line(data=as.data.frame(foster_graphs[[1]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink") +
+                     colour=purple_colours[1]) +
              geom_ribbon(data=as.data.frame(foster_graphs[[1]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink") +
+                         alpha=0.2, fill=purple_colours[1]) +
            geom_line(data=as.data.frame(foster_graphs[[2]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink3") +
+                     colour=purple_colours[2]) +
              geom_ribbon(data=as.data.frame(foster_graphs[[2]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink3") +
+                         alpha=0.2, fill=purple_colours[2]) +
                         geom_line(data=as.data.frame(foster_graphs[[3]]),
                      aes(x=run_index,
                       y=time),
                      size=1,
-                     colour="hotpink4") +
+                     colour=purple_colours[3]) +
              geom_ribbon(data=as.data.frame(foster_graphs[[3]]),
                          aes(ymin=lowerCIvalue,
                              ymax=upperCIvalue),
-                         alpha=0.2, fill="hotpink4") +
+                         alpha=0.2, fill=purple_colours[3]) +
              theme_bw() +
              theme_minimal(base_size = 12, base_family = "Arial") +
              theme(axis.line.x = element_line(colour = "black", size=.5),
@@ -1361,6 +1381,8 @@ ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/
 Unpack condition models
 ```{r}
 redoprepheat=FALSE
+
+load(file = "/Volumes/TDS/bids_data/derivatives/strategic_connectivity/connectivity_data/Social_noWBVR_FishersZ_coisDT.RDS")
 
 load(file= paste0("/Volumes/TDS/bids_data/derivatives/strategic_connectivity/connectivity_models/",
                                                "social_groupdiff_modelsDT.RDS"))
@@ -1459,46 +1481,46 @@ mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi main 
                     ylim(2,2.75)+
                     labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample') +
                     geom_line(data=(adf %>% filter(group=="community")),
-                              aes(group=sub),size=.2,alpha=0.1, colour="maroon1")+
+                              aes(group=sub),size=.2,alpha=0.1, colour=group_colors[1])+
                     geom_point(data=(adf %>% filter(group=="community")),
-                               aes(group=sub),size=.7,alpha=0.1, colour="maroon1")+
+                               aes(group=sub),size=.7,alpha=0.1, colour=group_colors[1])+
                     geom_line(data=(adf %>% filter(group=="foster")),
-                              aes(group=sub),size=.2,alpha=0.1, colour="maroon4")+
+                              aes(group=sub),size=.2,alpha=0.1, colour=group_colors[2])+
                     geom_point(data=(adf %>% filter(group=="foster")),
-                               aes(group=sub),size=.7,alpha=0.1, colour="maroon4")+
+                               aes(group=sub),size=.7,alpha=0.1, colour=group_colors[2])+
                     geom_line(data=as.data.frame(coi_condition_predictions[[1]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink") +
+                              colour=purple_colours[1]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[1]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink") +
+                                alpha=0.2, fill=purple_colours[1]) +
                     geom_line(data=as.data.frame(coi_condition_predictions[[2]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink3") +
+                              colour=purple_colours[2]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[2]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink3") +
+                                alpha=0.2, fill=purple_colours[2]) +
                     geom_line(data=as.data.frame(coi_condition_predictions[[3]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink4") +
+                              colour=purple_colours[3]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[3]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink4") +
+                                alpha=0.2, fill=purple_colours[3]) +
                     theme_bw() +
                     theme_minimal(base_size = 12, base_family = "Arial") +
                     theme(axis.line.x = element_line(colour = "black", size=.5),
@@ -1573,46 +1595,46 @@ mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi int m
                     ylim(2,2.75)+
                     labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample') +
                     geom_line(data=(adf %>% filter(group=="community")),
-                              aes(group=sub),size=.2,alpha=0.1, colour="maroon1")+
+                              aes(group=sub),size=.2,alpha=0.1, colour=group_colors[1])+
                     geom_point(data=(adf %>% filter(group=="community")),
-                               aes(group=sub),size=.7,alpha=0.1, colour="maroon1")+
+                               aes(group=sub),size=.7,alpha=0.1, colour=group_colors[1])+
                     geom_line(data=(adf %>% filter(group=="foster")),
-                              aes(group=sub),size=.2,alpha=0.1, colour="maroon4")+
+                              aes(group=sub),size=.2,alpha=0.1, colour=group_colors[2])+
                     geom_point(data=(adf %>% filter(group=="foster")),
-                               aes(group=sub),size=.7,alpha=0.1, colour="maroon4")+
+                               aes(group=sub),size=.7,alpha=0.1, colour=group_colors[2])+
                     geom_line(data=as.data.frame(coi_condition_predictions[[1]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink") +
+                              colour=purple_colours[1]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[1]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink") +
+                                alpha=0.2, fill=purple_colours[1]) +
                     geom_line(data=as.data.frame(coi_condition_predictions[[2]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink3") +
+                              colour=purple_colours[2]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[2]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink3") +
+                                alpha=0.2, fill=purple_colours[2]) +
                     geom_line(data=as.data.frame(coi_condition_predictions[[3]]),
                               aes(x=condition,
                                   y=time,
                                   group=1),
                               size=1,
-                              colour="hotpink4") +
+                              colour=purple_colours[3]) +
                     geom_ribbon(data=as.data.frame(coi_condition_predictions[[3]]),
                                 aes(ymin=lowerCIvalue,
                                     ymax=upperCIvalue,
                                     group=1),
-                                alpha=0.2, fill="hotpink4") +
+                                alpha=0.2, fill=purple_colours[3]) +
                     theme_bw() +
                     theme_minimal(base_size = 12, base_family = "Arial") +
                     theme(axis.line.x = element_line(colour = "black", size=.5),
@@ -1628,6 +1650,123 @@ mclapply(X=as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi int m
                                   "coi_condition_graph_",coi_name,".png"),
                   plot=coi_condition_graph, width=6, height=5, units='in', dpi=300)
          })
+
+### Graphs for ORI talk
+conditions_timing<-ylg_timing %>% filter(!condition=="Mock")
+condition_model=lme(time ~ condition, method="ML", random = ~1|sub, data=conditions_timing)
+condition<-c("Alone","Peer","Exclusion")
+data.pred = cbind.data.frame(condition)
+y.pred = predict(condition_model,
+                   data.pred,
+                   level=0)
+data.pred = cbind.data.frame(data.pred,
+                               y.pred)
+scale = 1.96
+designmat<-model.matrix(eval(eval(condition_model$call$fixed)[-2]),
+                          data.pred[-3]) #make design matrix
+SDvalue<-sqrt(diag(designmat %*% condition_model$varFix %*% t(designmat))) #calculate standard deviation for each point for each model
+y.lower<-y.pred-(scale*SDvalue) #calculate confidence intervals - lower
+y.upper<-y.pred+(scale*SDvalue) #calculate confidence intervals - upper
+data.pred = cbind.data.frame(data.pred,
+                               y.lower,
+                               y.upper)
+data.pred$time<-data.pred$y.pred
+
+# Time plotted across all runs by condition and sample
+condition.plot <- ylg_timing %>%
+  group_by(condition) %>% 
+  filter(!condition=="Mock") %>%
+  summarize(mean = mean(time),
+            sd = sd(time),
+            n = n(), 
+            se = sd/sqrt(n),
+            ci=qt(0.975, df=n-1)*se) %>%
+  mutate(time=mean)
+
+condition_plot<-ggplot(condition.plot,
+                  aes(x=condition, y=time)) +
+  geom_point(data=condition.plot,color="dodgerblue", size=0) +
+  geom_errorbar(data=condition.plot,aes(ymax=time + ci, ymin=time - ci),
+                width=0.5,color="dodgerblue") +
+  geom_line(data=data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour="dodgerblue")+
+  geom_ribbon(data=data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill="dodgerblue")+
+   geom_line(data=conditions_timing,
+             aes(group=sub,colour=sub),size=.2,alpha=0.5)+
+   geom_point(data=conditions_timing,
+              aes(group=sub,colour=sub),size=.5,alpha=0.5)+
+  labs(x='Condition', y='Run completion time\n(in minutes)') +
+  ylim(2,2.75)+
+  theme_kate()
+condition_plot
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/ORI/condition_behavior_model_withsubs.png"),
+       plot=condition_plot, width=5, height=4, units='in', dpi=300)
+
+# Predicted model
+if(resave_plots){model_time_by_condition<-ggplot(conditions_timing,
+                                aes(y=time,
+                                    x=condition,
+                                    group=1))+
+  geom_line(data=conditions_timing,
+            aes(colour="dodgerblue", group=sub),size=.2,alpha=0.2)+
+  geom_point(data=conditions_timing,
+             aes(colour="dodgerblue", group=sub),size=1,alpha=0.2)+
+  geom_line(data=foster.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[2])+
+  geom_ribbon(data=foster.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[2])+
+  geom_line(data=comm.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[1])+
+  geom_ribbon(data=comm.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[1])+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
+  labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="bottom")
+model_time_by_condition
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_condition.png"),
+       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)}
+
+
+if(resave_plots){model_time_by_condition<-ggplot(conditions_timing,
+                                aes(y=time,
+                                    x=condition,
+                                    group=1))+
+  geom_line(data=conditions_timing,
+            aes(colour="dodgerblue", group=sub),size=.2,alpha=0.2)+
+  geom_point(data=conditions_timing,
+             aes(colour="dodgerblue", group=sub),size=1,alpha=0.2)+
+  geom_line(data=foster.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[2])+
+  geom_ribbon(data=foster.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[2])+
+  geom_line(data=comm.data.pred,
+            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[1])+
+  geom_ribbon(data=comm.data.pred,
+              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[1])+
+  scale_fill_manual(values = group_colors)+
+  scale_colour_manual(values = group_colors)+
+  labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
+  theme_bw() +
+  theme_minimal(base_size = 20, base_family = "Arial") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.position="bottom")
+model_time_by_condition
+ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_condition.png"),
+       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)}
+
 
 
 
