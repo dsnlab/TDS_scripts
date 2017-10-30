@@ -1,0 +1,22 @@
+
+
+Note that the PRL tree is NOT supported by RACS.
+
+Please contact user at sameer@cs.uoregon.edu for questions regarding this tree.
+
+
+
+Note that the PRL tree is NOT supported by RACS.
+
+Please contact user at sameer@cs.uoregon.edu for questions regarding this tree.
+
+
+Error in args == 1 : 
+  comparison (1) is possible only for atomic and list types
+Execution halted
+
+++ 3dClustSim: AFNI version=AFNI_17.3.00 (Oct 12 2017) [64-bit]
+++ Authored by: RW Cox and BD Ward
+[7m** FATAL ERROR:[0m need 3 arguments after -acf
+** Program compile date = Oct 12 2017
+srun: error: n035: task 0: Exited with exit code 1

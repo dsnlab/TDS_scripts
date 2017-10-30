@@ -1,0 +1,122 @@
+
+
+Note that the PRL tree is NOT supported by RACS.
+
+Please contact user at sameer@cs.uoregon.edu for questions regarding this tree.
+
+
+
+Note that the PRL tree is NOT supported by RACS.
+
+Please contact user at sameer@cs.uoregon.edu for questions regarding this tree.
+
+/projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes
+0.613301746835443 5.11709265822785 13.0152949367089
+++ 3dClustSim: AFNI version=AFNI_17.3.00 (Oct 12 2017) [64-bit]
+++ Authored by: RW Cox and BD Ward
+++ 220561 voxels in mask (24.44% of total)
+++ Kernel function radius = 38.55 mm
+++ ACF(0.61,5.12,13.02) => FWHM=13.20 => 91x109x91 pads to 160x160x160
+ + Kernel image dimensions 79 x 79 x 79
+++ Startup clock time = 0.4 s
+Simulating:0123456789.0123456789.0123456789.0123456789.0123456789.!
+++ Clock time now = 1808.9 s
+# 3dClustSim -pthr .005 .001 .0001 -athr .05 .025 .01667 .0125 .01 .00833 .00625 -nodec -acf 0.613301746835443 5.11709265822785 13.0152949367089 -mask /projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes/mask.nii
+# 1-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220561 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 1  | alpha = Prob(Cluster >= given size)
+#  pthr  | .05000 .02500 .01667 .01250 .01000 .00833 .00625
+# ------ | ------ ------ ------ ------ ------ ------ ------
+ 0.005000     334    399    444    469    490    522    573
+ 0.001000     123    149    164    177    184    188    204
+ 0.000100      37     47     53     59     62     65     68
+# 3dClustSim -pthr .005 .001 .0001 -athr .05 .025 .01667 .0125 .01 .00833 .00625 -nodec -acf 0.613301746835443 5.11709265822785 13.0152949367089 -mask /projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes/mask.nii
+# 1-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220561 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 2  | alpha = Prob(Cluster >= given size)
+#  pthr  | .05000 .02500 .01667 .01250 .01000 .00833 .00625
+# ------ | ------ ------ ------ ------ ------ ------ ------
+ 0.005000     352    424    465    500    532    559    601
+ 0.001000     126    153    168    182    187    194    214
+ 0.000100      37     48     55     60     63     65     70
+# 3dClustSim -pthr .005 .001 .0001 -athr .05 .025 .01667 .0125 .01 .00833 .00625 -nodec -acf 0.613301746835443 5.11709265822785 13.0152949367089 -mask /projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes/mask.nii
+# 1-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220561 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 3  | alpha = Prob(Cluster >= given size)
+#  pthr  | .05000 .02500 .01667 .01250 .01000 .00833 .00625
+# ------ | ------ ------ ------ ------ ------ ------ ------
+ 0.005000     357    432    478    522    559    584    612
+ 0.001000     127    153    170    183    188    199    214
+ 0.000100      37     48     55     60     63     65     70
+# 3dClustSim -pthr .005 .001 .0001 -athr .05 .025 .01667 .0125 .01 .00833 .00625 -nodec -acf 0.613301746835443 5.11709265822785 13.0152949367089 -mask /projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes/mask.nii
+# 2-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220561 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 1  | alpha = Prob(Cluster >= given size)
+#  pthr  | .05000 .02500 .01667 .01250 .01000 .00833 .00625
+# ------ | ------ ------ ------ ------ ------ ------ ------
+ 0.005000     252    299    325    347    363    372    392
+ 0.001000     104    123    135    144    150    155    167
+ 0.000100      33     43     49     52     56     58     63
+# 3dClustSim -pthr .005 .001 .0001 -athr .05 .025 .01667 .0125 .01 .00833 .00625 -nodec -acf 0.613301746835443 5.11709265822785 13.0152949367089 -mask /projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes/mask.nii
+# 2-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220561 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 2  | alpha = Prob(Cluster >= given size)
+#  pthr  | .05000 .02500 .01667 .01250 .01000 .00833 .00625
+# ------ | ------ ------ ------ ------ ------ ------ ------
+ 0.005000     260    309    336    360    374    384    409
+ 0.001000     105    125    137    147    152    159    171
+ 0.000100      34     43     49     53     56     59     63
+# 3dClustSim -pthr .005 .001 .0001 -athr .05 .025 .01667 .0125 .01 .00833 .00625 -nodec -acf 0.613301746835443 5.11709265822785 13.0152949367089 -mask /projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes/mask.nii
+# 2-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220561 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 3  | alpha = Prob(Cluster >= given size)
+#  pthr  | .05000 .02500 .01667 .01250 .01000 .00833 .00625
+# ------ | ------ ------ ------ ------ ------ ------ ------
+ 0.005000     263    314    341    365    379    390    420
+ 0.001000     106    126    138    148    153    160    171
+ 0.000100      34     44     49     53     57     59     63
+# 3dClustSim -pthr .005 .001 .0001 -athr .05 .025 .01667 .0125 .01 .00833 .00625 -nodec -acf 0.613301746835443 5.11709265822785 13.0152949367089 -mask /projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes/mask.nii
+# bi-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220561 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 1  | alpha = Prob(Cluster >= given size)
+#  pthr  | .05000 .02500 .01667 .01250 .01000 .00833 .00625
+# ------ | ------ ------ ------ ------ ------ ------ ------
+ 0.005000     252    299    325    347    363    372    392
+ 0.001000     104    123    135    144    150    155    167
+ 0.000100      33     43     49     52     56     58     63
+# 3dClustSim -pthr .005 .001 .0001 -athr .05 .025 .01667 .0125 .01 .00833 .00625 -nodec -acf 0.613301746835443 5.11709265822785 13.0152949367089 -mask /projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes/mask.nii
+# bi-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220561 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 2  | alpha = Prob(Cluster >= given size)
+#  pthr  | .05000 .02500 .01667 .01250 .01000 .00833 .00625
+# ------ | ------ ------ ------ ------ ------ ------ ------
+ 0.005000     260    309    336    360    374    384    409
+ 0.001000     105    125    137    147    152    159    171
+ 0.000100      34     43     49     53     56     59     63
+# 3dClustSim -pthr .005 .001 .0001 -athr .05 .025 .01667 .0125 .01 .00833 .00625 -nodec -acf 0.613301746835443 5.11709265822785 13.0152949367089 -mask /projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/ttests/4-outcomes/mask.nii
+# bi-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220561 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 3  | alpha = Prob(Cluster >= given size)
+#  pthr  | .05000 .02500 .01667 .01250 .01000 .00833 .00625
+# ------ | ------ ------ ------ ------ ------ ------ ------
+ 0.005000     263    314    341    365    379    390    420
+ 0.001000     106    126    138    148    153    160    171
+ 0.000100      34     44     49     53     57     59     63
