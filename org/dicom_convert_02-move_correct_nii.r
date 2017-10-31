@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 #install.packages('tidyverse')
 library(tidyverse)
-clean_nii_dir <- "/projects/dsnlab/tds/"
+clean_nii_dir <- "/Volumes/TDS/nonbids_data/"
 
 clean_nii_file_raw <- data_frame(file = dir(path = clean_nii_dir, recursive = T))
 clean_nii_filelist <- clean_nii_file_raw %>%
