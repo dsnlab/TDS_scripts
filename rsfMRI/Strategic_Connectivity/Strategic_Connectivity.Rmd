@@ -1703,70 +1703,88 @@ condition_plot
 ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/ORI/condition_behavior_model_withsubs.png"),
        plot=condition_plot, width=5, height=4, units='in', dpi=300)
 
-# Predicted model
-if(resave_plots){model_time_by_condition<-ggplot(conditions_timing,
-                                aes(y=time,
-                                    x=condition,
-                                    group=1))+
-  geom_line(data=conditions_timing,
-            aes(colour="dodgerblue", group=sub),size=.2,alpha=0.2)+
-  geom_point(data=conditions_timing,
-             aes(colour="dodgerblue", group=sub),size=1,alpha=0.2)+
-  geom_line(data=foster.data.pred,
-            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[2])+
-  geom_ribbon(data=foster.data.pred,
-              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[2])+
-  geom_line(data=comm.data.pred,
-            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[1])+
-  geom_ribbon(data=comm.data.pred,
-              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[1])+
-  scale_fill_manual(values = group_colors)+
-  scale_colour_manual(values = group_colors)+
-  labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
-  theme_bw() +
-  theme_minimal(base_size = 20, base_family = "Arial") +
-  theme(axis.line = element_line(colour = "black"),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        panel.background = element_blank(),
-        legend.position="bottom")
-model_time_by_condition
-ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_condition.png"),
-       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)}
 
+coi_name<-as.character(as.list(condition_modelsDT%>%filter(mod_type=="coi int model"))$coiname)[4]
+demodata<-conditions_timing
+coidat<-social_coisDT
 
-if(resave_plots){model_time_by_condition<-ggplot(conditions_timing,
-                                aes(y=time,
-                                    x=condition,
-                                    group=1))+
-  geom_line(data=conditions_timing,
-            aes(colour="dodgerblue", group=sub),size=.2,alpha=0.2)+
-  geom_point(data=conditions_timing,
-             aes(colour="dodgerblue", group=sub),size=1,alpha=0.2)+
-  geom_line(data=foster.data.pred,
-            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[2])+
-  geom_ribbon(data=foster.data.pred,
-              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[2])+
-  geom_line(data=comm.data.pred,
-            aes(x=condition, y=time,group=1), size=1, colour=colour_labels[1])+
-  geom_ribbon(data=comm.data.pred,
-              aes(ymin=y.lower, ymax=y.upper,group=1), alpha=0.4, fill=colour_labels[1])+
-  scale_fill_manual(values = group_colors)+
-  scale_colour_manual(values = group_colors)+
-  labs(x='Condition', y='Run completion time\n(in minutes)', color='Sample')+
-  theme_bw() +
-  theme_minimal(base_size = 20, base_family = "Arial") +
-  theme(axis.line = element_line(colour = "black"),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        panel.background = element_blank(),
-        legend.position="bottom")
-model_time_by_condition
-ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/model_time_by_condition.png"),
-       plot=model_time_by_condition, width=7, height=5, units='in', dpi=300)}
+adf<-merge(as.data.table(filter(coidat,coi==coi_name)),
+                      demodata,
+                      by='sub',
+                      allow.cartesian=T)
+           groupmodel=lme(time ~ condition*cor, method="ML", random = ~1|sub, data=adf)
+cor=seq((mean(adf$cor)-sd(adf$cor)),
+                   (mean(adf$cor)+sd(adf$cor)),
+                   length.out = 3)
 
+ condition<-c("Alone","Peer","Exclusion")
+           
+           assign(paste0("coi_condition_predictions"),
+                  lapply(X=cor,
+                         FUN=function(COR){
+                           assign(paste0("frame",COR),
+                                  data.frame(condition=condition,
+                                             cor=COR))
+                           assign(paste0("frame",COR,"predvalue"),
+                                  predict(groupmodel, get(paste0("frame",COR)), level=0))
+                           assign(paste0("designmat",COR),
+                                  model.matrix(eval(eval(groupmodel$call$fixed)[-2]),
+                                               get(paste0("frame",COR))[-3]))
+                           assign(paste0("frame",COR,"SDvalue"),
+                                  sqrt(diag(get(paste0("designmat",COR)) 
+                                            %*% groupmodel$varFix 
+                                            %*% t(get(paste0("designmat",COR)))))) 
+                           assign("lowerCIvalue",
+                                  (get(paste0("frame",COR,"predvalue"))-
+                                     (1.96*get(paste0("frame",COR,"SDvalue")))))
+                           assign("upperCIvalue",
+                                  (get(paste0("frame",COR,"predvalue"))+
+                                     (1.96*get(paste0("frame",COR,"SDvalue")))))
+                           assign("time",
+                                  get(paste0("frame",COR,"predvalue")))
+                           cbind(get(paste0("frame",COR)),
+                                 time,
+                                 upperCIvalue,
+                                 lowerCIvalue,
+                                 condition)
+                         }))
+           
+          condition_conn_plot<-ggplot(data=NULL,
+                         aes(x=condition,
+                             y=time,
+                             group=1)) +
+                    geom_line(data=adf,
+                              aes(group=sub,colour=cor),size=.2,alpha=0.5)+
+                    geom_point(data=adf,
+                               aes(group=sub,colour=cor),size=.5,alpha=0.5)+
+              scale_color_gradient(low = "dodgerblue", high = purple_colours[3])+
+                    labs(x='Condition', y='Run completion time\n(in minutes)') +
+                    ylim(2,2.75)+
+                    geom_line(data=as.data.frame(coi_condition_predictions[[1]]),
+                              aes(x=condition,
+                                  y=time,
+                                  group=1),
+                              size=1,
+                              colour="dodgerblue") +
+                    geom_ribbon(data=as.data.frame(coi_condition_predictions[[1]]),
+                                aes(ymin=lowerCIvalue,
+                                    ymax=upperCIvalue,
+                                    group=1),
+                                alpha=0.3, fill="dodgerblue") +
+                    geom_line(data=as.data.frame(coi_condition_predictions[[3]]),
+                              aes(x=condition,
+                                  y=time,
+                                  group=1),
+                              size=1,
+                              colour=purple_colours[3]) +
+                    geom_ribbon(data=as.data.frame(coi_condition_predictions[[3]]),
+                                aes(ymin=lowerCIvalue,
+                                    ymax=upperCIvalue,
+                                    group=1),
+                                alpha=0.3, fill=purple_colours[3]) +
+                    theme_kate()
+condition_conn_plot
+          ggsave(filename=paste0(workdir,"../bids_data/derivatives/strategic_connectivity/graphs/ORI/condition_connectivity_model_withsubs_bothconn.png"),plot=condition_conn_plot, width=5, height=4, units='in', dpi=300)
 
 
 
