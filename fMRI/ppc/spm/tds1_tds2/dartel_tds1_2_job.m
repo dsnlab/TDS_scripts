@@ -3,22 +3,22 @@
 % spm SPM - SPM12 (6906)
 % cfg_basicio BasicIO - Unknown
 %-----------------------------------------------------------------------
-matlabbatch{1}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/tds/fMRI/subjects'};
+matlabbatch{1}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2'};
 matlabbatch{1}.cfg_basicio.file_dir.file_ops.file_fplist.filter = 'rc1mprage.nii';
 matlabbatch{1}.cfg_basicio.file_dir.file_ops.file_fplist.rec = 'FPListRec';
-matlabbatch{2}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/tds/fMRI/subjects'};
+matlabbatch{2}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2'};
 matlabbatch{2}.cfg_basicio.file_dir.file_ops.file_fplist.filter = 'rc2mprage.nii';
 matlabbatch{2}.cfg_basicio.file_dir.file_ops.file_fplist.rec = 'FPListRec';
-matlabbatch{3}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/tds/fMRI/subjects'};
+matlabbatch{3}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2'};
 matlabbatch{3}.cfg_basicio.file_dir.file_ops.file_fplist.filter = 'rc3mprage.nii';
 matlabbatch{3}.cfg_basicio.file_dir.file_ops.file_fplist.rec = 'FPListRec';
-matlabbatch{4}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/tds/fMRI/subjects'};
+matlabbatch{4}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2'};
 matlabbatch{4}.cfg_basicio.file_dir.file_ops.file_fplist.filter = 'rc4mprage.nii';
 matlabbatch{4}.cfg_basicio.file_dir.file_ops.file_fplist.rec = 'FPListRec';
-matlabbatch{5}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/tds/fMRI/subjects'};
+matlabbatch{5}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2'};
 matlabbatch{5}.cfg_basicio.file_dir.file_ops.file_fplist.filter = 'rc5mprage.nii';
 matlabbatch{5}.cfg_basicio.file_dir.file_ops.file_fplist.rec = 'FPListRec';
-matlabbatch{6}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/tds/fMRI/subjects'};
+matlabbatch{6}.cfg_basicio.file_dir.file_ops.file_fplist.dir = {'/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2'};
 matlabbatch{6}.cfg_basicio.file_dir.file_ops.file_fplist.filter = 'rc6mprage.nii';
 matlabbatch{6}.cfg_basicio.file_dir.file_ops.file_fplist.rec = 'FPListRec';
 matlabbatch{7}.spm.tools.dartel.warp.images{1}(1) = cfg_dep('File Selector (Batch Mode): Selected Files (rc1mprage.nii)', substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','files'));
@@ -56,7 +56,7 @@ matlabbatch{7}.spm.tools.dartel.warp.settings.param(6).slam = 0.5;
 matlabbatch{7}.spm.tools.dartel.warp.settings.optim.lmreg = 0.01;
 matlabbatch{7}.spm.tools.dartel.warp.settings.optim.cyc = 3;
 matlabbatch{7}.spm.tools.dartel.warp.settings.optim.its = 3;
-matlabbatch{8}.cfg_basicio.file_dir.dir_ops.cfg_mkdir.parent = {'/projects/dsnlab/tds/fMRI/subjects'};
+matlabbatch{8}.cfg_basicio.file_dir.dir_ops.cfg_mkdir.parent = {'/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2'};
 matlabbatch{8}.cfg_basicio.file_dir.dir_ops.cfg_mkdir.name = 'dartel_template';
 matlabbatch{9}.cfg_basicio.file_dir.file_ops.file_move.files(1) = cfg_dep('Run Dartel (create Templates): Template (Iteration 0)', substruct('.','val', '{}',{7}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','template', '()',{1}));
 matlabbatch{9}.cfg_basicio.file_dir.file_ops.file_move.files(2) = cfg_dep('Run Dartel (create Templates): Template (Iteration 1)', substruct('.','val', '{}',{7}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','template', '()',{2}));
