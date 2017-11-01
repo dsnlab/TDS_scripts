@@ -331,6 +331,21 @@ ggplot(df_binary, aes(x=interaction(A,N,P), fill=interaction(A,N,P))) +
   scale_x_discrete(labels=c("None", "A","N","AN","P","NP","ANP")) +
   ggtitle("Abuse, neglect, and poverty by group")
 
+# Acquire summary statistics of demographics by exposure status
+colnames(df_demo)[1]="SID"
+df_demo$SID=as.character(df_demo$SID)
+df_binary_summary= inner_join(x=df_binary, y=df_demo) %>% inner_join(df_ed) %>% group_by(A,N) %>% summarize(mean_age=mean(age), sem_age=sd(age)/sqrt(length(df_binary)), count_sex=sum(gender), mean_iq=mean(iq), sem_iq=sd(iq)/sqrt(length(df_binary)), mean_ItN=mean(income_to_needs, na.rm=TRUE), sem_ItN=sd(income_to_needs, na.rm=TRUE)/sqrt(length(df_binary)))
+
+df_binary$group=factor(df_binary$group, labels=c("Community Sample", "CWS Sample"))
+
+ggplot(df_binary, aes(x=interaction(A,N), fill=interaction(A,N))) +
+  geom_bar(position="dodge") +
+  facet_grid(.~group) +
+  scale_x_discrete(labels=c("None", "Abuse","Neglect","Both")) +
+  xlab("Exposures") +
+  ylab("Count") +
+  theme(legend.position="none")
+
 #ggplot(df_binary, aes(x=interaction(A,N,H,P), y=interaction(A,N,H,P))) + 
  # geom_tile(aes(fill=interaction(A,N,H,P)))
 

@@ -11,8 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 
 ## Load required packages ##
-packages <-  c("lme4", "nlme", "zoo", "plyr", "dplyr", "tidyr", "ggplot2", "knitr",
-              "parallel", "data.table", "lubridate","psych", "wesanderson")
+packages <-  c("lme4", "nlme", "zoo", "plyr", "dplyr", "tidyr", "ggplot2", "knitr", "parallel", "data.table", "lubridate","psych", "wesanderson")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }
@@ -106,6 +105,8 @@ df_prop$comm_total=as.character(df_prop$comm_total)
 df_prop$comm_total=mapvalues(df_prop$comm_total, c("Auditory", "CinguloOperc", "CinguloParietal", "Default", "DorsalAttn", "FrontoParietal", "None", "RetrosplenialTemporal", "Salience", "SMhand", "SMmouth", "VentralAttn", "Visual"), tbl_community$mod_type)
 df_prop$comm_total=as.numeric(df_prop$comm_total)
 df_prop$pct=round(df_prop$n/df_prop$comm_total*100, 2)
+total_connections <- sum(tbl_community$mod_type)
+df_prop$w_pct= round((df_prop$pct/100)*(df_prop$comm_total/total_connections),4)# weighted percent
 
 df_prop_nonull=filter(df_prop, mod_type!="null model") # remove null models
 
@@ -114,14 +115,17 @@ ggplot(df_prop, aes(x=mod_type, y= pct, fill=Community)) + # fill=Community)) +
   geom_bar(position="dodge", stat="identity") +
   scale_x_discrete(labels=c("A", "N", "N & A", "N X A", "null")) + # removed "null"
   facet_grid(seed~.) + 
-  ggtitle("Percent of model types by network and seed")
+  ggtitle("Percent of model types by network and seed") 
 
 # plot across ALL communities by seed region, SANS NULL MODELS
 ggplot(df_prop_nonull, aes(x=mod_type, y= pct, fill=Community)) + # fill=Community)) +
   geom_bar(position="dodge", stat="identity") +
-  scale_x_discrete(labels=c("A", "N", "N & A", "N X A")) + # removed "null"
+  scale_x_discrete(labels=c("abuse", "neglect", "neglect and abuse", "neglect by abuse")) + # removed "null"
   facet_grid(seed~.) + 
-  ggtitle("Percent of model types by network and seed (no null models)")
+  xlab("Models") +
+  ylab("Percentage of community connections") +
+  ggtitle("Percent of model types by community and seed (no null models)")+ 
+  theme(legend.text=element_text(size=7.5), legend.position="right")
     
 ## other ways of viewing proportioned data
 ggplot(df_gordon_models,aes(x = mod_type, fill = Community)) + 
@@ -129,11 +133,16 @@ ggplot(df_gordon_models,aes(x = mod_type, fill = Community)) +
   scale_x_discrete(labels=c("A", "N", "N & A", "N X A", "null")) + 
   ggtitle("proportion of communities per mod type")
 
+df_gordon_models$mod_type= factor(df_gordon_models$mod_type,levels(df_gordon_models$mod_type)[c(5, 4, 3, 2, 1)])
+df_gordon_models$mod_type=factor(df_gordon_models$mod_type,labels=c("null", "neglect by abuse", "neglect & abuse", "neglect", "abuse"))
 ggplot(df_gordon_models,aes(x = Community, fill = mod_type)) + 
   geom_bar(position = "fill") +
   # scale_fill_manual(values=pal) + # special color palette! 
-  scale_x_discrete(labels=c("A", "CO","CP","D", "DA","FP","NA","RT","S","h","m","VA","V")) + 
-  ggtitle("proportion of mod types per community")
+  scale_x_discrete(labels=c("A", "CO","CP","D", "DA","FP","NA","RT","S","h","m","VA","V")) +
+  ylab("Proportion") +
+  scale_fill_discrete(name="Model")+
+  ggtitle("proportion of mod types per community") +
+  theme(legend.position="bottom")
 
 ggplot(df_nonull,aes(x = Community, fill = mod_type)) + 
   geom_bar(position = "fill") +
@@ -147,7 +156,7 @@ print(levels(df_gordon_models$Community))
 
 ```{r investigate interactions}
 
-#reg_models <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/regmodels.RDS"))
+reg_models <- readRDS(paste0("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/regmodels.RDS"))
 #reg_models$seed=gsub('(^\\w{4,9}_\\d{2,3})_.*','\\1', reg_models$coi)
 
 # identify COI target
@@ -212,8 +221,10 @@ for (i in 1:8) {
     print(ggplot(temp, aes(x=interaction(abuse,neglect), y=mean, fill=interaction(abuse,neglect))) + 
     geom_dotplot(binaxis="y", stackdir = "center", dotsize=.5, stackratio=.5) +
     geom_line(group=temp$coi, size=.1) +
-    scale_x_discrete(labels=c("None", "A", "N", "N X A")) +
-    ggtitle(paste0("Interaction plot for ", unique(adf$Community)[i], " network")) + 
+    scale_x_discrete(labels=c("None", "Abuse", "Neglect", "Neglect & Abuse")) +
+    xlab("Experience") +
+    ylab("Mean correlation") + 
+    ggtitle(paste0("Interaction plot for the ", unique(adf$Community)[i], " network")) + 
     theme(legend.position = "none"))
 }
 
