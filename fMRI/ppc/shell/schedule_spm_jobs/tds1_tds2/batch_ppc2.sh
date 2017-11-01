@@ -13,7 +13,7 @@
 # D.Cos 2017.3.7
 #--------------------------------------------------------------
 
-STUDY=/projects/dsnlab/tds/TDS_scripts
+STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
 #SUBJLIST=`cat subject_list_nomissingruns.txt` # specials processed manually
 SUBJLIST=`cat subject_list_ppc2.txt`
@@ -22,7 +22,7 @@ SUBJLIST=`cat subject_list_ppc2.txt`
 REPLACESID='101'
 
 #SPM Path
-SPM_PATH=/projects/dsnlab/SPM12
+SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
 SCRIPT=${STUDY}/fMRI/ppc/spm/tds1_tds2/ppc2_tds1_2_job.m

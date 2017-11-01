@@ -5,9 +5,9 @@
 # D.Cos 2017.3.7
 #--------------------------------------------------------------
 
-STUDY=/projects/dsnlab/tds/TDS_scripts
+STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 SCRIPT=fMRI/ppc/spm/tds1_tds2
-SPM_PATH=/projects/dsnlab/SPM12
+SPM_PATH=/projects/dsnlab/shared/SPM12
 OUTPUTDIR=${STUDY}/fMRI/ppc/shell/schedule_spm_jobs/tds1_tds2/output/
 RESULTS_INFIX=dartel
 PROCESS=slurm

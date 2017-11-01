@@ -3,7 +3,7 @@
 # By Zdena Op de Macks, 5/16/2017
 ###########################################
 # Set directory
-SOURCE_DIR=/projects/dsnlab/tds/fMRI/subjects/
+SOURCE_DIR=/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2/
 
 # Set lists
 SUBJECT_LIST=`cat subject_list_dartel.txt`
