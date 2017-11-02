@@ -18,11 +18,11 @@
 
 # paths
 #This is where all subject-numbered directories are:
-subjectDir = "/projects/dsnlab/tds/fMRI/subjects_tds2/"
+subjectDir = "/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2/"
 #If you want nii files in just a particular subject subdirectory, specifiy that here:
 functionalDir = ""
 #This is where you want the resulting csv file to be saved:
-outputDir = "/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/" 
+outputDir = "/projects/dsnlab/shared/tds/fMRI/analysis/fx/motion/auto-motion-output/tds1_tds2/" 
 
 # variables
 study = "tds"

@@ -43,7 +43,7 @@ if(!require(ggplot2)){
   install.packages('ggplot2',repos=osuRepo)
 }
 
-source('/Users/theresacheng/projects/dsnlab/tds/TDS_scripts/fMRI/fx/motion/auto-motion/auto_trash_config.R')
+source('/projects/dsnlab/tds/TDS_scripts/fMRI/fx/motion/auto-motion/auto_trash_config.R')
 #------------------------------------------------------
 # load global intensity data
 #------------------------------------------------------

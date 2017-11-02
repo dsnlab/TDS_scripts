@@ -22,13 +22,13 @@
 # to run the script
 #------------------------------------------------------
 # paths
-rpDir = '~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/rp_txt/'
-outputDir = '~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/'
-rpOutputDir = '~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/rp_auto_txt/'
-plotDir = '~/projects/dsnlab/tds/fMRI/analysis/fx/motion/auto-motion-output/plots/'
+rpDir = '~/projects/dsnlab/shared/tds/fMRI/analysis/fx/motion/auto-motion-output/tds1_tds2/rp_txt/'
+outputDir = '~/projects/dsnlab/shared/tds/fMRI/analysis/fx/motion/auto-motion-output/tds1_tds2/'
+rpOutputDir = '~/projects/dsnlab/shared/tds/fMRI/analysis/fx/motion/auto-motion-output/tds1_tds2/rp_auto_txt/'
+plotDir = '~/projects/dsnlab/shared/tds/fMRI/analysis/fx/motion/auto-motion-output/tds1_tds2/plots/'
 
 # variables
-study = "tds2"
+study = "tds"
 rpPattern = "^rp_([0-9]{3})_(.*).txt"
 rpCols = c("euclidian_trans","euclidian_rot","euclidian_trans_deriv","euclidian_rot_deriv","trash.rp")
 
