@@ -27,13 +27,13 @@ REPLACESID='101'
 SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/ppc/spm/tds1_tds2/ppc1_tds1_2_job.m
+SCRIPT=${STUDY}/fMRI/ppc/spm/tdsall/ppc1_tds1_2_job.m
 
 # Tag the results files
 RESULTS_INFIX=ppc1
 
 # Set output dir
-OUTPUTDIR=${STUDY}/fMRI/ppc/shell/schedule_spm_jobs/tds1_tds2/output/
+OUTPUTDIR=${STUDY}/fMRI/ppc/shell/schedule_spm_jobs/tdsall/output/
 
 # Set processor
 # use "qsub" for HPC
