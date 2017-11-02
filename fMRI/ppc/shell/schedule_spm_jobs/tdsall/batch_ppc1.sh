@@ -17,8 +17,8 @@
 # Set your study
 STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
-#SUBJLIST=`cat subject_list_nomissingruns.txt` # specials processed manually
-SUBJLIST=`cat subject_list_189.txt`
+SUBJLIST=`cat subject_list_nomissingruns.txt` # specials processed manually
+#SUBJLIST=`cat subject_list_189.txt`
 
 #Which SID should be replaced?
 REPLACESID='101'
@@ -27,7 +27,7 @@ REPLACESID='101'
 SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/ppc/spm/tdsall/ppc1_tds1_2_job.m
+SCRIPT=${STUDY}/fMRI/ppc/spm/tdsall/ppc1_tdsall_job.m
 
 # Tag the results files
 RESULTS_INFIX=ppc1
