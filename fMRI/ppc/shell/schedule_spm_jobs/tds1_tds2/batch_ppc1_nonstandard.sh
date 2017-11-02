@@ -35,12 +35,12 @@ sbatch --export=REPLACESID=178,SCRIPT=${STUDY}/${SCRIPT}/TDS178_coreg_segment.m,
 #		 --mem-per-cpu=${mempercpu} \
 #		 spm_job.sh
 #
-#sbatch --export=REPLACESID=189,SCRIPT=${STUDY}/${SCRIPT}/TDS189_coreg_realign_unwarp_coreg_segment.m,SUB=189,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
-#		 --job-name=${RESULTS_INFIX} \
-#		 -o "${OUTPUTDIR}"/189_ppc1.log \
-#		 --cpus-per-task=${cpuspertask} \
-#		 --mem-per-cpu=${mempercpu} \
-#		 spm_job.sh
+sbatch --export=REPLACESID=189,SCRIPT=${STUDY}/${SCRIPT}/TDS189_coreg_realign_unwarp_coreg_segment.m,SUB=189,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/189_ppc1.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
 
 sbatch --export=REPLACESID=192,SCRIPT=${STUDY}/${SCRIPT}/TDS192_coreg_segment.m,SUB=192,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \

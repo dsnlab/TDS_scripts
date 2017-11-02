@@ -1,6 +1,7 @@
 %-----------------------------------------------------------------------
-% Job saved on 12-May-2017 14:36:39 by cfg_util (rev $Rev: 6460 $)
+% Job saved on 16-Mar-2017 16:43:31 by cfg_util (rev $Rev: 6460 $)
 % spm SPM - SPM12 (6906)
+% cfg_basicio BasicIO - Unknown
 %-----------------------------------------------------------------------
 matlabbatch{1}.spm.spatial.coreg.estimate.ref = {'/projects/dsnlab/shared/SPM12/canonical/avg152T1.nii,1'};
 matlabbatch{1}.spm.spatial.coreg.estimate.source = {'/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2/178/structurals/mprage.nii,1'};
