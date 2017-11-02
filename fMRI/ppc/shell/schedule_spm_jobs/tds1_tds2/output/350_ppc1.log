@@ -1,12 +1,12 @@
 -------------------------------------------------------------------------------
 350
-Running /projects/dsnlab/tds/TDS_scripts/fMRI/ppc/spm/tds1_tds2/TDS350_coreg_realign_unwarp_coreg_segment.m
+Running /projects/dsnlab/shared/tds/TDS_scripts/fMRI/ppc/spm/tds1_tds2/TDS350_coreg_realign_unwarp_coreg_segment.m
 -------------------------------------------------------------------------------
 
                             < M A T L A B (R) >
-                  Copyright 1984-2016 The MathWorks, Inc.
-                   R2016b (9.1.0.441655) 64-bit (glnxa64)
-                             September 7, 2016
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (glnxa64)
+                             September 14, 2017
 
  
 To get started, type one of these: helpwin, helpdesk, or demo.
@@ -19,9 +19,9 @@ Running job #1
 ------------------------------------------------------------------------
 Running 'Coregister: Estimate'
 
-SPM12: spm_coreg (v6435)                           18:01:57 - 11/05/2017
+SPM12: spm_coreg (v6435)                           19:43:34 - 01/11/2017
 ========================================================================
-Completed                               :          18:02:26 - 11/05/2017
+Completed                               :          19:44:06 - 01/11/2017
 Done    'Coregister: Estimate'
 Running 'Calculate VDM'
 Segmenting and extracting brain...
@@ -29,58 +29,58 @@ Segmenting and extracting brain...
 Matching session 1...
 
 
-SPM12: spm_coreg (v6435)                           18:02:47 - 11/05/2017
+SPM12: spm_coreg (v6435)                           19:44:30 - 01/11/2017
 ========================================================================
-Completed                               :          18:02:53 - 11/05/2017
+Completed                               :          19:44:36 - 01/11/2017
 
 Matching session 2...
 
 
-SPM12: spm_coreg (v6435)                           18:02:54 - 11/05/2017
+SPM12: spm_coreg (v6435)                           19:44:37 - 01/11/2017
 ========================================================================
-Completed                               :          18:03:03 - 11/05/2017
+Completed                               :          19:44:47 - 01/11/2017
 
 Matching session 3...
 
 
-SPM12: spm_coreg (v6435)                           18:03:04 - 11/05/2017
+SPM12: spm_coreg (v6435)                           19:44:47 - 01/11/2017
 ========================================================================
-Completed                               :          18:03:14 - 11/05/2017
+Completed                               :          19:44:57 - 01/11/2017
 
 Matching session 4...
 
 
-SPM12: spm_coreg (v6435)                           18:03:14 - 11/05/2017
+SPM12: spm_coreg (v6435)                           19:44:58 - 01/11/2017
 ========================================================================
-Completed                               :          18:03:23 - 11/05/2017
+Completed                               :          19:45:08 - 01/11/2017
 
 Matching session 5...
 
 
-SPM12: spm_coreg (v6435)                           18:03:24 - 11/05/2017
+SPM12: spm_coreg (v6435)                           19:45:08 - 01/11/2017
 ========================================================================
-Completed                               :          18:03:31 - 11/05/2017
+Completed                               :          19:45:16 - 01/11/2017
 
 Matching session 6...
 
 
-SPM12: spm_coreg (v6435)                           18:03:32 - 11/05/2017
+SPM12: spm_coreg (v6435)                           19:45:16 - 01/11/2017
 ========================================================================
-Completed                               :          18:03:37 - 11/05/2017
+Completed                               :          19:45:23 - 01/11/2017
 
 Matching session 7...
 
 
-SPM12: spm_coreg (v6435)                           18:03:38 - 11/05/2017
+SPM12: spm_coreg (v6435)                           19:45:23 - 01/11/2017
 ========================================================================
-Completed                               :          18:03:45 - 11/05/2017
+Completed                               :          19:45:31 - 01/11/2017
 
 Matching session 8...
 
 
-SPM12: spm_coreg (v6435)                           18:03:45 - 11/05/2017
+SPM12: spm_coreg (v6435)                           19:45:31 - 01/11/2017
 ========================================================================
-Completed                               :          18:03:54 - 11/05/2017
+Completed                               :          19:45:41 - 01/11/2017
 Done    'Calculate VDM'
 Running 'File Selector (Batch Mode)'
 Done    'File Selector (Batch Mode)'
@@ -100,61 +100,61 @@ Running 'File Selector (Batch Mode)'
 Done    'File Selector (Batch Mode)'
 Running 'Realign & Unwarp'
 
-SPM12: spm_realign (v6070)                         18:04:02 - 11/05/2017
+SPM12: spm_realign (v6070)                         19:45:45 - 01/11/2017
 ========================================================================
-Completed                               :          18:23:14 - 11/05/2017
+Completed                               :          20:05:01 - 01/11/2017
 
-SPM12: spm_uw_estimate (v6824)                     18:23:14 - 11/05/2017
+SPM12: spm_uw_estimate (v6824)                     20:05:01 - 01/11/2017
 ========================================================================
-Completed                               :          18:24:34 - 11/05/2017
+Completed                               :          20:06:23 - 01/11/2017
 
-SPM12: spm_uw_estimate (v6824)                     18:24:34 - 11/05/2017
+SPM12: spm_uw_estimate (v6824)                     20:06:23 - 01/11/2017
 ========================================================================
-Completed                               :          18:25:22 - 11/05/2017
+Completed                               :          20:07:12 - 01/11/2017
 
-SPM12: spm_uw_estimate (v6824)                     18:25:22 - 11/05/2017
+SPM12: spm_uw_estimate (v6824)                     20:07:12 - 01/11/2017
 ========================================================================
-Completed                               :          18:27:02 - 11/05/2017
+Completed                               :          20:08:53 - 01/11/2017
 
-SPM12: spm_uw_estimate (v6824)                     18:27:02 - 11/05/2017
+SPM12: spm_uw_estimate (v6824)                     20:08:53 - 01/11/2017
 ========================================================================
-Completed                               :          18:28:52 - 11/05/2017
+Completed                               :          20:10:49 - 01/11/2017
 
-SPM12: spm_uw_estimate (v6824)                     18:28:52 - 11/05/2017
+SPM12: spm_uw_estimate (v6824)                     20:10:50 - 01/11/2017
 ========================================================================
-Completed                               :          18:30:43 - 11/05/2017
+Completed                               :          20:12:44 - 01/11/2017
 
-SPM12: spm_uw_estimate (v6824)                     18:30:43 - 11/05/2017
+SPM12: spm_uw_estimate (v6824)                     20:12:44 - 01/11/2017
 ========================================================================
-Completed                               :          18:32:19 - 11/05/2017
+Completed                               :          20:14:24 - 01/11/2017
 
-SPM12: spm_uw_estimate (v6824)                     18:32:19 - 11/05/2017
+SPM12: spm_uw_estimate (v6824)                     20:14:24 - 01/11/2017
 ========================================================================
-Completed                               :          18:33:49 - 11/05/2017
+Completed                               :          20:15:57 - 01/11/2017
 
-SPM12: spm_uw_estimate (v6824)                     18:33:49 - 11/05/2017
+SPM12: spm_uw_estimate (v6824)                     20:15:57 - 01/11/2017
 ========================================================================
-Completed                               :          18:35:40 - 11/05/2017
+Completed                               :          20:17:50 - 01/11/2017
 
-SPM12: spm_uw_apply (v6301)                        18:35:40 - 11/05/2017
+SPM12: spm_uw_apply (v6301)                        20:17:50 - 01/11/2017
 ========================================================================
 Computing mask...                       :                                                      ...done
 Reslicing images...                     :                                                      ...done
 Writing mean image...                   :                                                      ...done
-Completed                               :          18:39:44 - 11/05/2017
+Completed                               :          20:20:58 - 01/11/2017
 Done    'Realign & Unwarp'
 Running 'Coregister: Estimate'
 
-SPM12: spm_coreg (v6435)                           18:39:47 - 11/05/2017
+SPM12: spm_coreg (v6435)                           20:21:00 - 01/11/2017
 ========================================================================
-Completed                               :          18:40:01 - 11/05/2017
+Completed                               :          20:21:14 - 01/11/2017
 Done    'Coregister: Estimate'
 Running 'Segment'
 
-SPM12: spm_preproc_run (v6365)                     18:40:07 - 11/05/2017
+SPM12: spm_preproc_run (v6365)                     20:21:20 - 01/11/2017
 ========================================================================
-Segment /projects/dsnlab/tds/fMRI/subjects/350/structurals/mprage.nii,1
-Completed                               :          18:50:21 - 11/05/2017
+Segment /projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2/350/structurals/mprage.nii,1
+Completed                               :          20:31:01 - 01/11/2017
 Done    'Segment'
 Done
 
