@@ -1,0 +1,82 @@
+running
+  '/packages/R/3.4.2/lib64/R/bin/R --slave --no-restore --file=motion_check.r'
+
+Loading required package: knitr
+Loading required package: rmarkdown
+Installing package into ‘/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.4’
+(as ‘lib’ is unspecified)
+trying URL 'http://ftp.osuosl.org/pub/cran/src/contrib/rmarkdown_1.6.tar.gz'
+Content type 'application/x-gzip' length 2077665 bytes (2.0 MB)
+==================================================
+downloaded 2.0 MB
+
+* installing *source* package ‘rmarkdown’ ...
+** package ‘rmarkdown’ successfully unpacked and MD5 sums checked
+** R
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (rmarkdown)
+
+The downloaded source packages are in
+	‘/tmp/RtmpYC345v/downloaded_packages’
+Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘rmarkdown’
+Loading required package: dplyr
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+Loading required package: tidyr
+Loading required package: reshape2
+
+Attaching package: ‘reshape2’
+
+The following object is masked from ‘package:tidyr’:
+
+    smiths
+
+Loading required package: ggplot2
+Loading required package: pracma
+Installing package into ‘/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.4’
+(as ‘lib’ is unspecified)
+trying URL 'http://ftp.osuosl.org/pub/cran/src/contrib/pracma_2.0.7.tar.gz'
+Content type 'application/x-gzip' length 362021 bytes (353 KB)
+==================================================
+downloaded 353 KB
+
+* installing *source* package ‘pracma’ ...
+** package ‘pracma’ successfully unpacked and MD5 sums checked
+** R
+** data
+*** moving datasets to lazyload DB
+** demo
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (pracma)
+
+The downloaded source packages are in
+	‘/tmp/RtmpYC345v/downloaded_packages’
+Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘pracma’
+Loading required package: stringr
+
+
+Using this expression for trash regressor:
+(( deriv_trans < -1 ) ) | (( deriv_rot < -1 )) | (( deriv_trans > 1 ) ) | (( deriv_rot > 1 ))
+

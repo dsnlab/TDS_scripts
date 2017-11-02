@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#SBATCH --job-name= motion_check
+#SBATCH --job-name=motion_check
 #SBATCH --output=output/motion_check.log
 #
 #SBATCH --cpus-per-task=28
@@ -10,4 +10,4 @@
 
 module load R gcc
 
-srun Rscript --verbose motion_check.R
+srun Rscript --verbose motion_check.r
