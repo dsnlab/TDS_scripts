@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#SBATCH --job-name= auto_trash
+#SBATCH --job-name=auto_trash
 #SBATCH --output=output/auto_trash.log
 #
 #SBATCH --cpus-per-task=28

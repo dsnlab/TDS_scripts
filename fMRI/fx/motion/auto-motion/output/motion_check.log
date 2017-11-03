@@ -1,31 +1,11 @@
+
+Lmod is automatically replacing "intel/17" with "gcc/7.2"
+
 running
   '/packages/R/3.4.2/lib64/R/bin/R --slave --no-restore --file=motion_check.r'
 
 Loading required package: knitr
 Loading required package: rmarkdown
-Installing package into ‘/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.4’
-(as ‘lib’ is unspecified)
-trying URL 'http://ftp.osuosl.org/pub/cran/src/contrib/rmarkdown_1.6.tar.gz'
-Content type 'application/x-gzip' length 2077665 bytes (2.0 MB)
-==================================================
-downloaded 2.0 MB
-
-* installing *source* package ‘rmarkdown’ ...
-** package ‘rmarkdown’ successfully unpacked and MD5 sums checked
-** R
-** inst
-** preparing package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** testing if installed package can be loaded
-* DONE (rmarkdown)
-
-The downloaded source packages are in
-	‘/tmp/RtmpYC345v/downloaded_packages’
-Warning message:
-In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
-  there is no package called ‘rmarkdown’
 Loading required package: dplyr
 
 Attaching package: ‘dplyr’
@@ -49,34 +29,58 @@ The following object is masked from ‘package:tidyr’:
 
 Loading required package: ggplot2
 Loading required package: pracma
-Installing package into ‘/gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.4’
-(as ‘lib’ is unspecified)
-trying URL 'http://ftp.osuosl.org/pub/cran/src/contrib/pracma_2.0.7.tar.gz'
-Content type 'application/x-gzip' length 362021 bytes (353 KB)
-==================================================
-downloaded 353 KB
-
-* installing *source* package ‘pracma’ ...
-** package ‘pracma’ successfully unpacked and MD5 sums checked
-** R
-** data
-*** moving datasets to lazyload DB
-** demo
-** preparing package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** testing if installed package can be loaded
-* DONE (pracma)
-
-The downloaded source packages are in
-	‘/tmp/RtmpYC345v/downloaded_packages’
-Warning message:
-In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
-  there is no package called ‘pracma’
 Loading required package: stringr
 
 
 Using this expression for trash regressor:
 (( deriv_trans < -1 ) ) | (( deriv_rot < -1 )) | (( deriv_trans > 1 ) ) | (( deriv_rot > 1 ))
 
+Adding missing grouping variables: `subject`, `run`
+There were 50 or more warnings (use warnings() to see the first 50)
+
+
+processing file: 101.Rmd
+  |                                                                         |                                                                 |   0%  |                                                                         |...........                                                      |  17%
+  ordinary text without R code
+
+  |                                                                         |......................                                           |  33%
+label: Trans (with options) 
+List of 4
+ $ fig.width : num 7.75
+ $ fig.height: num 10.2
+ $ fig.path  : chr "figures/101"
+ $ echo      : symbol F
+
+  |                                                                         |................................                                 |  50%
+  ordinary text without R code
+
+  |                                                                         |...........................................                      |  67%
+label: Rot (with options) 
+List of 4
+ $ fig.width : num 7.75
+ $ fig.height: num 10.2
+ $ fig.path  : chr "figures/101"
+ $ echo      : symbol F
+
+  |                                                                         |......................................................           |  83%
+  ordinary text without R code
+
+  |                                                                         |.................................................................| 100%
+label: unnamed-chunk-1 (with options) 
+List of 1
+ $ echo: symbol F
+
+
+output file: 101.knit.md
+
+/usr/bin/pandoc +RTS -K512m -RTS 101.utf8.md --to latex --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output /projects/dsnlab/shared/tds/fMRI/analysis/fx/motion/auto-motion-output/tdsall/101.pdf --template /gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.4/rmarkdown/rmd/latex/default.tex --highlight-style tango --latex-engine pdflatex --variable graphics=yes --variable 'geometry:margin=1in' 
+pandoc: Error producing PDF from TeX source.
+! Font T1/cmr/m/n/10=ecrm1000 at 10.0pt not loadable: Metric (TFM) file not fou
+nd.
+<to be read again> 
+                   relax 
+l.100 \fontencoding\encodingdefault\selectfont
+
+Error: pandoc document conversion failed with error 43
+Execution halted
+srun: error: n126: task 0: Exited with exit code 1

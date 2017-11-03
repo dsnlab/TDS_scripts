@@ -1,0 +1,21 @@
+
+Lmod is automatically replacing "intel/17" with "gcc/7.2"
+
+running
+  '/packages/R/3.4.2/lib64/R/bin/R --slave --no-restore --file=auto_trash.R'
+
+Loading required package: dplyr
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+Loading required package: tidyr
+Loading required package: ggplot2
+There were 50 or more warnings (use warnings() to see the first 50)
