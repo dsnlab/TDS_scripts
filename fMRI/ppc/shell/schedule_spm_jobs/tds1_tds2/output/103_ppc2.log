@@ -1,0 +1,70 @@
+-------------------------------------------------------------------------------
+103
+Running /projects/dsnlab/shared/tds/TDS_scripts/fMRI/ppc/spm/tds1_tds2/ppc2_tds1_2_job.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (glnxa64)
+                             September 14, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+[Warning: Directory already exists.] 
+[> In make_sid_matlabbatch (line 18)
+  In run (line 91)] 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Normalise to MNI Space'
+** Affine registering "tds1_tds2_template_6" with MNI space **
+  1          3.18111         0.109283
+  2          2.55027        0.0672996
+  3          1.86154        0.0419164
+  4          1.15073         0.031478
+  5         0.588568        0.0285855
+  6         0.272457        0.0280271
+  7         0.121712        0.0279623
+  8        0.0538341        0.0279709
+  9        0.0237398        0.0279817
+ 10        0.0104589        0.0279877
+ 11         0.004606        0.0279906
+ 12       0.00202786        0.0279918
+ 13      0.000893347        0.0279924
+ 14      0.000392738        0.0279927
+ 15      0.000172642        0.0279928
+
+** "u_rc1mprage_tds1_tds2_template" **
+Failed  'Normalise to MNI Space'
+Error using read_hdr (line 32)
+Error reading header file "/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2/103/structurals/u_rc1mprage_tds1_tds2_template.nii".
+In file "/projects/dsnlab/shared/SPM12/@nifti/private/read_hdr.m" (v4967), function "read_hdr" at line 32.
+In file "/projects/dsnlab/shared/SPM12/@nifti/nifti.m" (v4986), function "nifti" at line 26.
+In file "/gpfs/projects/dsnlab/shared/SPM12/toolbox/DARTEL/spm_dartel_norm_fun.m" (v5668), function "deal_with_subject" at line 155.
+In file "/gpfs/projects/dsnlab/shared/SPM12/toolbox/DARTEL/spm_dartel_norm_fun.m" (v5668), function "spm_dartel_norm_fun" at line 132.
+
+Running 'Make Directory'
+Done    'Make Directory'
+No executable modules, but still unresolved dependencies or incomplete module inputs.
+The following modules did not run:
+Failed: Normalise to MNI Space
+Skipped: Move/Delete Files
+Skipped: Normalise to MNI Space
+Skipped: Make Directory
+Skipped: Move/Delete Files
+Skipped: File Selector (Batch Mode)
+Skipped: Normalise to MNI Space
+
+{Error using MATLABbatch system
+Job execution failed. The full log of this run can be found in MATLAB command
+window, starting with the lines (look for the line showing the exact #job as
+displayed in this error message)
+------------------
+Running job #1
+------------------
+} 
+>> 
