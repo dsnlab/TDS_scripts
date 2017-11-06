@@ -3,8 +3,8 @@ title: "network-stats"
 author: "Theresa Cheng"
 date: "October 15, 2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, message=FALSE, warning=FALSE, include=FALSE}
@@ -22,7 +22,7 @@ options(scipen=6)
 
 rm(list=ls())
 
-gordon_modelsDT = readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC.RDS") # BIC NOW
+gordon_modelsDT = readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC_SES.RDS") 
 ```
 
 ```{r id coi target networks, include=TRUE}
