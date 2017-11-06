@@ -3,8 +3,8 @@ title: "network-stats"
 author: "Theresa Cheng"
 date: "October 15, 2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, message=FALSE, warning=FALSE, include=FALSE}
@@ -109,6 +109,18 @@ total_connections <- sum(tbl_community$mod_type)
 df_prop$w_pct= round((df_prop$pct/100)*(df_prop$comm_total/total_connections),4)# weighted percent
 
 df_prop_nonull=filter(df_prop, mod_type!="null model") # remove null models
+
+#table
+tbl_prop_by_model= df_prop[, c("Community","seed","mod_type", "pct")] %>% 
+  spread(Community, pct, fill=0)
+kable(tbl_prop_by_model, format="pandoc", caption= "prop connections per model and seed")
+
+#table >20%
+tbl_prop_by_model_20= df_prop[, c("Community","seed","mod_type", "pct")] %>%
+  filter(pct>20) %>%
+  spread(Community, pct, fill=0)
+kable(tbl_prop_by_model_20, format="pandoc", caption= ">20% prop connections per model and seed")
+
 
 # plot across ALL communities by seed region
 ggplot(df_prop, aes(x=mod_type, y= pct, fill=Community)) + # fill=Community)) +
