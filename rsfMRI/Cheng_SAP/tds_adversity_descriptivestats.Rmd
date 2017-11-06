@@ -33,7 +33,7 @@ if(!require(GGally)){install.packages('GGally')} ; library(GGally)
 
 ```{r load ACES data, include=FALSE}
 
-setwd("/Users/theresacheng/Documents/tds_rsfc/Qualtrics") # change path to wherever qualtrics data is
+setwd("/Volumes/TDS/behavior/Qualtrics/scoring_script_output") # change path to wherever qualtrics data is
 
 ## TDS1: This data is stored in pre- and post- files, relative to IRB approval of additional questionnaires
 df1= rbind.fill(read.csv("TDS-1-PRE-auto_scored_scales_wide.csv", header=TRUE),  read.csv("TDS-1-POST-auto_scored_scales_wide.csv", header=TRUE)) # load pre/post, remove blank rows, and merge
@@ -60,7 +60,7 @@ df_demo=read.csv("age_gender_iq.csv")
 
 ```{r subset participants}
 
-subset=TRUE
+subset=FALSE
 
 if (subset==TRUE) {
   # Subset to Cheng_SAP participants, N=102
@@ -75,7 +75,7 @@ if (subset==TRUE) {
 ```
 
 ```{r load ses data}
-setwd("/Users/theresacheng/Documents/tds_rsfc/Qualtrics") # need to change path to wherever qualtrics data is
+setwd("/Volumes/TDS/behavior/Qualtrics/scoring_script_output") # need to change path to wherever qualtrics data is
 
 # Economic Deprivation 
 #### Notes: PAL2_5 a score of 4= Not enough to get by; PAL2_7 is # of people in household
@@ -163,6 +163,8 @@ df_aces$ACE_hh_dysf_num= ifelse(df_aces$ACE_ace_hh_dysf_n_missing<=1, mapvalues(
 df_aces$ACE_hh_dysf_num= as.factor(df_aces$ACE_hh_dysf_num)
 
 df_aces=filter(df_aces, !is.na(ACE_abuse_num))
+
+#saveRDS(df_ed, file="/projects/dsnlab/tds/TDS_scripts/rsfMRI/Cheng_SAP/ses_demo.RDS")
 
 ```
 

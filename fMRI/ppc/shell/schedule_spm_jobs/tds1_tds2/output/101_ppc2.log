@@ -1,12 +1,12 @@
 -------------------------------------------------------------------------------
 101
-Running /projects/dsnlab/tds/TDS_scripts/fMRI/ppc/spm/tds1_tds2/ppc2_tds1_2_job.m
+Running /projects/dsnlab/shared/tds/TDS_scripts/fMRI/ppc/spm/tds1_tds2/ppc2_tds1_2_job.m
 -------------------------------------------------------------------------------
 
                             < M A T L A B (R) >
-                  Copyright 1984-2016 The MathWorks, Inc.
-                   R2016b (9.1.0.441655) 64-bit (glnxa64)
-                             September 7, 2016
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (glnxa64)
+                             September 14, 2017
 
  
 To get started, type one of these: helpwin, helpdesk, or demo.
@@ -18,24 +18,24 @@ For product information, visit www.mathworks.com.
 Running job #1
 ------------------------------------------------------------------------
 Running 'Normalise to MNI Space'
-** Affine registering "tds1_2_template_6" with MNI space **
-  1          3.21039         0.110893
-  2           2.5852        0.0681715
-  3           1.8901        0.0420982
-  4          1.17157         0.031323
-  5          0.60076        0.0283326
-  6         0.278298        0.0277529
-  7          0.12425        0.0276839
-  8        0.0549026        0.0276916
-  9        0.0241903        0.0277022
- 10        0.0106487        0.0277082
- 11       0.00468528         0.027711
- 12       0.00206121        0.0277122
- 13      0.000907462        0.0277128
- 14      0.000400394        0.0277131
- 15      0.000175785        0.0277132
+** Affine registering "tds1_tds2_template_6" with MNI space **
+  1          3.18111         0.109283
+  2          2.55027        0.0672996
+  3          1.86154        0.0419164
+  4          1.15073         0.031478
+  5         0.588568        0.0285855
+  6         0.272457        0.0280271
+  7         0.121712        0.0279623
+  8        0.0538341        0.0279709
+  9        0.0237398        0.0279817
+ 10        0.0104589        0.0279877
+ 11         0.004606        0.0279906
+ 12       0.00202786        0.0279918
+ 13      0.000893347        0.0279924
+ 14      0.000392738        0.0279927
+ 15      0.000172642        0.0279928
 
-** "u_rc1mprage_tds1_2_template" **
+** "u_rc1mprage_tds1_tds2_template" **
 mprage	1,1,1
 Done    'Normalise to MNI Space'
 Running 'Make Directory'
@@ -44,7 +44,7 @@ Running 'Move/Delete Files'
 Done    'Move/Delete Files'
 Running 'Normalise to MNI Space'
 
-** "u_rc1mprage_tds1_2_template" **
+** "u_rc1mprage_tds1_tds2_template" **
 mprage	1,1,1
 Done    'Normalise to MNI Space'
 Running 'Make Directory'
@@ -55,7 +55,7 @@ Running 'File Selector (Batch Mode)'
 Done    'File Selector (Batch Mode)'
 Running 'Normalise to MNI Space'
 
-** "u_rc1mprage_tds1_2_template" **
+** "u_rc1mprage_tds1_tds2_template" **
 rucyb1_0001	1,1,1
 rucyb1_0002	1,1,1
 rucyb1_0003	1,1,1

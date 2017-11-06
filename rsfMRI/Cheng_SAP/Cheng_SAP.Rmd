@@ -67,7 +67,12 @@ coi_subs$sub= as.character(coi_subs$sub)
 # how many subjects are in the analysis? (has behavior AND resting state data)
 sum(demographicsDF$sub %in% coi_subs$sub)
 
-save(demographicsDF, file="/Volumes/TDS/bids_data/derivatives/Cheng_SAP/demographicsDF.csv")
+#save(demographicsDF, file="/Volumes/TDS/bids_data/derivatives/Cheng_SAP/demographicsDF.csv")
+ses_demo <- readRDS("/projects/dsnlab/tds/TDS_scripts/rsfMRI/Cheng_SAP/ses_demo.RDS") %>% select(SID, income_to_needs) 
+colnames(ses_demo) = c("sub", "ItN") 
+ses_demo$sub = paste0("sub-", ses_demo$sub)
+
+demographicsDF = left_join(demographicsDF, ses_demo)
 
 ```
 
@@ -83,7 +88,7 @@ preprocessedcomplete<- preprocessedcomplete %>%
 # Get timecourses
 ```{r timecourses}
 
-detach("package:plyr", unload=TRUE) 
+#detach("package:plyr", unload=TRUE) 
 
 if(!file.exists("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_coisDT.RDS")) {
  numcores<-detectCores()[1]
@@ -211,7 +216,7 @@ system.time(gordon_coisDT <- do.call(bind_rows, gordon_cois) %>%
 ```{r run models}
 
 gordon_cois<-distinct(gordon_coisDT, coi)
-rerun_modelStat=FALSE
+rerun_modelStat= FALSE
 
 if(rerun_modelStat){
 # Create null_models and write parameters to a dataframe
@@ -454,24 +459,29 @@ if(rerun_modelCompare){
                    by='sub',
                    allow.cartesian=T)
         # Create models
-        null_mod=(lme(cor ~ 1,
+        null_mod=(lme(cor ~ 1 + ItN,
                       method="ML",
+                      na.action=na.exclude,
                       random = ~ 1|sub,
                      data=adf))
-        abuse_mod=(lme(cor ~ abuse,
+        abuse_mod=(lme(cor ~ abuse + ItN,
                        method= "ML",
+                       na.action=na.exclude,
                        random= ~1|sub, 
                        data=adf))
-        neglect_mod=(lme(cor ~ neglect,
+        neglect_mod=(lme(cor ~ neglect + ItN,
                         method="ML",
+                        na.action=na.exclude,
                         random = ~1|sub,
                         data=adf))
-       neglect_abuse_main_mod=(lme(cor ~ neglect + abuse,
+       neglect_abuse_main_mod=(lme(cor ~ neglect + abuse + ItN,
                                    method="ML",
+                                   na.action=na.exclude,
                                    random = ~1|sub,
                                    data=adf))
-       neglect_abuse_int_mod=(lme(cor ~ neglect*abuse,
+       neglect_abuse_int_mod=(lme(cor ~ neglect*abuse + ItN,
                                   method="ML",
+                                  na.action=na.exclude,
                                   random = ~1|sub,
                                   data=adf))
        # Compare models
@@ -536,7 +546,7 @@ if(rerun_modelCompare){
   gordon_modelsDT_AIC <- rbindlist(gordon_models_AIC) #make this into a dataframe
   print(object.size(gordon_modelsDT_AIC), units='Mb')
   rm(gordon_models_AIC);gc()
-  saveRDS(gordon_modelsDT_AIC, "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC.RDS")
+  saveRDS(gordon_modelsDT_AIC, "/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC_SES.RDS")
 } else {
   readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC.RDS")
 }
