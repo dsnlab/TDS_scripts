@@ -22,7 +22,7 @@ options(scipen=6)
 
 rm(list=ls())
 
-gordon_modelsDT = readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC_SES.RDS") 
+gordon_modelsDT = readRDS("/Volumes/TDS/bids_data/derivatives/Cheng_SAP/gordon_modelsDT_AIC.RDS") 
 ```
 
 ```{r id coi target networks, include=TRUE}
@@ -127,7 +127,8 @@ ggplot(df_prop, aes(x=mod_type, y= pct, fill=Community)) + # fill=Community)) +
   geom_bar(position="dodge", stat="identity") +
   scale_x_discrete(labels=c("A", "N", "N & A", "N X A", "null")) + # removed "null"
   facet_grid(seed~.) + 
-  ggtitle("Percent of model types by network and seed") 
+  ggtitle("Percent of model types by network and seed") + 
+  theme(axis.text.x= element_text(size= 13), axis.text.y= element_text(size= 13))
 
 # plot across ALL communities by seed region, SANS NULL MODELS
 ggplot(df_prop_nonull, aes(x=mod_type, y= pct, fill=Community)) + # fill=Community)) +
@@ -137,13 +138,14 @@ ggplot(df_prop_nonull, aes(x=mod_type, y= pct, fill=Community)) + # fill=Communi
   xlab("Models") +
   ylab("Percentage of community connections") +
   ggtitle("Percent of model types by community and seed (no null models)")+ 
-  theme(legend.text=element_text(size=7.5), legend.position="right")
+  theme(legend.text=element_text(size=7.5), legend.position="right", axis.text.x= element_text(size= 13), axis.text.y= element_text(size= 13))
     
 ## other ways of viewing proportioned data
 ggplot(df_gordon_models,aes(x = mod_type, fill = Community)) + 
   geom_bar(position = "fill") +
   scale_x_discrete(labels=c("A", "N", "N & A", "N X A", "null")) + 
-  ggtitle("proportion of communities per mod type")
+  ggtitle("proportion of communities per mod type") + 
+  theme(axis.text.x= element_text(size= 13), axis.text.y= element_text(size= 13))
 
 df_gordon_models$mod_type= factor(df_gordon_models$mod_type,levels(df_gordon_models$mod_type)[c(5, 4, 3, 2, 1)])
 df_gordon_models$mod_type=factor(df_gordon_models$mod_type,labels=c("null", "neglect by abuse", "neglect & abuse", "neglect", "abuse"))
@@ -154,7 +156,8 @@ ggplot(df_gordon_models,aes(x = Community, fill = mod_type)) +
   ylab("Proportion") +
   scale_fill_discrete(name="Model")+
   ggtitle("proportion of mod types per community") +
-  theme(legend.position="bottom")
+  theme(legend.position="bottom") + 
+  theme(axis.text.x= element_text(size= 13), axis.text.y= element_text(size= 13))
 
 ggplot(df_nonull,aes(x = Community, fill = mod_type)) + 
   geom_bar(position = "fill") +
@@ -237,7 +240,7 @@ for (i in 1:8) {
     xlab("Experience") +
     ylab("Mean correlation") + 
     ggtitle(paste0("Interaction plot for the ", unique(adf$Community)[i], " network")) + 
-    theme(legend.position = "none"))
-}
+    theme(legend.position = "none", axis.text.x= element_text(size= 13), axis.text.y= element_text(size= 13)))
+    }
 
 ```

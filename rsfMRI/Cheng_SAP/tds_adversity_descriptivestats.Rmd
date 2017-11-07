@@ -60,7 +60,7 @@ df_demo=read.csv("age_gender_iq.csv")
 
 ```{r subset participants}
 
-subset=FALSE
+subset=TRUE
 
 if (subset==TRUE) {
   # Subset to Cheng_SAP participants, N=102
@@ -346,7 +346,7 @@ ggplot(df_binary, aes(x=interaction(A,N), fill=interaction(A,N))) +
   scale_x_discrete(labels=c("None", "Abuse","Neglect","Both")) +
   xlab("Exposures") +
   ylab("Count") +
-  theme(legend.position="none")
+  theme(legend.position="none", axis.text.x= element_text(size= 13), axis.text.y= element_text(size= 13))
 
 #ggplot(df_binary, aes(x=interaction(A,N,H,P), y=interaction(A,N,H,P))) + 
  # geom_tile(aes(fill=interaction(A,N,H,P)))
