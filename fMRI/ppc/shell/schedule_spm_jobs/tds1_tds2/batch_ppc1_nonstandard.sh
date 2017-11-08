@@ -21,12 +21,12 @@ mempercpu=5G
 #		 --mem-per-cpu=${mempercpu} \
 #		 spm_job.sh
 
-sbatch --export=REPLACESID=178,SCRIPT=${STUDY}/${SCRIPT}/TDS178_coreg_realign_unwarp_coreg_segment.m,SUB=178,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
-		 --job-name=${RESULTS_INFIX} \
-		 -o "${OUTPUTDIR}"/178_ppc1_1.log \
-		 --cpus-per-task=${cpuspertask} \
-		 --mem-per-cpu=${mempercpu} \
-		 spm_job.sh
+#sbatch --export=REPLACESID=178,SCRIPT=${STUDY}/${SCRIPT}/TDS178_coreg_realign_unwarp_coreg_segment.m,SUB=178,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+#		 --job-name=${RESULTS_INFIX} \
+#		 -o "${OUTPUTDIR}"/178_ppc1_1.log \
+#		 --cpus-per-task=${cpuspertask} \
+#		 --mem-per-cpu=${mempercpu} \
+#		 spm_job.sh
 
 #sbatch --export=REPLACESID=179,SCRIPT=${STUDY}/${SCRIPT}/TDS179_coreg_realign_unwarp_coreg_segment.m,SUB=179,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 #		 --job-name=${RESULTS_INFIX} \
@@ -42,12 +42,12 @@ sbatch --export=REPLACESID=178,SCRIPT=${STUDY}/${SCRIPT}/TDS178_coreg_realign_un
 #		 --mem-per-cpu=${mempercpu} \
 #		 spm_job.sh
 
-sbatch --export=REPLACESID=192,SCRIPT=${STUDY}/${SCRIPT}/TDS192_coreg_realign_unwarp_coreg_segment.m,SUB=192,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
-		 --job-name=${RESULTS_INFIX} \
-		 -o "${OUTPUTDIR}"/192_ppc1.log \
-		 --cpus-per-task=${cpuspertask} \
-		 --mem-per-cpu=${mempercpu} \
-		 spm_job.sh
+#sbatch --export=REPLACESID=192,SCRIPT=${STUDY}/${SCRIPT}/TDS192_coreg_realign_unwarp_coreg_segment.m,SUB=192,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+#		 --job-name=${RESULTS_INFIX} \
+#		 -o "${OUTPUTDIR}"/192_ppc1.log \
+#		 --cpus-per-task=${cpuspertask} \
+#		 --mem-per-cpu=${mempercpu} \
+#		 spm_job.sh
 
 #sbatch --export=REPLACESID=350,SCRIPT=${STUDY}/${SCRIPT}/TDS350_coreg_realign_unwarp_coreg_segment.m,SUB=350,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 #		 --job-name=${RESULTS_INFIX} \
@@ -63,16 +63,16 @@ sbatch --export=REPLACESID=192,SCRIPT=${STUDY}/${SCRIPT}/TDS192_coreg_realign_un
 #		 --mem-per-cpu=${mempercpu} \
 #		 spm_job.sh
 #
-#sbatch --export=REPLACESID=370,SCRIPT=${STUDY}/${SCRIPT}/TDS370_coreg_realign_unwarp_coreg_segment.m,SUB=370,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
-#		 --job-name=${RESULTS_INFIX} \
-#		 -o "${OUTPUTDIR}"/370_ppc1.log \
-#		 --cpus-per-task=${cpuspertask} \
-#		 --mem-per-cpu=${mempercpu} \
-#		 spm_job.sh
-#
-#sbatch --export=REPLACESID=374,SCRIPT=${STUDY}/${SCRIPT}/TDS374_coreg_realign_unwarp_coreg_segment.m,SUB=374,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
-#		 --job-name=${RESULTS_INFIX} \
-#		 -o "${OUTPUTDIR}"/374_ppc1.log \
-#		 --cpus-per-task=${cpuspertask} \
-#		 --mem-per-cpu=${mempercpu} \
-#		 spm_job.sh
+sbatch --export=REPLACESID=370,SCRIPT=${STUDY}/${SCRIPT}/TDS370_coreg_realign_unwarp_coreg_segment.m,SUB=370,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/370_ppc1.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
+
+sbatch --export=REPLACESID=374,SCRIPT=${STUDY}/${SCRIPT}/TDS374_coreg_realign_unwarp_coreg_segment.m,SUB=374,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/374_ppc1.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
