@@ -1,0 +1,29 @@
+
+Converting 366
+
+Setting Up mcverter
+
+Study directory is /Volumes/TDS/nonbids_data
+
+Dicom directory is /Volumes/TDS/DICOMS/DICOMS_CR_BU/TDS366_20170326
+
+Converting anatomical mprage into nifti
+sMRI dir: /Volumes/TDS/nonbids_data/sMRI/subjects/366
+
+Converting resting state into 4D nifti
+rsfMRI dir: /Volumes/TDS/nonbids_data/rsfMRI/subjects/366
+
+Converting field map and placing in fMRI folder
+fm dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/fmaps
+
+Converting task data into niftis
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/vid1
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/vid2
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/stop3
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/stop4
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/stop5
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/stop6
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/stop7
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/stop8
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/cyb1
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/366/cyb2

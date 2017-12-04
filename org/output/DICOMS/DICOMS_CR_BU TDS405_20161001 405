@@ -1,0 +1,11 @@
+
+Converting 405
+
+Setting Up mcverter
+
+Study directory is /Volumes/TDS/nonbids_data
+
+Dicom directory is /Volumes/TDS/DICOMS/DICOMS_CR_BU/TDS405_20161001
+
+Converting anatomical mprage into nifti
+sMRI dir: /Volumes/TDS/nonbids_data/sMRI/subjects/405

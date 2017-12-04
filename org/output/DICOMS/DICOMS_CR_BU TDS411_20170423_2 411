@@ -1,0 +1,38 @@
+
+Converting 411
+
+Setting Up mcverter
+
+Study directory is /Volumes/TDS/nonbids_data
+
+Dicom directory is /Volumes/TDS/DICOMS/DICOMS_CR_BU/TDS411_20170423_2
+
+Converting anatomical mprage into nifti
+sMRI dir: /Volumes/TDS/nonbids_data/sMRI/subjects/411
+
+Converting resting state into 4D nifti
+rsfMRI dir: /Volumes/TDS/nonbids_data/rsfMRI/subjects/411
+For Series: 1.3.12.2.1107.5.2.19.45348.2017042314572588440373874.0.0.0
+Volume interval differs from RepetitionTime by > 0.05%
+TR: 0 retval: 0.780001
+For Series: 1.3.12.2.1107.5.2.19.45348.2017042314572588440373874.0.0.0
+Volume interval differs from RepetitionTime by > 0.05%
+TR: 0 retval: 0.780001
+For Series: 1.3.12.2.1107.5.2.19.45348.2017042314572588440373874.0.0.0
+Volume interval differs from RepetitionTime by > 0.05%
+TR: 0 retval: 0.780001
+
+Converting field map and placing in fMRI folder
+fm dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/fmaps
+
+Converting task data into niftis
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/vid1
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/vid2
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/stop3
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/stop4
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/stop5
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/stop6
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/stop7
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/stop8
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/cyb1
+fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/411/cyb2
