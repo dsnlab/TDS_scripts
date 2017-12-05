@@ -16,7 +16,7 @@
 # All other paths are set in the dicom_convert-convert_dicoms.sh script.
 
 # Set subject list
-SUBJLIST="/projects/dsnlab/tds/TDS_scripts/org/subject_list_10312017.txt"
+SUBJLIST="/projects/dsnlab/tds/TDS_scripts/org/subject_list_12052017.txt"
 PATH_FOR_OUTPUT='/projects/dsnlab/tds/TDS_scripts/org/output'
 
-parallel --results "${PATH_FOR_OUTPUT}"/{} --verbose -j1 --colsep '\t' bash dicom_convert-convert_dicoms_copy.sh	:::: "${SUBJLIST}"
+parallel --results "${PATH_FOR_OUTPUT}"/{} --verbose -j1 --colsep '\t' bash dicom_convert-convert_dicoms.sh	:::: "${SUBJLIST}"

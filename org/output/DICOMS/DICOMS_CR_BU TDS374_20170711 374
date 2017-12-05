@@ -9,6 +9,10 @@ Dicom directory is /Volumes/TDS/DICOMS/DICOMS_CR_BU/TDS374_20170711
 
 Converting anatomical mprage into nifti
 sMRI dir: /Volumes/TDS/nonbids_data/sMRI/subjects/374
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/sMRI/subjects/374/mprage.nii
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/sMRI/subjects/374/mprage_info.txt
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/sMRI/subjects/374/mprage_ND.nii
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/sMRI/subjects/374/mprage_ND_info.txt
 
 Converting resting state into 4D nifti
 rsfMRI dir: /Volumes/TDS/nonbids_data/rsfMRI/subjects/374
@@ -18,21 +22,21 @@ TR: 0 retval: 0.780001
 For Series: 1.3.12.2.1107.5.2.19.45348.2017071114270594828538218.0.0.0
 Volume interval differs from RepetitionTime by > 0.05%
 TR: 0 retval: 0.780001
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/rsfMRI/subjects/374/resting_bold_mb6_2_5mm_tr780.nii
 For Series: 1.3.12.2.1107.5.2.19.45348.2017071114270594828538218.0.0.0
 Volume interval differs from RepetitionTime by > 0.05%
 TR: 0 retval: 0.780001
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/rsfMRI/subjects/374/resting_bold_mb6_2_5mm_tr780_info.txt
 
 Converting field map and placing in fMRI folder
 fm dir: /Volumes/TDS/nonbids_data/fMRI/subjects/374/fmaps
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/fMRI/subjects/374/fmaps/1_009_fieldmap_20170711/fieldmap_info.txt
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/fMRI/subjects/374/fmaps/1_010_fieldmap_20170711/fieldmap_info.txt
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/fMRI/subjects/374/fmaps/1_021_fieldmap_20170711/fieldmap_info.txt
+Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/fMRI/subjects/374/fmaps/1_022_fieldmap_20170711/fieldmap_info.txt
 
 Converting task data into niftis
 fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/374/vid1
-For Series: 1.3.12.2.1107.5.2.19.45348.2017071113353913076020473.0.0.0
-Volume interval differs from average interval by > 0.05%
-avg: 3.6129 retval: 2
-For Series: 1.3.12.2.1107.5.2.19.45348.2017071113353913076020473.0.0.0
-Volume interval differs from average interval by > 0.05%
-avg: 3.6129 retval: 2
 fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/374/vid2
 fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/374/stop3
 fMRI task dir: /Volumes/TDS/nonbids_data/fMRI/subjects/374/stop4

@@ -1,0 +1,10 @@
+11:13:39 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/sMRI/subjects/374/mprage.nii
+11:13:56 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/sMRI/subjects/374/mprage_info.txt
+11:13:58 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/sMRI/subjects/374/mprage_ND.nii
+11:14:15 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/sMRI/subjects/374/mprage_ND_info.txt
+11:16:09 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/rsfMRI/subjects/374/resting_bold_mb6_2_5mm_tr780.nii
+11:21:16 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/rsfMRI/subjects/374/resting_bold_mb6_2_5mm_tr780_info.txt
+11:21:44 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/fMRI/subjects/374/fmaps/1_009_fieldmap_20170711/fieldmap_info.txt
+11:21:46 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/fMRI/subjects/374/fmaps/1_010_fieldmap_20170711/fieldmap_info.txt
+11:21:51 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/fMRI/subjects/374/fmaps/1_021_fieldmap_20170711/fieldmap_info.txt
+11:21:54 AM: Error: Warning: File exists, will overwrite /Volumes/TDS/nonbids_data/fMRI/subjects/374/fmaps/1_022_fieldmap_20170711/fieldmap_info.txt

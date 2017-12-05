@@ -76,8 +76,8 @@ cd $fieldmapoutput && mv *fieldmap*/fieldmap*nii ./
 
 # Converts task fMRI and places in fMRI folder assigned to each task #
 echo -e "\nConverting task data into niftis"
-mkdir -pv ${OUTPUTDIR}/fMRI/subjects/${SUBID}/
-cd ${OUTPUTDIR}/fMRI/subjects/${SUBID}/
+mkdir -pv ${OUTPUTDIR}/fMRI/subjects/test/${SUBID}/
+cd ${OUTPUTDIR}/fMRI/subjects/test/${SUBID}/
 for task in $tasks; do
  mkdir ${task}
  taskoutput="${OUTPUTDIR}/fMRI/subjects/${SUBID}/${task}"
@@ -86,4 +86,4 @@ for task in $tasks; do
 done
 
 # Copies mprage from sMRI folder to fMRI folder
-cd ${OUTPUTDIR}/fMRI/subjects/${SUBID} && mkdir -p structurals && cp ${anatomicaloutput}/mprage* $OUTPUTDIR/fMRI/subjects/$SUBID/structurals/
+cd ${OUTPUTDIR}/fMRI/subjects/test/${SUBID} && mkdir -p structurals && cp ${anatomicaloutput}/mprage* $OUTPUTDIR/fMRI/subjects/test/$SUBID/structurals/
