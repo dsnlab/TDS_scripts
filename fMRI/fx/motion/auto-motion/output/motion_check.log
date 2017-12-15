@@ -37,50 +37,11 @@ Using this expression for trash regressor:
 
 Adding missing grouping variables: `subject`, `run`
 There were 50 or more warnings (use warnings() to see the first 50)
-
-
-processing file: 101.Rmd
-  |                                                                         |                                                                 |   0%  |                                                                         |...........                                                      |  17%
-  ordinary text without R code
-
-  |                                                                         |......................                                           |  33%
-label: Trans (with options) 
-List of 4
- $ fig.width : num 7.75
- $ fig.height: num 10.2
- $ fig.path  : chr "figures/101"
- $ echo      : symbol F
-
-  |                                                                         |................................                                 |  50%
-  ordinary text without R code
-
-  |                                                                         |...........................................                      |  67%
-label: Rot (with options) 
-List of 4
- $ fig.width : num 7.75
- $ fig.height: num 10.2
- $ fig.path  : chr "figures/101"
- $ echo      : symbol F
-
-  |                                                                         |......................................................           |  83%
-  ordinary text without R code
-
-  |                                                                         |.................................................................| 100%
-label: unnamed-chunk-1 (with options) 
-List of 1
- $ echo: symbol F
-
-
-output file: 101.knit.md
-
-/usr/bin/pandoc +RTS -K512m -RTS 101.utf8.md --to latex --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output /projects/dsnlab/shared/tds/fMRI/analysis/fx/motion/auto-motion-output/tdsall/101.pdf --template /gpfs/home/jpfeifer/R/x86_64-pc-linux-gnu-library/3.4/rmarkdown/rmd/latex/default.tex --highlight-style tango --latex-engine pdflatex --variable graphics=yes --variable 'geometry:margin=1in' 
-pandoc: Error producing PDF from TeX source.
-! Font T1/cmr/m/n/10=ecrm1000 at 10.0pt not loadable: Metric (TFM) file not fou
-nd.
-<to be read again> 
-                   relax 
-l.100 \fontencoding\encodingdefault\selectfont
-
-Error: pandoc document conversion failed with error 43
+Error in file(file, ifelse(append, "a", "w")) : 
+  cannot open the connection
+Calls: write.csv -> eval.parent -> eval -> eval -> write.table -> file
+In addition: Warning message:
+In file(file, ifelse(append, "a", "w")) :
+  cannot open file '/projects/dsnlab/shared/tds/fMRI/analysis/fx/motion/auto-motion-output/tds1_dst2/summary_by_subject_by_run.csv': No such file or directory
 Execution halted
 srun: error: n126: task 0: Exited with exit code 1
