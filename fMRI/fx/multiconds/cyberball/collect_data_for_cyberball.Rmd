@@ -51,7 +51,7 @@ unmerged_folder<-'TDS_cyberball_data/'
   
 #read in cyberball files
 files_folder<-paste(psi_folder,cyb_folder,sep='')
-cb_data_long<-read.csv(paste(files_folder,"Merged_Log_1494973802.csv",sep=''))
+cb_data_long<-read.csv(paste(files_folder,"Merged_Log_1513721440.csv",sep=''))
 
 #one row per run
 cb_data<-subset(cb_data_long, v1 == 'connecting(time: 6)')
@@ -121,8 +121,7 @@ setwd(files_folder3)
 #list the files 
 listFiles<-list.files(files_folder3,recursive=T, pattern='.*csv$')
 
-for(i in 1:length(listFiles)) 
-{
+for(i in 1:length(listFiles)) {
   df<-read.csv(listFiles[i]) #read in the file
   timestamp<-as.character(df[1,2]) #change the timestamp into a character
   label<-filter(labelled_df,stamp==timestamp) #match the stamp in the byDate df with the timestamp in the file
@@ -284,7 +283,3 @@ if (file.exists(fn)) file.remove(fn)
 fn <- "cyb161_2.csv"
 if (file.exists(fn)) file.remove(fn)
 
-fn <- "cyb351_1.csv"
-if (file.exists(fn)) file.remove(fn)
-fn <- "cyb351_2.csv"
-if (file.exists(fn)) file.remove(fn)

@@ -1,8 +1,8 @@
 # Theresa Cheng | Nandita Vijayakumar
 # 4/12/2016
 # This script provides descriptive stats for identifying the grand mean for pmods 
-# RESULTS: TDS1_TDS2_cyb1: 2.802071 
-#          TDS1_TDS2_cyb2: 6.184874    
+# RESULTS: TDS1_TDS2_cyb1: 2.763247
+#          TDS1_TDS2_cyb2: 6.229692
 
 ```{r, warning=FALSE, echo=FALSE}
 # LOAD PACKAGES
@@ -52,7 +52,7 @@ summary_files_folder<-paste(tds_folder,summary_cyberball_folder,sep='')
 setwd(summary_files_folder)
 
 #list the files 
-listFiles<-list.files(recursive=T, pattern='summary_events_cyb.*_1.csv$') # Can be 1 or 2 to examine inc or exc runs 
+listFiles<-list.files(recursive=T, pattern='summary_events_cyb[1|3].*_1.csv$') # Can be 1 or 2 to examine inc or exc runs 
 ```
 
 ```{r, warning=FALSE, echo=FALSE}
