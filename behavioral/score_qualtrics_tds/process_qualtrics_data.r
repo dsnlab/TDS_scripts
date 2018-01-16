@@ -59,7 +59,7 @@ opts_chunk$set(
 #under active development (by John)
 install_github('jflournoy/qualtrics')
 library(qualtrics)
-source('/Users/marge/Documents/tds/behavioral/scripts/score_qualtrics_tds/score_pds.r')
+source('/projects/dsnlab/tds/TDS_scripts/behavioral/score_qualtrics_tds/score_pds.r')
 
 score_items<-function(item_values,scoring_methods,na.rm=F,mean.na.rm=T,scale_name='', scored_scale=''){
   # item_values should be a vector of numbers

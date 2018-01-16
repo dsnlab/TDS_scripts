@@ -3,11 +3,12 @@ title: 'TDS Dimensions of Adversity: Descriptive Stats'
 author: "Theresa Cheng"
 date: "April 13, 2017"
 output:
-html_document: default
-pdf_document: default
+  pdf_document: default
+# html_document: default
+
 ---
 
-# NOTE: Edited on 10/19 to subset to the Cheng_SAP N=102 sample
+# NOTE: Edited on 1/10 to be for the WHOLE sample, not just the Cheng_SAP N=102
 
 #### Evaluate the distribution of responses to questionnaire items pertaining to abuse, neglect, household dysfunction, and economic deprivation in the community, child welfare, and juvenile justice samples of TDS
 
@@ -22,13 +23,13 @@ povline_impute=TRUE # if this is set to 1 (true), household size will be imputed
 
 ```{r install packages, include=FALSE}
 if(!require(reshape)){install.packages('reshape')} ; library(reshape)
-if(!require(plyr)){install.packages('plyr')} ; library(plyr)
 if(!require(dplyr)){install.packages('dplyr')} ; library(dplyr)
 if(!require(tidyr)){install.packages('tidyr')} ; library(tidyr)
 if(!require(knitr)){install.packages('knitr')} ; library(knitr)
 if(!require(ggplot2)){install.packages('ggplot2')} ; library(ggplot2)
 if(!require(VennDiagram)){install.packages('VennDiagram')} ; library(VennDiagram)
 if(!require(GGally)){install.packages('GGally')} ; library(GGally)
+if(!require(plyr)){install.packages('plyr')} ; library(plyr)
 ```
 
 ```{r load ACES data, include=FALSE}
@@ -52,15 +53,15 @@ df_aces$group= ifelse(fn %in% "1", "comm",
                "jj"))
 ```
 
-```{r acquire age and sex}
+```{r acquire age and sex, echo = FALSE, warning=FALSE}
 
 setwd("/Volumes/TDS/behavior/Redcap")
 df_demo=read.csv("age_gender_iq.csv")
 ```
 
-```{r subset participants}
+```{r subset participants, echo = FALSE, warning=FALSE}
 
-subset=TRUE
+subset=FALSE
 
 if (subset==TRUE) {
   # Subset to Cheng_SAP participants, N=102
@@ -74,7 +75,7 @@ if (subset==TRUE) {
 }
 ```
 
-```{r load ses data}
+```{r load ses data, echo = FALSE, warning=FALSE}
 setwd("/Volumes/TDS/behavior/Qualtrics/scoring_script_output") # need to change path to wherever qualtrics data is
 
 # Economic Deprivation 
@@ -169,7 +170,7 @@ df_aces=filter(df_aces, !is.na(ACE_abuse_num))
 ```
 
 ## How much missing data is there?
-```{r missing data, echo=FALSE}
+```{r missing data, echo = FALSE, warning=FALSE}
 
 ## ACES
 df_aces_mi = df_aces %>% 
@@ -185,7 +186,7 @@ kable(df_ed_mi, caption="Economic Deprivation")
 ```
 
 ## How many subjects are in each group?
-```{r total per group, echo=FALSE}
+```{r total per group, echo = FALSE, warning=FALSE}
 
 # Merge dataframes 
 df_ed$SID=as.character(df_ed$SID)
@@ -354,7 +355,7 @@ ggplot(df_binary, aes(x=interaction(A,N), fill=interaction(A,N))) +
 ```
 
 ## What are the basic descriptive stats and distributions for demographic variables?
-```{r descriptive stats}
+```{r descriptive stats, echo = FALSE, warning=FALSE}
 
 colnames(df_demo)[1] = ("SID")
 df=join(df_demo, df, by="SID")
@@ -369,7 +370,7 @@ ggpairs(df_pairs)
 # Get subject list
 ### Acquire a subject list for participants in TDS 1 and TDS 2 (no juvenile justice kiddos) who have data for abuse, neglect, household dysfunction, and economic deprivation
 
-```{r Get Subject List}
+```{r Get Subject List, echo = FALSE, warning=FALSE}
 df_scores_complete=cbind(df$SID, df_pairs)
 colnames(df_scores_complete)[1]="SID"
 df_scores_complete=na.omit(df_scores_complete)
@@ -377,3 +378,45 @@ df_scores_complete=df_scores_complete[- grep("^4", df_scores_complete$SID),]
 
 df_scores_complete$SID
 ```
+
+## get cesd scores
+```{r get cesd scores, echo = FALSE, warning=FALSE}
+setwd("/Volumes/TDS/behavior/Qualtrics/scoring_script_output") # change path to wherever qualtrics data is
+
+# acquire data from TDS1: high risk sample
+# this data is stored in pre- and post- files, relative to IRB approval of additional questionnaires
+df1= plyr::rbind.fill(read.csv("TDS-1-PRE-auto_raw_qualtrics_long.csv", header=TRUE),  read.csv("TDS-1-POST-auto_raw_qualtrics_long.csv", header=TRUE)) # load pre/post, remove blank rows, and merge
+
+# acquire data from TDS2: community sample
+df2= read.csv("TDS-2-auto_raw_qualtrics_long.csv", header=TRUE) # load data
+
+# merge TDS1 and TDS2 data
+df= plyr::rbind.fill(df1, df2) %>% filter(is.na(.$SID)==FALSE) # remove NA rows
+
+# acquire cesd data
+df$item=as.character(df$item) 
+
+fl <- substr(df$item, 1, 3) # identify if an item starts with "CES", and select those
+cesd <- ifelse(fl %in% "CES", TRUE, FALSE)
+df_cesd= unique(df[cesd,c("SID", "item","value")]) %>% # take unique values of SID, item, and value
+  na.omit() %>% # remove NAs
+  spread(key=item, value=value) # convert to wide format
+
+fn <- substr(df_cesd$SID,1,1) # create a string just made up of the first character in the SID
+df_cesd$group= ifelse(fn %in% "1", "comm", # based on this string, create the group label within df
+               ifelse(fn %in% "3", "dhs",
+               "jj"))
+df_cesd=filter(df_cesd, group!="jj")
+
+
+
+df1= plyr::rbind.fill(read.csv("TDS-1-PRE-auto_scored_scales_wide.csv", header=TRUE),  read.csv("TDS-1-POST-auto_scored_scales_wide.csv", header=TRUE)) # load pre/post, remove blank rows, and merge
+
+# acquire data from TDS2: community sample
+df2= read.csv("TDS-2-auto_scored_scales_wide.csv", header=TRUE) # load data
+
+# merge TDS1 and TDS2 data
+df_scored= plyr::rbind.fill(df1, df2) %>% 
+  filter(is.na(.$SID)==FALSE) %>% # remove NA rows
+  select(starts_with("CES"))
+  ```
