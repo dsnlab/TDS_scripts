@@ -73,7 +73,6 @@ colnames(ses_demo) = c("sub", "ItN")
 ses_demo$sub = paste0("sub-", ses_demo$sub)
 
 demographicsDF = left_join(demographicsDF, ses_demo)
-
 ```
 
 Filter subs if needed

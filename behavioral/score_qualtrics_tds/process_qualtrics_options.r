@@ -3,7 +3,7 @@
 # specify which surveys you want to download: pre- or post-approval.
 
 ### CHANGE ME ###
-module <- 'TDS2 and TDS3'
+module <- 'TDS1-Pre'
 #################
 
 if (module == 'TDS2 and TDS3'){
@@ -65,25 +65,25 @@ if (module == 'TDS1-Pre'){
   hasCBCL <- 1 # does the survey include CBCL?
   hasRPI <- 1 # does this survey include RPI?
   hasPDSS <- 0 # does this survey include PDSS?
-  csv_files <- c('/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/ACE_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/B-SSS_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/BFNE_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/BIS_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/CARE-R_EI_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/CARE-R_WE_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/CBCL_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/NTS_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/PAL2_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/PEQ_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/RPI_scoring_rubric_1_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/RPI_scoring_rubric_2_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/SPSRQS_scoring_rubric_TDS1_PRE.csv',
-                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/pre/UPPSP_scoring_rubric_TDS1_PRE.csv')
+  csv_files <- c('/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/ACE_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/BSSS_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/BFNE_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/BIS_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/CARE-R_EI_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/CARE-R_WE_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/CBCL_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/NTS_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/PAL2_scoring_rubric_TDS1_S2_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/PEQ-R_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/RPI_scoring_rubric_1_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/RPI_scoring_rubric_2_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/SPSRQS_scoring_rubric_TDS1_PRE.csv',
+                 '/Volumes/TDS/behavior/Qualtrics/rubrics/tds1/sess-1_sess-2/pre/UPPSP_scoring_rubric_TDS1_PRE.csv')
   
-  csv_wide_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_scored_scales_wide.csv"
-  csv_long_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_scored_scales_long.csv"
-  csv_longRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_raw_qualtrics_long.csv"
-  csv_wideRaw_path <- "/Volumes/TDS/behavior/Qualtrics/TDS-1-PRE-auto_raw_qualtrics-"
+  csv_wide_path <- "/Volumes/TDS/behavior/Qualtrics/scoring-script-output/TDS-1-PRE-auto_scored_scales_wide.csv"
+  csv_long_path <- "/Volumes/TDS/behavior/Qualtrics/scoring-script-output/TDS-1-PRE-auto_scored_scales_long.csv"
+  csv_longRaw_path <- "/Volumes/TDS/behavior/Qualtrics/scoring-script-output/TDS-1-PRE-auto_raw_qualtrics_long.csv"
+  csv_wideRaw_path <- "/Volumes/TDS/behavior/Qualtrics/scoring-script-output/TDS-1-PRE-auto_raw_qualtrics-"
 }
 
 if (module == 'TDS1-Post'){
