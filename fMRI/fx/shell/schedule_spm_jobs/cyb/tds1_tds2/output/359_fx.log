@@ -1,0 +1,105 @@
+-------------------------------------------------------------------------------
+359
+Running /projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/cyb/tds1_tds2/fx_tds1_tds2_job.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (glnxa64)
+                             September 14, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'Make Directory'
+Done    'Make Directory'
+Running 'fMRI model specification'
+
+SPM12: spm_fMRI_design (v5183)                     17:53:14 - 24/12/2017
+========================================================================
+Saving fMRI design                      :               ...SPM.mat saved
+
+SPM12: spm_fmri_spm_ui (v6088)                     17:53:15 - 24/12/2017
+========================================================================
+Mapping files                           :                        ...done
+Calculating globals                     :                        ...done
+Saving SPM configuration                :               ...SPM.mat saved
+Saving SPM configuration                :               ...SPM.mat saved
+Completed                               :          17:53:36 - 24/12/2017
+Done    'fMRI model specification'
+Running 'Model estimation'
+
+SPM12: spm_spm (v6842)                             17:53:36 - 24/12/2017
+========================================================================
+
+SPM12: spm_est_non_sphericity (v6913)              17:53:37 - 24/12/2017
+========================================================================
+Chunk   1/4                             :                  ...processing                       ...doneChunk   2/4                             :                  ...processing                       ...doneChunk   3/4                             :                  ...processing                       ...doneChunk   4/4                             :                  ...processing                       ...done
+Temporal non-sphericity (100678 voxels) :             ...ReML estimation
+  ReML Block 1                
+  ReML Iteration 1                      :        ...6.302612e+00 [+4.25]
+  ReML Iteration 2                      :        ...1.868921e-02 [+4.50]
+  ReML Block 2                
+  ReML Iteration 1                      :        ...8.315108e+00 [+4.25]
+  ReML Iteration 2                      :        ...7.906110e-03 [+4.50]
+
+SPM12: spm_spm (v6842)                             17:53:41 - 24/12/2017
+========================================================================
+Chunk   1/4                             :                  ...processing                       ...doneChunk   2/4                             :                  ...processing                       ...doneChunk   3/4                             :                  ...processing                       ...doneChunk   4/4                             :                  ...processing                       ...done
+Spatial non-sphericity (over scans)     :      ...estimating derivatives ...writing resels/voxel image                       ...done
+Saving SPM.mat                          :                     ...writing                       ...done
+Completed                               :          17:54:12 - 24/12/2017
+Done
+Done    'Model estimation'
+Running 'Contrast Manager'
+
+SPM12: spm_contrasts.m                             17:54:56 - 24/12/2017
+========================================================================
+Contrasts folder                        :  ./fx/models/cyb/tds1_tds2/359
+Deleting contrasts                      :                        ...done
+	contrast image  1               :                   ...computing       ...written con_0001.nii
+	spm{T} image  1                 :                   ...computing      ...written spmT_0001.nii
+	contrast image  2               :                   ...computing       ...written con_0002.nii
+	spm{T} image  2                 :                   ...computing      ...written spmT_0002.nii
+	contrast image  3               :                   ...computing       ...written con_0003.nii
+	spm{T} image  3                 :                   ...computing      ...written spmT_0003.nii
+	contrast image  4               :                   ...computing       ...written con_0004.nii
+	spm{T} image  4                 :                   ...computing      ...written spmT_0004.nii
+	contrast image  5               :                   ...computing       ...written con_0005.nii
+	spm{T} image  5                 :                   ...computing      ...written spmT_0005.nii
+	contrast image  6               :                   ...computing       ...written con_0006.nii
+	spm{T} image  6                 :                   ...computing      ...written spmT_0006.nii
+	contrast image  7               :                   ...computing       ...written con_0007.nii
+	spm{T} image  7                 :                   ...computing      ...written spmT_0007.nii
+	contrast image  8               :                   ...computing       ...written con_0008.nii
+	spm{T} image  8                 :                   ...computing      ...written spmT_0008.nii
+	contrast image  9               :                   ...computing       ...written con_0009.nii
+	spm{T} image  9                 :                   ...computing      ...written spmT_0009.nii
+	contrast image 10               :                   ...computing       ...written con_0010.nii
+	spm{T} image 10                 :                   ...computing      ...written spmT_0010.nii
+	contrast image 11               :                   ...computing       ...written con_0011.nii
+	spm{T} image 11                 :                   ...computing      ...written spmT_0011.nii
+	contrast image 12               :                   ...computing       ...written con_0012.nii
+	spm{T} image 12                 :                   ...computing      ...written spmT_0012.nii
+	contrast image 13               :                   ...computing       ...written con_0013.nii
+	spm{T} image 13                 :                   ...computing      ...written spmT_0013.nii
+	contrast image 14               :                   ...computing       ...written con_0014.nii
+	spm{T} image 14                 :                   ...computing      ...written spmT_0014.nii
+	contrast image 15               :                   ...computing       ...written con_0015.nii
+	spm{T} image 15                 :                   ...computing      ...written spmT_0015.nii
+	contrast image 16               :                   ...computing       ...written con_0016.nii
+	spm{T} image 16                 :                   ...computing      ...written spmT_0016.nii
+Completed                               :          17:55:01 - 24/12/2017
+Done    'Contrast Manager'
+Done
+

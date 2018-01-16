@@ -1,12 +1,12 @@
 -------------------------------------------------------------------------------
 316
-Running /projects/dsnlab/tds/TDS_scripts/fMRI/templates/masks/spm/tds1_tds2/tds1_tds2_gw_join_smooth_job.m
+Running /projects/dsnlab/shared/tds/TDS_scripts/fMRI/templates/masks/spm/tds1_tds2/tds1_tds2_gw_join_smooth_job.m
 -------------------------------------------------------------------------------
 
                             < M A T L A B (R) >
-                  Copyright 1984-2016 The MathWorks, Inc.
-                   R2016b (9.1.0.441655) 64-bit (glnxa64)
-                             September 7, 2016
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (glnxa64)
+                             September 14, 2017
 
  
 To get started, type one of these: helpwin, helpdesk, or demo.
@@ -19,9 +19,9 @@ Running job #1
 ------------------------------------------------------------------------
 Running 'Image Calculator'
 
-SPM12: spm_imcalc (v6124)                          14:52:32 - 22/05/2017
+SPM12: spm_imcalc (v6124)                          17:29:47 - 24/12/2017
 ========================================================================
-ImCalc Image: /projects/dsnlab/tds/fMRI/analysis/masks/tds1_tds2/316_gw_join.nii
+ImCalc Image: /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/316_gw_join.nii
 Done    'Image Calculator'
 Running 'Smooth'
 Done    'Smooth'

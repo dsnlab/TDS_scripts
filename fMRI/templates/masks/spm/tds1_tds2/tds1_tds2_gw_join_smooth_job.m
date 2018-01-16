@@ -3,11 +3,11 @@
 % spm SPM - SPM12 (6906)
 %-----------------------------------------------------------------------
 matlabbatch{1}.spm.util.imcalc.input = {
-                                        '/projects/dsnlab/tds/fMRI/subjects/101/structurals/wc1mprage.nii,1'
-                                        '/projects/dsnlab/tds/fMRI/subjects/101/structurals/wc2mprage.nii,1'
+                                        '/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2/101/structurals/wc1mprage.nii,1'
+                                        '/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2/101/structurals/wc2mprage.nii,1'
                                         };
 matlabbatch{1}.spm.util.imcalc.output = '101_gw_join';
-matlabbatch{1}.spm.util.imcalc.outdir = {'/projects/dsnlab/tds/fMRI/analysis/masks/tds1_tds2'};
+matlabbatch{1}.spm.util.imcalc.outdir = {'/projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2'};
 matlabbatch{1}.spm.util.imcalc.expression = '(i1>i2).*i1+(i2>i1).*i2';
 matlabbatch{1}.spm.util.imcalc.var = struct('name', {}, 'value', {});
 matlabbatch{1}.spm.util.imcalc.options.dmtx = 0;

@@ -14,10 +14,10 @@
 #--------------------------------------------------------------
 
 # Set your study
-STUDY=/projects/dsnlab/tds/TDS_scripts
+STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
 #SPM Path
-SPM_PATH=/projects/dsnlab/SPM12
+SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
 SCRIPT=${STUDY}/fMRI/templates/masks/spm/tds1_tds2/tds1_tds2_gw_groupAverage_optthresh_job.m
@@ -44,7 +44,7 @@ mempercpu=10G
 
 # Create and execute batch job
 if [ "${PROCESS}" == "slurm" ]; then 
-	 echo "submitting via qsub"
+	 echo "submitting via slurm"
 	 sbatch --export=REPLACESID=tds1_tds2,SCRIPT=$SCRIPT,SUB=tds1_tds2,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \
 		 -o "${OUTPUTDIR}"/"${SUB}"_"${RESULTS_INFIX}".log \

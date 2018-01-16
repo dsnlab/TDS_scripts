@@ -6,9 +6,9 @@
 # This script should be run after writing residuals from second level models in SPM, and before running "AvgIndACFest.R"
 
 rx_path=/projects/dsnlab/tds/fMRI/analysis/rx
-
-export PATH=/usr/local/afni_16.1.06:${PATH} # set path to latest AFNI version
-cd ${rx_path}/ylg/alone/tds2_n79/regr/cov_puberty/9-bad_go-stop #rx directory w/ residuals
+module load afni
+#export PATH=/usr/local/afni_16.1.06:${PATH} # set path to latest AFNI version
+cd ${rx_path}/cyb/group_comp/flexi_2x2x2 #rx directory w/ residuals
 
 # estimate acf parameters for per subject and save this output to a log file
 for i in Res_* 

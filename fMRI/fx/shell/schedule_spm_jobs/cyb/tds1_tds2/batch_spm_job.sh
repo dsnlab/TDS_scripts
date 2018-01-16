@@ -24,13 +24,14 @@ SUBJLIST=`cat subject_list_fx.txt`
 REPLACESID='109'
 
 #SPM Path
-SPM_PATH=/projects/dsnlab/SPM12
+SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
 SCRIPT=${STUDY}/fMRI/fx/models/cyb/tds1_tds2/fx_tds1_tds2_job.m
+#additionalContrasts.m
 
 # Tag the results files
-RESULTS_INFIX=fx_cyb_tds1_tds2
+RESULTS_INFIX=fx
 
 # Set output dir
 OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/cyb/tds1_tds2/output/
@@ -53,7 +54,7 @@ mempercpu=8G
 if [ "${PROCESS}" == "slurm" ]; then 
 	for SUB in $SUBJLIST
 	do
-	 echo "submitting via qsub"
+	 echo "submitting via slurm"
 	 sbatch --export=REPLACESID=$REPLACESID,SCRIPT=$SCRIPT,SUB=$SUB,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \
 		 -o "${OUTPUTDIR}"/"${SUB}"_${RESULTS_INFIX}.log \

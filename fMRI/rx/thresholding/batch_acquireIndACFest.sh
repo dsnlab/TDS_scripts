@@ -1,26 +1,14 @@
 #!/bin/bash
-export PATH=/usr/local/packages/afni/17.1.01/:${PATH} # set path to latest AFNI version
 
-rx_path=/projects/dsnlab/tds/fMRI/analysis/rx/cyb/tds2_N69
+module load afni
+#export PATH=/usr/local/packages/afni/17.1.01/:${PATH} # set path to latest AFNI version
 
-declare -a rx_list=("F_2x2_ageXcontext"
-"F_2x2_agequad")
+rx_path=/projects/dsnlab/shared/tds/fMRI/analysis/rx/cyb/group_comp
 
-# DONE 10.02.2017:
-# "F_2x2_age"
-# "F_2x2"
-#"F_2x2_ageXthrow"
-#"F_2x2_agequadXcontext"
-#"F_2x2_agequadXthrow"
-#"F_conj_pmod_flexi"
-#"F_conj_pmod_flexi_age"
-#"F_conj_pmod_flexi_ageXpmod"
-#"F_conj_pmod_flexi_agequad"
-#"F_conj_pmod_flexi_agequadXpmod")
+declare -a rx_list=("flexi_pmod_demo" "flexi_2x2x2_demo")
 
 echo "${rx_list[@]}"
 
-i=1
 for i in "${rx_list[@]}"
   do
     cd $rx_path/$i

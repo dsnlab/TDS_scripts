@@ -14,16 +14,16 @@
 #--------------------------------------------------------------
 
 # Set your study
-STUDY=/projects/dsnlab/tds/TDS_scripts
+STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
 # Set subject list
-SUBJLIST=`cat subject_list_all.txt`
+SUBJLIST=`cat subject_list.txt`
 
 #Which SID should be replaced?
 REPLACESID='101'
 
 #SPM Path
-SPM_PATH=/projects/dsnlab/SPM12
+SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
 SCRIPT=${STUDY}/fMRI/templates/masks/spm/tds1_tds2/tds1_tds2_gw_join_smooth_job.m
@@ -35,7 +35,7 @@ RESULTS_INFIX=gw_join_smooth
 OUTPUTDIR=${STUDY}/fMRI/templates/masks/shell/tds1_tds2/output/
 
 # Set processor
-# use "qsub" for HPC
+# use "slurm" for HPC
 # use "local" for local machine
 # use "parlocal" for local parallel processing
 
@@ -52,7 +52,7 @@ mempercpu=5G
 if [ "${PROCESS}" == "slurm" ]; then 
 	for SUB in $SUBJLIST
 	do
-	 echo "submitting via qsub"
+	 echo "submitting via slurm"
 	 sbatch --export=REPLACESID=$REPLACESID,SCRIPT=$SCRIPT,SUB=$SUB,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \
 		 -o "${OUTPUTDIR}"/"${SUB}"_"${RESULTS_INFIX}".log \

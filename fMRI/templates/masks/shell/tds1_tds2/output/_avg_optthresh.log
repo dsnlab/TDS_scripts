@@ -1,12 +1,12 @@
 -------------------------------------------------------------------------------
 tds1_tds2
-Running /projects/dsnlab/tds/TDS_scripts/fMRI/templates/masks/spm/tds1_tds2/tds1_tds2_gw_groupAverage_optthresh_job.m
+Running /projects/dsnlab/shared/tds/TDS_scripts/fMRI/templates/masks/spm/tds1_tds2/tds1_tds2_gw_groupAverage_optthresh_job.m
 -------------------------------------------------------------------------------
 
                             < M A T L A B (R) >
-                  Copyright 1984-2016 The MathWorks, Inc.
-                   R2016b (9.1.0.441655) 64-bit (glnxa64)
-                             September 7, 2016
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (glnxa64)
+                             September 14, 2017
 
  
 To get started, type one of these: helpwin, helpdesk, or demo.
@@ -21,14 +21,14 @@ Running 'File Selector (Batch Mode)'
 Done    'File Selector (Batch Mode)'
 Running 'Image Calculator'
 
-SPM12: spm_imcalc (v6124)                          15:04:26 - 22/05/2017
+SPM12: spm_imcalc (v6124)                          17:39:24 - 24/12/2017
 ========================================================================
-ImCalc Image: /projects/dsnlab/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average.nii
+ImCalc Image: /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average.nii
 Done    'Image Calculator'
 Running 'Optimal Thresholding'
-Maximal correlation of 0.970977 found with threshold of 0.411415
+Maximal correlation of 0.971129 found with threshold of 0.411745
 
-SPM12: spm_imcalc (v6124)                          15:04:40 - 22/05/2017
+SPM12: spm_imcalc (v6124)                          17:39:47 - 24/12/2017
 ========================================================================
 Done    'Optimal Thresholding'
 Done
