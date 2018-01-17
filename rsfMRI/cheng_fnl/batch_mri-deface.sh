@@ -30,11 +30,10 @@ SUBJLIST=`cat deface_subject_list.txt`
 #MPRAGEIN = /Volumes/TDS/nonbids_data/sMRI/subjects
 
 # Where are the mri_deface templates?
-TEMPLATESDIR =/projects/dsnlab/shared/tds/fMRI/analysis/templates/mri_deface_templates
+TEMPLATESDIR=/projects/dsnlab/shared/tds/fMRI/analysis/templates/mri_deface_templates
 
 for SUB in $SUBJLIST
 	do
 		./mri_deface $STUDY/$SUB/mprage.nii $TEMPLATESDIR/talairach_mixed_with_skull.gca $TEMPLATESDIR/face.gca mprage_defaced.nii
 		echo "defaced mprage $SUB"
 	done
-fi
