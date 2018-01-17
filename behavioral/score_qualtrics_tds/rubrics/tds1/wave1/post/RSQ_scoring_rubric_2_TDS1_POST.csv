@@ -1,0 +1,21 @@
+Data File Name,Scale Name,Column Name,transform,reverse,min,max,RSQ_Mean_Anxious_Expectation,RSQ_Mean_Angry_Expectation
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S1_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S2_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S3_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S4_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S5_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S6_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S7_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S8_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S9_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S10_Anxious_Expectation,0,0,0,0,1,0
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S1_Angry_Expectation,0,0,0,0,0,1
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S2_Angry_Expectation,0,0,0,0,0,1
+TDS1_Session_2_B_Post,RSQ_part2,RSQ_S3_Angry_Expectation,0,0,0,0,0,1
+TDS1_Session_2_B_Post,RSQ_part3,RSQ_S4_Angry_Expectation,0,0,0,0,0,1
+TDS1_Session_2_B_Post,RSQ_part4,RSQ_S5_Angry_Expectation,0,0,0,0,0,1
+TDS1_Session_2_B_Post,RSQ_part5,RSQ_S6_Angry_Expectation,0,0,0,0,0,1
+TDS1_Session_2_B_Post,RSQ_part6,RSQ_S7_Angry_Expectation,0,0,0,0,0,1
+TDS1_Session_2_B_Post,RSQ_part7,RSQ_S8_Angry_Expectation,0,0,0,0,0,1
+TDS1_Session_2_B_Post,RSQ_part8,RSQ_S9_Angry_Expectation,0,0,0,0,0,1
+TDS1_Session_2_B_Post,RSQ_part9,RSQ_S10_Angry_Expectation,0,0,0,0,0,1

@@ -1,0 +1,116 @@
+---
+title: "Score TDS Qualtrics Data"
+author: "John Flournoy"
+date: "`r Sys.Date()`"
+output: 
+    html_document:
+        toc: true
+        toc_float: true
+---
+
+This presents both a walk-through for how you could go about adding a new questionnaire to be scored, and also should provide up-to-date descriptives and scored scales every time you recompile this Rmd document.
+
+It would be nice if this were something completely automated. Unfortunately, the nature of data that is still under collection, and the fact that there are a lot of moving pieces means that something totally automated is likely to break pretty easily (at least, something automated coded by me). So this document will take a highly modular approach so hopefully if something goes wrong, you can see more exactly where that happens. I'll try to explain every step pretty verbosely too. You should probably be reading this document in R Studio. Make sure you're up to date with upgrades.
+
+## Setting options
+
+If you're reading the compiled HTML, you won't see the options below, because we've writtent `warning=F,echo=F,message=F,error=F` in the head of the chunk. You can change this by replacing the "F"s with "T"s.
+
+```{r warning=F,echo=F,message=F,error=F}
+knitr::opts_chunk$set(error = T, warning = T, message = F)
+
+#Set these options for your situation:
+
+cred_file_location <- '~/.teenstudytoken'
+sid_column_name <- 'SID'
+age_var <- 'Age'
+gender_var <- 'Gender'
+gender_female <- 1 # value for female
+gender_male <- 0 # value for male
+pdss_gender_code <- c(m=gender_male, f=gender_female)
+pdss_gender_mix <- 'mf' #'mf' for both M and F, 'm' for M only, 'f' for F only
+exclude_SID <- c('', '999') # subject IDs to exclude
+identifiableData <- '(DOB|Ethnicity|Work|Grade|School|TEXT|Addl_Probs|Reasons|Decribe|Concerns|BestThings|Describe|Started|Ended)' # exclude when printing duplicates
+output_file_dir <- '/data/jflournoy/TDS/behavior/scored_qualtrics_data/'
+```
+
+## Install the `scorequaltrics` package
+
+We need to have the scorequaltrics package installed. I wrote this so that I can maintain helpful functions related to scoring.
+
+```{r eval = F}
+#this won't evaluate. If you need to install the package, run this by hand.
+devtools::install_github('jflournoy/qualtrics')
+```
+
+## Accessing qualtrics data
+
+You also need to have a token in a YAML formatted file for accessing qualtrics via the API. It's formatted like:
+
+```
+user: username
+token: apitoken
+```
+
+Once we've loaded this, we can get a list of questionnaires.
+
+```{r}
+library(scorequaltrics)
+
+library(dplyr)
+library(tidyr)
+
+credentials <- scorequaltrics::creds_from_file(cred_file_location)
+
+rawSurveys <- scorequaltrics::get_surveys(credentials)
+rawSurveysTDS <- filter(rawSurveys, grepl('.*(TDS1|TDS2|TDS3).*',SurveyName))
+
+knitr::kable(arrange(select(rawSurveysTDS, SurveyName), SurveyName))
+```
+
+```{r getsurveydata}
+long_survey_data <- scorequaltrics::get_survey_data(rawSurveysTDS, credentials, pid_col = 'SID')
+
+dim(long_survey_data)
+set.seed(21312)
+sample_n(long_survey_data, size = 6) %>%
+  select(-SID) #to increase anonymity
+```
+
+```{r rubrics}
+pkgroot <- rprojroot::find_package_root_file()
+csv_rubrics<-data.frame(file = c(
+  file.path(pkgroot,
+            'extdata/rubrics/tds2/wave1/UPPSP_scoring_rubric.csv')))
+
+rubric_data_long <-scorequaltrics::get_rubrics(csv_rubrics)
+
+long_uspss <- scorequaltrics::get_items_in_rubric(long_survey_data, rubric_data_long)
+```
+
+
+```{r cleaning}
+long_uspss_nodupes <- long_uspss %>%
+  filter(grepl('[123]\\d\\d', SID)) %>%
+  scorequaltrics::clean_dupes(pid_col = 'SID')
+
+#Check that dropped values weren't ambiguous
+long_uspss_nodupes %>% 
+  filter(dropped) %>%
+  group_by(SID, item) %>%
+  summarize(noinfo = all(length(unlist(old.value)) < 1)) %>%
+  ungroup() %>%
+  summarize(n_with_info = sum(!noinfo))
+```
+
+```{r score, fig.width=7, fig.height=7}
+scored_data <- scorequaltrics::score_questionnaire(long_uspss_nodupes, rubric_data_long)
+
+scored_data_psyc <- scorequaltrics::score_questionnaire(long_uspss_nodupes, rubric_data_long, psych = TRUE)
+
+describe(scored_data_psyc$scores)
+pairs.panels(scored_data_psyc$scores)
+
+scale_scores <- as.data.frame(scored_data_psyc$scores)
+scale_scores$SID <- rownames(scale_scores)
+```

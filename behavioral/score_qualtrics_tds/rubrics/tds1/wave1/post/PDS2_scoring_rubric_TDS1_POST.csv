@@ -1,0 +1,24 @@
+Data File Name,Scale Name,Column Name,transform,reverse,min,max,PDS_Gender,Female_Mean_Score,Female_Comparison,Female_Menses,Female_Height_Feet,Female_Height_Inches,Female_Weight_TEXT,Female_Weight,Male_Mean_Score,Male_Comparison,Male_Height_Feet_TEXT,Male_Height_Inches_TEXT,Male_Height_Feet,Male_Height_Inches,Male_Weight_TEXT,Male_Weight
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_Gender,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F2,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F3,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F4,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F5,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F6,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F7_1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F7_2,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F8_TEXT,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_F8,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M2,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M3,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M4,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M5,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M6,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M7_TEXT_1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M7_TEXT_2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M7_1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M7_2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M8_TEXT,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+TDS1_PDS_(Session2)_-_Post,PDS,PDS_M8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
