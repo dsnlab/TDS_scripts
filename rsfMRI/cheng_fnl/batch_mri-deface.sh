@@ -17,6 +17,8 @@
 # T Cheng 2018.1.16 | Run from Talapas
 #--------------------------------------------------------------
 
+export PATH=/bin:/usr/bin:/sbin:/usr/sbin
+
 # Set your study and output directory
 STUDY=/projects/dsnlab/shared/tds/sMRI/deface_temp
 
@@ -34,6 +36,6 @@ TEMPLATESDIR=/projects/dsnlab/shared/tds/fMRI/analysis/templates/mri_deface_temp
 
 for SUB in $SUBJLIST
 	do
-		./mri_deface $STUDY/$SUB/mprage.nii $TEMPLATESDIR/talairach_mixed_with_skull.gca $TEMPLATESDIR/face.gca mprage_defaced.nii
+		./mri_deface $STUDY/101/mprage.nii $TEMPLATESDIR/talairach_mixed_with_skull.gca $TEMPLATESDIR/face.gca mprage_defaced.nii
 		echo "defaced mprage $SUB"
 	done
