@@ -50,7 +50,7 @@ for i = 1:length(files)
     end
     fprintf(fid, '\n');
     
-    %save(fullfile(thewd, newdirname, files(i).name), 'names', 'onsets', 'durations');
+    save(fullfile(thewd, newdirname, files(i).name), 'names', 'onsets', 'durations');
     clear('names', 'onsets', 'durations', 'newonsets', 'newdurations');
 end
 
