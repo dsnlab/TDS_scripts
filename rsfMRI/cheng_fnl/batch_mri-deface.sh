@@ -4,39 +4,37 @@
 #	* STUDY = study name
 #	* SUBJLIST = subject_list.txt
 #	* REPLACESID = initial subject
+#	* MPRAGEIN = source of raw mprage files
+# 	* MPRAGEDIR = mprage folder for processing
 #	* RESULTS_INFIX = tag for output data
 #	* OUTPUTDIR = Edit output and error paths
 #
 # Outputs:
-#	* Defaced mprage data
+# 	* Defaces the mprage on Talapas
+#	* Syncs defaced mprage to PSI
+# 	* Removes mprage and defaced mprage from Talapas
 #
-# T Cheng 2018.1.16
+# T Cheng 2018.1.16 | Run from Talapas
 #--------------------------------------------------------------
 
-# Set your study
-STUDY=/projects/dsnlab/shared/tds/TDS_scripts
+# Set your study and output directory
+STUDY=/projects/dsnlab/shared/tds/sMRI/deface_temp
 
 # Set subject list
-SUBJLIST=`cat subject_list_fx.txt`
+SUBJLIST=`cat deface_subject_list.txt`
 
-#Which SID should be replaced?
-REPLACESID='109'
+# Which SID should be replaced?
+#REPLACESID='109'
 
-# Tag the defaced data
-RESULTS_INFIX=defaced
+# Where are the raw mprage files?
+#MPRAGEIN = /Volumes/TDS/nonbids_data/sMRI/subjects
 
-# Set output dir
-OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/cyb/tds1_tds2/output/
-
+# Where are the mri_deface templates?
+TEMPLATESDIR =/projects/dsnlab/shared/tds/fMRI/analysis/templates/mri_deface_templates
 
 for SUB in $SUBJLIST
 	do
-	 echo "submitting via qsub"
-	 sbatch --export=REPLACESID=$REPLACESID,SCRIPT=$SCRIPT,SUB=$SUB,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
-		 --job-name=${RESULTS_INFIX} \
-		 -o "${OUTPUTDIR}"/"${SUB}"_${RESULTS_INFIX}.log \
-		 --cpus-per-task=${cpuspertask} \
-		 --mem-per-cpu=${mempercpu} \
-		 spm_job.sh
-	 sleep .25
+		./mri_deface $STUDY/$SUB/mprage.nii $TEMPLATESDIR/talairach_mixed_with_skull.gca $TEMPLATESDIR/face.gca mprage_defaced.nii
+		echo "defaced mprage $SUB"
 	done
+fi
