@@ -22,7 +22,7 @@ knitr::opts_chunk$set(error = T, warning = T, message = F)
 #Set these options for your situation:
 
 cred_file_location <- '~/.teenstudytoken'
-sid_column_name <- 'SID'
+pid_column_name <- 'SID'
 age_var <- 'Age'
 gender_var <- 'Gender'
 gender_female <- 1 # value for female
@@ -32,6 +32,7 @@ pdss_gender_mix <- 'mf' #'mf' for both M and F, 'm' for M only, 'f' for F only
 exclude_SID <- c('', '999') # subject IDs to exclude
 identifiableData <- '(DOB|Ethnicity|Work|Grade|School|TEXT|Addl_Probs|Reasons|Decribe|Concerns|BestThings|Describe|Started|Ended)' # exclude when printing duplicates
 output_file_dir <- '/data/jflournoy/TDS/behavior/scored_qualtrics_data/'
+tds2_wave1_rubric_dir <- '~/code_new/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds2/wave1/'
 ```
 
 ## Install the `scorequaltrics` package
@@ -68,40 +69,118 @@ rawSurveysTDS <- filter(rawSurveys, grepl('.*(TDS1|TDS2|TDS3).*',SurveyName))
 knitr::kable(arrange(select(rawSurveysTDS, SurveyName), SurveyName))
 ```
 
-```{r getsurveydata}
-long_survey_data <- scorequaltrics::get_survey_data(rawSurveysTDS, credentials, pid_col = 'SID')
+We have a lot of different questionnaires from different samples and different sessions. For simplicity, and to aid in diagnosing any problems, we can proceed through each sample and each wave of data collection. _Note_, however, that if we ensured that naming conventions were consistent across all questionnaires and rubrics, and if we had accurate session dates attached, we could score everything in one fell swoop.
 
-dim(long_survey_data)
-set.seed(21312)
-sample_n(long_survey_data, size = 6) %>%
-  select(-SID) #to increase anonymity
+## TDS 2
+
+This is the first sample collected, so we can begin here. I'll demonstrate in this how to do a single massive data scoring. See below for how you can get more information about scales that have been constructed in a psychometric tradition, and that therefore are easy to evaluate using standard reliability metrics.
+
+### Wave 1
+
+First, we download the data for the surveys we want.
+
+```{r getsurveydata_tds2_wave1}
+tds2_wave1_surveys <- rawSurveysTDS %>%
+    filter(grepl('TDS2 (Session [12]|CBCL|- PDS)', SurveyName))
+
+print(tds2_wave1_surveys$SurveyName)
+
+tds2_wave1_long <- scorequaltrics::get_survey_data(tds2_wave1_surveys, credentials, pid_col = pid_column_name)
+
+dim(tds2_wave1_long)
+names(tds2_wave1_long)
 ```
 
-```{r rubrics}
-pkgroot <- rprojroot::find_package_root_file()
-csv_rubrics<-data.frame(file = c(
-  file.path(pkgroot,
-            'extdata/rubrics/tds2/wave1/UPPSP_scoring_rubric.csv')))
+The resulting data frame should have a lot of rows (the first part of the output of `dim`) and 4 columns.
 
-rubric_data_long <-scorequaltrics::get_rubrics(csv_rubrics)
-
-long_uspss <- scorequaltrics::get_items_in_rubric(long_survey_data, rubric_data_long)
+```{r echo = 'asis', echo = F}
+#this chunk will not display in the compiled document, but it will
+#echo text that will be displayed in the final document if something
+#is wrong (or right).
+if(all(dim(tds2_wave1_long)[1] > 500, dim(tds2_wave1_long)[2] == 4)){
+    cat(paste0('It looks like all is in order here. Note that the PID column is named "', names(tds2_wave1_long)[1], '".'))
+} else {
+    cat('Something is wrong though. Dang.')
+}
 ```
+
+
+Before doing any scoring, we should take care of all the complex response recoding that may be specified. So We'll load all the response recoding rubrics and apply those. It's important that you pass the full path of the file to the next function, so if you use `dir` to collect filenames as I do below, make sure you set `full.names = TRUE`.
+
+```{r resp_recode_tds2_wave1}
+dir(file.path(tds2_wave1_rubric_dir), pattern = '.*response_recoding.*.csv')
+#You should see a result below -- if not, the path is likely wrong.
+
+tds2_wave1_recoding_rubrics <- data.frame(file = dir(file.path(tds2_wave1_rubric_dir), 
+                                                     pattern = '.*response_recoding.*.csv',
+                                                     full.names = TRUE))
+
+tds2_wave1_recoding_data_long <- scorequaltrics::get_rubrics(tds2_wave1_recoding_rubrics, type = 'recoding')
+
+tds2_wave1_long_recoded <- scorequaltrics::recode_responses(tds2_wave1_long, tds2_wave1_recoding_data_long)
+```
+
+Now let's load in the scoring rubrics.
+
+```{r rubrics_tds2_wave1}
+tds2_wave1_scoring_rubrics <- data.frame(file = dir(file.path(tds2_wave1_rubric_dir), 
+                                                    pattern = '.*scoring_rubric.*.csv',
+                                                    full.names = TRUE))
+                                         
+tds2_wave1_scoring_data_long <- scorequaltrics::get_rubrics(tds2_wave1_scoring_rubrics, type = 'scoring')
+
+head(tds2_wave1_scoring_data_long[, -1])
+```
+
+#### Cleaning
+
+We can make sure we clean out duplicate responses which will help later with ensuring that scale scores are calculated from teh correct subset of items. This is a point at which, if there is something funky going on, you'll want to investigate it and make a decision. For example, if a participant has two conflicting answers to the same question for the same wave, it's likely that a small investigation should commence. 
+
+We can also ensure that we're only scoring data for participants with the correct ID numbers. The line in the middle of the first call, `filter(grepl('[1234]\\d\\d', SID))`, ensures we only keep people with ID's starting with "1".
+
+Before we do that, we can ensure that we're only keeping the data in the scoring rubrics in the first place.
+
 
 
 ```{r cleaning}
-long_uspss_nodupes <- long_uspss %>%
-  filter(grepl('[123]\\d\\d', SID)) %>%
-  scorequaltrics::clean_dupes(pid_col = 'SID')
+tds2_wave1_long_recoded_nodupes <- tds2_wave1_long_recoded %>%
+    get_items_in_rubric(tds2_wave1_scoring_data_long) %>%
+    filter(grepl('1\\d\\d', SID)) %>%
+    scorequaltrics::clean_dupes(pid_col = 'SID')
+```
 
+If you get "NAs introduced by coercion" it probably means that one of the rubrics references a column that has text input that is not transformable into a number. For example, if the questionnaire asks for ethnicity and someone writes in "White" it is not possible to turn that into a score to be used in a scale calculation (but there's a rubric that thinks it can). We can check that by using the function `scorequaltrics::get_uncoercibles()`.
+
+```{r textentries}
+get_uncoercibles <- function(dataDF){
+    dataDT <- as.data.table(dataDF)
+    dataDT <- dataDT[, checkcol := class(type.convert(value, as.is=T)) == 'character', by = .(item,value)]
+    dataDT <- dataDT[checkcol == T]
+    return(dataDT[,checkcol := NULL])
+}
+
+tds2_wave1_uncoer <- tds2_wave1_long_recoded %>%
+    get_items_in_rubric(tds2_wave1_scoring_data_long) %>%
+    filter(grepl('1\\d\\d', SID)) %>%
+    get_uncoercibles() %>%
+    distinct(item, value)
+
+tds2_wave1_uncoer
+
+```
+
+
+```{r}
 #Check that dropped values weren't ambiguous
-long_uspss_nodupes %>% 
+tds2_wave1_long_recoded_nodupes %>% 
   filter(dropped) %>%
   group_by(SID, item) %>%
   summarize(noinfo = all(length(unlist(old.value)) < 1)) %>%
   ungroup() %>%
   summarize(n_with_info = sum(!noinfo))
 ```
+
+
 
 ```{r score, fig.width=7, fig.height=7}
 scored_data <- scorequaltrics::score_questionnaire(long_uspss_nodupes, rubric_data_long)
