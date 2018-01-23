@@ -58,7 +58,7 @@ Once we've loaded this, we can get a list of questionnaires.
 
 ```{r}
 library(scorequaltrics)
-
+library(ggplot2)
 library(dplyr)
 library(tidyr)
 
@@ -199,5 +199,116 @@ tds2_wave1_long_recoded_nodupes %>%
     knitr::kable()
 ```
 
+For now, if there are ambiguous entries, I'm going to ingore them. The value to be used for scoring is set to NA -- we have to treat that data as missing since the responses are in conflict.
+
+#### Scoring
+
+There are a few different options for scoring questionnaires. First, we can provide a rubric and data to `scorequaltrics::score_questionnaire(dataDF, rubricsDF, psych = TRUE)`, which will use the `psych` package to do the scoring. This has the advantage that you get back a lot of information about the measurement quality of the scale, but it only works for scales that follow certain psychometric principles (e.g., each item is rated on a continuous scale, and is an indicator of a latent construct). It won't work well for other kinds of data (like scales where you want to know the number of risky behaviors, for example).
+
+The second option is to use `scorequaltrics::score_step_one_and_two(dataDF, rubricsDF)` which was created to take care of several special cases for the TDS project questionnaires. The RPI, and RSQ both require special handling because of their idiosyncratic questionnaire design. 
+
+```{r tds2wave1scoringdsn}
+tds2_wave1_scored <- scorequaltrics::score_step_one_and_two(tds2_wave1_long_recoded_nodupes,
+                                                            tds2_wave1_scoring_data_long)
+
+set.seed(9567)
+tds2_wave1_scored %>% ungroup %>%
+    dplyr::sample_n(size = 10) %>%
+    select(-SID)
+```
+
+One thing missing still is the Pubertal Development Scale scored via the Shirtcliff method, so I'll calculate that now with the special function `scorequaltrics::score_pdss()`
+
+```{r tds2wave1scorepds}
+tds2_wave1_scored_pdss <- scorequaltrics::score_pdss(tds2_wave1_long_recoded_nodupes, 
+                          gender_mix = pdss_gender_mix, 
+                          gendercode = pdss_gender_code)
+```
+
+That hopefully went off without a hitch. Now we can examine the scales we've scored, and along the way, see how we can get more information about these scales when we are able to use the `psych` package scoring function.
+
+#### Examine Wave 1 Scores
+
+We can look at basic descriptive statistics using a function I'll write and REPLACE THE NAME OF HERE.
+
+First, what scales do we have available?
+
+```{r tds2wave1availablescales}
+tds2_wave1_scored %>% 
+    ungroup() %>%
+    distinct(scale_name) %>%
+    knitr::kable()
+```
+
+##### ACE
+
+```{r tds2wave1plotACE}
+
+plot_tds_scale <- function(aDF, scale_regx, type = 'score', by_gender = FALSE, gender_var = NA){
+    aDF <- aDF %>%
+        filter(grepl(scale_regx, scale_name)) %>%
+        mutate_at(vars(score, n_missing, n_items), as.numeric)
+    
+    if(length(unique(aDF$scale_name)) > 1){
+        warning('Matched multiple scales: "', paste(unique(aDF$scale_name), collapse = '", "'), '".')
+    }
+    
+    if (type == 'score'){
+        colname <- 'score'
+        ylab <- 'Scale Score'
+    } else if (type == 'n_missing') {
+        colname <- 'n_missing'
+        ylab <- 'Number of missing responses'
+    } else if (type == 'p_missing') {
+        aDF$p_missing <- aDF$n_missing/(aDF$n_items + aDF$n_missing)
+        colname <- 'p_missing'
+        ylab <- 'Proportion of missing responses'
+    }
+
+    p <- ggplot(aDF, aes_string(y = colname, x = 'scored_scale')) +
+        geom_violin(fill = 'black', alpha = .25, color = 'gray') +
+        geom_boxplot(alpha = .5, width = .25, color = 'black') + 
+        geom_point(position = position_jitter(w = .125, h = 0),
+                   alpha = .25, color = 'blue') +
+        labs(y = ylab, x = 'Scale name') +
+        theme_classic()
+    if(by_gender){
+        p <- p + facet_grid(reformulate(gender_var, '.'))
+    }
+    return(p)
+}
 
 
+plot_tds_scale(tds2_wave1_scored,
+               scale_regx = '^ACE$', 
+               type = 'score')
+
+plot_tds_scale(tds2_wave1_scored,
+               scale_regx = '^ACE$', 
+               type = 'p_missing')
+```
+
+##### BFNE
+
+```{r tds2wave1plotBFNE}
+plot_tds_scale(tds2_wave1_scored,
+               scale_regx = '^BFNE$', 
+               type = 'score')
+
+plot_tds_scale(tds2_wave1_scored,
+               scale_regx = '^BFNE$', 
+               type = 'p_missing')
+```
+
+
+##### BIS-15
+
+```{r tds2wave1plotBIS-15}
+plot_tds_scale(tds2_wave1_scored,
+               scale_regx = '^BIS-15$', 
+               type = 'score')
+
+plot_tds_scale(tds2_wave1_scored,
+               scale_regx = '^BIS-15$', 
+               type = 'p_missing')
+```
