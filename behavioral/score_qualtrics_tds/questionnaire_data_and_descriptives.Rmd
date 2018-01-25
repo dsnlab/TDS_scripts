@@ -72,9 +72,11 @@ knitr::kable(arrange(select(rawSurveysTDS, SurveyName), SurveyName))
 
 We have a lot of different questionnaires from different samples and different sessions. For simplicity, and to aid in diagnosing any problems, we can proceed through each sample and each wave of data collection. _Note_, however, that if we ensured that naming conventions were consistent across all questionnaires and rubrics, and if we had accurate session dates attached, we could score everything in one fell swoop.
 
-## TDS 2 - Wave 1
+## Cleaning and scoring data
 
-This is the first sample collected, so we can begin here. I'll demonstrate in this how to do a single massive data scoring. See below for how you can get more information about scales that have been constructed in a psychometric tradition, and that therefore are easy to evaluate using standard reliability metrics.
+As an example, I'll walk through step-by-step how to clean and score data using the TDS2, Wave 1 sample.
+
+This is the first sample collected, so we can begin here. I'll demonstrate in this how to do a single massive data scoring. Following that, I'll demonstrate how you can get more information about scales that have been constructed in a psychometric tradition, and that therefore are easy to evaluate using standard reliability metrics.
 
 First, we download the data for the surveys we want.
 
@@ -199,7 +201,7 @@ tds2_wave1_long_recoded_nodupes %>%
 
 For now, if there are ambiguous entries, I'm going to ingore them. The value to be used for scoring is set to NA -- we have to treat that data as missing since the responses are in conflict.
 
-### Scoring
+### Scoring almost all at once
 
 There are a few different options for scoring questionnaires. First, we can provide a rubric and data to `scorequaltrics::score_questionnaire(dataDF, rubricsDF, psych = TRUE)`, which will use the `psych` package to do the scoring. This has the advantage that you get back a lot of information about the measurement quality of the scale, but it only works for scales that follow certain psychometric principles (e.g., each item is rated on a continuous scale, and is an indicator of a latent construct). It won't work well for other kinds of data (like scales where you want to know the number of risky behaviors, for example).
 
@@ -225,11 +227,92 @@ tds2_wave1_scored_pdss <- scorequaltrics::score_pdss(tds2_wave1_long_recoded_nod
 
 That hopefully went off without a hitch. Now we can examine the scales we've scored, and along the way, see how we can get more information about these scales when we are able to use the `psych` package scoring function.
 
-### Examine Wave 1 Scores
+### Scoring a single scale using `score_questionnaire`
 
-We can look at basic descriptive statistics using a function I'll write and REPLACE THE NAME OF HERE.
+It is possible, and maybe most convenient in many cases, to score a single questionnaire at a time, and write it to a CSV file. I'll demonstrate with the Barratt’s Impulsiveness Scale Version 15. This scale has just a single rubric -- no recoding rubric, and no part 2 scoring rubric.
 
-First, what scales do we have available?
+All we have to do is load the rubric using `get_rubrics` and then score the questionnaire using `score_questionnaire`.
+
+```{r tds2wave1bis}
+tds2_wave1_bis_scoring <- scorequaltrics::get_rubrics(
+    rubric_filenames = data.frame(
+        file = file.path(tds2_wave1_rubric_dir, 'BIS_scoring_rubric.csv')))
+
+#using the data we've already cleaned and recoded -- note that BIS does not require recoding
+tds2_wave1_bis_scored <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                                             tds2_wave1_bis_scoring)
+
+#display a random set of 10 rows to check out the data.
+set.seed(4210)
+sample_n(select(ungroup(tds2_wave1_bis_scored), -SID), size = 10)
+```
+
+I can plot these data now using `plot_scored_scale`, which has options to select the scale name (not subscale) using regular expressions (defaults to all), or to plot number or proportion of items missing.
+
+```{r tds2wave1bisplot}
+scorequaltrics::plot_scored_scale(tds2_wave1_bis_scored)
+scorequaltrics::plot_scored_scale(tds2_wave1_bis_scored, type = 'p_missing')
+```
+
+I can also widen this data frame for ease of use in regressions and exporting, using `widen_qualtrics_long`. Note that even with a single scored scale, you need to specify the scale name to be matched exactly. In this case, we can see that `unique(tds2_wave1_bis_scored$scale_name)` gives us: `r unique(tds2_wave1_bis_scored$scale_name)`. Note that the return value of the `widen_qualtrics_long` function is a list that contains a data frame of scores at `...$scores` and of missing responses at `...$data_quality`.
+
+```{r tds2wave1biswiden}
+tds2_wave1_bis_scored_wide <- scorequaltrics::widen_qualtrics_long(tds2_wave1_bis_scored,
+                                                                   scale_names = 'BIS-15')
+
+set.seed(322415)
+sample_n(select(tds2_wave1_bis_scored_wide$scores, -SID), size = 3)
+sample_n(select(tds2_wave1_bis_scored_wide$data_quality, -SID), size = 3)
+```
+
+We can easily write these tables to a file now:
+
+```{r writeexample, eval = F}
+write.csv(tds2_wave1_bis_scored_wide$scores, '/location/to/save/csv/file')
+```
+
+### Scoring a single scale using `score_questionnaire` with `psych=TRUE`
+
+There is a subset of scales that we can examine using tools from the psychometrics literature. That is, scales that consist of many items attempting to measure a theoretical latent construct can be examined using reliability measures to see how much consistency there is, from person to person, among these items that are ostensibly measuring the same thing. This doesn't make sense to look at in a scale like the Adverse Childhood Events or Youth Risk Behavior Survey because these are indices that are supposed to measure the number of certain events or behaviors that together are thought to convey risk. In other words, there is not theoretical basis for assuming that all adverse events in childhood are caused by the same latent construct. So even though it may be the case that certain adverse events tend to correlate, it is not necessary that they _do_ correlate.
+
+To investigate a scale using these tools, all we have to do is set it to be scored by the `psych` package, rather than the `scorequaltrics` backend. To do so, we merely set the option `psych=TRUE`. We can then apply the `print` function to get information about reliability, and the `pairs.panels` function to the object's `...$scores`.
+
+```{r tds2wave1BIS-15psych}
+#using the rubric we've alread loaded:
+tds2_wave1_bis_psych <- scorequaltrics::score_questionnaire(
+    tds2_wave1_long_recoded_nodupes,
+    tds2_wave1_bis_scoring,
+    psych = T)
+
+print(tds2_wave1_bis_psych)
+pairs.panels(tds2_wave1_bis_psych$scores)
+```
+
+If we want to apply the `scorequaltrics` plot function, we need to transform the data to long-form using the `longen_psych_wide` function.
+
+```{r longenexample}
+tds2_wave1_bis_score_long <- scorequaltrics::longen_psych_wide(tds2_wave1_bis_psych$scores)
+
+scorequaltrics::plot_scored_scale(tds2_wave1_bis_score_long)
+```
+
+Finally, we can also use the `pairs.plot` function with data scored using the `scorequaltrics` backend using the `widen_qualtrics_long` function again. This time I'll take the BIS-15 data from the main scored data set.
+
+```{r widenexample}
+tds2_wave1_bis15_wide <- scorequaltrics::widen_qualtrics_long(tds2_wave1_scored, scale_names = 'BIS-15')
+
+library(psych)
+#remove the first two columns that contain the ID and scale name
+pairs.panels(tds2_wave1_bis15_wide$scores[, -(1:2)])
+```
+
+### Putting it all together
+
+In the next section, I will simply walk through the scoring and display of descriptives for the data we have using the tools reviewed above.
+
+## TDS 2, Wave 1 Scores
+
+Available scales:
 
 ```{r tds2wave1availablescales}
 tds2_wave1_scored %>% 
@@ -238,7 +321,7 @@ tds2_wave1_scored %>%
     knitr::kable()
 ```
 
-#### ACE
+### ACE
 
 ```{r tds2wave1plotACE}
 scorequaltrics::plot_scored_scale(tds2_wave1_scored,
@@ -250,7 +333,7 @@ scorequaltrics::plot_scored_scale(tds2_wave1_scored,
                                   type = 'p_missing')
 ```
 
-#### BFNE
+### BFNE
 
 ```{r tds2wave1plotBFNE}
 scorequaltrics::plot_scored_scale(tds2_wave1_scored,
@@ -260,10 +343,19 @@ scorequaltrics::plot_scored_scale(tds2_wave1_scored,
 scorequaltrics::plot_scored_scale(tds2_wave1_scored,
                                   scale_regx = '^BFNE$', 
                                   type = 'p_missing')
+
+BFNERubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'BFNE')
+
+tds2_wave1_bfne_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    BFNERubric,
+                                    psych = T)
+print(tds2_wave1_bfne_psych)
+pairs.panels(tds2_wave1_bfne_psych$scores)
 ```
 
 
-#### BIS-15
+### BIS-15
 
 ```{r tds2wave1plotBIS-15}
 scorequaltrics::plot_scored_scale(tds2_wave1_scored,
@@ -273,12 +365,7 @@ scorequaltrics::plot_scored_scale(tds2_wave1_scored,
 scorequaltrics::plot_scored_scale(tds2_wave1_scored,
                                   scale_regx = '^BIS-15$', 
                                   type = 'p_missing')
-```
 
-Instead of converting our data to play nice with the psych package, we can use it to score this questionnaire. 
-Doing so gives us quick stats on reliability, too.
-
-```{r tds2wave1BIS-15psych}
 BISRubric <- tds2_wave1_scoring_data_long %>%
     filter(scale_name == 'BIS-15')
 
@@ -289,12 +376,4 @@ print(tds2_wave1_bis_psych)
 pairs.panels(tds2_wave1_bis_psych$scores)
 ```
 
-We could get the pairs plot with the data we scored earlier too using a long-to-wide conversion function.
 
-```{r tds2wave1BIS-15plotpsych}
-#get it in wide format so we can use the `psych` package to plot.
-tds2_wave1_bis15_wide <- scorequaltrics::widen_qualtrics_long(tds2_wave1_scored, scale_names = 'BIS-15')
-
-library(psych)
-pairs.panels(tds2_wave1_bis15_wide$scores[, -(1:2)])
-```
