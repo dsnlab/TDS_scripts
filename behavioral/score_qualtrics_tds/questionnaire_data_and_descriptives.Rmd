@@ -17,7 +17,7 @@ It would be nice if this were something completely automated. Unfortunately, the
 If you're reading the compiled HTML, you won't see the options below, because we've writtent `warning=F,echo=F,message=F,error=F` in the head of the chunk. You can change this by replacing the "F"s with "T"s.
 
 ```{r warning=F,echo=F,message=F,error=F}
-knitr::opts_chunk$set(error = T, warning = T, message = F, fig.width = (11-2)/2, fig.height = (8.5-2)/2)
+knitr::opts_chunk$set(error = T, warning = T, message = F, fig.width = (11-3), fig.height = (8.5-1)/2)
 
 #Set these options for your situation:
 
@@ -344,11 +344,11 @@ scorequaltrics::plot_scored_scale(tds2_wave1_scored,
                                   scale_regx = '^BFNE$', 
                                   type = 'p_missing')
 
-BFNERubric <- tds2_wave1_scoring_data_long %>%
+tds2w1_BFNERubric <- tds2_wave1_scoring_data_long %>%
     filter(scale_name == 'BFNE')
 
 tds2_wave1_bfne_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
-                                    BFNERubric,
+                                    tds2w1_BFNERubric,
                                     psych = T)
 print(tds2_wave1_bfne_psych)
 pairs.panels(tds2_wave1_bfne_psych$scores)
@@ -366,14 +366,364 @@ scorequaltrics::plot_scored_scale(tds2_wave1_scored,
                                   scale_regx = '^BIS-15$', 
                                   type = 'p_missing')
 
-BISRubric <- tds2_wave1_scoring_data_long %>%
+tds2w1_BISRubric <- tds2_wave1_scoring_data_long %>%
     filter(scale_name == 'BIS-15')
 
 tds2_wave1_bis_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
-                                    BISRubric,
+                                    tds2w1_BISRubric,
                                     psych = T)
 print(tds2_wave1_bis_psych)
 pairs.panels(tds2_wave1_bis_psych$scores)
 ```
+
+### Brief SCARED
+
+```{r tds2wave1plotBriefSCARED}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^Brief SCARED$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^Brief SCARED$', 
+                                  type = 'p_missing')
+
+tds2w1_BscaredRubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'Brief SCARED')
+
+tds2_wave1_bscared_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_BscaredRubric,
+                                    psych = T)
+print(tds2_wave1_bscared_psych)
+pairs.panels(tds2_wave1_bscared_psych$scores)
+```
+
+### BSSS
+
+```{r tds2wave1plotBSSS}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^BSSS$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^BSSS$', 
+                                  type = 'p_missing')
+
+tds2w1_BSSSRubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'BSSS')
+
+tds2_wave1_bsss_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_BSSSRubric,
+                                    psych = T)
+print(tds2_wave1_bsss_psych)
+pairs.panels(tds2_wave1_bsss_psych$scores)
+```
+
+### CARE-R Expected Involvement
+
+```{r tds2wave1plotcarerEI}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Expected Involvement$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Expected Involvement$', 
+                                  type = 'p_missing')
+```
+
+### CARE-R Willingness to Engage
+
+```{r tds2wave1plotcarerWE}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Willingness to Engage$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Willingness to Engage$', 
+                                  type = 'p_missing')
+```
+
+### CARE-R Social
+
+Note: Lower scores on "not doing this" items indicate that someone thinks not engaging in the behavior will make people like them _more_, and thus, like the "doing this" items, a lower score corresponds to a downward influence on that behavior.
+
+```{r tds2wave1plotcarersoc}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Social$', 
+                                  type = 'score') + 
+    facet_grid(~factor(grepl('not', scored_scale) - grepl('composite', scored_scale),
+                       levels = c(-1, 0, 1),
+                       labels = c('Comp', 'Doing this', 'Not doing this')), 
+               scales = 'free_x',
+               space = 'free_x')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Social$', 
+                                  type = 'p_missing') + 
+    facet_grid(~factor(grepl('not', scored_scale) - grepl('composite', scored_scale),
+                       levels = c(-1, 0, 1),
+                       labels = c('Comp', 'Doing this', 'Not doing this')), 
+               scales = 'free_x',
+               space = 'free_x')
+```
+
+### CBCL
+
+```{r tds2wave1plotcbcl}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CBCL$', 
+                                  type = 'score')+
+    coord_cartesian(y = c(0,2))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CBCL$', 
+                                  type = 'p_missing')+
+    coord_cartesian(y = c(0,1))
+```
+
+### CES-DC
+
+```{r tds2wave1plotcesdc}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CES-DC$', 
+                                  type = 'score')+
+    coord_cartesian(y = c(0,3))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CES-DC$', 
+                                  type = 'p_missing')
+```
+
+
+### MSSSS
+
+```{r tds2wave1plotmssss}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^MSSSS$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^MSSSS$', 
+                                  type = 'p_missing')
+```
+
+### NTS
+
+```{r tds2wave1plotNTS}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^NTS$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^NTS$', 
+                                  type = 'p_missing')
+
+tds2w1_NTSRubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'NTS')
+
+tds2_wave1_nts_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_NTSRubric,
+                                    psych = T)
+print(tds2_wave1_nts_psych)
+pairs.panels(tds2_wave1_nts_psych$scores)
+```
+
+### PAL-2
+
+```{r tds2wave1plotpal2}
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, scored_scale != 'pal2_age'),
+                                  scale_regx = '^PAL-2$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, scored_scale != 'pal2_age'),
+                                  scale_regx = '^PAL-2$', 
+                                  type = 'p_missing')
+```
+
+### PDS
+
+```{r tds2wave1plotPDS}
+#We need a way to separate female from male responses
+male_sids <- tds2_wave1_scored %>%
+    filter(scored_scale == 'pds_gender', score =='0') %>%
+    ungroup() %>% 
+    select(SID)
+
+female_sids <- tds2_wave1_scored %>%
+    filter(scored_scale == 'pds_gender', score =='1') %>%
+    ungroup() %>% 
+    select(SID)
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, 
+                                         SID %in% male_sids$SID,
+                                         grepl('^male', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'score') + 
+    facet_wrap(~scored_scale, scales = 'free') +
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, 
+                                         SID %in% male_sids$SID,
+                                         grepl('^male', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'p_missing')
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, 
+                                         SID %in% female_sids$SID,
+                                         grepl('^female', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'score') + 
+    facet_wrap(~scored_scale, scales = 'free') +
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, 
+                                         SID %in% female_sids$SID,
+                                         grepl('^female', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'p_missing')
+```
+
+### PDSS
+
+```{r tds2wave1plotPDSS}
+tds2_wave1_scored_pdss_gender <- tds2_wave1_scored_pdss %>%
+    filter(scored_scale == 'gender') %>%
+    spread(scored_scale, score) %>%
+    select(SID, gender)
+
+tds2_wave1_scored_pdss_gender_wide <- tds2_wave1_scored_pdss %>%
+    filter(scored_scale != 'gender') %>%
+    left_join(tds2_wave1_scored_pdss_gender)
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored_pdss_gender_wide,
+                                  scale_regx = '^PDSS$', 
+                                  type = 'score') +
+    facet_wrap(~factor(gender,
+                       levels = pdss_gender_code,
+                       labels = names(pdss_gender_code)))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored_pdss_gender_wide,
+                                  scale_regx = '^PDSS$', 
+                                  type = 'p_missing') +
+    facet_wrap(~factor(gender,
+                       levels = pdss_gender_code,
+                       labels = names(pdss_gender_code)))
+```
+
+### PEQ-R
+
+```{r tds2wave1plotPEQ}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^PEQ-R$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^PEQ-R$', 
+                                  type = 'p_missing')
+```
+
+
+### SES
+
+**Needs a checkup**
+
+```{r tds2wave1plotSES}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SES$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SES$', 
+                                  type = 'p_missing')
+```
+
+
+### SPSRQ-S
+
+```{r tds2wave1plotSPSRQ-S}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SPSRQ-S$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SPSRQ-S$', 
+                                  type = 'p_missing')
+
+tds2w1_SPSRQSubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'SPSRQ-S')
+
+tds2_wave1_spsrqs_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_SPSRQSubric,
+                                    psych = T)
+print(tds2_wave1_spsrqs_psych)
+pairs.panels(tds2_wave1_spsrqs_psych$scores)
+```
+
+### UPPS-P
+
+```{r tds2wave1plotUPPSP}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^UPPS-P$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SUPPS-P$', 
+                                  type = 'p_missing')
+
+tds2w1_UPPSPRubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'UPPS-P')
+
+tds2_wave1_uppsp_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_UPPSPRubric,
+                                    psych = T)
+print(tds2_wave1_uppsp_psych)
+pairs.panels(tds2_wave1_uppsp_psych$scores)
+```
+
+
+### YRBS
+
+This has been scored according to the CDC [manual](https://www.cdc.gov/healthyyouth/data/yrbs/pdf/2015/2015_yrbs_sadc_documentation.pdf). Items have been scored with either 1 or 0, with the mean calculated for each subscale. This gives you the proportion of endorsed items in that scale. To convert to a sum of endoresed items, simply multiply the scaled score by the number of total items (`n_missing` + `n_items`). 
+
+```{r tds2wave1plotYRBS}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^YRBS$', 
+                                  type = 'score') + 
+    theme(axis.text.x = element_text(angle = 360-70))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^YRBS$', 
+                                  type = 'p_missing')
+```
+
+### RPI
+
+```{r tds2wave1plotRPI}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^RPI_part2$', 
+                                  type = 'score') + 
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^RPI_part2$', 
+                                  type = 'p_missing') + 
+    coord_cartesian(y = c(0,1))
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+```
+
+### RSQ
+
+```{r tds2wave1plotRSQ}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^RSQ_part2$', 
+                                  type = 'score') + 
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^RSQ_part2$', 
+                                  type = 'p_missing') + 
+    coord_cartesian(y = c(0,1)) + 
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+```
+
 
 
