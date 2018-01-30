@@ -1,7 +1,6 @@
 Data File Name,Scale Name,Column Name,transform,reverse,min,max,PAL2_age,PAL2_ethnicity_race,PAL2_cohabitants_relation,PAL2_home,PAL2_school,PAL2_time_spent_with_deviant_friends,PAL2_have_prosocial_friends,PAL2_have_deviant_friends,PAL2_family_friends,PAL2_antisocial,PAL2_composite_score
 TDS2_Session_2_B,PAL-2,PAL2_1,,,,,1,,,,,,,,,,
 TDS2_Session_2_B,PAL-2,PAL2_2A,,,,,,1,,,,,,,,,
-TDS2_Session_2_B,PAL-2,PAL2_2B_TEXT,,,,,,,,,,,,,,,
 TDS2_Session_2_B,PAL-2,PAL2_3,,,,,,,,1,,,,,,,
 TDS2_Session_2_B,PAL-2,PAL2_4_1,,,,,,,sum,,,,,,,,
 TDS2_Session_2_B,PAL-2,PAL2_4_2,,,,,,,sum,,,,,,,,
