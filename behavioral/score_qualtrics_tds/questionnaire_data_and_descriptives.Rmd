@@ -785,7 +785,7 @@ write.csv(scorequaltrics::widen_qualtrics_long(tds2_wave1_scored_pdss,
 
 Get data, rubrics, recode, and clean. Note that for wave 2 (aka, session 3), we need to separate out parent from child questionnaires, since the PMQ items are identical.
 
-```{r getsurveydata_tds2_wave1}
+```{r getsurveydata_tds2_wave2}
 #Get surveys
 tds2_wave2_surveys <- rawSurveysTDS %>%
     filter(grepl('TDS2 Session 3 - (Child|Parent)$', SurveyName))
@@ -1112,6 +1112,60 @@ tds2_wave12_pds %>%
     labs(title = 'PDS Mean, Females')
 ```
 
+### PDSS
+
+```{r tds2wave2plotPDSS}
+tds2_wave2_scored_pdss_gender <- tds2_wave2_scored_pdss %>%
+    filter(scored_scale == 'gender') %>%
+    spread(scored_scale, score) %>%
+    select(SID, gender)
+
+tds2_wave2_scored_pdss_gender_wide <- tds2_wave2_scored_pdss %>%
+    filter(scored_scale != 'gender') %>%
+    left_join(tds2_wave2_scored_pdss_gender)
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_pdss_gender_wide,
+                                  scale_regx = '^PDSS$', 
+                                  type = 'score') +
+    facet_wrap(~factor(gender,
+                       levels = pdss_gender_code,
+                       labels = names(pdss_gender_code)))
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_pdss_gender_wide,
+                                  scale_regx = '^PDSS$', 
+                                  type = 'p_missing') +
+    facet_wrap(~factor(gender,
+                       levels = pdss_gender_code,
+                       labels = names(pdss_gender_code)))
+
+tds2_wave12_pdss <- bind_rows(wave_1 = tds2_wave1_scored_pdss_gender_wide,
+                              wave_2 = tds2_wave2_scored_pdss_gender_wide,
+                              .id = 'wave')
+
+tds2_wave12_pdss %>%
+    select(SID, wave, gender) %>%
+    distinct(SID, wave, gender) %>%
+    mutate(gender = factor(gender, 
+                           levels = pdss_gender_code, 
+                           labels = names(pdss_gender_code))) %>%
+    spread(wave, gender) %>%
+    select(wave_1, wave_2) %>%
+    table(useNA = 'ifany') %>%
+    knitr::kable(caption = 'Gender consistency across waves')
+
+ajitter <- position_jitter(w = 0, h = .1)
+tds2_wave12_pdss %>%
+    mutate(score = as.numeric(score),
+           gender = factor(gender, 
+                           levels = pdss_gender_code, 
+                           labels = names(pdss_gender_code))) %>%
+    ggplot(aes(x = wave, y = score, group = SID)) + 
+    geom_point(alpha = .5, position = ajitter) +
+    geom_line(alpha = .5, position = ajitter) +
+    facet_grid(gender~scored_scale) + 
+    theme_classic()
+```
+
 ### PSQI
 
 **There seems to be an issue with a couple of subscales here.**
@@ -1125,6 +1179,980 @@ scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
                                   scale_regx = '^PSQI$', 
                                   type = 'p_missing')+
     coord_cartesian(y = c(0,1))
+```
+
+
+### SES
+
+**Needs a checkup**
+
+```{r tds2wave2plotSES}
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^SES$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^SES$', 
+                                  type = 'p_missing')
+```
+
+### YRBS
+
+This has been scored according to the CDC [manual](https://www.cdc.gov/healthyyouth/data/yrbs/pdf/2015/2015_yrbs_sadc_documentation.pdf). Items have been scored with either 1 or 0, with the mean calculated for each subscale. This gives you the proportion of endorsed items in that scale. To convert to a sum of endoresed items, simply multiply the scaled score by the number of total items (`n_missing` + `n_items`). 
+
+```{r tds2wave2plotYRBS}
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^YRBS$', 
+                                  type = 'score') + 
+    theme(axis.text.x = element_text(angle = 360-70))
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^YRBS$', 
+                                  type = 'p_missing')
+```
+
+### RPI
+
+```{r tds2wave2plotRPI}
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^RPI_part2$', 
+                                  type = 'score') + 
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^RPI_part2$', 
+                                  type = 'p_missing') + 
+    coord_cartesian(y = c(0,1)) + 
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+```
+
+### Write the data
+
+```{r tds2wave2writeoutwide}
+save_scored_scales_wide_csv <- function(dataDF, file_prefix, scale_names = NULL){
+    wide_data_frame <- 
+        scorequaltrics::widen_qualtrics_long(tds2_wave1_scored,
+                                             scale_names = aScale)
+    filename <- paste0(paste(TDS2_name, 
+                             wave1_name,
+                             gsub('\\.', '_', 
+                                  make.names(aScale)),
+                             sep = '-'),
+                       '.csv')
+    pathname <- file.path(output_file_dir, filename)
+    write.csv(wide_data_frame, file = pathname, row.names = F)
+}
+
+list_of_scales <- as.list(unique(tds2_wave2_scored_c$scale_name))
+
+throwaway <- lapply(list_of_scales,
+                    function(aScale){
+                        wide_data_frame <- 
+                            scorequaltrics::widen_qualtrics_long(tds2_wave1_scored,
+                                                                 scale_names = aScale)
+                        filename <- paste0(paste(TDS2_name, 
+                                                 wave1_name,
+                                                 gsub('\\.', '_', 
+                                                      make.names(aScale)),
+                                                 sep = '-'),
+                                           '.csv')
+                        pathname <- file.path(output_file_dir, filename)
+                        write.csv(wide_data_frame, file = pathname, row.names = F)
+                    })
+
+tds2_wave1_pdss_filename <- paste0(paste(TDS2_name,
+                                         wave1_name,
+                                         'PDSS',
+                                         sep = '-'),
+                                   '.csv')
+
+write.csv(scorequaltrics::widen_qualtrics_long(tds2_wave1_scored_pdss,
+                                               scale_names = 'PDSS'),
+          file = file.path(output_file_dir,
+                           tds2_wave1_pdss_filename),
+          row.names = F)
+```
+
+## TDS 1, Wave 1 Scores
+
+### Get the data and clean it
+
+Get data, rubrics, recode, and clean. 
+
+```{r getsurveydata_tds1_wave1}
+#Get surveys
+tds1_wave1_surveys <- rawSurveysTDS %>%
+    filter(grepl('TDS2 Session 3 - (Child|Parent)$', SurveyName))
+knitr::kable(select(tds2_wave2_surveys, SurveyName))
+
+#Get data from those surveys
+tds2_wave2_long <- scorequaltrics::get_survey_data(tds2_wave2_surveys, 
+                                                   credentials, 
+                                                   pid_col = pid_column_name)
+
+#Get recoding rubrics
+tds2_wave2_recoding_rubrics <- data.frame(file = dir(file.path(tds2_wave2_rubric_dir), 
+                                                     pattern = '.*response_recoding.*.csv',
+                                                     full.names = TRUE))
+tds2_wave2_recoding_data_long <- scorequaltrics::get_rubrics(tds2_wave2_recoding_rubrics, 
+                                                             type = 'recoding')
+
+#Recode data
+tds2_wave2_long_recoded <- scorequaltrics::recode_responses(tds2_wave2_long, 
+                                                            tds2_wave2_recoding_data_long)
+
+#Code -99 as NA
+tds2_wave2_long_recoded <- tds2_wave2_long_recoded %>%
+    mutate(value = ifelse(grepl('SES', item) & as.numeric(value) < 0, 
+                          NA,
+                          value))
+
+#Get scoring rubrics
+tds2_wave2_scoring_rubrics <- data.frame(file = dir(file.path(tds2_wave2_rubric_dir), 
+                                                    pattern = '.*scoring_rubric.*.csv',
+                                                    full.names = TRUE))
+tds2_wave2_scoring_data_long <- scorequaltrics::get_rubrics(tds2_wave2_scoring_rubrics, 
+                                                            type = 'scoring')
+
+#Split scoring into parent and child
+tds2_wave2_scoring_data_long_p <- tds2_wave2_scoring_data_long %>%
+    filter(grepl('[pP]arent', data_file_name))
+tds2_wave2_scoring_data_long_c <- tds2_wave2_scoring_data_long %>%
+    filter(!grepl('[pP]arent', data_file_name))
+
+#Split data into parent and child
+tds2_wave2_long_recoded_p <- tds2_wave2_long_recoded %>%
+    filter(grepl('[pP]arent', survey_name))
+tds2_wave2_long_recoded_c <- tds2_wave2_long_recoded %>%
+    filter(!grepl('[pP]arent', survey_name))
+
+#Clean and de-dupe parent and child data
+tds2_wave2_long_recoded_p_nodupes <- tds2_wave2_long_recoded_p %>%
+    get_items_in_rubric(tds2_wave2_scoring_data_long_p) %>%
+    filter(grepl('1\\d\\d', SID)) %>%
+    scorequaltrics::clean_dupes(pid_col = 'SID')
+tds2_wave2_long_recoded_c_nodupes <- tds2_wave2_long_recoded_c %>%
+    get_items_in_rubric(tds2_wave2_scoring_data_long_c) %>%
+    filter(grepl('1\\d\\d', SID)) %>%
+    scorequaltrics::clean_dupes(pid_col = 'SID')
+
+```
+
+
+After cleaning duplicates, it's possible that there were some responses that have conflicting answers. We can look at those now.
+
+Now we can see which items had conflicting responses on duplicate questionnaires.
+
+```{r}
+#Check that dropped values weren't ambiguous
+tds2_wave2_long_recoded_p_nodupes %>% 
+    filter(dropped) %>%
+    group_by(SID, item) %>%
+    filter(!all(length(unlist(old.value)) < 1)) %>%
+    mutate(old.value = paste(old.value, collaps = ' ')) %>%
+    knitr::kable(caption = "Parent questionnaire dupes")
+
+tds2_wave2_long_recoded_c_nodupes %>% 
+    filter(dropped) %>%
+    group_by(SID, item) %>%
+    filter(!all(length(unlist(old.value)) < 1)) %>%
+    mutate(old.value = paste(old.value, collaps = ' ')) %>%
+    knitr::kable(caption = "Child questionnaire dupes")
+```
+
+### Scoring
+
+```{r tds2wave2score}
+
+tds2_wave2_scored_p <- scorequaltrics::score_step_one_and_two(tds2_wave2_long_recoded_p_nodupes,
+                                                            tds2_wave2_scoring_data_long_p)
+tds2_wave2_scored_c <- scorequaltrics::score_step_one_and_two(tds2_wave2_long_recoded_c_nodupes,
+                                                            tds2_wave2_scoring_data_long_c)
+tds2_wave2_scored_pdss <- scorequaltrics::score_pdss(tds2_wave2_long_recoded_c_nodupes, 
+                          gender_mix = pdss_gender_mix, 
+                          gendercode = pdss_gender_code)
+
+tds2_wave2_scored_p %>% 
+    ungroup() %>%
+    distinct(scale_name) %>%
+    knitr::kable()
+tds2_wave2_scored_c %>% 
+    ungroup() %>%
+    distinct(scale_name) %>%
+    knitr::kable()
+```
+
+### ACE
+
+```{r tds2wave1plotACE}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^ACE$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^ACE$', 
+                                  type = 'p_missing')
+```
+
+### BFNE
+
+```{r tds2wave1plotBFNE}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^BFNE$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^BFNE$', 
+                                  type = 'p_missing')
+
+tds2w1_BFNERubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'BFNE')
+
+tds2_wave1_bfne_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_BFNERubric,
+                                    psych = T)
+print(tds2_wave1_bfne_psych)
+pairs.panels(tds2_wave1_bfne_psych$scores)
+```
+
+
+### BIS-15
+
+```{r tds2wave1plotBIS-15}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^BIS-15$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^BIS-15$', 
+                                  type = 'p_missing')
+
+tds2w1_BISRubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'BIS-15')
+
+tds2_wave1_bis_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_BISRubric,
+                                    psych = T)
+print(tds2_wave1_bis_psych)
+pairs.panels(tds2_wave1_bis_psych$scores)
+```
+
+### Brief SCARED
+
+```{r tds2wave1plotBriefSCARED}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^Brief SCARED$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^Brief SCARED$', 
+                                  type = 'p_missing')
+
+tds2w1_BscaredRubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'Brief SCARED')
+
+tds2_wave1_bscared_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_BscaredRubric,
+                                    psych = T)
+print(tds2_wave1_bscared_psych)
+pairs.panels(tds2_wave1_bscared_psych$scores)
+```
+
+### BSSS
+
+```{r tds2wave1plotBSSS}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^BSSS$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^BSSS$', 
+                                  type = 'p_missing')
+
+tds2w1_BSSSRubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'BSSS')
+
+tds2_wave1_bsss_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_BSSSRubric,
+                                    psych = T)
+print(tds2_wave1_bsss_psych)
+pairs.panels(tds2_wave1_bsss_psych$scores)
+```
+
+### CARE-R Expected Involvement
+
+```{r tds2wave1plotcarerEI}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Expected Involvement$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Expected Involvement$', 
+                                  type = 'p_missing')
+```
+
+### CARE-R Willingness to Engage
+
+```{r tds2wave1plotcarerWE}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Willingness to Engage$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Willingness to Engage$', 
+                                  type = 'p_missing')
+```
+
+### CARE-R Social
+
+Note: Lower scores on "not doing this" items indicate that someone thinks not engaging in the behavior will make people like them _more_, and thus, like the "doing this" items, a lower score corresponds to a downward influence on that behavior.
+
+```{r tds2wave1plotcarersoc}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Social$', 
+                                  type = 'score') + 
+    facet_grid(~factor(grepl('not', scored_scale) - grepl('composite', scored_scale),
+                       levels = c(-1, 0, 1),
+                       labels = c('Comp', 'Doing this', 'Not doing this')), 
+               scales = 'free_x',
+               space = 'free_x')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CARE-R Social$', 
+                                  type = 'p_missing') + 
+    facet_grid(~factor(grepl('not', scored_scale) - grepl('composite', scored_scale),
+                       levels = c(-1, 0, 1),
+                       labels = c('Comp', 'Doing this', 'Not doing this')), 
+               scales = 'free_x',
+               space = 'free_x')
+```
+
+### CBCL
+
+```{r tds2wave1plotcbcl}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CBCL$', 
+                                  type = 'score')+
+    coord_cartesian(y = c(0,2))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CBCL$', 
+                                  type = 'p_missing')+
+    coord_cartesian(y = c(0,1))
+```
+
+### CES-DC
+
+```{r tds2wave1plotcesdc}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CES-DC$', 
+                                  type = 'score')+
+    coord_cartesian(y = c(0,3))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^CES-DC$', 
+                                  type = 'p_missing')
+```
+
+
+### MSSSS
+
+```{r tds2wave1plotmssss}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^MSSSS$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^MSSSS$', 
+                                  type = 'p_missing')
+```
+
+### NTS
+
+```{r tds2wave1plotNTS}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^NTS$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^NTS$', 
+                                  type = 'p_missing')
+
+tds2w1_NTSRubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'NTS')
+
+tds2_wave1_nts_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_NTSRubric,
+                                    psych = T)
+print(tds2_wave1_nts_psych)
+pairs.panels(tds2_wave1_nts_psych$scores)
+```
+
+### PAL-2
+
+```{r tds2wave1plotpal2}
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, scored_scale != 'pal2_age'),
+                                  scale_regx = '^PAL-2$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, scored_scale != 'pal2_age'),
+                                  scale_regx = '^PAL-2$', 
+                                  type = 'p_missing')
+```
+
+### PDS
+
+```{r tds2wave1plotPDS}
+#We need a way to separate female from male responses
+male_sids <- tds2_wave1_scored %>%
+    filter(scored_scale == 'pds_gender', score =='0') %>%
+    ungroup() %>% 
+    select(SID)
+
+female_sids <- tds2_wave1_scored %>%
+    filter(scored_scale == 'pds_gender', score =='1') %>%
+    ungroup() %>% 
+    select(SID)
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, 
+                                         SID %in% male_sids$SID,
+                                         grepl('^male', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'score') + 
+    facet_wrap(~scored_scale, scales = 'free') +
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, 
+                                         SID %in% male_sids$SID,
+                                         grepl('^male', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'p_missing')
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, 
+                                         SID %in% female_sids$SID,
+                                         grepl('^female', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'score') + 
+    facet_wrap(~scored_scale, scales = 'free') +
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, 
+                                         SID %in% female_sids$SID,
+                                         grepl('^female', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'p_missing')
+```
+
+### PDSS
+
+```{r tds2wave1plotPDSS}
+tds2_wave1_scored_pdss_gender <- tds2_wave1_scored_pdss %>%
+    filter(scored_scale == 'gender') %>%
+    spread(scored_scale, score) %>%
+    select(SID, gender)
+
+tds2_wave1_scored_pdss_gender_wide <- tds2_wave1_scored_pdss %>%
+    filter(scored_scale != 'gender') %>%
+    left_join(tds2_wave1_scored_pdss_gender)
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored_pdss_gender_wide,
+                                  scale_regx = '^PDSS$', 
+                                  type = 'score') +
+    facet_wrap(~factor(gender,
+                       levels = pdss_gender_code,
+                       labels = names(pdss_gender_code)))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored_pdss_gender_wide,
+                                  scale_regx = '^PDSS$', 
+                                  type = 'p_missing') +
+    facet_wrap(~factor(gender,
+                       levels = pdss_gender_code,
+                       labels = names(pdss_gender_code)))
+```
+
+### PEQ-R
+
+```{r tds2wave1plotPEQ}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^PEQ-R$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^PEQ-R$', 
+                                  type = 'p_missing')
+```
+
+
+### SES
+
+**Needs a checkup**
+
+```{r tds2wave1plotSES}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SES$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SES$', 
+                                  type = 'p_missing')
+```
+
+
+### SPSRQ-S
+
+```{r tds2wave1plotSPSRQ-S}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SPSRQ-S$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SPSRQ-S$', 
+                                  type = 'p_missing')
+
+tds2w1_SPSRQSubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'SPSRQ-S')
+
+tds2_wave1_spsrqs_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_SPSRQSubric,
+                                    psych = T)
+print(tds2_wave1_spsrqs_psych)
+pairs.panels(tds2_wave1_spsrqs_psych$scores)
+```
+
+### UPPS-P
+
+```{r tds2wave1plotUPPSP}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^UPPS-P$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^SUPPS-P$', 
+                                  type = 'p_missing')
+
+tds2w1_UPPSPRubric <- tds2_wave1_scoring_data_long %>%
+    filter(scale_name == 'UPPS-P')
+
+tds2_wave1_uppsp_psych <- scorequaltrics::score_questionnaire(tds2_wave1_long_recoded_nodupes,
+                                    tds2w1_UPPSPRubric,
+                                    psych = T)
+print(tds2_wave1_uppsp_psych)
+pairs.panels(tds2_wave1_uppsp_psych$scores)
+```
+
+
+### YRBS
+
+This has been scored according to the CDC [manual](https://www.cdc.gov/healthyyouth/data/yrbs/pdf/2015/2015_yrbs_sadc_documentation.pdf). Items have been scored with either 1 or 0, with the mean calculated for each subscale. This gives you the proportion of endorsed items in that scale. To convert to a sum of endoresed items, simply multiply the scaled score by the number of total items (`n_missing` + `n_items`). 
+
+```{r tds2wave1plotYRBS}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^YRBS$', 
+                                  type = 'score') + 
+    theme(axis.text.x = element_text(angle = 360-70))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^YRBS$', 
+                                  type = 'p_missing')
+```
+
+### RPI
+
+```{r tds2wave1plotRPI}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^RPI_part2$', 
+                                  type = 'score') + 
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^RPI_part2$', 
+                                  type = 'p_missing') + 
+    coord_cartesian(y = c(0,1)) +
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+```
+
+### RSQ
+
+```{r tds2wave1plotRSQ}
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^RSQ_part2$', 
+                                  type = 'score') + 
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(tds2_wave1_scored,
+                                  scale_regx = '^RSQ_part2$', 
+                                  type = 'p_missing') + 
+    coord_cartesian(y = c(0,1)) + 
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+```
+
+### Write data
+
+We'll write out each data frame in wide format for ease of use in other contexts. We can use `lapply` on a list of unique scale names to write each one out using `widen_qualtrics_long` and `write.csv`. We treat the PDSS separately.
+
+```{r tds2wave1writeoutwide}
+list_of_scales <- as.list(unique(tds2_wave1_scored$scale_name))
+
+throwaway <- lapply(list_of_scales,
+                    function(aScale){
+                        wide_data_frame <- 
+                            scorequaltrics::widen_qualtrics_long(tds2_wave1_scored,
+                                                                 scale_names = aScale)
+                        filename <- paste0(paste(TDS2_name, 
+                                                 wave1_name,
+                                                 gsub('\\.', '_', 
+                                                      make.names(aScale)),
+                                                 sep = '-'),
+                                           '.csv')
+                        pathname <- file.path(output_file_dir, filename)
+                        write.csv(wide_data_frame, file = pathname, row.names = F)
+                    })
+
+tds2_wave1_pdss_filename <- paste0(paste(TDS2_name,
+                                         wave1_name,
+                                         'PDSS',
+                                         sep = '-'),
+                                   '.csv')
+
+write.csv(scorequaltrics::widen_qualtrics_long(tds2_wave1_scored_pdss,
+                                               scale_names = 'PDSS'),
+          file = file.path(output_file_dir,
+                           tds2_wave1_pdss_filename),
+          row.names = F)
+```
+
+
+## TDS 2 Wave 2
+
+### Get the data and clean it
+
+Get data, rubrics, recode, and clean. Note that for wave 2 (aka, session 3), we need to separate out parent from child questionnaires, since the PMQ items are identical.
+
+```{r getsurveydata_tds2_wave2}
+#Get surveys
+tds2_wave2_surveys <- rawSurveysTDS %>%
+    filter(grepl('TDS2 Session 3 - (Child|Parent)$', SurveyName))
+knitr::kable(select(tds2_wave2_surveys, SurveyName))
+
+#Get data from those surveys
+tds2_wave2_long <- scorequaltrics::get_survey_data(tds2_wave2_surveys, 
+                                                   credentials, 
+                                                   pid_col = pid_column_name)
+
+#Get recoding rubrics
+tds2_wave2_recoding_rubrics <- data.frame(file = dir(file.path(tds2_wave2_rubric_dir), 
+                                                     pattern = '.*response_recoding.*.csv',
+                                                     full.names = TRUE))
+tds2_wave2_recoding_data_long <- scorequaltrics::get_rubrics(tds2_wave2_recoding_rubrics, 
+                                                             type = 'recoding')
+
+#Recode data
+tds2_wave2_long_recoded <- scorequaltrics::recode_responses(tds2_wave2_long, 
+                                                            tds2_wave2_recoding_data_long)
+
+#Code -99 as NA
+tds2_wave2_long_recoded <- tds2_wave2_long_recoded %>%
+    mutate(value = ifelse(grepl('SES', item) & as.numeric(value) < 0, 
+                          NA,
+                          value))
+
+#Get scoring rubrics
+tds2_wave2_scoring_rubrics <- data.frame(file = dir(file.path(tds2_wave2_rubric_dir), 
+                                                    pattern = '.*scoring_rubric.*.csv',
+                                                    full.names = TRUE))
+tds2_wave2_scoring_data_long <- scorequaltrics::get_rubrics(tds2_wave2_scoring_rubrics, 
+                                                            type = 'scoring')
+
+#Split scoring into parent and child
+tds2_wave2_scoring_data_long_p <- tds2_wave2_scoring_data_long %>%
+    filter(grepl('[pP]arent', data_file_name))
+tds2_wave2_scoring_data_long_c <- tds2_wave2_scoring_data_long %>%
+    filter(!grepl('[pP]arent', data_file_name))
+
+#Split data into parent and child
+tds2_wave2_long_recoded_p <- tds2_wave2_long_recoded %>%
+    filter(grepl('[pP]arent', survey_name))
+tds2_wave2_long_recoded_c <- tds2_wave2_long_recoded %>%
+    filter(!grepl('[pP]arent', survey_name))
+
+#Clean and de-dupe parent and child data
+tds2_wave2_long_recoded_p_nodupes <- tds2_wave2_long_recoded_p %>%
+    get_items_in_rubric(tds2_wave2_scoring_data_long_p) %>%
+    filter(grepl('1\\d\\d', SID)) %>%
+    scorequaltrics::clean_dupes(pid_col = 'SID')
+tds2_wave2_long_recoded_c_nodupes <- tds2_wave2_long_recoded_c %>%
+    get_items_in_rubric(tds2_wave2_scoring_data_long_c) %>%
+    filter(grepl('1\\d\\d', SID)) %>%
+    scorequaltrics::clean_dupes(pid_col = 'SID')
+
+```
+
+
+After cleaning duplicates, it's possible that there were some responses that have conflicting answers. We can look at those now.
+
+Now we can see which items had conflicting responses on duplicate questionnaires.
+
+```{r}
+#Check that dropped values weren't ambiguous
+tds2_wave2_long_recoded_p_nodupes %>% 
+    filter(dropped) %>%
+    group_by(SID, item) %>%
+    filter(!all(length(unlist(old.value)) < 1)) %>%
+    mutate(old.value = paste(old.value, collaps = ' ')) %>%
+    knitr::kable(caption = "Parent questionnaire dupes")
+
+tds2_wave2_long_recoded_c_nodupes %>% 
+    filter(dropped) %>%
+    group_by(SID, item) %>%
+    filter(!all(length(unlist(old.value)) < 1)) %>%
+    mutate(old.value = paste(old.value, collaps = ' ')) %>%
+    knitr::kable(caption = "Child questionnaire dupes")
+```
+
+### Scoring
+
+```{r tds2wave2score}
+
+tds2_wave2_scored_p <- scorequaltrics::score_step_one_and_two(tds2_wave2_long_recoded_p_nodupes,
+                                                            tds2_wave2_scoring_data_long_p)
+tds2_wave2_scored_c <- scorequaltrics::score_step_one_and_two(tds2_wave2_long_recoded_c_nodupes,
+                                                            tds2_wave2_scoring_data_long_c)
+tds2_wave2_scored_pdss <- scorequaltrics::score_pdss(tds2_wave2_long_recoded_c_nodupes, 
+                          gender_mix = pdss_gender_mix, 
+                          gendercode = pdss_gender_code)
+
+tds2_wave2_scored_p %>% 
+    ungroup() %>%
+    distinct(scale_name) %>%
+    knitr::kable()
+tds2_wave2_scored_c %>% 
+    ungroup() %>%
+    distinct(scale_name) %>%
+    knitr::kable()
+```
+
+### CBCL
+
+```{r tds2wave2plotcbcl}
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_p,
+                                  scale_regx = '^CBCL$', 
+                                  type = 'score')+
+    coord_cartesian(y = c(0,2))
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_p,
+                                  scale_regx = '^CBCL$', 
+                                  type = 'p_missing')+
+    coord_cartesian(y = c(0,1))
+```
+
+
+### PMQ Parent
+
+```{r tds2wave2plotpmqparent}
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_p,
+                                  scale_regx = '^PMQ_Parent$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_p,
+                                  scale_regx = '^PMQ_Parent$', 
+                                  type = 'p_missing')+
+    coord_cartesian(y = c(0,1))
+```
+
+### PMQ Child
+
+```{r tds2wave2plotpmqchild}
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^PMQ_Child$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^PMQ_Child$', 
+                                  type = 'p_missing')+
+    coord_cartesian(y = c(0,1))
+
+tds2_wave2_disclosure_c <- tds2_wave2_scored_c %>%
+    ungroup() %>%
+    filter(scored_scale == 'disclosure') %>%
+    select(scored_scale, SID, score) %>%
+    spread(scored_scale, score) %>%
+    rename('Child PMQ' = disclosure)
+    
+tds2_wave2_disclosure_p <- tds2_wave2_scored_p %>%
+    ungroup() %>%
+    filter(scored_scale == 'disclosure') %>%
+    select(scored_scale, SID, score) %>%
+    spread(scored_scale, score) %>%
+    rename('Parent PMQ' = disclosure)
+
+left_join(tds2_wave2_disclosure_c,
+          tds2_wave2_disclosure_p) %>%
+    mutate_at(vars(`Child PMQ`, `Parent PMQ`), as.numeric) %>%
+    ggplot(aes(x = `Child PMQ`, y = `Parent PMQ`)) + 
+    geom_abline(intercept = 0, slope = 1, color = 'gray') + 
+    geom_point(position = position_jitter(), alpha = 1) + 
+    coord_cartesian(x = c(1, 5), y = c(1, 5)) + 
+    theme_classic()
+```
+
+
+### BFI-10
+
+```{r tds2wave2plotBFI}
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^BFI-10$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^BFI-10$', 
+                                  type = 'p_missing')+
+    coord_cartesian(y = c(0,1))
+
+tds2w2_BFIRubric <- tds2_wave2_scoring_data_long_c %>%
+    filter(scale_name == 'BFI-10')
+
+tds2_wave2_bfi_psych <- scorequaltrics::score_questionnaire(tds2_wave2_long_recoded_c_nodupes,
+                                    tds2w2_BFIRubric,
+                                    psych = T)
+print(tds2_wave2_bfi_psych, short = F)
+pairs.panels(tds2_wave2_bfi_psych$scores)
+```
+
+### CARE-R Social
+
+Note: Lower scores on "not doing this" items indicate that someone thinks not engaging in the behavior will make people like them _more_, and thus, like the "doing this" items, a lower score corresponds to a downward influence on that behavior.
+
+```{r tds2wave2plotcarersoc}
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^CARE-R Social$', 
+                                  type = 'score') + 
+    facet_grid(~factor(grepl('not', scored_scale) - grepl('composite', scored_scale),
+                       levels = c(-1, 0, 1),
+                       labels = c('Comp', 'Doing this', 'Not doing this')), 
+               scales = 'free_x',
+               space = 'free_x')
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^CARE-R Social$', 
+                                  type = 'p_missing') + 
+    facet_grid(~factor(grepl('not', scored_scale) - grepl('composite', scored_scale),
+                       levels = c(-1, 0, 1),
+                       labels = c('Comp', 'Doing this', 'Not doing this')), 
+               scales = 'free_x',
+               space = 'free_x')
+```
+
+### PAL-2
+
+```{r tds2wave2plotpal2}
+scorequaltrics::plot_scored_scale(filter(tds2_wave2_scored_c, scored_scale != 'pal2_age'),
+                                  scale_regx = '^PAL-2$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave2_scored_c, scored_scale != 'pal2_age'),
+                                  scale_regx = '^PAL-2$', 
+                                  type = 'p_missing')
+```
+
+### PDS
+
+```{r tds2wave2plotPDS}
+#We need a way to separate female from male responses
+male_sids <- tds2_wave2_scored_c %>%
+    filter(scored_scale == 'pds_gender', score =='0') %>%
+    ungroup() %>% 
+    select(SID)
+
+female_sids <- tds2_wave2_scored_c %>%
+    filter(scored_scale == 'pds_gender', score =='1') %>%
+    ungroup() %>% 
+    select(SID)
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave2_scored_c, 
+                                         SID %in% male_sids$SID,
+                                         grepl('^male', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'score') + 
+    facet_wrap(~scored_scale, scales = 'free') +
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave2_scored_c, 
+                                         SID %in% male_sids$SID,
+                                         grepl('^male', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'p_missing')
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave2_scored_c, 
+                                         SID %in% female_sids$SID,
+                                         grepl('^female', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'score') + 
+    facet_wrap(~scored_scale, scales = 'free') +
+    theme(axis.text.x = element_text(angle = 0, hjust = .5))
+
+scorequaltrics::plot_scored_scale(filter(tds2_wave2_scored_c, 
+                                         SID %in% female_sids$SID,
+                                         grepl('^female', scored_scale)),
+                                  scale_regx = '^PDS$', 
+                                  type = 'p_missing')
+
+tds2_wave2_scored_c_pds <- tds2_wave2_scored_c %>% 
+    filter(scale_name == 'PDS',
+           grepl('mean_score', scored_scale))
+tds2_wave1_scored_pds <- tds2_wave1_scored %>% 
+    filter(scale_name == 'PDS',
+           grepl('mean_score', scored_scale))
+
+tds2_wave12_pds <- bind_rows("Wave 1" = tds2_wave1_scored_pds, 
+                             "Wave 2" = tds2_wave2_scored_c_pds, 
+                             .id = 'wave') %>%
+    select(wave, scored_scale, SID, score)
+
+tds2_wave12_pds %>%
+    filter(SID %in% male_sids$SID,
+           grepl('^male', scored_scale)) %>%
+    spread(wave, score) %>%
+    mutate_at(vars(`Wave 1`, `Wave 2`), .funs = as.numeric) %>%
+    ggplot(aes(x = `Wave 1`, y = `Wave 2`)) + 
+    geom_abline(intercept = 0, slope = 1, color = 'gray') + 
+    geom_point() +
+    coord_cartesian(x = c(1,4), y = c(1, 4)) + 
+    theme_classic() +
+    labs(title = 'PDS Mean, Males')
+
+tds2_wave12_pds %>%
+    filter(SID %in% female_sids$SID,
+           grepl('^female', scored_scale)) %>%
+    spread(wave, score) %>%
+    mutate_at(vars(`Wave 1`, `Wave 2`), .funs = as.numeric) %>%
+    ggplot(aes(x = `Wave 1`, y = `Wave 2`)) + 
+    geom_abline(intercept = 0, slope = 1, color = 'gray') + 
+    geom_point() +
+    coord_cartesian(x = c(1,4), y = c(1, 4)) + 
+    theme_classic() +
+    labs(title = 'PDS Mean, Females')
+
+tds2_wave12_pds %>%
+    filter(SID %in% male_sids$SID,
+           grepl('^male', scored_scale)) %>%
+    mutate(score = as.numeric(score)) %>%
+    ggplot(aes(x = wave, y = score, group = SID)) + 
+    geom_line(alpha = .5) +
+    geom_point() +
+    coord_cartesian(y = c(1, 4)) + 
+    theme_classic() +
+    labs(title = 'PDS Mean, Males')
+
+tds2_wave12_pds %>%
+    filter(SID %in% female_sids$SID,
+           grepl('^female', scored_scale)) %>%
+    mutate(score = as.numeric(score)) %>%
+    ggplot(aes(x = wave, y = score, group = SID)) + 
+    geom_line(alpha = .5) +
+    geom_point() +
+    coord_cartesian(y = c(1, 4)) + 
+    theme_classic() +
+    labs(title = 'PDS Mean, Females')
 ```
 
 ### PDSS
@@ -1167,7 +2195,35 @@ tds2_wave12_pdss %>%
     select(wave_1, wave_2) %>%
     table(useNA = 'ifany') %>%
     knitr::kable(caption = 'Gender consistency across waves')
+
+ajitter <- position_jitter(w = 0, h = .1)
+tds2_wave12_pdss %>%
+    mutate(score = as.numeric(score),
+           gender = factor(gender, 
+                           levels = pdss_gender_code, 
+                           labels = names(pdss_gender_code))) %>%
+    ggplot(aes(x = wave, y = score, group = SID)) + 
+    geom_point(alpha = .5, position = ajitter) +
+    geom_line(alpha = .5, position = ajitter) +
+    facet_grid(gender~scored_scale) + 
+    theme_classic()
 ```
+
+### PSQI
+
+**There seems to be an issue with a couple of subscales here.**
+
+```{r tds2wave2plotPSQI}
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^PSQI$', 
+                                  type = 'score')
+
+scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
+                                  scale_regx = '^PSQI$', 
+                                  type = 'p_missing')+
+    coord_cartesian(y = c(0,1))
+```
+
 
 ### SES
 
