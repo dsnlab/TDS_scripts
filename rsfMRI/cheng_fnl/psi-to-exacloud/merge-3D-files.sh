@@ -18,16 +18,19 @@ SOURCE=/drives/c/Users/chengt/Box\ Sync/tds_test-30 # /Users/theresacheng/ on pe
 SUBJLIST=`cat test-30_subject-list.txt`
 
 # Set exacloud directory and pipeline
-DEST=/home/exacloud/lustre1/fnl_lab/data/HCP/processe
-SdTUDY=uo_tds
+DEST=/home/exacloud/lustre1/fnl_lab/data/HCP/processed
+STUDY=uo_tds
 PIPELINE=HCP_release_20170910_v1.1
 
 # Rename files on box and sync to exacloud 
 for SUB in $SUBJLIST
 	do
 		cd ${DEST}/${STUDY}/${SUB}/visit/${PIPELINE}/$SUB/unprocessed/NIFTI
-		fslmerge -t ${SUB}_tFMRI_VID1.nii.gz vid1_*.nii.gz
-		fslmerge -t ${SUB}_tFMRI_VID2.nii.gz vid2_*.nii.gz
+		echo ${DEST}/${STUDY}/${SUB}/visit/${PIPELINE}/$SUB/unprocessed/NIFTI
+		fslmerge -t ${SUB}_tfMRI_VID1.nii.gz vid1_*.nii.gz
+		echo "merged vid1 ${SUB}"
+		fslmerge -t ${SUB}_tfMRI_VID2.nii.gz vid2_*.nii.gz
+		echo "merged vid2 ${SUB}"
 		rm vid1_*.nii.gz
 		rm vid2_*.nii.gz
 	done
