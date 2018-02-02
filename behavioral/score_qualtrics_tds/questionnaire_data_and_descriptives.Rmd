@@ -752,30 +752,25 @@ list_of_scales <- as.list(unique(tds2_wave1_scored$scale_name))
 
 throwaway <- lapply(list_of_scales,
                     function(aScale){
-                        wide_data_frame <- 
-                            scorequaltrics::widen_qualtrics_long(tds2_wave1_scored,
-                                                                 scale_names = aScale)
-                        filename <- paste0(paste(TDS2_name, 
-                                                 wave1_name,
-                                                 gsub('\\.', '_', 
-                                                      make.names(aScale)),
-                                                 sep = '-'),
-                                           '.csv')
-                        pathname <- file.path(output_file_dir, filename)
-                        write.csv(wide_data_frame, file = pathname, row.names = F)
+                        file_name <- paste0(TDS2_name, '-', 
+                                            wave1_name, '-',
+                                            make_nice_scale_fname(aScale),
+                                            '.csv')
+                        write_widened_scored_scale(tds2_wave1_scored, 
+                                                   scale_names = aScale, 
+                                                   dir_name = output_file_dir, 
+                                                   file_name = file_name)
                     })
 
-tds2_wave1_pdss_filename <- paste0(paste(TDS2_name,
-                                         wave1_name,
-                                         'PDSS',
-                                         sep = '-'),
-                                   '.csv')
 
-write.csv(scorequaltrics::widen_qualtrics_long(tds2_wave1_scored_pdss,
-                                               scale_names = 'PDSS'),
-          file = file.path(output_file_dir,
-                           tds2_wave1_pdss_filename),
-          row.names = F)
+tds2_wave1_pdss_filename <-  paste0(TDS2_name, '-', 
+                                    wave1_name, '-',
+                                    'PDSS.csv')
+
+write_widened_scored_scale(tds2_wave1_scored_pdss,
+                           scale_names = 'PDSS',
+                           dir_name = output_file_dir,
+                           file_name = tds2_wave1_pdss_filename)
 ```
 
 
@@ -1229,48 +1224,41 @@ scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
 ### Write the data
 
 ```{r tds2wave2writeoutwide}
-save_scored_scales_wide_csv <- function(dataDF, file_prefix, scale_names = NULL){
-    wide_data_frame <- 
-        scorequaltrics::widen_qualtrics_long(tds2_wave1_scored,
-                                             scale_names = aScale)
-    filename <- paste0(paste(TDS2_name, 
-                             wave1_name,
-                             gsub('\\.', '_', 
-                                  make.names(aScale)),
-                             sep = '-'),
-                       '.csv')
-    pathname <- file.path(output_file_dir, filename)
-    write.csv(wide_data_frame, file = pathname, row.names = F)
-}
+list_of_scales_c <- as.list(unique(tds2_wave2_scored_c$scale_name))
+list_of_scales_p <- as.list(unique(tds2_wave2_scored_p$scale_name))
 
-list_of_scales <- as.list(unique(tds2_wave2_scored_c$scale_name))
-
-throwaway <- lapply(list_of_scales,
+throwaway <- lapply(list_of_scales_c,
                     function(aScale){
-                        wide_data_frame <- 
-                            scorequaltrics::widen_qualtrics_long(tds2_wave1_scored,
-                                                                 scale_names = aScale)
-                        filename <- paste0(paste(TDS2_name, 
-                                                 wave1_name,
-                                                 gsub('\\.', '_', 
-                                                      make.names(aScale)),
-                                                 sep = '-'),
-                                           '.csv')
-                        pathname <- file.path(output_file_dir, filename)
-                        write.csv(wide_data_frame, file = pathname, row.names = F)
+                        file_name <- paste0(TDS2_name, '-', 
+                                            wave2_name, '-',
+                                            make_nice_scale_fname(aScale),
+                                            '.csv')
+                        write_widened_scored_scale(tds2_wave2_scored_c, 
+                                                   scale_names = aScale, 
+                                                   dir_name = output_file_dir, 
+                                                   file_name = file_name)
                     })
 
-tds2_wave1_pdss_filename <- paste0(paste(TDS2_name,
-                                         wave1_name,
-                                         'PDSS',
-                                         sep = '-'),
-                                   '.csv')
+throwaway <- lapply(list_of_scales_p,
+                    function(aScale){
+                        file_name <- paste0(TDS2_name, '-', 
+                                            wave2_name, '-',
+                                            make_nice_scale_fname(aScale),
+                                            '.csv')
+                        write_widened_scored_scale(tds2_wave2_scored_p, 
+                                                   scale_names = aScale, 
+                                                   dir_name = output_file_dir, 
+                                                   file_name = file_name)
+                    })
 
-write.csv(scorequaltrics::widen_qualtrics_long(tds2_wave1_scored_pdss,
-                                               scale_names = 'PDSS'),
-          file = file.path(output_file_dir,
-                           tds2_wave1_pdss_filename),
-          row.names = F)
+tds2_wave2_pdss_filename <-  paste0(TDS2_name, '-', 
+                                    wave2_name, '-',
+                                    'PDSS.csv')
+
+write_widened_scored_scale(tds2_wave2_scored_pdss,
+                           scale_names = 'PDSS',
+                           dir_name = output_file_dir,
+                           file_name = tds2_wave2_pdss_filename)
 ```
 
 ## TDS 1, Wave 1 Scores
@@ -1280,6 +1268,10 @@ write.csv(scorequaltrics::widen_qualtrics_long(tds2_wave1_scored_pdss,
 Get data, rubrics, recode, and clean. 
 
 ```{r getsurveydata_tds1_wave1}
+tds1_wave1_surveys <- rawSurveysTDS %>%
+    filter(grepl('TDS1 (Session [12]|CBCL|- PDS)', SurveyName))
+
+
 #Get surveys
 tds1_wave1_surveys <- rawSurveysTDS %>%
     filter(grepl('TDS2 Session 3 - (Child|Parent)$', SurveyName))
@@ -1795,30 +1787,25 @@ list_of_scales <- as.list(unique(tds2_wave1_scored$scale_name))
 
 throwaway <- lapply(list_of_scales,
                     function(aScale){
-                        wide_data_frame <- 
-                            scorequaltrics::widen_qualtrics_long(tds2_wave1_scored,
-                                                                 scale_names = aScale)
-                        filename <- paste0(paste(TDS2_name, 
-                                                 wave1_name,
-                                                 gsub('\\.', '_', 
-                                                      make.names(aScale)),
-                                                 sep = '-'),
-                                           '.csv')
-                        pathname <- file.path(output_file_dir, filename)
-                        write.csv(wide_data_frame, file = pathname, row.names = F)
+                        file_name <- paste0(TDS2_name, '-', 
+                                            wave1_name, '-',
+                                            make_nice_scale_fname(aScale),
+                                            '.csv')
+                        write_widened_scored_scale(tds2_wave1_scored, 
+                                                   scale_names = aScale, 
+                                                   dir_name = output_file_dir, 
+                                                   file_name = file_name)
                     })
 
-tds2_wave1_pdss_filename <- paste0(paste(TDS2_name,
-                                         wave1_name,
-                                         'PDSS',
-                                         sep = '-'),
-                                   '.csv')
 
-write.csv(scorequaltrics::widen_qualtrics_long(tds2_wave1_scored_pdss,
-                                               scale_names = 'PDSS'),
-          file = file.path(output_file_dir,
-                           tds2_wave1_pdss_filename),
-          row.names = F)
+tds2_wave1_pdss_filename <-  paste0(TDS2_name, '-', 
+                                    wave1_name, '-',
+                                    'PDSS.csv')
+
+write_widened_scored_scale(tds2_wave1_scored_pdss,
+                           scale_names = 'PDSS',
+                           dir_name = output_file_dir,
+                           file_name = tds2_wave1_pdss_filename)
 ```
 
 
@@ -2267,4 +2254,45 @@ scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
                                   type = 'p_missing') + 
     coord_cartesian(y = c(0,1)) + 
     theme(axis.text.x = element_text(angle = 0, hjust = .5))
+```
+
+### Write the data
+
+```{r tds2wave2writeoutwide}
+
+list_of_scales_c <- as.list(unique(tds2_wave2_scored_c$scale_name))
+list_of_scales_p <- as.list(unique(tds2_wave2_scored_p$scale_name))
+
+throwaway <- lapply(list_of_scales_c,
+                    function(aScale){
+                        file_name <- paste0(TDS2_name, '-', 
+                                            wave2_name, '-',
+                                            make_nice_scale_fname(aScale),
+                                            '.csv')
+                        write_widened_scored_scale(tds2_wave2_scored_c, 
+                                                   scale_names = aScale, 
+                                                   dir_name = output_file_dir, 
+                                                   file_name = file_name)
+                    })
+
+throwaway <- lapply(list_of_scales_p,
+                    function(aScale){
+                        file_name <- paste0(TDS2_name, '-', 
+                                            wave2_name, '-',
+                                            make_nice_scale_fname(aScale),
+                                            '.csv')
+                        write_widened_scored_scale(tds2_wave2_scored_p, 
+                                                   scale_names = aScale, 
+                                                   dir_name = output_file_dir, 
+                                                   file_name = file_name)
+                    })
+
+tds2_wave2_pdss_filename <-  paste0(TDS2_name, '-', 
+                                    wave2_name, '-',
+                                    'PDSS.csv')
+
+write_widened_scored_scale(tds2_wave2_scored_pdss,
+                           scale_names = 'PDSS',
+                           dir_name = output_file_dir,
+                           file_name = tds2_wave2_pdss_filename)
 ```
