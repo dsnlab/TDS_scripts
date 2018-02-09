@@ -1,24 +1,24 @@
-Data File Name,Scale Name,Column Name,Reverse,transform,min,max,Overt_Victim,Overt_Aggressor,Relational_Victim,Relational_Aggressor,Prosocial_to_me,Prosocial_by_me
+Data File Name,Scale Name,Column Name,transform,Reverse,min,max,Overt_Victim,Overt_Aggressor,Relational_Victim,Relational_Aggressor,Prosocial_to_me,Prosocial_by_me
 TDS1_Session 1_Post,PEQ-R,PEQ_1,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_2,0,0,0,0,0,0,1,0,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_3,0,0,0,0,0,1,0,0,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_4,0,0,0,0,1,0,0,0,0,0
-TDS1_Session 1_Post,PEQ-R,PEQ_5,1,0,1,5,0,0,0,0,0,1
-TDS1_Session 1_Post,PEQ-R,PEQ_6,1,0,1,5,0,0,0,0,1,0
+TDS1_Session 1_Post,PEQ-R,PEQ_5,0,1,1,5,0,0,0,0,0,1
+TDS1_Session 1_Post,PEQ-R,PEQ_6,0,1,1,5,0,0,0,0,1,0
 TDS1_Session 1_Post,PEQ-R,PEQ_7,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_8,0,0,0,0,0,0,1,0,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_9,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_10,0,0,0,0,0,0,1,0,0,0
-TDS1_Session 1_Post,PEQ-R,PEQ_11,1,0,1,5,0,0,0,0,0,1
-TDS1_Session 1_Post,PEQ-R,PEQ_12,1,0,1,5,0,0,0,0,1,0
+TDS1_Session 1_Post,PEQ-R,PEQ_11,0,1,1,5,0,0,0,0,0,1
+TDS1_Session 1_Post,PEQ-R,PEQ_12,0,1,1,5,0,0,0,0,1,0
 TDS1_Session 1_Post,PEQ-R,PEQ_13,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_14,0,0,0,0,0,0,1,0,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_15,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_16,0,0,0,0,0,0,1,0,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_17,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_18,0,0,0,0,0,0,1,0,0,0
-TDS1_Session 1_Post,PEQ-R,PEQ_19,1,0,1,5,0,0,0,0,0,1
-TDS1_Session 1_Post,PEQ-R,PEQ_20,1,0,1,5,0,0,0,0,1,0
+TDS1_Session 1_Post,PEQ-R,PEQ_19,0,1,1,5,0,0,0,0,0,1
+TDS1_Session 1_Post,PEQ-R,PEQ_20,0,1,1,5,0,0,0,0,1,0
 TDS1_Session 1_Post,PEQ-R,PEQ_21,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_22,0,0,0,0,0,0,1,0,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_23,0,0,0,0,0,1,0,0,0,0
@@ -27,11 +27,11 @@ TDS1_Session 1_Post,PEQ-R,PEQ_25,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_26,0,0,0,0,0,0,1,0,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_27,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_28,0,0,0,0,0,0,1,0,0,0
-TDS1_Session 1_Post,PEQ-R,PEQ_29,1,0,1,5,0,0,0,0,0,1
-TDS1_Session 1_Post,PEQ-R,PEQ_30,1,0,1,5,0,0,0,0,1,0
+TDS1_Session 1_Post,PEQ-R,PEQ_29,0,1,1,5,0,0,0,0,0,1
+TDS1_Session 1_Post,PEQ-R,PEQ_30,0,1,1,5,0,0,0,0,1,0
 TDS1_Session 1_Post,PEQ-R,PEQ_31,0,0,0,0,0,1,0,0,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_32,0,0,0,0,1,0,0,0,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_33,0,0,0,0,0,0,0,1,0,0
 TDS1_Session 1_Post,PEQ-R,PEQ_34,0,0,0,0,0,0,1,0,0,0
-TDS1_Session 1_Post,PEQ-R,PEQ_35,1,0,1,5,0,0,0,0,0,1
-TDS1_Session 1_Post,PEQ-R,PEQ_36,1,0,1,5,0,0,0,0,1,0
+TDS1_Session 1_Post,PEQ-R,PEQ_35,0,1,1,5,0,0,0,0,0,1
+TDS1_Session 1_Post,PEQ-R,PEQ_36,0,1,1,5,0,0,0,0,1,0
