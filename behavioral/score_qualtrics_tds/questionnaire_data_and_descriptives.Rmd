@@ -1265,25 +1265,33 @@ write_widened_scored_scale(tds2_wave2_scored_pdss,
 
 ### Get the data and clean it
 
-Get data, rubrics, recode, and clean. 
+Get data, rubrics, recode, and clean. The following questionnaires should be exactly the same between pre and post, so I'll start with these.
+
+>ACE
+>BFNE
+>BIS-15
+>BSSS
+>CARE-R EI
+>CARE-R WE
+>CBCL
+>MSSS
+>NTS
+>RPI
+>SPRSQ-S
+>UPPSP
 
 ```{r getsurveydata_tds1_wave1}
 tds1_wave1_surveys <- rawSurveysTDS %>%
     filter(grepl('TDS1 (Session [12]|CBCL|- PDS)', SurveyName))
-
-
-#Get surveys
-tds1_wave1_surveys <- rawSurveysTDS %>%
-    filter(grepl('TDS2 Session 3 - (Child|Parent)$', SurveyName))
-knitr::kable(select(tds2_wave2_surveys, SurveyName))
+knitr::kable(select(tds1_wave1_surveys, SurveyName))
 
 #Get data from those surveys
-tds2_wave2_long <- scorequaltrics::get_survey_data(tds2_wave2_surveys, 
+tds1_wave1_long <- scorequaltrics::get_survey_data(tds1_wave1_surveys, 
                                                    credentials, 
                                                    pid_col = pid_column_name)
 
 #Get recoding rubrics
-tds2_wave2_recoding_rubrics <- data.frame(file = dir(file.path(tds2_wave2_rubric_dir), 
+tds1_wave1_recoding_rubrics <- data.frame(file = dir(file.path(tds2_wave2_rubric_dir), 
                                                      pattern = '.*response_recoding.*.csv',
                                                      full.names = TRUE))
 tds2_wave2_recoding_data_long <- scorequaltrics::get_rubrics(tds2_wave2_recoding_rubrics, 
