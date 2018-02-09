@@ -559,6 +559,8 @@ scorequaltrics::plot_scored_scale(filter(tds2_wave1_scored, scored_scale != 'pal
 
 ### PDS
 
+**NEED TO GET PEOPLE WHO DID SESSION 2 PDS**
+
 ```{r tds2wave1plotPDS}
 #We need a way to separate female from male responses
 male_sids <- tds2_wave1_scored %>%
@@ -1265,7 +1267,7 @@ write_widened_scored_scale(tds2_wave2_scored_pdss,
 
 ### Get the data and clean it
 
-Get data, rubrics, recode, and clean. The following questionnaires should be exactly the same between pre and post, so I'll start with these.
+Get data, rubrics, recode, and clean. The following questionnaires should be exactly the same between pre and post, so I'll start with these. Also, it's important to note that all response recoding comes from the tds1/wave1/post folder.
 
 >ACE
 >BFNE
@@ -1283,7 +1285,7 @@ Get data, rubrics, recode, and clean. The following questionnaires should be exa
 
 ```{r getsurveydata_tds1_wave1}
 tds1_wave1_surveys <- rawSurveysTDS %>%
-    filter(grepl('TDS1 (Session [12]|CBCL|- PDS)', SurveyName))
+    filter(grepl('TDS1 (Session [12]|CBCL|- PDS).*(Post|Pre)$', SurveyName))
 knitr::kable(select(tds1_wave1_surveys, SurveyName))
 
 #Get data from those surveys
