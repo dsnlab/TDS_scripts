@@ -874,6 +874,15 @@ tds2_wave2_scored_c <- scorequaltrics::score_step_one_and_two(tds2_wave2_long_re
 tds2_wave2_scored_pdss <- scorequaltrics::score_pdss(tds2_wave2_long_recoded_c_nodupes, 
                           gender_mix = pdss_gender_mix, 
                           gendercode = pdss_gender_code)
+#PSQI requires a bit more finesse
+tds2_wave2_scored_psqi <- scorequaltrics::score_psqi(
+    filter(tds2_wave2_long_recoded_c,
+           grepl('PSQI', item),
+           grepl('1\\d\\d', SID)),
+    pid_col = 'SID') %>%
+    mutate(score = as.character(score))
+
+tds2_wave2_scored_c <- bind_rows(tds2_wave2_scored_c, tds2_wave2_scored_psqi)
 
 tds2_wave2_scored_p %>% 
     ungroup() %>%
