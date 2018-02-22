@@ -782,17 +782,20 @@ We'll write out each data frame in wide format for ease of use in other contexts
 
 ```{r tds2wave1writeoutwide}
 list_of_scales <- as.list(unique(tds2_wave1_scored$scale_name))
+tds2_wave1_metadata <- list(wave = 1, questionnaires = 'TDS2')
 
 throwaway <- lapply(list_of_scales,
                     function(aScale){
                         file_name <- paste0(TDS2_name, '-', 
                                             wave1_name, '-',
-                                            make_nice_scale_fname(aScale),
+                                            scorequaltrics::make_nice_scale_fname(aScale),
                                             '.csv')
-                        write_widened_scored_scale(tds2_wave1_scored, 
-                                                   scale_names = aScale, 
-                                                   dir_name = output_file_dir, 
-                                                   file_name = file_name)
+                        scorequaltrics::write_widened_scored_scale(
+                            tds2_wave1_scored, 
+                            scale_names = aScale, 
+                            dir_name = output_file_dir, 
+                            file_name = file_name,
+                            metadata = tds2_wave1_metadata)
                     })
 
 
@@ -800,10 +803,12 @@ tds2_wave1_pdss_filename <-  paste0(TDS2_name, '-',
                                     wave1_name, '-',
                                     'PDSS.csv')
 
-write_widened_scored_scale(tds2_wave1_scored_pdss,
-                           scale_names = 'PDSS',
-                           dir_name = output_file_dir,
-                           file_name = tds2_wave1_pdss_filename)
+scorequaltrics::write_widened_scored_scale(
+    tds2_wave1_scored_pdss,
+    scale_names = 'PDSS',
+    dir_name = output_file_dir,
+    file_name = tds2_wave1_pdss_filename,
+    metadata = tds2_wave1_metadata)
 ```
 
 
@@ -1269,49 +1274,57 @@ scorequaltrics::plot_scored_scale(tds2_wave2_scored_c,
 ```{r tds2wave2writeoutwide}
 list_of_scales_c <- as.list(unique(tds2_wave2_scored_c$scale_name))
 list_of_scales_p <- as.list(unique(tds2_wave2_scored_p$scale_name))
+tds2_wave2_metadata <- list(wave = 2, questionnaires = 'TDS2')
 
 throwaway <- lapply(list_of_scales_c,
                     function(aScale){
                         file_name <- paste0(TDS2_name, '-', 
                                             wave2_name, '-',
-                                            make_nice_scale_fname(aScale),
+                                            scorequaltrics::make_nice_scale_fname(aScale),
                                             '.csv')
-                        write_widened_scored_scale(tds2_wave2_scored_c, 
-                                                   scale_names = aScale, 
-                                                   dir_name = output_file_dir, 
-                                                   file_name = file_name)
+                        scorequaltrics::write_widened_scored_scale(
+                            tds2_wave2_scored_c, 
+                            scale_names = aScale, 
+                            dir_name = output_file_dir, 
+                            file_name = file_name,
+                            metadata = tds2_wave2_metadata)
                     })
 
 throwaway <- lapply(list_of_scales_p,
                     function(aScale){
                         file_name <- paste0(TDS2_name, '-', 
                                             wave2_name, '-',
-                                            make_nice_scale_fname(aScale),
+                                            scorequaltrics::make_nice_scale_fname(aScale),
                                             '.csv')
-                        write_widened_scored_scale(tds2_wave2_scored_p, 
-                                                   scale_names = aScale, 
-                                                   dir_name = output_file_dir, 
-                                                   file_name = file_name)
+                        scorequaltrics::write_widened_scored_scale(
+                            tds2_wave2_scored_p, 
+                            scale_names = aScale, 
+                            dir_name = output_file_dir, 
+                            file_name = file_name,
+                            metadata = tds2_wave2_metadata)
                     })
 
 tds2_wave2_pdss_filename <-  paste0(TDS2_name, '-', 
                                     wave2_name, '-',
                                     'PDSS.csv')
 
-write_widened_scored_scale(tds2_wave2_scored_pdss,
-                           scale_names = 'PDSS',
-                           dir_name = output_file_dir,
-                           file_name = tds2_wave2_pdss_filename)
+scorequaltrics::write_widened_scored_scale(
+    tds2_wave2_scored_pdss,
+    scale_names = 'PDSS',
+    dir_name = output_file_dir,
+    file_name = tds2_wave2_pdss_filename,
+    metadata = tds2_wave2_metadata)
 
 tds2_wave2_psqi_filename <-  paste0(TDS2_name, '-', 
                                     wave2_name, '-',
                                     'PSQI.csv')
 
-write_widened_scored_scale(tds2_wave2_scored_psqi,
-                           scale_names = 'PSQI',
-                           dir_name = output_file_dir,
-                           file_name = tds2_wave2_psqi_filename)
-
+scorequaltrics::write_widened_scored_scale(
+    tds2_wave2_scored_psqi,
+    scale_names = 'PSQI',
+    dir_name = output_file_dir,
+    file_name = tds2_wave2_psqi_filename,
+    metadata = tds2_wave2_metadata)
 ```
 
 ## TDS 1, Wave 1 Scores
@@ -1969,17 +1982,20 @@ We'll write out each data frame in wide format for ease of use in other contexts
 
 ```{r tds1wave1writeoutwide}
 list_of_scales <- as.list(unique(tds1_wave1_scored$scale_name))
+tds1_wave1_metadata <- list(wave = 1, questionnaires = 'TDS1')
 
 throwaway <- lapply(list_of_scales,
                     function(aScale){
                         file_name <- paste0(TDS1_name, '-', 
                                             wave1_name, '-',
-                                            make_nice_scale_fname(aScale),
+                                            scorequaltrics::make_nice_scale_fname(aScale),
                                             '.csv')
-                        write_widened_scored_scale(tds1_wave1_scored, 
-                                                   scale_names = aScale, 
-                                                   dir_name = output_file_dir, 
-                                                   file_name = file_name)
+                        scorequaltrics::write_widened_scored_scale(
+                            tds1_wave1_scored, 
+                            scale_names = aScale, 
+                            dir_name = output_file_dir, 
+                            file_name = file_name,
+                            metadata = tds1_wave1_metadata)
                     })
 
 
@@ -1987,10 +2003,12 @@ tds1_wave1_pdss_filename <-  paste0(TDS1_name, '-',
                                     wave1_name, '-',
                                     'PDSS.csv')
 
-write_widened_scored_scale(tds1_wave1_scored_pdss,
-                           scale_names = 'PDSS',
-                           dir_name = output_file_dir,
-                           file_name = tds1_wave1_pdss_filename)
+scorequaltrics::write_widened_scored_scale(
+    tds1_wave1_scored_pdss,
+    scale_names = 'PDSS',
+    dir_name = output_file_dir,
+    file_name = tds1_wave1_pdss_filename,
+    metadata = tds1_wave1_metadata)
 ```
 
 
@@ -2484,49 +2502,58 @@ scorequaltrics::plot_scored_scale(tds1_wave1_scored,
 ### Write the data
 
 ```{r tds1wave2writeoutwide}
-
 list_of_scales_c <- as.list(unique(tds1_wave2_scored_c$scale_name))
 list_of_scales_p <- as.list(unique(tds1_wave2_scored_p$scale_name))
+tds1_wave2_metadata <- list(wave = 2, questionnaires = 'TDS1')
+
 
 throwaway <- lapply(list_of_scales_c,
                     function(aScale){
                         file_name <- paste0(TDS1_name, '-', 
                                             wave2_name, '-',
-                                            make_nice_scale_fname(aScale),
+                                            scorequaltrics::make_nice_scale_fname(aScale),
                                             '.csv')
-                        write_widened_scored_scale(tds1_wave2_scored_c, 
-                                                   scale_names = aScale, 
-                                                   dir_name = output_file_dir, 
-                                                   file_name = file_name)
+                        scorequaltrics::write_widened_scored_scale(
+                            tds1_wave2_scored_c, 
+                            scale_names = aScale, 
+                            dir_name = output_file_dir, 
+                            file_name = file_name,
+                            metadata = tds1_wave2_metadata)
                     })
 
 throwaway <- lapply(list_of_scales_p,
                     function(aScale){
                         file_name <- paste0(TDS1_name, '-', 
                                             wave2_name, '-',
-                                            make_nice_scale_fname(aScale),
+                                            scorequaltrics::make_nice_scale_fname(aScale),
                                             '.csv')
-                        write_widened_scored_scale(tds1_wave2_scored_p, 
-                                                   scale_names = aScale, 
-                                                   dir_name = output_file_dir, 
-                                                   file_name = file_name)
+                        scorequaltrics::write_widened_scored_scale(
+                            tds1_wave2_scored_p, 
+                            scale_names = aScale, 
+                            dir_name = output_file_dir, 
+                            file_name = file_name,
+                            metadata = tds1_wave2_metadata)
                     })
 
 tds1_wave2_pdss_filename <-  paste0(TDS1_name, '-', 
                                     wave2_name, '-',
                                     'PDSS.csv')
 
-write_widened_scored_scale(tds1_wave2_scored_pdss,
-                           scale_names = 'PDSS',
-                           dir_name = output_file_dir,
-                           file_name = tds1_wave2_pdss_filename)
+scorequaltrics::write_widened_scored_scale(
+    tds1_wave2_scored_pdss,
+    scale_names = 'PDSS',
+    dir_name = output_file_dir,
+    file_name = tds1_wave2_pdss_filename,
+    metadata = tds1_wave2_metadata)
 
 tds1_wave2_psqi_filename <-  paste0(TDS1_name, '-', 
                                     wave2_name, '-',
                                     'PSQI.csv')
 
-write_widened_scored_scale(tds1_wave2_scored_psqi,
-                           scale_names = 'PSQI',
-                           dir_name = output_file_dir,
-                           file_name = tds1_wave2_psqi_filename)
+scorequaltrics::write_widened_scored_scale(
+    tds1_wave2_scored_psqi,
+    scale_names = 'PSQI',
+    dir_name = output_file_dir,
+    file_name = tds1_wave2_psqi_filename,
+    metadata = tds1_wave2_metadata)
 ```
