@@ -92,14 +92,13 @@ First, we download the data for the surveys we want.
 
 ```{r getsurveydata_tds2_wave1}
 tds2_wave1_surveys <- rawSurveysTDS %>%
-    filter(grepl('TDS2 (Session [12]|CBCL|- PDS)', SurveyName))
+    filter(grepl('TDS2 (Session [12]|CBCL)', SurveyName))
 
 print(tds2_wave1_surveys$SurveyName)
 
 tds2_wave1_long <- scorequaltrics::get_survey_data(tds2_wave1_surveys, 
                                                    credentials, 
                                                    pid_col = pid_column_name)
-
 dim(tds2_wave1_long)
 names(tds2_wave1_long)
 ```
@@ -117,6 +116,33 @@ if(all(dim(tds2_wave1_long)[1] > 500, dim(tds2_wave1_long)[2] == 4)){
 }
 ```
 
+Note that some participants re-did their PDS questionnaires at wave 1, session 2, if it had been a long time since wave 1, session 1. We'll have to deal with these participants' PDS scores separately, and so we'll download that session 2 PDS data separately, and then replace the PDS in the main data file for PDS session 1 for anyone who has it from session 2.
+
+```{r tds2w1_replacepdssession2}
+tds2_wave1_surveys_pds2 <- rawSurveysTDS %>%
+    filter(grepl('TDS2 - PDS \\(Session 2\\)', SurveyName))
+tds2_wave1_long_pds2 <- scorequaltrics::get_survey_data(tds2_wave1_surveys_pds2, 
+                                                        credentials, 
+                                                        pid_col = pid_column_name) %>%
+    filter(grepl('PDS', item))
+
+tds2_wave1_sid_with_pds2 <- tds2_wave1_long_pds2 %>%
+    group_by(SID) %>%
+    summarize(n_items = sum(!is.na(as.numeric(value)))) %>%
+    filter(n_items > 0) %>%
+    select(SID) %>%
+    unlist
+
+tds2_wave1_long <- tds2_wave1_long %>%
+    filter(!(grepl('PDS', item) & 
+                 SID %in% tds2_wave1_sid_with_pds2)) %>% # remove PDS items from pds 
+                                                         # session 2 participants
+    bind_rows(filter(tds2_wave1_long_pds2, 
+                     SID %in% tds2_wave1_sid_with_pds2)) # Add rows from PDS session 2
+                                                         # participants, given that they're
+                                                         # in the list of SIDs with >0 items
+    
+```
 
 Before doing any scoring, we should take care of all the complex response recoding that may be specified. So We'll load all the response recoding rubrics and apply those. It's important that you pass the full path of the file to the next function, so if you use `dir` to collect filenames as I do below, make sure you set `full.names = TRUE`.
 
@@ -1319,7 +1345,7 @@ Unique in pre:
 ```{r getsurveydata_tds1_wave1}
 #separate out the surveys we want
 tds1_wave1_surveys <- rawSurveysTDS %>%
-    filter(grepl('TDS1 (Session [12]|CBCL|- PDS).*(Post|Pre)$', SurveyName))
+    filter(grepl('TDS1 (Session [12]|CBCL).*(Post|Pre)$', SurveyName))
 knitr::kable(select(tds1_wave1_surveys, SurveyName))
 
 #Get data from those surveys
@@ -1335,6 +1361,32 @@ tds1_wave1_long_pre <- tds1_wave1_long %>%
 
 tds1_wave1_long_prepost <- tds1_wave1_long %>%
     filter(!(grepl('Pre', survey_name) & grepl(pre_item_regex, item)))  
+
+#Add in PDS for those who redid it during session 2
+tds1_wave1_surveys_pds2 <- rawSurveysTDS %>%
+    filter(grepl('TDS1 PDS \\(Session2\\) - Post', SurveyName))
+tds1_wave1_long_pds2 <- scorequaltrics::get_survey_data(tds1_wave1_surveys_pds2, 
+                                                        credentials, 
+                                                        pid_col = pid_column_name) %>%
+    filter(grepl('PDS', item))
+
+tds1_wave1_sid_with_pds2 <- tds1_wave1_long_pds2 %>%
+    group_by(SID) %>%
+    summarize(n_items = sum(!is.na(as.numeric(value)))) %>%
+    filter(n_items > 0) %>%
+    select(SID) %>%
+    unlist
+
+tds1_wave1_long_prepost <- tds1_wave1_long_prepost %>%
+    filter(!(grepl('PDS', item) & 
+                 SID %in% tds1_wave1_sid_with_pds2)) %>% # remove PDS items from pds 
+                                                         # session 2 participants
+    bind_rows(filter(tds1_wave1_long_pds2, 
+                     SID %in% tds1_wave1_sid_with_pds2)) # Add rows from PDS session 2
+                                                         # participants, given that they're
+                                                         # in the list of SIDs with >0 items
+    
+
 
 #Get recoding rubrics for all data from the post folder
 tds1_wave1_recoding_rubrics <- data.frame(file = dir(file.path(tds1_wave1_rubric_dir), 
@@ -1659,7 +1711,7 @@ scorequaltrics::plot_scored_scale(tds1_wave1_scored,
                                   type = 'p_missing')
 
 tds1w1_NTSc1Rubric <- tds1_wave1_scoring_data_long %>%
-    filter(scale_name == 'NTS')
+    filter(scale_name == 'NTS, Cyberball 1')
 
 tds1_wave1_ntsc1_psych <- scorequaltrics::score_questionnaire(
     tds1_wave1_long_prepost_recoded_nodupes,
@@ -1681,7 +1733,7 @@ scorequaltrics::plot_scored_scale(tds1_wave1_scored,
                                   type = 'p_missing')
 
 tds1w1_NTSc2Rubric <- tds1_wave1_scoring_data_long %>%
-    filter(scale_name == 'NTS')
+    filter(scale_name == 'NTS, Cyberball 2')
 
 tds1_wave1_ntsc2_psych <- scorequaltrics::score_questionnaire(
     tds1_wave1_long_prepost_recoded_nodupes,
