@@ -1,9 +1,7 @@
-# Qualtrics Data Flow
+# Scoring Qualtrics Data
 
-If you are using this script for the first time, you need to copy clean_this_study_template.r and process_qualtrics_options_template.r to new files with the same filenames but without '_template'. 
-These are the files the script will look for, and so you should edit the content of these two files to be consistent with your project.
+The file `questionnaire_data_and_descriptives.Rmd` demonstrates how to use the package [`scorequaltrics`](https://github.com/jflournoy/qualtrics) to retrieve and score the qualtrics data. It also scores all of the data we currently have, displays some descriptive statistics about the data in graphical form (and if possible, outputs text describing psychometric properties like internal consistency measures), and writes scored scale data to csv files. 
 
-This will read DSN survey data from qualtrics, csv file rubrics, and use them to produce scored scale data. Output is currently limited to histograms, and long and wide csv files.
+You can use this script to rescore the data if necessary (modifying paths, and most likely stepping through the script in R Studio chunk-by-chunk), or as a guide for pulling and scoring just the data that you care about as part of your own scripts.
 
-To run from the command line, type `sh render_qualtrics_r.sh` and then inspect the file "process_qualtrics_data.html."
-
+The workflow in the scoring Rmd file roughly follows: download data, scoring and recoding rubrics → recode items → remove duplicates and test cases → apply scoring rubrics and scale-specific scoring functions → generate descriptive output.

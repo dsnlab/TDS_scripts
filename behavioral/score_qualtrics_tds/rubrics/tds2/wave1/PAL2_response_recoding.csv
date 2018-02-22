@@ -1,0 +1,154 @@
+Data File Name,Scale Name,Column Name,Answer,Response,Score
+TDS2_Session_2_B,PAL-2,PAL2_3,Native Tribal Language,2,4
+TDS2_Session_2_B,PAL-2,PAL2_3,Spanish,3,4
+TDS2_Session_2_B,PAL-2,PAL2_4,Mother,1,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Father,2,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Sister(s),3,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Brother(s),4,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Grandmother,5,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Grandfather,6,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Aunt,7,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Uncle,8,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Stepfather,9,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Stepmother,10,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Stepbrother(s),11,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Stepsister(s),12,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Foster Mother,13,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Foster Father,14,1
+TDS2_Session_2_B,PAL-2,PAL2_4,"Other Children (cousins, nephews, etc.)",15,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Your parent's boyfriend,16,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Your parent's girlfriend,17,1
+TDS2_Session_2_B,PAL-2,PAL2_4,Other,18,1
+TDS2_Session_2_B,PAL-2,PAL2_6,1,1,1
+TDS2_Session_2_B,PAL-2,PAL2_6,2,2,1
+TDS2_Session_2_B,PAL-2,PAL2_6,3,3,2
+TDS2_Session_2_B,PAL-2,PAL2_6,4,4,2
+TDS2_Session_2_B,PAL-2,PAL2_6,5,5,3
+TDS2_Session_2_B,PAL-2,PAL2_6,6,6,3
+TDS2_Session_2_B,PAL-2,PAL2_6,7 or more,7,4
+TDS2_Session_2_B,PAL-2,PAL2_9A,Mostly A's,1,1
+TDS2_Session_2_B,PAL-2,PAL2_9A,Mostly B's,2,1
+TDS2_Session_2_B,PAL-2,PAL2_9A,Mostly C's,3,2
+TDS2_Session_2_B,PAL-2,PAL2_9A,Mostly D's,4,3
+TDS2_Session_2_B,PAL-2,PAL2_9A,Mostly F's,5,4
+TDS2_Session_2_B,PAL-2,PAL2_9A,Not in school,-77,-77
+TDS2_Session_2_B,PAL-2,PAL2_9B,Improved a lot,1,1
+TDS2_Session_2_B,PAL-2,PAL2_9B,Improved a little,2,1
+TDS2_Session_2_B,PAL-2,PAL2_9B,Are about the same,3,2
+TDS2_Session_2_B,PAL-2,PAL2_9B,Are not as good,4,3
+TDS2_Session_2_B,PAL-2,PAL2_9B,Are much worse,5,4
+TDS2_Session_2_B,PAL-2,PAL2_9C,None,1,1
+TDS2_Session_2_B,PAL-2,PAL2_9C,1,2,1
+TDS2_Session_2_B,PAL-2,PAL2_9C,2,3,2
+TDS2_Session_2_B,PAL-2,PAL2_9C,3,4,2
+TDS2_Session_2_B,PAL-2,PAL2_9C,4,5,3
+TDS2_Session_2_B,PAL-2,PAL2_9C,5,6,3
+TDS2_Session_2_B,PAL-2,PAL2_9C,10-Jun,7,4
+TDS2_Session_2_B,PAL-2,PAL2_9C,11 or more days,8,4
+TDS2_Session_2_B,PAL-2,PAL2_10,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_10,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_10,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_10,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_10,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_10,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_11A,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_11A,Once,2,2
+TDS2_Session_2_B,PAL-2,PAL2_11A,Twice,3,2
+TDS2_Session_2_B,PAL-2,PAL2_11A,3 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_11A,4 or 5 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_11A,6 or 7 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_11A,More than 7 times,7,4
+TDS2_Session_2_B,PAL-2,PAL2_11B,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_11B,Once,2,2
+TDS2_Session_2_B,PAL-2,PAL2_11B,Twice,3,2
+TDS2_Session_2_B,PAL-2,PAL2_11B,3 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_11B,4 or 5 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_11B,6 or 7 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_11B,More than 7 times,7,4
+TDS2_Session_2_B,PAL-2,PAL2_11C,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_11C,Once,2,2
+TDS2_Session_2_B,PAL-2,PAL2_11C,Twice,3,2
+TDS2_Session_2_B,PAL-2,PAL2_11C,3 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_11C,4 or 5 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_11C,6 or 7 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_11C,More than 7 times,7,4
+TDS2_Session_2_B,PAL-2,PAL2_11D,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_11D,Once,2,2
+TDS2_Session_2_B,PAL-2,PAL2_11D,Twice,3,2
+TDS2_Session_2_B,PAL-2,PAL2_11D,3 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_11D,4 or 5 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_11D,6 or 7 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_11D,More than 7 times,7,4
+TDS2_Session_2_B,PAL-2,PAL2_11E,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_11E,Once,2,2
+TDS2_Session_2_B,PAL-2,PAL2_11E,Twice,3,2
+TDS2_Session_2_B,PAL-2,PAL2_11E,3 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_11E,4 or 5 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_11E,6 or 7 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_11E,More than 7 times,7,4
+TDS2_Session_2_B,PAL-2,PAL2_14A,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14A,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14A,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14A,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14A,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14A,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14B,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14B,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14B,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14B,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14B,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14B,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14C,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14C,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14C,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14C,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14C,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14C,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14D,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14D,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14D,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14D,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14D,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14D,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14E,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14E,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14E,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14E,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14E,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14E,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14F,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14F,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14F,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14F,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14F,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14F,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14G,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14G,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14G,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14G,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14G,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14G,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14H,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14H,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14H,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14H,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14H,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14H,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14I,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14I,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14I,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14I,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14I,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14I,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14J,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14J,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14J,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14J,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14J,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14J,More than 20 times,6,4
+TDS2_Session_2_B,PAL-2,PAL2_14K,Never,1,1
+TDS2_Session_2_B,PAL-2,PAL2_14K,Once or twice,2,2
+TDS2_Session_2_B,PAL-2,PAL2_14K,3-5 times,3,2
+TDS2_Session_2_B,PAL-2,PAL2_14K,6-10 times,4,3
+TDS2_Session_2_B,PAL-2,PAL2_14K,11-20 times,5,3
+TDS2_Session_2_B,PAL-2,PAL2_14K,More than 20 times,6,4

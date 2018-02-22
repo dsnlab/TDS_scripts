@@ -1,0 +1,25 @@
+Data File Name,Scale Name,Column Name,transform,reverse,min,max,Sensitivity_Punishment_Mean,Sensitivity_Reward_Mean
+TDS2_Session_1,SPSRQ-S,SPSRQS_1,,,,,0,1
+TDS2_Session_2,SPSRQ-S,SPSRQS_2,,,,,1,0
+TDS2_Session_3,SPSRQ-S,SPSRQS_3,,,,,1,0
+TDS2_Session_4,SPSRQ-S,SPSRQS_4,,,,,0,1
+TDS2_Session_5,SPSRQ-S,SPSRQS_5,,,,,0,1
+TDS2_Session_6,SPSRQ-S,SPSRQS_6,,,,,1,0
+TDS2_Session_7,SPSRQ-S,SPSRQS_7,,,,,1,0
+TDS2_Session_8,SPSRQ-S,SPSRQS_8,,,,,1,0
+TDS2_Session_9,SPSRQ-S,SPSRQS_9,,,,,0,1
+TDS2_Session_10,SPSRQ-S,SPSRQS_10,,,,,1,0
+TDS2_Session_11,SPSRQ-S,SPSRQS_11,,,,,0,1
+TDS2_Session_12,SPSRQ-S,SPSRQS_12,,,,,1,0
+TDS2_Session_13,SPSRQ-S,SPSRQS_13,,,,,0,1
+TDS2_Session_14,SPSRQ-S,SPSRQS_14,,,,,1,0
+TDS2_Session_15,SPSRQ-S,SPSRQS_15,,,,,0,1
+TDS2_Session_16,SPSRQ-S,SPSRQS_16,,,,,1,0
+TDS2_Session_17,SPSRQ-S,SPSRQS_17,,,,,1,0
+TDS2_Session_18,SPSRQ-S,SPSRQS_18,,,,,0,1
+TDS2_Session_19,SPSRQ-S,SPSRQS_19,,,,,1,0
+TDS2_Session_20,SPSRQ-S,SPSRQS_20,,,,,1,0
+TDS2_Session_21,SPSRQ-S,SPSRQS_21,,,,,1,0
+TDS2_Session_22,SPSRQ-S,SPSRQS_22,,,,,0,1
+TDS2_Session_23,SPSRQ-S,SPSRQS_23,,,,,1,0
+TDS2_Session_24,SPSRQ-S,SPSRQS_24,,,,,0,1

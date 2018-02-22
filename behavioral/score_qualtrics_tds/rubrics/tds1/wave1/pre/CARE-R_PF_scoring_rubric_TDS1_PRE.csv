@@ -1,0 +1,26 @@
+Data File Name,Scale Name,Column Name,transform,reverse,min,max,Illicit_Drugs,Drove_Drinking,Risky_Drinking,Risky_Car,Aggressive_Illegal
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_1A,,,1,7,1,0,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_1B,,,1,7,1,0,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_1C,,,1,7,1,0,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_1D,,,1,7,1,0,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_1E,,,1,7,1,0,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_1F,,,1,7,1,0,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_1G,,,1,7,1,0,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_1G_TEXT,,,1,7,0,0,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_2A,,,1,7,0,1,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_2B,,,1,7,0,1,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_2C,,,1,7,0,1,0,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_3A,,,1,7,0,0,1,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_3B,,,1,7,0,0,1,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_3C,,,1,7,0,0,1,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_3D,,,1,7,0,0,1,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_3E,,,1,7,0,0,1,0,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_4A,,,1,7,0,0,0,1,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_4B,,,1,7,0,0,0,1,0
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_4C,,,1,7,0,0,0,0,1
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_4D,,,1,7,0,0,0,0,1
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_5A,,,1,7,0,0,0,0,1
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_5B,,,1,7,0,0,0,0,1
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_5C,,,1,7,0,0,0,0,1
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_5D,,,1,7,0,0,0,0,1
+TDS1_Session_2B_Pre,CARE-R_Past_Frequency,CARE_PF_5E,,,1,7,0,0,0,0,0
