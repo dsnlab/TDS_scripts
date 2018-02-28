@@ -1,0 +1,75 @@
+---
+title: "CTQ-to-ACES"
+author: "Theresa Cheng"
+date: "February 28, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+#Check if the packages we need are installed, and if not, install them
+packages = c("dplyr", "tidyr", "ggplot2")
+
+# load packages, install as needed
+package.check <- lapply(packages, FUN = function(x) {
+  if (!require(x, character.only = TRUE)) {
+    install.packages(x, dependencies = TRUE)
+    library(x, character.only = TRUE) }})
+
+setwd("/projects/dsnlab/tds/TDS_scripts/rsfMRI/cheng_fnl/ctq-to-aces")
+
+# load subscale/scored data
+df_raw <- read.csv("SP_subjects_ACE_CTQ.csv", header=TRUE)
+sapply(df_raw, class)
+
+# subset data to participants WITH CTQ: for rows that start w/ CTQ, calculate row sum
+# if the row sum is NOT NA, then subset it from the dataframe
+df_wCTQ <- df_raw[!is.na(rowSums(select(df_raw, starts_with("CTQ")))),]
+```
+
+## Need to determine mappings between ACE and CTQ questionnaires, write those out here
+
+## Need to take into account minimization scores (any score higher than 0 implies potential underreporting/false negatives)
+
+## Write functions for creating each type of descriptive, then a master function to call them all on the data
+
+```{r descriptives function, include=FALSE}
+
+# This function describes your sample. 
+# It takes the following inputs:
+# df: dataframe w/ header; leftmost column is subject IDs (SID), other columns represent a variable that you would like described.
+# Note that variables will be summarized if they are numeric, integers, or factors. Strings will be ignored. 
+
+sampleDescriptives <- function(df){
+
+  # return the total number of subjects and list of all variables
+  df_gen= df %>% 
+    filter(is.na==FALSE) %>% # remove empty rows
+    nrow(df) # count the number of rows
+  
+  return(kable(df_gen, caption="General"))
+  
+  # return missing data per variable
+  #df_mi = df %>% 
+  #  apply(2, summarise(colnames(.)= sum(.,na.rm=TRUE)) 
+
+  #return(kable(df_mi, caption="Missing data"))
+  ## return a boxplot comparing all variables. will not look great w/ vastly different scales
+  #
+  #
+  ## return a histogram or scatterplot per variable
+  #apply
+
+}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
