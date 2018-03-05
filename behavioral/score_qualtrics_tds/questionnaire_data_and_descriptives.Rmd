@@ -946,6 +946,12 @@ scorequaltrics::plot_scored_scale(tds2_wave2_scored_p,
 
 ### PMQ Parent
 
+The first 42 participants' parent questionnaire contained an erroneously labelled set of response options:
+
+![](img/tds2_wave2_pmq_parent.png)
+
+There is not a straightforward and uncontroversial method to deal with this kind of an error (and there are several, equally-plausibly good methods). For that reason, these responses are not scored and appear as missing data in the plot below. Note in the scoring rubric that only responses from items labeled with a "B" are included (e.g., "PMQ_1B_1"). These items correspond to the corrected version which the remaining participants completed.
+
 ```{r tds2wave2plotpmqparent}
 scorequaltrics::plot_scored_scale(tds2_wave2_scored_p,
                                   scale_regx = '^PMQ_Parent$', 
