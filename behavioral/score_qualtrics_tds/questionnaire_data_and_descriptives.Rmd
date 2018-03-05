@@ -8,11 +8,11 @@ output:
         toc_depth: 4
 ---
 
-This presents both a walk-through for how you could go about adding a new questionnaire to be scored, and also should provide up-to-date descriptives and scored scales every time you recompile this Rmd document.
+_Note well:_ Although this script scores and documents descriptive statistics about each measure used in TDS, it is intended as (1) a demonstration of how you can use various tools to easily download and score data from qualtrics, and (2) a first pass description of the data to be used to highlight any major data quality red flags. It generates scored scale output that one might use as input for some analyses, but these data should be checked and double checked to ensure that they are correct (which means that, yes, you should probably go back and rescore anything you're really counting on from the raw data and ensure that it is a reliable and valid measure). This is especially true for scales that are not created in the psychometric tradition (e.g., PAL-2, RSQ).
 
 **This is a living document**, meaning that you can and should edit it as you need to (and git commit often)! If you need a hand understanding something, or get stuck, email [flournoy@uoregon.edu](mailto:flournoy@uoregon.edu).
 
-It would be nice if this were something completely automated. Unfortunately, the nature of data that is still under collection, and the fact that there are a lot of moving pieces means that something totally automated is likely to break pretty easily (at least, something automated that has been coded by me). For that reason this document will take a highly modular approach so that hopefully if something goes wrong, you can see more exactly where that happens. I'll try to explain every step pretty verbosely too. You should probably be reading this document in R Studio, running each chunk as you go. Make sure you're up to date with upgrades for R, R Studio, and packages.
+This document will take a highly modular approach so that hopefully if something goes wrong, you can see more exactly where that happens. I'll try to explain every step pretty verbosely too. You should probably be reading this document in R Studio, running each chunk as you go. Make sure you're up to date with upgrades for R, R Studio, and packages.
 
 ## Setting options
 
