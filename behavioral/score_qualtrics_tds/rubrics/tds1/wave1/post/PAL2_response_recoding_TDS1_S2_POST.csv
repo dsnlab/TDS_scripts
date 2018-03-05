@@ -1,24 +1,6 @@
 Data File Name,Scale Name,Column Name,Answer,Response,Score
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_3,Native Tribal Language,2,4
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_3,Spanish,3,4
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Mother,1,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Father,2,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Sister(s),3,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Brother(s),4,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Grandmother,5,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Grandfather,6,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Aunt,7,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Uncle,8,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Stepfather,9,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Stepmother,10,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Stepbrother(s),11,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Stepsister(s),12,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Foster Mother,13,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Foster Father,14,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,"Other Children (cousins, nephews, etc.)",15,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Your parent's boyfriend,16,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Your parent's girlfriend,17,1
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_4,Other,18,1
+TDS1_Session_2_B_-_Post,PAL-2,PAL2_3A,Native Tribal Language,2,4
+TDS1_Session_2_B_-_Post,PAL-2,PAL2_3A,Spanish,3,4
 TDS1_Session_2_B_-_Post,PAL-2,PAL2_6,1,1,1
 TDS1_Session_2_B_-_Post,PAL-2,PAL2_6,2,2,1
 TDS1_Session_2_B_-_Post,PAL-2,PAL2_6,3,3,2
@@ -31,7 +13,7 @@ TDS1_Session_2_B_-_Post,PAL-2,PAL2_9A,Mostly B's,2,1
 TDS1_Session_2_B_-_Post,PAL-2,PAL2_9A,Mostly C's,3,2
 TDS1_Session_2_B_-_Post,PAL-2,PAL2_9A,Mostly D's,4,3
 TDS1_Session_2_B_-_Post,PAL-2,PAL2_9A,Mostly F's,5,4
-TDS1_Session_2_B_-_Post,PAL-2,PAL2_9A,Not in school,-77,-77
+TDS1_Session_2_B_-_Post,PAL-2,PAL2_9A,Not in school,-77,
 TDS1_Session_2_B_-_Post,PAL-2,PAL2_9B,Improved a lot,1,1
 TDS1_Session_2_B_-_Post,PAL-2,PAL2_9B,Improved a little,2,1
 TDS1_Session_2_B_-_Post,PAL-2,PAL2_9B,Are about the same,3,2
