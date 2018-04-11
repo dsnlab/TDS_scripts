@@ -19,9 +19,8 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Decisions/DecisionsC
 	-ranEff "~1+pds" \
 	-SS_type 3 \
 	-qVars "pds" \
-	-qVarCenters "0" \
 	-resid	all2_residuals	\
-	-num_glt 6 \
+	-num_glt 3 \
 	-gltLabel 1 'DG-DS_AL-SE' -gltCode  1 'Decision : 1*Go -1*Stop Context : 1*AL -1*SE' \
 	-gltLabel 2 'DG-DS_AL-PR' -gltCode  2 'Decision : 1*Go -1*Stop Context : 1*AL -1*PR' \
 	-gltLabel 3 'DG-DS_PR-SE' -gltCode  3 'Decision : 1*Go -1*Stop Context : 1*PR -1*SE' \

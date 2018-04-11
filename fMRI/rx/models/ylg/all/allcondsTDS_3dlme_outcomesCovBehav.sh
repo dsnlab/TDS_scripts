@@ -19,6 +19,7 @@ cd /projects/dsnlab/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes/OutcomesCov
 	-ranEff "~1+YRBS" \
 	-SS_type 3 \
 	-qVars "YRBS" \
+	-qVarCenters "0" \
 	-resid	all2_residuals	\
 	-num_glt 18 \
 	-gltLabel 1 'OG-OB_G_AL-SE' -gltCode 1  'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
