@@ -8,26 +8,50 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
 
 ```{r}
-setwd("~/Desktop")
-tds_reduced<- read.csv('tds_events_by_sid_and_sample_TDS_alone_revision.csv')
-
 library(dplyr)
 library(tidyverse)
-tds_reduced_good.go <- tds_reduced %>% group_by(subject.name) %>% summarize(s_good.go = sum(n_good.go, na.rm = TRUE))
+setwd("~/Desktop")
+tds_reduced<- read.csv('tds_events_by_sid_and_sample_TDS_alone_revision.csv')
+tds_reduced <- na.omit(tds_reduced)
+tds_reduced_mri<- tds_reduced %>% filter(scan > 0)
+
+#get sum across alone MRI trials per condition
+tds_reduced_good.go <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_good.go = sum(n_good.go, na.rm = TRUE))
+tds_reduced_good.stop <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_good.stop = sum(n_good.stop, na.rm = TRUE))
+tds_reduced_bad.go <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_bad.go = sum(n_bad.go, na.rm = TRUE))
+tds_reduced_bad.stop <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_bad.stop = sum(n_bad.stop, na.rm = TRUE))
+
+#as data frame to merge
+tds_reduced_good.go <- as.data.frame(tds_reduced_good.go)
+tds_reduced_good.stop <- as.data.frame(tds_reduced_good.stop)
+tds_reduced_bad.stop <- as.data.frame(tds_reduced_bad.stop)
+tds_reduced_bad.go <- as.data.frame(tds_reduced_bad.go)
+
 
 subjects_keep_good.go <- tds_reduced_good.go %>% mutate(s_good.go > 3) 
-
-tds_reduced_good.stop <- tds_reduced %>% group_by(subject.name) %>% summarize(s_good.stop = sum(n_good.stop, na.rm = TRUE))
-
 subjects_keep_good.stop <- tds_reduced_good.stop %>% mutate(s_good.stop > 3) 
-
-tds_reduced_bad.go <- tds_reduced %>% group_by(subject.name) %>% summarize(s_bad.go = sum(n_bad.go, na.rm = TRUE))
-
 subjects_keep_bad.go <- tds_reduced_bad.go %>% mutate(s_bad.go > 3) 
-
-tds_reduced_bad.stop <- tds_reduced %>% group_by(subject.name) %>% summarize(s_bad.stop = sum(n_bad.stop, na.rm = TRUE))
-
 subjects_keep_bad.stop <- tds_reduced_bad.stop %>% mutate(s_bad.stop > 3) 
+
+#put it back together
+merge.alone.MRI.bad <- merge.data.frame(tds_reduced_bad.go,tds_reduced_bad.stop, by.x = "subject.name")
+
+merge.alone.MRI.good <- merge.data.frame(tds_reduced_good.go, tds_reduced_good.stop, by.x = "subject.name")
+
+merge.alone.MRI <- merge.data.frame(merge.alone.MRI.bad, merge.alone.MRI.good, by.x = "subject.name")
+
+merge.alone.MRI_higher <- merge.alone.MRI %>% mutate(bad= (s_bad.go + s_bad.stop), good= (s_bad.go + s_good.stop), stop= (s_bad.stop + s_good.stop), go= (s_bad.go + s_good.stop))
+
+library(stargazer)
+cols <- c('s_good.go', 's_good.stop', 's_bad.go', 's_bad.stop', 'bad', 'good', 'go', 'stop')
+stargazer(
+    merge.alone.MRI_higher[, cols], type = "text", 
+    summary.stat = c("mean", "min", "max", "sd", "median")
+)
+
+
+
+
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
