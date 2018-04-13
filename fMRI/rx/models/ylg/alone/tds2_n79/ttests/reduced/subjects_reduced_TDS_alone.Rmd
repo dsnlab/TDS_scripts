@@ -1,0 +1,38 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+setwd("~/Desktop")
+tds_reduced<- read.csv('tds_events_by_sid_and_sample_TDS_alone_revision.csv')
+
+library(dplyr)
+library(tidyverse)
+tds_reduced_good.go <- tds_reduced %>% group_by(subject.name) %>% summarize(s_good.go = sum(n_good.go, na.rm = TRUE))
+
+subjects_keep_good.go <- tds_reduced_good.go %>% mutate(s_good.go > 3) 
+
+tds_reduced_good.stop <- tds_reduced %>% group_by(subject.name) %>% summarize(s_good.stop = sum(n_good.stop, na.rm = TRUE))
+
+subjects_keep_good.stop <- tds_reduced_good.stop %>% mutate(s_good.stop > 3) 
+
+tds_reduced_bad.go <- tds_reduced %>% group_by(subject.name) %>% summarize(s_bad.go = sum(n_bad.go, na.rm = TRUE))
+
+subjects_keep_bad.go <- tds_reduced_bad.go %>% mutate(s_bad.go > 3) 
+
+tds_reduced_bad.stop <- tds_reduced %>% group_by(subject.name) %>% summarize(s_bad.stop = sum(n_bad.stop, na.rm = TRUE))
+
+subjects_keep_bad.stop <- tds_reduced_bad.stop %>% mutate(s_bad.stop > 3) 
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
