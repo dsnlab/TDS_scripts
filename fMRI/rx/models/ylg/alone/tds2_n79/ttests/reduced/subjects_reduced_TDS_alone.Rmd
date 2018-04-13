@@ -10,15 +10,18 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 ```{r}
 library(dplyr)
 library(tidyverse)
-setwd("~/Desktop")
+setwd("/Users/jessicaflannery/TDS_scripts/fMRI/rx/models/ylg/alone/tds2_n79/ttests/reduced")
 tds_reduced<- read.csv('tds_events_by_sid_and_sample_TDS_alone_revision.csv')
 tds_reduced <- na.omit(tds_reduced)
 tds_reduced_mri<- tds_reduced %>% filter(scan > 0)
 
 #get sum across alone MRI trials per condition
 tds_reduced_good.go <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_good.go = sum(n_good.go, na.rm = TRUE))
+
 tds_reduced_good.stop <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_good.stop = sum(n_good.stop, na.rm = TRUE))
-tds_reduced_bad.go <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_bad.go = sum(n_bad.go, na.rm = TRUE))
+
+tds_reduced_bad.go <- tds_reduced_mri %>% filter(subject.name != '127') %>% group_by(subject.name) %>% summarize(s_bad.go = sum(n_bad.go, na.rm = TRUE))
+                                                                               
 tds_reduced_bad.stop <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_bad.stop = sum(n_bad.stop, na.rm = TRUE))
 
 #as data frame to merge
