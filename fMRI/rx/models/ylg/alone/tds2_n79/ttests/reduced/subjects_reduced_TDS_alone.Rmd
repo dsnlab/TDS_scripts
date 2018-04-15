@@ -11,16 +11,17 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 library(dplyr)
 library(tidyverse)
 setwd("/Users/jessicaflannery/TDS_scripts/fMRI/rx/models/ylg/alone/tds2_n79/ttests/reduced")
-tds_reduced<- read.csv('tds_events_by_sid_and_sample_TDS_alone_revision.csv')
+tds_reduced<- read.csv('tds_events_by_sid.csv')
 tds_reduced <- na.omit(tds_reduced)
-tds_reduced_mri<- tds_reduced %>% filter(scan > 0)
+tds_reduced_mri <- tds_reduced %>% filter(condition > 2, subject.name <'200')
+tds_reduced_mri <- as.data.frame(tds_reduced_mri)
 
 #get sum across alone MRI trials per condition
 tds_reduced_good.go <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_good.go = sum(n_good.go, na.rm = TRUE))
 
 tds_reduced_good.stop <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_good.stop = sum(n_good.stop, na.rm = TRUE))
 
-tds_reduced_bad.go <- tds_reduced_mri %>% filter(subject.name != '127') %>% group_by(subject.name) %>% summarize(s_bad.go = sum(n_bad.go, na.rm = TRUE))
+tds_reduced_bad.go <- tds_reduced_mri  %>% group_by(subject.name) %>% summarize(s_bad.go = sum(n_bad.go, na.rm = TRUE))
                                                                                
 tds_reduced_bad.stop <- tds_reduced_mri %>% group_by(subject.name) %>% summarize(s_bad.stop = sum(n_bad.stop, na.rm = TRUE))
 
@@ -30,11 +31,10 @@ tds_reduced_good.stop <- as.data.frame(tds_reduced_good.stop)
 tds_reduced_bad.stop <- as.data.frame(tds_reduced_bad.stop)
 tds_reduced_bad.go <- as.data.frame(tds_reduced_bad.go)
 
-
-subjects_keep_good.go <- tds_reduced_good.go %>% mutate(s_good.go > 3) 
-subjects_keep_good.stop <- tds_reduced_good.stop %>% mutate(s_good.stop > 3) 
-subjects_keep_bad.go <- tds_reduced_bad.go %>% mutate(s_bad.go > 3) 
-subjects_keep_bad.stop <- tds_reduced_bad.stop %>% mutate(s_bad.stop > 3) 
+# subjects_keep_good.go <- tds_reduced_good.go %>% mutate(s_good.go > 3) 
+# subjects_keep_good.stop <- tds_reduced_good.stop %>% mutate(s_good.stop > 3) 
+# subjects_keep_bad.go <- tds_reduced_bad.go %>% mutate(s_bad.go > 3) 
+# subjects_keep_bad.stop <- tds_reduced_bad.stop %>% mutate(s_bad.stop > 3) 
 
 #put it back together
 merge.alone.MRI.bad <- merge.data.frame(tds_reduced_bad.go,tds_reduced_bad.stop, by.x = "subject.name")
@@ -45,6 +45,12 @@ merge.alone.MRI <- merge.data.frame(merge.alone.MRI.bad, merge.alone.MRI.good, b
 
 merge.alone.MRI_higher <- merge.alone.MRI %>% mutate(bad= (s_bad.go + s_bad.stop), good= (s_bad.go + s_good.stop), stop= (s_bad.stop + s_good.stop), go= (s_bad.go + s_good.stop))
 
+TDS_alone_subject_list_n79<- read_csv('TDS_alone_subject_list_n79.csv')
+TDS_alone_subject_list_n79 <- as.data.frame(TDS_alone_subject_list_n79)
+
+TDS2_alone <- merge.data.frame(merge.alone.MRI_higher, TDS_alone_subject_list_n79, by.y = "subject.name")
+
+#note: this is will include excluded subs per contrast 
 library(stargazer)
 cols <- c('s_good.go', 's_good.stop', 's_bad.go', 's_bad.stop', 'bad', 'good', 'go', 'stop')
 stargazer(
