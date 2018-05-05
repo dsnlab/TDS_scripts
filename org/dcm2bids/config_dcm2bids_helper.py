@@ -12,17 +12,17 @@ import os
 
 ######################## CONFIGURAGBLE PART BELOW ########################
 # Set study info (may need to change for your study)
-group = "sanlab"
-study = "REV"
+group = "dsnlab"
+study = "tds"
 gitrepo = "dcm2bids"
-test_subject = "REV001_20150406" # Name of a directory that contains DICOMS for one participant
+test_subject = "110_20141107" # Name of a directory that contains DICOMS for one participant
 
-dicomdir = os.path.join(os.sep, "projects", "lcni", "dcm", group, "Archive", study)
-singularity_image =  os.path.join(os.sep, "projects", group, "shared", "containers", "Dcm2Bids-master.simg")
+dicomdir = os.path.join(os.sep, "projects", "lcni", "dcm", group, "TDS")
+singularity_image =  os.path.join(os.sep, "projects", group, "shared", "BIDS", "Dcm2Bids-master.simg")
 
 # Set directories
 niidir = os.path.join(os.sep, "projects", group, "shared", study, "archive", "clean_nii")
-codedir =  os.path.join(os.sep, "projects", group, "shared", study, "REV_scripts", "org", gitrepo)
+codedir =  os.path.join(os.sep, "projects", group, "shared", study, "TDS_scripts", "org", gitrepo)
 logdir = os.path.join(codedir, "logs_helper")
 
 outputlog = os.path.join(logdir, "outputlog_helper.txt")
