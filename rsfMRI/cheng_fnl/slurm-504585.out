@@ -1,0 +1,9 @@
+/cm/local/apps/slurm/var/spool/job504585/slurm_script: line 33: TEMPLATESDIR: command not found
+/cm/local/apps/slurm/var/spool/job504585/slurm_script: line 37: ./mri_deface: cannot execute binary file
+defaced mprage 101
+/cm/local/apps/slurm/var/spool/job504585/slurm_script: line 37: ./mri_deface: cannot execute binary file
+defaced mprage 102
+/cm/local/apps/slurm/var/spool/job504585/slurm_script: line 37: ./mri_deface: cannot execute binary file
+defaced mprage 104
+/cm/local/apps/slurm/var/spool/job504585/slurm_script: line 40: syntax error near unexpected token `fi'
+/cm/local/apps/slurm/var/spool/job504585/slurm_script: line 40: `fi'
