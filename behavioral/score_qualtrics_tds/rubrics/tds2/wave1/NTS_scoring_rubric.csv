@@ -1,0 +1,13 @@
+Data File Name,Scale Name,Column Name,transform,reverse,min,max,Belongingness,Self-esteem,Meaningful_existence,Control,Total_Score
+TDS2_Session_2_B,NTS,NTS_1,0,0,,,1,0,0,0,1
+TDS2_Session_2_B,NTS,NTS_2,0,0,,,1,0,0,0,1
+TDS2_Session_2_B,NTS,NTS_3,0,0,,,1,0,0,0,1
+TDS2_Session_2_B,NTS,NTS_4,0,1,1,5,0,1,0,0,1
+TDS2_Session_2_B,NTS,NTS_5,0,1,1,5,0,1,0,0,1
+TDS2_Session_2_B,NTS,NTS_6,0,1,1,5,0,1,0,0,1
+TDS2_Session_2_B,NTS,NTS_7,0,0,,,0,0,1,0,1
+TDS2_Session_2_B,NTS,NTS_8,0,0,,,0,0,1,0,1
+TDS2_Session_2_B,NTS,NTS_9,0,0,,,0,0,1,0,1
+TDS2_Session_2_B,NTS,NTS_10,0,1,1,5,0,0,0,1,1
+TDS2_Session_2_B,NTS,NTS_11,0,1,1,5,0,0,0,1,1
+TDS2_Session_2_B,NTS,NTS_12,0,1,1,5,0,0,0,1,1

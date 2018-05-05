@@ -1,0 +1,16 @@
+Data File Name,Scale Name,Column Name,transform,reverse,min,max,BIS_Motor_Impulsivity,BIS_Nonplanning_Impulsivity,BIS_Attentional_Impulsivity,BIS_Total
+TDS1_Session_2_A_Post,BIS-15,BIS_1,0,0,,,1,0,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_2,0,0,,,1,0,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_3,0,0,,,1,0,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_4,0,0,,,1,0,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_5,0,0,,,1,0,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_6,0,1,1,4,0,1,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_7,0,1,1,4,0,1,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_8,0,1,1,4,0,1,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_9,0,1,1,4,0,1,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_10,0,1,1,4,0,1,0,1
+TDS1_Session_2_A_Post,BIS-15,BIS_11,0,0,,,0,0,1,1
+TDS1_Session_2_A_Post,BIS-15,BIS_12,0,0,,,0,0,1,1
+TDS1_Session_2_A_Post,BIS-15,BIS_13,0,1,1,4,0,0,1,1
+TDS1_Session_2_A_Post,BIS-15,BIS_14,0,0,,,0,0,1,1
+TDS1_Session_2_A_Post,BIS-15,BIS_15,0,0,,,0,0,1,1

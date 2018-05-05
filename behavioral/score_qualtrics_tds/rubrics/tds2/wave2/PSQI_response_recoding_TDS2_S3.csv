@@ -1,0 +1,73 @@
+Data_File_Name,Scale_Name,Column_Name,Response,Score
+TDS2_Session_3_-_Child,PSQI,PSQI_1_1_TEXT,9:00-10:00,9pm
+TDS2_Session_3_-_Child,PSQI,PSQI_1_1_TEXT,11-11:30,11pm
+TDS2_Session_3_-_Child,PSQI,PSQI_1_1_TEXT,10:30-11:30,10:30pm
+TDS2_Session_3_-_Child,PSQI,PSQI_1_1_TEXT,11/12,11pm
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,3/4,3am
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,9:00-10:00,9pm
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,1-3am,1am
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,depends,
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,12-1 AM,12am
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,12pm-1am,12am
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,"1a,",1am
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,10:00-12:00,10:00 PM
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,random,
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,12/1,12am
+TDS2_Session_3_-_Child,PSQI,PSQI_1_2_TEXT,1/2,1am
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,5 hours,300
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,10/20,10
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,2hr,120
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,10-15 minutes,10
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,1h,60
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,10/30,10
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,1 hour/2 hours,60
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,5/15,5
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,hour,60
+TDS2_Session_3_-_Child,PSQI,PSQI_2_1_TEXT,30+,30
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,5 hrs,300
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,30-40,30
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,2hr,120
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,10-15 minutes,10
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,1-2h,60
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,15-25,15
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,60-90,60
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,1 hour/2 hours,60
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,5/15,5
+TDS2_Session_3_-_Child,PSQI,PSQI_2_2_TEXT,15-45,15
+TDS2_Session_3_-_Child,PSQI,PSQI_3_1_TEXT,6 or 7 am,6am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_1_TEXT,9-10am,9am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_1_TEXT,10:00-11:00,10am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_1_TEXT,10-11am,10am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_1_TEXT,7/7:30,7am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_1_TEXT,6-6:30,6am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_1_TEXT,6:30-8:00,6:30am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_1_TEXT,6-6:30AM,6am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_2_TEXT,Sat: 8-8:30 Sun: 9-9:30,8am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_2_TEXT,9-10am,9am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_2_TEXT,10:00-11:00,10am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_2_TEXT,10/11:00,10am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_2_TEXT,9-10,9am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_2_TEXT,8-10,8am
+TDS2_Session_3_-_Child,PSQI,PSQI_3_2_TEXT,noon,12pm
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT, ?,
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT,6 1/2-10 1/2,6.5
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT,7/8,7
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT,7-8 hours,7
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT,8:30,9
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT,8/9,8
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT,7:30,8
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT,6-8,6
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT,6:45,6.75
+TDS2_Session_3_-_Child,PSQI,PSQI_4_1_TEXT,4-5 Hrs,4
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,alot,
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,8 1/2-9 1/2,8.5
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,6-7,6
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,7-8 hours,7
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,10-11,10
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,6:15,6.25
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,12 ish,12
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,6-9,6
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,7:30,8
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,7-9,7
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,7-8,7
+TDS2_Session_3_-_Child,PSQI,PSQI_4_2_TEXT,4 or 5,4

@@ -1,0 +1,7 @@
+Data File Name,Scale Name,Column Name,Transform,Reverse,Min,Max,FSMI_Status_total
+YADS-V,FSMI_Status,FSMI_Status_1,,,,,1
+YADS-V,FSMI_Status,FSMI_Status_2,,,,,1
+YADS-V,FSMI_Status,FSMI_Status_3,,,,,1
+YADS-V,FSMI_Status,FSMI_Status_4,,,,,1
+YADS-V,FSMI_Status,FSMI_Status_5,,,,,1
+YADS-V,FSMI_Status,FSMI_Status_6,,1,1,7,1
