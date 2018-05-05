@@ -1,10 +1,10 @@
-% Theresa Cheng | Nandita Vijayakumar
-% March 2016
+% Nandita Vijayakumar
+% February 2018
 
-% generate_NamesOnsetsDurations_Events
+% generate_multiconds
 
 % This script generates .mat files containing names,
-% onsets, durations, pmods based on summary_events csv files 
+% onsets, durations based on summary.csv files 
 
 clear all
 
