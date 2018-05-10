@@ -13,7 +13,7 @@ library(tidyverse)
 setwd("/Users/jessicaflannery/TDS_scripts/fMRI/rx/models/ylg/alone/tds2_n79/ttests/reduced")
 tds_reduced<- read.csv('tds_events_by_sid.csv')
 tds_reduced <- na.omit(tds_reduced)
-tds_reduced_mri <- tds_reduced %>% filter(condition > 2, subject.name <'200')
+tds_reduced_mri <- tds_reduced %>% filter(condition == 1, subject.name <'200')
 tds_reduced_mri <- as.data.frame(tds_reduced_mri)
 
 #get sum across alone MRI trials per condition
@@ -58,7 +58,7 @@ stargazer(
     summary.stat = c("mean", "min", "max", "sd", "median")
 )
 
-
+write.csv(TDS2_alone, "TDS2_alone.csv")
 
 
 ```
