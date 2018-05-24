@@ -1,0 +1,14 @@
+{
+	"EchoTime1": 0.00437,
+	"EchoTime2": 0.00683,
+	"IntendedFor": ["func/task-cyb_run-01_bold.nii.gz",
+			"func/task-cyb_run-02_bold.nii.gz",
+			"func/task-stop_run-01_bold.nii.gz",
+			"func/task-stop_run-02_bold.nii.gz",
+			"func/task-stop_run-03_bold.nii.gz",
+			"func/task-stop_run-04_bold.nii.gz",
+			"func/task-stop_run-05_bold.nii.gz",
+			"func/task-stop_run-06_bold.nii.gz",
+			"func/task-vid_run-01_bold.nii.gz",
+			"func/task-vid_run-02_bold.nii.gz"]
+}

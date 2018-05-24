@@ -1,6 +1,6 @@
 Data File Name,Scale Name,Column Name,Transform,Reverse,Min,Max,Disclosure
-TDS2_Session_3_parent,PMQ_Parent,PMQ_1_1,0,,1,5,1
-TDS2_Session_3_parent,PMQ_Parent,PMQ_2_1,0,,1,5,1
-TDS2_Session_3_parent,PMQ_Parent,PMQ_3_1,0,1,1,5,1
-TDS2_Session_3_parent,PMQ_Parent,PMQ_4_1,0,1,1,5,1
-TDS2_Session_3_parent,PMQ_Parent,PMQ_5_1,0,,1,5,1
+TDS2_Session_3_parent,PMQ_Parent,PMQ_1B_1,0,,1,5,1
+TDS2_Session_3_parent,PMQ_Parent,PMQ_2B_1,0,,1,5,1
+TDS2_Session_3_parent,PMQ_Parent,PMQ_3B_1,0,1,1,5,1
+TDS2_Session_3_parent,PMQ_Parent,PMQ_4B_1,0,1,1,5,1
+TDS2_Session_3_parent,PMQ_Parent,PMQ_5B_1,0,,1,5,1
