@@ -8,7 +8,7 @@
 # * $subid from batch_createJson.sh
 
 # Load variables
-source "${scriptsdir}"/createJson_config.sh
+source /projects/dsnlab/shared/tds/TDS_scripts/org/bids-conversion/createJson_config.sh
 echo "${subid}"
 echo "${sessid}"
 
@@ -74,7 +74,7 @@ if [ "${convertanat}" == "TRUE" ]; then
 	#Check subject Json info and create seperate file if different
 	cd $nonbidsdir/sMRI/subjects/$subid
 
-	if [ $(ls *"${anat}"_info.txt | wc -l) -eq 1 ]; then
+	if [ $(ls "${anat}"_info.txt | wc -l) -eq 1 ]; then
 		file=$(echo "$(ls | grep "${anat}"_info)")
     		RepetitionTime_x=$(echo "($(ls -l| grep 'Repetition time' $file | sed 's/^.*: //')) / 1000" | bc -l | awk '{printf "%.1f", $0}')
     		EchoTime_x=$(echo "($(ls -l| grep 'Echo time' $file | sed 's/^.*: //')) / 1000" | bc -l | awk '{printf "%.5f", $0}')
@@ -95,7 +95,7 @@ if [ "${convertanat}" == "TRUE" ]; then
     		echo "ERROR: wrong number of files"
 		echo "${subid} ${sessid}: Wrong number of ${anat}" >> $errorlog
 	else
-    		echo "ERROR: no files; nothing to use"
+    		eco "not OK"o "ERROR: no files; nothing to use"
 		echo "${subid} ${sessid}: MISSING ${anat}" >> $errorlog
     	fi	
 fi
@@ -122,16 +122,12 @@ if [ "${converttask}" == "TRUE" ]; then
 		#Check subject Json info and create seperate file if different
 		cd $nonbidsdir/fMRI/subjects/$subid/$task
 		
-		if [ $(ls *"${task}"*info.txt | wc -l) -eq 1 ]; then
+		if [ $(ls "${task}"*info.txt | wc -l) -eq 1 ]; then
             		file=$(echo "$(ls | grep $task | grep 'info')")
-        	elif [ $(ls *"${task}"*info.txt | wc -l) -eq 0 ]; then
+        	else
             		echo "ERROR: no files; nothing to use"
             		echo "${subid} ${sessid}: MISSING ${task}" >> $errorlog
-        	else
-        		echo "Largest file used"
-            		largestfile=$(du -sh *"${task}"*.nii.gz | sort -n | tail -1 | cut -f2 | cut -c 1-9)
-            		file=$(echo "${largestfile}"*info.txt)
-		fi	
+        	fi
 	
 		RepetitionTime_x=$(echo "($(ls -l| grep 'Repetition time' $file | sed 's/^.*: //')) / 1000" | bc -l | awk '{printf "%.0f", $0}')
     		EchoTime_x=$(echo "($(ls -l| grep 'Echo time' $file | sed 's/^.*: //')) / 1000" | bc -l | awk '{printf "%.3f", $0}')
@@ -139,7 +135,7 @@ if [ "${converttask}" == "TRUE" ]; then
     		EffectiveEchoSpacing_x=$(echo "($(ls -l| grep 'Effective echo spacing' $file | sed 's/^.*: //')) / 1000" | bc -l | awk '{printf "%.5f", $0}')
 		SeriesNo_x=$(ls | grep 'Series number' $file | sed 's/^.*: //')
 	
-		cd $nonbidsdir/fMRI/$subid/
+		#cd $nonbidsdir/fMRI/$subid/
 		#MultibandAccelerationFactor_x=$(ls | grep $(echo "$SeriesNo_x","$task") $file_extra | sed 's/^.*MB//' | cut -d/ -f1)
 		MultibandAccelerationFactor_x=3
 	
@@ -148,17 +144,17 @@ if [ "${converttask}" == "TRUE" ]; then
     		PED=$(ls | grep "$fileSTRING" $afnifile | sed -n 's/^.*nii.gz,[[:space:]]*//p')
 
 		if [[ "$PED" == ?$x? ]]; then
-    			PhaseEncodingDirection_x="j"
+    			PhaseEncodingDirection_x="j-"
     		elif [[ "$PED" == ?$y? ]]; then
-    			PhaseEncodingDirection_x="-j"
+    			PhaseEncodingDirection_x="j"
     		elif [[ "$PED" == $x?? ]]; then
-    			PhaseEncodingDirection_x="i"
+    			PhaseEncodingDirection_x="i-"
 		elif [[ "$PED" == $y?? ]]; then
-    			PhaseEncodingDirection_x="-i"
+    			PhaseEncodingDirection_x="i"
     		elif [[ "$PED" == ??$x ]]; then
-    			PhaseEncodingDirection_x="k"
+    			PhaseEncodingDirection_x="k-"
 		elif [[ "$PED" == ??$y ]]; then
-    			PhaseEncodingDirection_x="-k"
+    			PhaseEncodingDirection_x="k"
     		fi
 
     		if [[ "$file" =~ "${task}" ]]; then
@@ -190,8 +186,8 @@ if [ "${convertfmap}" == "TRUE" ]; then
 	#Check subject Json info and create seperate file if different
 	cd $nonbidsdir/fMRI/subjects/$subid/fmaps
 
-	if [ $(ls *"${fmap}"*info.txt | wc -l) -eq 2 ]; then
-		file=$(find *info.txt -type f | xargs ls -1S | head -n 1)               
+	if [ $(find *"${fmap}"*/"${fmap}"*info.txt | wc -l) -eq 2 ]; then
+		file=$(find *"${fmap}"*/"${fmap}"*info.txt -type f | xargs ls -1S | head -n 1)               
 		EchoTime1_x=$(echo "scale=5; ($(ls | grep 'Echo time\[[1]*\]' $file | sed 's/^.*: //')) / 1000" | bc -l | awk '{printf "%.5f", $0}')
         	EchoTime2_x=$(echo "scale=5; ($(ls | grep 'Echo time\[[2]*\]' $file | sed 's/^.*: //')) / 1000" | bc -l | awk '{printf "%.5f", $0}')
 		
@@ -225,7 +221,7 @@ if [ "${convertfmap}" == "TRUE" ]; then
 			sed -i '' '$ s/.$/ ] }/' $filename >> tempfile        
                         mv tempfile $filename	
         	fi
-	elif [ $(ls *"${fmap}"*info.txt | wc -l) -gt 2 ]; then
+	elif [ $(ls *"${fmap}"*/"${fmap}"*info.txt | wc -l) -gt 2 ]; then
 		echo "ERROR: wrong number of files"
                 echo "${subid} ${sessid}: Wrong number of ${fmap}" >> $errorlog
 	else

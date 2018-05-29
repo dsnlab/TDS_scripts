@@ -8,16 +8,16 @@
 # directories.
 #
 # Set your study
-STUDY=/projects/dsnlab/shared/tag
+STUDY=/projects/dsnlab/shared/tds
 
 # Set subject list
-SUBJLIST=`cat subject_list5.txt`
+SUBJLIST=`cat subject_list.txt`
  
 # Set output directory
-OUTPUTDIR=TAG_scripts/org/bids-conversion/output
+OUTPUTDIR=TDS_scripts/org/bids-conversion/output
 
 # Set job script
-JOB=TAG_scripts/org/bids-conversion/createJson.sh
+JOB=TDS_scripts/org/bids-conversion/createJson.sh
 
 for SUBJ in ${SUBJLIST[@]}
 

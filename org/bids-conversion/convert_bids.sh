@@ -61,7 +61,7 @@ if [ "${convertanat}" == "TRUE" ]; then
 	else 
 		# print file paths in errorlog.txt if =~ 1 file; copy both files
 		echo "ERROR: wrong number of files; all files copied"
-		ls "${nonbidsdir}"/sMRI/subjects/"${subid}"/ >> $errorlog
+		find "${nonbidsdir}"/sMRI/subjects/"${subid}"/* >> $errorlog
 	fi	
 fi
 
@@ -85,7 +85,7 @@ if [ "${convertfmap}" == "TRUE" ]; then
 	# print file paths in errorlog.txt if =~ 3 files
 	elif [ $(ls "${nonbidsdir}"/fMRI/subjects/"${subid}"/fmaps/fieldmap* | wc -l) -ne 3 ]; then
 		echo "ERROR: wrong number of files"
-		ls "${nonbidsdir}"/fMRI/subjects/"${subid}"/fmaps/ >> $errorlog
+		find "${nonbidsdir}"/fMRI/subjects/"${subid}"/fmaps/* >> $errorlog
 	fi
 fi
 

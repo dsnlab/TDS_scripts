@@ -11,7 +11,7 @@
 STUDY=/projects/dsnlab/shared/tds
 
 # Set subject list
-SUBJLIST=`cat subject_list_101.txt`
+SUBJLIST=`cat subject_list.txt`
 
 # Set output directory
 OUTPUTDIR=TDS_scripts/org/bids-conversion/output

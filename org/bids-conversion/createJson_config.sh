@@ -15,8 +15,8 @@ bidsdir="/projects/dsnlab/shared/"$study"/bids_data"
 scriptsdir="/projects/dsnlab/shared/"$study"/"$scripts"/org/bids-conversion"
 
 # Set study info
-declare -a anat="mprage_p2"
-declare -a fmap="fieldmap_2mm"
+declare -a anat="mprage"
+declare -a fmap="fieldmap"
 #declare -a resting=("Resting_1" "Resting_2")
 declare -a tasks=("cyb1" "cyb2" "stop3" "stop4" "stop5" "stop6" "stop7" "stop8
 " "vid1" "vid2")
