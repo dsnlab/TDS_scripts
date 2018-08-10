@@ -1,9 +1,9 @@
 #!/bin/bash
 #--------------------------------------------------------------
 #
-#SBATCH --job-name=TDS_allconds_3dMVM
-#SBATCH --output=output/allcons_3dMVM.log
-#SBATCH --error=output/aallcons_3dMVM_error.log
+#SBATCH --job-name=TDS_allconds_3dlme
+#SBATCH --output=output/allcons_3dlme.log
+#SBATCH --error=output/allcons_3dlme_error.log
 #SBATCH --time=1-00:00:00
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1
@@ -19,21 +19,19 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dLME/Outcomes
 	-ranEff "~1" \
 	-SS_type 3 \
 	-resid	all2_residuals	\
-	-num_glf 1 \
-	-glfLabel 1 'tds2_OutByContext' -glfCode 1 'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR & 1*AL -1*SE' \
 	-num_glt 12 \
-	-gltLabel 1 'OG-OB_AL-SE' -gltCode 1   Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
-	-gltLabel 2 'OG-OB_AL-PR' -gltCode 2   Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
-	-gltLabel 3 'OG-OB_PR-SE' -gltCode 3   Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
-	-gltLabel 4 'OG-OB_AL-SE' -gltCode 4   Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
-	-gltLabel 5 'OG-OB_AL-PR' -gltCode 5   Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
-	-gltLabel 6 'OG-OB_PR-SE' -gltCode 6   Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
-	-gltLabel 7 'OG_AL-SE'  -gltCode 7   Outcome : 1*Good Context : 1*AL -1*SE' \
-	-gltLabel 8 'OG_AL-PR'  -gltCode 8   Outcome : 1*Good Context : 1*AL -1*PR' \
-	-gltLabel 9 'OG_PR-SE'  -gltCode 9   Outcome : 1*Good Context : 1*PR -1*SE' \
-	-gltLabel 10 'OB_AL-SE' -gltCode 10  Outcome : 1*Bad Context : 1*AL -1*SE' \
-	-gltLabel 11 'OB_AL-PR' -gltCode 11  Outcome : 1*Bad Context : 1*AL -1*PR' \
-	-gltLabel 12 'OB_PR-SE' -gltCode 12  Outcome : 1*Bad Context : 1*PR -1*SE' \
+	-gltLabel 1 'OG-OB_AL-SE' -gltCode 1   'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
+	-gltLabel 2 'OG-OB_AL-PR' -gltCode 2   'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
+	-gltLabel 3 'OG-OB_PR-SE' -gltCode 3   'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
+	-gltLabel 4 'OG-OB_AL-SE' -gltCode 4   'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
+	-gltLabel 5 'OG-OB_AL-PR' -gltCode 5   'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
+	-gltLabel 6 'OG-OB_PR-SE' -gltCode 6   'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
+	-gltLabel 7 'OG_AL-SE'  -gltCode 7   'Outcome : 1*Good Context : 1*AL -1*SE' \
+	-gltLabel 8 'OG_AL-PR'  -gltCode 8   'Outcome : 1*Good Context : 1*AL -1*PR' \
+	-gltLabel 9 'OG_PR-SE'  -gltCode 9   'Outcome : 1*Good Context : 1*PR -1*SE' \
+	-gltLabel 10 'OB_AL-SE' -gltCode 10  'Outcome : 1*Bad Context : 1*AL -1*SE' \
+	-gltLabel 11 'OB_AL-PR' -gltCode 11  'Outcome : 1*Bad Context : 1*AL -1*PR' \
+	-gltLabel 12 'OB_PR-SE' -gltCode 12  'Outcome : 1*Bad Context : 1*PR -1*SE' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Dec Outcome Context Group InputFile \
