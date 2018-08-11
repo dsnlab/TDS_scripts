@@ -15,8 +15,7 @@ module load prl afni
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Outcomes
 	3dMVM -prefix OutcomesXContextTDS2 \
 	-jobs 28 \
-	-model  "Outcome*Context" \
-	-ranEff "~1" \
+	-wsVars  "Outcome*Context" \
 	-SS_type 3 \
 	-num_glt 12 \
 	-gltLabel 1 'OG-OB_AL-SE' -gltCode 1   'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
