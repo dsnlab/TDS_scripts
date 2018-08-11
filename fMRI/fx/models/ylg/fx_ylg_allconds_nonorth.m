@@ -55,5 +55,5 @@ matlabbatch{7}.spm.stats.fmri_spec.mthresh = -Inf;
 matlabbatch{7}.spm.stats.fmri_spec.mask = {'/projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr.nii,1'};
 matlabbatch{7}.spm.stats.fmri_spec.cvi = 'AR(1)';
 matlabbatch{8}.spm.stats.fmri_est.spmmat(1) = cfg_dep('fMRI model specification: SPM.mat File', substruct('.','val', '{}',{7}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','spmmat'));
-matlabbatch{8}.spm.stats.fmri_est.write_residuals = 0;
+matlabbatch{8}.spm.stats.fmri_est.write_residuals = 1;
 matlabbatch{8}.spm.stats.fmri_est.method.Classical = 1;
