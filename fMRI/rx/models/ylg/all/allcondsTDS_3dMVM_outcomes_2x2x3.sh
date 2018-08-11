@@ -37,12 +37,12 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Decisions
 	-gltLabel 16 'S_G_OB_AL-SE' -gltCode 16 'Dec : 1*Stop -1*Go Outcome : 1*Bad Context : 1*AL -1*SE' \
 	-gltLabel 17 'S_G_OB_AL-PR' -gltCode 17 'Dec : 1*Stop -1*Go Outcome : 1*Bad Context : 1*AL -1*PR' \
 	-gltLabel 18 'S_G_OB_PR-SE' -gltCode 18 'Dec : 1*Stop -1*Go Outcome : 1*Bad Context : 1*PR -1*SE' \
-	-gltLabel 19 'OB_AL-PRSE' -gltCode 19 'Outcome : 1*Bad Context : 1*AL -1*(PR+SE)' \
-	-gltLabel 20 'OG_AL-PRSE' -gltCode 20 'Outcome : 1*Good Context : 1*AL -1*(PR+SE)' \
-	-gltLabel 21 'S_G_AL-PRSE' -gltCode 21 'Dec : 1*Stop -1*Go : 1*AL -1*(PR+SE)' \
-	-gltLabel 22 'S_G_AL-PR' -gltCode 22 'Dec : 1*Stop -1*Go : 1*AL -1*PR' \
-	-gltLabel 23 'S_G_AL-SE' -gltCode 23 'Dec : 1*Stop -1*Go : 1*AL -1*SE' \
-	-gltLabel 24 'S_G_PR-SE' -gltCode 24 'Dec : 1*Stop -1*Go : 1*PR -1*SE' \
+	-gltLabel 19 'OB_AL-PRSE' -gltCode 19 'Dec : 1*Go Outcome : 1*Bad Context : 1*AL -1*(PR+SE)' \
+	-gltLabel 20 'OG_AL-PRSE' -gltCode 20 'Dec : 1*Go Outcome : 1*Good Context : 1*AL -1*(PR+SE)' \
+	-gltLabel 21 'S_G_AL-PRSE' -gltCode 21 'Dec : 1*Stop -1*Go Outcome : 1*Good Context : 1*AL -1*(PR+SE)' \
+	-gltLabel 22 'S_G_AL-PR' -gltCode 22 'Dec : 1*Stop -1*Go Context : 1*AL -1*PR' \
+	-gltLabel 23 'S_G_AL-SE' -gltCode 23 'Dec : 1*Stop -1*Go Context : 1*AL -1*SE' \
+	-gltLabel 24 'S_G_PR-SE' -gltCode 24 'Dec : 1*Stop -1*Go Context : 1*PR -1*SE' \
 	-gltLabel 25 'S_G_OB_AL-PRSE' -gltCode 25 'Dec : 1*Stop -1*Go : Outcome : 1*Bad Context : 1*AL -1*(PR+SE)' \
 	-gltLabel 26 'S_G_OG_AL-PRSE' -gltCode 26 'Dec : 1*Stop -1*Go : Outcome : 1*Good Context : 1*AL -1*(PR+SE)' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \

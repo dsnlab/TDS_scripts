@@ -13,12 +13,12 @@
 module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
-cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Outcomes
+cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Outcomes/V2
 	3dMVM -prefix OutcomesXContextTDS2 \
 	-jobs 28 \
 	-wsVars  "Outcome*Context" \
 	-SS_type 3 \
-	-num_glt 12 \
+	-num_glt 15 \
 	-gltLabel 1 'OG-OB_AL-SE' -gltCode 1   'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
 	-gltLabel 2 'OG-OB_AL-PR' -gltCode 2   'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
 	-gltLabel 3 'OG-OB_PR-SE' -gltCode 3   'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
@@ -31,6 +31,9 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Outcomes
 	-gltLabel 10 'OB_AL-SE' -gltCode 10  'Outcome : 1*Bad Context : 1*AL -1*SE' \
 	-gltLabel 11 'OB_AL-PR' -gltCode 11  'Outcome : 1*Bad Context : 1*AL -1*PR' \
 	-gltLabel 12 'OB_PR-SE' -gltCode 12  'Outcome : 1*Bad Context : 1*PR -1*SE' \
+	-gltLabel 13 'OB_AL-PRSE' -gltCode 13  'Outcome : 1*Bad Context : 1*AL -1*(PR+SE)' \
+	-gltLabel 14 'OG_AL_PRSE' -gltCode 14  'Outcome : 1*Good Context : 1*AL -1*(PR+SE)' \
+	-gltLabel 15 'OG-OB_AL-PRSE' -gltCode 15   'Outcome : 1*Good -1*Bad Context : 1*AL -1*(PR+SE)' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Outcome Context Group InputFile \
