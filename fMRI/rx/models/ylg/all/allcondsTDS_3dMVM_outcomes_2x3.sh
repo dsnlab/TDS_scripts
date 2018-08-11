@@ -11,6 +11,7 @@
 #SBATCH --partition=short,fat
 
 module load prl afni/17.3.00
+export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Outcomes
 	3dMVM -prefix OutcomesXContextTDS2 \
