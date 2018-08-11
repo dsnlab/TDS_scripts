@@ -10,11 +10,11 @@
 #SBATCH --mem-per-cpu=4000
 #SBATCH --partition=short,fat
 
-export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 module load prl afni/17.3.00
+export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
-cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Outcomes
-	3dMVM -prefix OutcomesXContextTDS2 \
+cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Decisions
+	3dMVM -prefix DecXOutcomesXContextTDS2 \
 	-jobs 28 \
 	-wsVars  "Dec*Outcome*Context" \
 	-SS_type 3 \
