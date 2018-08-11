@@ -40,18 +40,18 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Combined
 	-gltLabel 19 'S_G_AL-PR' -gltCode 19 'Dec : 1*Stop -1*Go Context : 1*AL -1*PR' \
 	-gltLabel 20 'S_G_AL-SE' -gltCode 20 'Dec : 1*Stop -1*Go Context : 1*AL -1*SE' \
 	-gltLabel 21 'S_G_PR-SE' -gltCode 21 'Dec : 1*Stop -1*Go Context : 1*PR -1*SE' \
-	-gltLabel 22 'S_G_AL-PR' -gltCode 22 'Dec : 1*Stop Context : 1*AL -1*PR' \
-	-gltLabel 23 'S_G_AL-SE' -gltCode 23 'Dec : 1*Stop Context : 1*AL -1*SE' \
-	-gltLabel 24 'S_G_PR-SE' -gltCode 24 'Dec : 1*Stop Context : 1*PR -1*SE' \
-	-gltLabel 25 'S_G_AL-PR' -gltCode 25 'Dec : 1*Go Context : 1*AL -1*PR' \
-	-gltLabel 26 'S_G_AL-SE' -gltCode 26 'Dec : 1*Go Context : 1*AL -1*SE' \
-	-gltLabel 27 'S_G_PR-SE' -gltCode 27 'Dec : 1*Go Context : 1*PR -1*SE' \
-	-gltLabel 28 'G_S_OG_AL-SE'  -gltCode 28  'Outcome : 1*Good Context : 1*AL -1*SE' \
-	-gltLabel 29 'G_S_OG_AL-PR'  -gltCode 29  'Outcome : 1*Good Context : 1*AL -1*PR' \
-	-gltLabel 30 'G_S_OG_PR-SE'  -gltCode 30  'Outcome : 1*Good Context : 1*PR -1*SE' \
-	-gltLabel 31 'G_S_OG_AL-SE'  -gltCode 31  'Outcome : 1*Bad Context : 1*AL -1*SE' \
-	-gltLabel 32 'G_S_OG_AL-PR'  -gltCode 32  'Outcome : 1*Bad Context : 1*AL -1*PR' \
-	-gltLabel 33 'G_S_OG_PR-SE'  -gltCode 33  'Outcome : 1*Bad Context : 1*PR -1*SE' \
+	-gltLabel 22 'S_AL-PR' -gltCode 22 'Dec : 1*Stop Context : 1*AL -1*PR' \
+	-gltLabel 23 'S_AL-SE' -gltCode 23 'Dec : 1*Stop Context : 1*AL -1*SE' \
+	-gltLabel 24 'S_PR-SE' -gltCode 24 'Dec : 1*Stop Context : 1*PR -1*SE' \
+	-gltLabel 25 'G_AL-PR' -gltCode 25 'Dec : 1*Go Context : 1*AL -1*PR' \
+	-gltLabel 26 'G_AL-SE' -gltCode 26 'Dec : 1*Go Context : 1*AL -1*SE' \
+	-gltLabel 27 'G_PR-SE' -gltCode 27 'Dec : 1*Go Context : 1*PR -1*SE' \
+	-gltLabel 28 'OG_AL-SE' -gltCode 28 'Outcome : 1*Good Context : 1*AL -1*SE' \
+	-gltLabel 29 'OG_AL-PR' -gltCode 29 'Outcome : 1*Good Context : 1*AL -1*PR' \
+	-gltLabel 30 'OG_PR-SE' -gltCode 30 'Outcome : 1*Good Context : 1*PR -1*SE' \
+	-gltLabel 31 'OB_AL-SE' -gltCode 31 'Outcome : 1*Bad Context : 1*AL -1*SE' \
+	-gltLabel 32 'OB_AL-PR' -gltCode 32 'Outcome : 1*Bad Context : 1*AL -1*PR' \
+	-gltLabel 33 'OB_PR-SE' -gltCode 33 'Outcome : 1*Bad Context : 1*PR -1*SE' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Dec Outcome Context Group InputFile \
