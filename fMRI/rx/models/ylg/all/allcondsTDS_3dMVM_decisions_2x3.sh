@@ -16,7 +16,7 @@ export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Decisions/2x3
 	3dMVM -prefix DecisionsXContextTDS2 \
 	-jobs 28 \
-	-wsVars  "Decision*Context" \
+	-wsVars  "Dec*Context" \
 	-SS_type 3 \
 	-num_glt 15 \
 	-gltLabel 1 'G_S_AL-SE' -gltCode 1   'Dec : 1*Go -1*Stop Context : 1*AL -1*SE' \
