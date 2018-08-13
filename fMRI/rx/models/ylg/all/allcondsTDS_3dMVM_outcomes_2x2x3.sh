@@ -18,7 +18,7 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Combined
 	-jobs 28 \
 	-wsVars  "Dec*Outcome*Context" \
 	-SS_type 3 \
-	-num_glt 34 \
+	-num_glt 33 \
 	-gltLabel 1 'OG-OB_G_AL-SE' -gltCode 1  'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*AL -1*SE' \
 	-gltLabel 2 'OG-OB_G_AL-PR' -gltCode 2  'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*AL -1*PR' \
 	-gltLabel 3 'OG-OB_G_PR-SE' -gltCode 3  'Dec : 1*Go Outcome : 1*Good -1*Bad Context : 1*PR -1*SE' \
@@ -52,7 +52,6 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Combined
 	-gltLabel 31 'OB_AL-SE' -gltCode 31 'Dec : 1*Stop & 1*Go Outcome : 1*Bad Context : 1*AL -1*SE' \
 	-gltLabel 32 'OB_AL-PR' -gltCode 32 'Dec : 1*Stop & 1*Go Outcome : 1*Bad Context : 1*AL -1*PR' \
 	-gltLabel 33 'OB_PR-SE' -gltCode 33 'Dec : 1*Stop & 1*Go Outcome : 1*Bad Context : 1*PR -1*SE' \
-	-gltLabel 34 'OB_PR-SE' -gltCode 34 'Dec : 1*Stop & 1*Go Outcome : 1*Bad Context : 1*AL - (1*PR & 1*SE)' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Dec Outcome Context Group InputFile \

@@ -13,8 +13,8 @@
 module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
-cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Decisions
-	3dMVM -prefix DecXOutcomesXContextTDS2 \
+cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/3dMVM/Decisions/V2
+	3dMVM -prefix DecXOutcomesXContextTDS1 \
 	-jobs 28 \
 	-wsVars  "Dec*Outcome*Context" \
 	-SS_type 3 \
@@ -57,7 +57,7 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM/Decisions
 	109	Stop Good	AL	EA	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/109/con_0007.nii \
 	109	Stop Good	PR	EA	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/109/con_0017.nii \
 	109	Stop Good	SE	EA	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/109/con_0027.nii \
-	109	Stop Bad	A/projects/dsnlab/tds/fMRI/L	EA	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/109/con_0010.nii \
+	109	Stop Bad	AL	EA	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/109/con_0010.nii \
 	109	Stop Bad	PR	EA	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/109/con_0020.nii \
 	109	Stop Bad	SE	EA	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/109/con_0030.nii \
 	113	Go Good	AL	EA	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/113/con_0006.nii \
