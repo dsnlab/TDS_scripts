@@ -29,7 +29,7 @@ REPLACESID='101'
 SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod.m
+SCRIPT=${STUDY}/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod.m
 
 # Tag the results files
 RESULTS_INFIX=fx_ylg_allconds_nopmod
