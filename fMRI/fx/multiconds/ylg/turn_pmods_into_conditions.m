@@ -39,6 +39,9 @@ for i = 1:length(files)
     for k = 4:length(onsets)
         newonsets{k+3} = onsets{k};
     end
+    for k = 4:length(durations)
+        newdurations{k+3} = durations{k};
+    end
     clear('names', 'onsets', 'durations', 'pmod')
     names = newnames;
     onsets = newonsets;
