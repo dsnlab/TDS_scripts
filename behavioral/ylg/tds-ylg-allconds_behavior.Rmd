@@ -131,12 +131,12 @@ ylg = ylg_data %>%
 
 ylg$SID <- ylg$subject.name 
 # Check if events are present for all subjects
-# events_by_sid <- ylg %>% group_by(SID, condition) %>%
-#   summarize(n_good.go = sum(count1, na.rm=TRUE),
-#             n_bad.go = sum(count2, na.rm=TRUE),
-#             n_good.stop = sum(count3, na.rm=TRUE),
-#             n_bad.stop = sum(count4, na.rm=TRUE))
-# write.csv(events_by_sid, "/Volumes/TDS/behavior/YLG/processed/tds_events_by_sid.csv")
+events_by_sid <- ylg %>% group_by(SID, condition) %>%
+  summarize(n_good.go = sum(count1, na.rm=TRUE),
+            n_bad.go = sum(count2, na.rm=TRUE),
+            n_good.stop = sum(count3, na.rm=TRUE),
+            n_bad.stop = sum(count4, na.rm=TRUE))
+write.csv(events_by_sid, "/Volumes/TDS/behavior/YLG/processed/tds_events_by_sid.csv")
 
 # Convert to factors
 ylg$run_index <- as.factor(ylg$run_index)
