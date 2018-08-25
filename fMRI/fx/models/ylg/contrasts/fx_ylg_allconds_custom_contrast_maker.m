@@ -1,11 +1,11 @@
 %NEEDS TO BE GENERALIZED 
 % check for correct number of motion regressors, and other things
 
-SPM_PATH='/projects/dsnlab/SPM12/';
-multicondDir='/projects/dsnlab/tds/fMRI/analysis/fx/multicond/ylg/';
-contrastJobMat='/projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_simple.m'; %.m file for version control and readability
-outputDir='/projects/dsnlab/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_simple/';
-outprefix='fx_ylg_allconds_';
+SPM_PATH='/projects/dsnlab/shared/SPM12/';
+multicondDir='/projects/dsnlab/shared/tds/fMRI/analysis/fx/multicond/ylg/pmods_to_conditions/';
+contrastJobMat='/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_nopmod_cons.m'; %.m file for version control and readability
+outputDir='/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_nopmod_cons/';
+outprefix='fx_ylg_allconds_nopmod';
 outpostfix='.mat';
 outcomeCSV=fullfile(outputDir, 'multicondinfo-base.csv');  
 numColsPerRun=7; % how many columns per run in the template file?
@@ -13,7 +13,7 @@ numRuns=3; % how many runs in the template file?
 excludeThese={'101' '102' '104' '105' '106' '108' '110' '111' '139' '158' '189'}; % via Jessica
 
 %You shouldn't need to change these options unless the multiple conditions setup has changed substantially
-numCondsWithoutPenalties=4; %this is the number of conditions when one has no penalty conditions (doesn't include pmods either)
+numCondsWithoutPenalties=6; %this is the number of conditions when one has no penalty conditions (doesn't include pmods either)
 expression='multicond_decout_pmod_(?<pid>[0-9]{3})_stop(?<run>\w+)\.mat'; %regular expression for extracting information from multicond file names.
 prefix='multicond_decout_pmod_';
 midfix='_stop';
@@ -27,7 +27,7 @@ addpath(SPM_PATH);
 spm_jobman('initcfg');
 
 mcCSVFID=fopen(outcomeCSV,'w'); 
-fprintf(mcCSVFID, 'pid, run, dec, decgo, good, goodgo, bad, badgo, pendec, penout\n');
+fprintf(mcCSVFID, 'pid, run, go, stop, go_good_o, stop_good_o, go_bad_o, stop_bad_o, pendec, penout\n');
 fclose(mcCSVFID);
 
 run(contrastJobMat);
@@ -60,7 +60,7 @@ for(pid_i = 1:length(uniquePIDs))
     for(run_i = 1:length(uniqueRuns))
         display(['Run index: ', num2str(run_i)]);
         filename=[prefix uniquePIDs{pid_i} midfix uniqueRuns{run_i} postfix];
-        runConds=load(fullfile(multicondDir,filename), '-mat', 'names','onsets','pmod');
+        runConds=load(fullfile(multicondDir,filename), '-mat', 'names','onsets');
         nNamedConds=length(runConds.names);
         if(~nNamedConds==length(runConds.onsets))
             error(['names length not equal to onsets length for pid:' uniquePIDs{pid_i} ...
@@ -78,7 +78,7 @@ for(pid_i = 1:length(uniquePIDs))
             nPenOut=length(runConds.onsets{6});
         end
         mcCSVFID=fopen(outcomeCSV,'a');  %'a' = append to the prev file
-        %fprintf(mcCSVFID, 'pid, run, dec, decgo, good, goodgo, bad, badgo, pendec, penout\n');
+        %fprintf(mcCSVFID, 'pid, run, go, stop, go_good_o, stop_good_o, go_bad_o, stop_bad_o, pendec, penout\n');
         fprintf(mcCSVFID, '%s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n', ...
             uniquePIDs{pid_i}, uniqueRuns{run_i}, ...
             length(runConds.onsets{1}), sum(runConds.pmod(1).param{1}==.5), ...

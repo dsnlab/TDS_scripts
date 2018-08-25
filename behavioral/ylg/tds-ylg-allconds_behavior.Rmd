@@ -129,7 +129,8 @@ ylg = ylg_data %>%
   mutate(count3 = ifelse(event==3, 1, 0)) %>%
   mutate(count4 = ifelse(event==4, 1, 0))
 
-ylg$SID <- ylg$subject.name 
+ylg$SID <- ylg$subject.name
+
 # Check if events are present for all subjects
 events_by_sid <- ylg %>% group_by(SID, condition) %>%
   summarize(n_good.go = sum(count1, na.rm=TRUE),
@@ -320,7 +321,7 @@ summary(condition.model)
 # condition3  -0.12626    0.05652  -2.234   0.0255 *  
 # condition4  -0.31146    0.05632  -5.530 3.21e-08 ***
 
-#Collapsed across runs within social context, however, teens stop more in both social context, than they do when they play alone.
+#Collapsed across runs within social context, however, teens stop less in both social context, than they do when they play alone.
 
 
 null.model <- glmer(stop ~ (1|SID), data=social_df, family='binomial')
@@ -497,7 +498,10 @@ df_RWR_fMRI <- left_join(df_fMRI, RWR_qualtrics_data, by= "SID")
 
 ```
 
+
+##################################
 # TASK CORRELATIONS RISK WITH RWB
+##################################
 ```{r}
 #are risk decisions in the scanner correlated with impuslivity and sensation seeking out of the scanner?
 null.model <- aov(BIS.15_bis_total_score ~ go + (1|SID), data=df_RWR_fMRI)
@@ -879,6 +883,60 @@ summary(null.model)
 # condition4   0.214861   0.068274   3.147  0.00165 ** 
 # gender1     -0.062708   0.125213  -0.501  0.61650    
 # iq_z        -0.002919   0.080241  -0.036  0.97099   
+```
+
+#####################################################################
+## Social Context on Game Time ##
+#####################################################################
+```{r}
+# Run effects on the proportion of Go decisions
+null.model <- lm(time ~ (1|SID), data=df_fMRI)
+run.model <- lm(time ~ run_index + (1|SID), data=df_fMRI)
+anova(null.model, run.model)     
+#   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+# 1   8399 151.42                                  
+# 2   8394 147.98  5     3.439 39.015 < 2.2e-16 ***
+summary(run.model) 
+# Fixed effects:
+#              Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)  2.314269   0.003549 652.169  < 2e-16 ***
+# run_index4   0.030740   0.005018   6.125 9.45e-10 ***
+# run_index5  -0.018605   0.005018  -3.707 0.000211 ***
+# run_index6  -0.015427   0.005018  -3.074 0.002118 ** 
+# run_index7  -0.011105   0.005018  -2.213 0.026942 *  
+# run_index8  -0.034732   0.005018  -6.921 4.82e-12 ***
+
+#Game time decreased across runs-- getting better.
+
+# Condition effects on the proportion of Go decisions
+null.model <- lm(time ~ (1|SID), data=df_fMRI)
+condition.model <- lm(time ~ condition + (1|SID), data=df_fMRI)
+anova(null.model, condition.model)  
+#   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+# 1   8399 151.42                                  
+# 2   8397 149.04  2    2.3797 67.037 < 2.2e-16 ***
+summary(condition.model)  
+#  Fixed effects:
+#              Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)  2.329639   0.002518 925.292   <2e-16 ***
+# condition3  -0.032386   0.003561  -9.096   <2e-16 ***
+# condition4  -0.038288   0.003561 -10.753   <2e-16 ***
+
+#consistent collapsed across runs
+
+social_df <- df_fMRI %>% filter(condition != "2")
+null.model <- lm(time ~ (1|SID), data=social_df)
+condition.model <- lm(time ~ condition + (1|SID), data=social_df)
+anova(null.model, condition.model)  
+#   Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+# 1   5599 100.40                              
+# 2   5598 100.35  1  0.048764 2.7202 0.09914 .
+summary(null.model) 
+# Fixed effects:
+#            Estimate Std. Error t value Pr(>|t|)    
+# (Intercept) 2.294302   0.001789    1282   <2e-16 ***
+
+#when compare social, no difference 
 ```
 
 
