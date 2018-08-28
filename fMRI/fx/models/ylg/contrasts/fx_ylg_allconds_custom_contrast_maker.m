@@ -1,5 +1,25 @@
-%NEEDS TO BE GENERALIZED 
-% check for correct number of motion regressors, and other things
+% This script takes a template contrast batch .m file that has contrasts
+% only defined on each of the condition columns that all participants
+% should have. That is, the conditions we care about in the design matrix
+% are the decisions and outcomes (this entails 7 conditions including
+% GAMEOVER events. However, participants will also have columns for penalty
+% conditions and motion regressors. The script reads the participant's
+% multiple conditions file to determine whether to include 0 padding in the
+% contrasts for penalty conditions, and also 0 pads the contrasts by the
+% number of motion regressors, set below.
+%
+% This is necessary because the contrasts are defined with all runs
+% concatentated, so the motion and penalty conditions come between each set
+% of contrasts we care about.
+%
+% To use this file, you should simply be able to change the paths and other
+% options below to match your configuration. The ground truth against which
+% to compare these options is the design matrix for the first level models.
+% Whether the columns are defined as conditions or pmods is of no
+% importance, except to the part of the script that saves a tally of events
+% for each condition. You can find this part below and alter it so it
+% reports pmods if necessary.
+
 
 SPM_PATH='/projects/dsnlab/shared/SPM12/';
 multicondDir='/projects/dsnlab/shared/tds/fMRI/analysis/fx/multicond/ylg/pmods_to_conditions/';
@@ -10,12 +30,16 @@ outpostfix='.mat';
 outcomeCSV=fullfile(outputDir, 'multicondinfo-base.csv');  
 numColsPerRun=7; % how many columns per run in the template file?
 numRuns=3; % how many runs in the template file?
+nMotionRegressors=5; %how many columns are used for motion correction
 excludeThese={'101' '102' '104' '105' '106' '108' '110' '111' '139' '158' '189'}; % via Jessica
 
 %You shouldn't need to change these options unless the multiple conditions setup has changed substantially
-numCondsWithoutPenalties=6; %this is the number of conditions when one has no penalty conditions (doesn't include pmods either)
+numCondsWithoutPenalties=7; %this is the number of conditions when one has no penalty conditions - should include GAMEOVER (doesn't include pmods)
 expression='multicond_decout_pmod_(?<pid>[0-9]{3})_stop(?<run>\w+)\.mat'; %regular expression for extracting information from multicond file names.
-prefix='multicond_decout_pmod_';
+
+%this determines the filename for the multicond file to be read to infer
+%how to adjust the contrast coding.
+prefix='multicond_decout_pmod_'; 
 midfix='_stop';
 postfix='.mat';
 
@@ -36,7 +60,8 @@ if(any(cellfun(@(x) length(x.tcon.weights)~=numColsPerRun*numRuns,...
     contrastJobBatch.matlabbatch{1}.spm.stats.con.consess)));
     error(['Template file has wrong length for at least one contrast (all should be ', num2str(numColsPerRun*numRuns), ' )']);
 end
-%if a multicond has penalty conditions, add 7 zeros, otherwise, add 5
+%if a multicond has penalty conditions, add 7 zeros, otherwise, add just
+%the 5 for motion parameters
 
 dirsearchstring=fullfile(multicondDir, 'multicond_decout_pmod_*stop*mat');
 
@@ -66,24 +91,29 @@ for(pid_i = 1:length(uniquePIDs))
             error(['names length not equal to onsets length for pid:' uniquePIDs{pid_i} ...
                 ' run:' uniqueRuns{run_i} '!']);
         end
-        if(nNamedConds ~= 4 && nNamedConds ~= 6)
+        if(~ismember(nNamedConds, [numCondsWithoutPenalties,numCondsWithoutPenalties+2]))
             error(['Num conditions = ' num2str(length(runConds.names)) ...
                 ' for pid:' uniquePIDs{pid_i} ...
-                ' run:' uniqueRuns{run_i} ', but should be 4 or 6!']);
+                ' run:' uniqueRuns{run_i} ', but should be ' ...
+                num2str(numCondsWithoutPenalties) ' or ' ...
+                num2str(numCondsWithoutPenalties + 2) '!']);
         end
         nExtraConds{run_i} = nNamedConds - numCondsWithoutPenalties;
         nPenDec=0; nPenOut=0;
-        if(nNamedConds == 6)
-            nPenDec=length(runConds.onsets{5});
-            nPenOut=length(runConds.onsets{6});
+        if(nNamedConds == numCondsWithoutPenalties+2)
+            nPenDec=length(runConds.onsets{numCondsWithoutPenalties+1});
+            nPenOut=length(runConds.onsets{numCondsWithoutPenalties+2});
         end
         mcCSVFID=fopen(outcomeCSV,'a');  %'a' = append to the prev file
         %fprintf(mcCSVFID, 'pid, run, go, stop, go_good_o, stop_good_o, go_bad_o, stop_bad_o, pendec, penout\n');
-        fprintf(mcCSVFID, '%s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n', ...
+        %This section is not flexible to changes between pmod and non-pmod
+        %style models. But it is also just here to keep track of how many
+        %events each person has for later checking.
+        fprintf(mcCSVFID, '%s, %s, %d, %d, %d, %d, %d, %d, %d, %d\n', ...
             uniquePIDs{pid_i}, uniqueRuns{run_i}, ...
-            length(runConds.onsets{1}), sum(runConds.pmod(1).param{1}==.5), ...
-            length(runConds.onsets{2}), sum(runConds.pmod(2).param{1}==.5), ...
-            length(runConds.onsets{3}), sum(runConds.pmod(3).param{1}==.5), ...
+            length(runConds.onsets{1}), length(runConds.onsets{2}), ...
+            length(runConds.onsets{3}), length(runConds.onsets{4}), ...
+            length(runConds.onsets{5}), length(runConds.onsets{6}), ...
             nPenDec, nPenOut);
         fclose(mcCSVFID);
     end
@@ -93,7 +123,7 @@ for(pid_i = 1:length(uniquePIDs))
     for(consess_i = 1:length(matlabbatch{1}.spm.stats.con.consess))
         runweights={};
         for(run_i = 1:length(uniqueRuns))
-            runweights{run_i}=[matlabbatch{1}.spm.stats.con.consess{consess_i}.tcon.weights([1:7]+7*(run_i-1)) ...
+            runweights{run_i}=[matlabbatch{1}.spm.stats.con.consess{consess_i}.tcon.weights([1:numColsPerRun]+numColsPerRun*(run_i-1)) ...
                 zeros(1, (5 + nExtraConds{run_i}))];
         end
         newWeights = cell2mat(runweights);
