@@ -42,7 +42,7 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/Outcom
 	-gltLabel 21 'SB_SE' -gltCode 21 'Outcome : 1*StopBad Context : 1*SE' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
-	Subj Dec Outcome Context Group InputFile \
+	Subj Outcome Context Group InputFile \
 	109	GoGood	AL	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0006.nii \
 	109	GoGood	PR	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0016.nii \
 	109	GoGood	SE	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0026.nii \
