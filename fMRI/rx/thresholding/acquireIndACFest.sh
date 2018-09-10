@@ -8,7 +8,7 @@
 rx_path=/projects/dsnlab/tds/fMRI/analysis/rx
 module load afni
 #export PATH=/usr/local/afni_16.1.06:${PATH} # set path to latest AFNI version
-cd ${rx_path}/cyb/group_comp/flexi_2x2x2 #rx directory w/ residuals
+cd ${rx_path}/cyb/tds2_N69/F_conj_pmod_flexi_rsq_anger #rx directory w/ residuals
 
 # estimate acf parameters for per subject and save this output to a log file
 for i in Res_* 

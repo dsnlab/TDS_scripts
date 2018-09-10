@@ -12,7 +12,7 @@ args = commandArgs(trailingOnly=TRUE)
 # Inputs
 if (length(args)==0) {
   rm(list=ls())
-  rx_directory="/projects/dsnlab/tds/fMRI/analysis/rx/ylg/alone/tds2_n79/regr/cov_puberty/9-bad_go-stop"
+  rx_directory="/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69/F_conj_pmod_flexi_rsq_anger"
 } else if (length(args)==1) {
   rx_directory=args[1]
 } else {
