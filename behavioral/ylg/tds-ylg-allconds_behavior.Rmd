@@ -46,47 +46,72 @@ demo <- demo %>%
 ## Filter demo_data (N=81)
 no_session2 = c(118, 123, 147, 148, 149, 153, 154, 166, 180)
 behaviorals = c(103, 107, 112, 138, 143, 176, 191)
-demo_filtered <- demo %>% filter(SID < 300) %>% 
+pilot_cyberball = c(101, 102, 104, 105, 106, 108, 110, 111)
+motion_dropout = c(189, 158, 139)
+demo_filtered_context <- demo %>% filter(SID < 300) %>% 
   filter(!SID %in% no_session2) %>% 
-  filter(!SID %in% behaviorals)
+  filter(!SID %in% behaviorals)%>%
+  filter(!SID %in% pilot_cyberball) %>%
+  filter(!SID %in% motion_dropout)
 
-#demo_filtered %>% group_by(age_group) %>% summarize(n=n()) # n for each age group
-#demo_filtered %>% group_by(pds_group) %>% summarize(n=n())
+# demo_filtered_context %>% group_by(age_group) %>% summarize(n=n()) # n for each age group
+# demo_filtered_context %>% group_by(pds_group) %>% summarize(n=n())
 
-#PDS_mean_scores <- demo_filtered %>% distinct(SID, gender, PDS_pds_gender_score, PDS_mean_score) %>% filter(!grepl("189|158|160|174", SID)) 
-#write.csv(PDS_mean_scores, file = 'tds2_PDS_mean_score_n77.csv')
+PDS_mean_scores <- demo_filtered_context %>% distinct(SID, gender, PDS_pds_gender_score, PDS_mean_score) %>% filter(!grepl("189|158|160|174", SID)) 
+write.csv(PDS_mean_scores, file = 'tds2_PDS_mean_score_n68.csv')
 ```
 #############
-## TABLE 1 PAPER 1##
+## TABLE 1 ##
 #############
 ```{r}
 # Age by gender
-age_by_sex<-demo_filtered %>% filter(!is.na(age)) %>% group_by(gender) %>% 
+age_by_sex<-demo_filtered_context %>% filter(!is.na(age)) %>% group_by(gender) %>% 
   summarize(mean = mean(age, na.rm=T), sd = sd(age, na.rm=T), 
             min = min(age, na.rm=T), max = max(age, na.rm=T),
-            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) # n=42 females
-t.test(demo_filtered$age~demo_filtered$gender) #t = -0.87254, df = 78.303, p-value = 0.3856 (m=13.9, f=14.2)
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) # n=37 females
+t.test(demo_filtered_context$age~demo_filtered_context$gender) 
+      # t = -0.43967, df = 67.653, p-value = 0.6616
+      # alternative hypothesis: true difference in means is not equal to 0
+      # 95 percent confidence interval:
+      #  -0.8864616  0.5663797
+      # sample estimates:
+      # mean in group 0 mean in group 1 
+      #        14.05212        14.21216 
 
 # IQ by gender
-iq_by_sex<-demo_filtered %>% filter(!is.na(iq)) %>% group_by(gender) %>% 
+iq_by_sex<-demo_filtered_context %>% filter(!is.na(iq)) %>% group_by(gender) %>% 
   summarize(mean = mean(iq, na.rm=T), sd = sd(iq, na.rm=T), 
             min = min(iq, na.rm=T), max = max(iq, na.rm=T),
             n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
-t.test(demo_filtered$iq~demo_filtered$gender) #t = 0.05078, df = 78.04, p-value = 0.9596 (m=107.2, f=107.1)
+t.test(demo_filtered_context$iq~demo_filtered_context$gender) 
+      # t = -0.74177, df = 67.989, p-value = 0.4608
+      # alternative hypothesis: true difference in means is not equal to 0
+      # 95 percent confidence interval:
+      #  -7.609971  3.485483
+      # sample estimates:
+      # mean in group 0 mean in group 1 
+      #        106.4242        108.4865 
 
 # PDS score by gender
-pds_by_sex<-demo_filtered %>% filter(!is.na(PDS_mean_score)) %>% group_by(gender) %>% 
+pds_by_sex<-demo_filtered_context %>% filter(!is.na(PDS_mean_score)) %>% group_by(gender) %>% 
   summarize(mean = mean(PDS_mean_score, na.rm=T), sd = sd(PDS_mean_score, na.rm=T),
             min = min(PDS_mean_score, na.rm=T), max = max(PDS_mean_score, na.rm=T),
             n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
-t.test(demo_filtered$PDS_mean_score~demo_filtered$gender) #t = -5.3362, df = 76.876, p-value = 9.286e-07 (m=2.4, f=3.1)
+t.test(demo_filtered_context$PDS_mean_score~demo_filtered_context$gender) 
+      # t = -4.6755, df = 65.396, p-value = 1.514e-05
+      # alternative hypothesis: true difference in means is not equal to 0
+      # 95 percent confidence interval:
+      #  -0.9991348 -0.4010977
+      # sample estimates:
+      # mean in group 0 mean in group 1 
+      #        2.454839        3.154955 
 ```
-####################################
-## SUPPLEMENTARY FIGURE S1 PAPER 1##
-####################################
+#############################
+## SUPPLEMENTARY FIGURE S1 ##
+#############################
 ```{r}
 # Part A: Gender by age distribution
-fig_s1a <- ggplot(demo_filtered, aes(x = age_rnd, fill = gender_flip)) +
+fig_s1a <- ggplot(demo_filtered_context, aes(x = age_rnd, fill = gender_flip)) +
   geom_bar(position = 'dodge') +
   #facet_grid(.~tds_group, scales='free', labeller=as_labeller(group_labels)) +
   labs(x='Age', y='Number of participants', fill='Sex') +
@@ -95,7 +120,7 @@ fig_s1a <- ggplot(demo_filtered, aes(x = age_rnd, fill = gender_flip)) +
 ggsave('fig_s1a.png', fig_s1a)
 
 # Part B: Gender by pubertal stage distribution
-fig_s1b <- ggplot(demo_filtered, aes(x = PDS_stage, fill = gender_flip)) +
+fig_s1b <- ggplot(demo_filtered_context, aes(x = PDS_stage, fill = gender_flip)) +
   geom_bar(position = 'dodge') +
   #facet_grid(.~tds_group, scales='free', labeller=as_labeller(group_labels)) +
   labs(x='Mean PDS score', y='Number of participants', fill='Sex') +
@@ -474,6 +499,15 @@ fig_2d <- ggplot(plot_group_stop_nocar, aes(x = run_index, y = mean, group=1)) +
 ggsave('fig_2d.png', fig_2d)
 ```
 
+
+######################
+Task Manipulation Test
+######################
+
+```{r}
+manipulation_test <- qualtrics_data %>% select(SID, TES)
+
+```
 
 ###############################################################
 ## Social Context effects on GO DECISIONS W/ RW RISK BEHAVIOR##

@@ -22,7 +22,7 @@ STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 SUBJLIST=`cat subject_list_fx_allconds_nopmod_main.txt`
 
 #Which SID should be replaced?
-REPLACESID='101'
+REPLACESID='109'
 
 #SPM Path
 SPM_PATH=/projects/dsnlab/shared/SPM12
