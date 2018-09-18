@@ -1,2 +1,2 @@
 spm('defaults','fMRI')
-load('/Users/ralph/Documents/tds/tds_repo/fMRI/scripts/fx/models/ylg/contrasts/fx_ylg_allconds_con_base_53/fx_ylg_allconds_101.mat')
+load('/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_nopmod_cons/109_fx_ylg_allconds_nopmod_cons.mat')
