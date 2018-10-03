@@ -25,9 +25,9 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/Outcom
 	-gltLabel 4 'GG_GS_AL-SE' -gltCode 4  'Outcome : 1*GoGood -1*StopGood Context : 1*AL -1*SE' \
 	-gltLabel 5 'GG_GS_AL-PR' -gltCode 5  'Outcome : 1*GoGood -1*StopGood Context : 1*AL -1*PR' \
 	-gltLabel 6 'GG_GS_PR-SE' -gltCode 6  'Outcome : 1*GoGood -1*StopGood Context : 1*PR -1*SE' \
-	-gltLabel 7 'GB_SB_AL-SE'  -gltCode 7  'Outcome : 1*GoBad - 1*StopBad Context : 1*AL -1*SE' \
-	-gltLabel 8 'GB_SB_AL-PR'  -gltCode 8  'Outcome : 1*GoBad - 1*StopBad Context : 1*AL -1*PR' \
-	-gltLabel 9 'GB_SB_PR-SE'  -gltCode 9  'Outcome : 1*GoBad - 1*StopBad Context : 1*PR -1*SE' \
+	-gltLabel 7 'GB_SB_AL-SE' -gltCode 7  'Outcome : 1*GoBad -1*StopBad Context : 1*AL -1*SE' \
+	-gltLabel 8 'GB_SB_AL-PR' -gltCode 8  'Outcome : 1*GoBad -1*StopBad Context : 1*AL -1*PR' \
+	-gltLabel 9 'GB_SB_PR-SE' -gltCode 9  'Outcome : 1*GoBad -1*StopBad Context : 1*PR -1*SE' \
 	-gltLabel 10 'GG_AL' -gltCode 10 'Outcome : 1*GoGood Context : 1*AL' \
 	-gltLabel 11 'GB_AL' -gltCode 11 'Outcome : 1*GoBad Context : 1*AL' \
 	-gltLabel 12 'SG_AL' -gltCode 12 'Outcome : 1*StopGood Context : 1*AL' \
@@ -114,7 +114,7 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/Outcom
 	117	StopGood	SE	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0027.nii \
 	117	StopBad	AL	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0010.nii \
 	117	StopBad	PR	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0020.nii \
-	117	StopBad	SE	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0029.nii \
+	117	StopBad	SE	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0030.nii \
 	119	GoGood	AL	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/119/con_0006.nii \
 	119	GoGood	PR	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/119/con_0016.nii \
 	119	GoGood	SE	control	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/119/con_0026.nii \

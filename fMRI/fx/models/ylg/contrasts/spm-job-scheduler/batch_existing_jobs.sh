@@ -7,13 +7,13 @@
 #    sbatch -a 0-[number of .mat files minus 1] batch_existing_jobs.sh directory/where/jobs/are/job_name_pattern*mat 
 #
 #SBATCH --job-name=spm_con
-#SBATCH --output=output/spm_con-%A_%a.log
+#SBATCH --output=/home/flournoy/output/spm_con-%A_%a.log
 #
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=2G
 
-SPM_PATH='/projects/dsnlab/SPM12'
+SPM_PATH='/projects/dsnlab/shared/SPM12'
 ADDITIONALOPTIONS="-singleCompThread"
 
 if [ "$#" -eq 0 ]; then
