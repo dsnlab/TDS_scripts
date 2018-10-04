@@ -29,8 +29,8 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/Outcom
 	-gltLabel 8 'Bad_AL-PR' -gltCode 8  'Outcome : 1*GoBad +1*StopBad Context : 1*AL -1*PR' \
 	-gltLabel 9 'Bad_PR-SE' -gltCode 9  'Outcome : 1*GoBad +1*StopBad Context : 1*PR -1*SE' \
 	-gltLabel 10 'StopO_AL-SE' -gltCode 10  'Outcome : 1*StopGood +1*StopBad Context : 1*AL -1*SE' \
-	-gltLabel 11 'StopO_AL-PR' -gltCode 11 'Outcome : 1**StopGood +1*StopBad Context : 1*AL -1*PR' \
-	-gltLabel 12 'StopO_PR-SE' -gltCode 12 'Outcome : 1**StopGood +1*StopBad Context : 1*PR -1*SE' \
+	-gltLabel 11 'StopO_AL-PR' -gltCode 11 'Outcome : 1*StopGood +1*StopBad Context : 1*AL -1*PR' \
+	-gltLabel 12 'StopO_PR-SE' -gltCode 12 'Outcome : 1*StopGood +1*StopBad Context : 1*PR -1*SE' \
 	-gltLabel 13 'GG_AL' -gltCode 13 'Outcome : 1*GoGood Context : 1*AL' \
 	-gltLabel 14 'GB_AL' -gltCode 14 'Outcome : 1*GoBad Context : 1*AL' \
 	-gltLabel 15 'SG_AL' -gltCode 15 'Outcome : 1*StopGood Context : 1*AL' \
