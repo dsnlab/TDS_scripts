@@ -14,32 +14,35 @@ module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/OutcomesXContext
-	3dMVM -prefix OutcomesXContextTDS2_nopmod \
+	3dMVM -prefix OutcomesXContextTDS2_nopmod_2 \
 	-jobs 28 \
 	-wsVars  "Outcome*Context" \
 	-SS_type 3 \
-	-num_glt 21 \
-	-gltLabel 1 'GG-GB_AL-SE' -gltCode 1  'Outcome : 1*GoGood -1*GoBad Context : 1*AL -1*SE' \
-	-gltLabel 2 'GG_GB_AL-PR' -gltCode 2  'Outcome : 1*GoGood -1*GoBad Context : 1*AL -1*PR' \
-	-gltLabel 3 'GG_GB_PR-SE' -gltCode 3  'Outcome : 1*GoGood -1*GoBad Context : 1*PR -1*SE' \
-	-gltLabel 4 'GG_GS_AL-SE' -gltCode 4  'Outcome : 1*GoGood -1*StopGood Context : 1*AL -1*SE' \
-	-gltLabel 5 'GG_GS_AL-PR' -gltCode 5  'Outcome : 1*GoGood -1*StopGood Context : 1*AL -1*PR' \
-	-gltLabel 6 'GG_GS_PR-SE' -gltCode 6  'Outcome : 1*GoGood -1*StopGood Context : 1*PR -1*SE' \
-	-gltLabel 7 'GB_SB_AL-SE' -gltCode 7  'Outcome : 1*GoBad -1*StopBad Context : 1*AL -1*SE' \
-	-gltLabel 8 'GB_SB_AL-PR' -gltCode 8  'Outcome : 1*GoBad -1*StopBad Context : 1*AL -1*PR' \
-	-gltLabel 9 'GB_SB_PR-SE' -gltCode 9  'Outcome : 1*GoBad -1*StopBad Context : 1*PR -1*SE' \
-	-gltLabel 10 'GG_AL' -gltCode 10 'Outcome : 1*GoGood Context : 1*AL' \
-	-gltLabel 11 'GB_AL' -gltCode 11 'Outcome : 1*GoBad Context : 1*AL' \
-	-gltLabel 12 'SG_AL' -gltCode 12 'Outcome : 1*StopGood Context : 1*AL' \
-	-gltLabel 13 'SB_AL' -gltCode 13 'Outcome : 1*StopBad Context : 1*AL' \
-	-gltLabel 14 'GG_PR' -gltCode 14 'Outcome : 1*GoGood Context : 1*PR' \
-	-gltLabel 15 'GB_PR' -gltCode 15 'Outcome : 1*GoBad Context : 1*PR ' \
-	-gltLabel 16 'SG_PR' -gltCode 16 'Outcome : 1*StopGood Context : 1*PR' \
-	-gltLabel 17 'SB_PR' -gltCode 17 'Outcome : 1*StopBad Context : 1*PR' \
-	-gltLabel 18 'GG_SE' -gltCode 18 'Outcome : 1*GoGood Context : 1*SE' \
-	-gltLabel 19 'GB_SE' -gltCode 19 'Outcome : 1*GoBad Context : 1*SE' \
-	-gltLabel 20 'SG_SE' -gltCode 20 'Outcome : 1*StopGood Context : 1*SE' \
-	-gltLabel 21 'SB_SE' -gltCode 21 'Outcome : 1*StopBad Context : 1*SE' \
+	-num_glt 24 \
+	-gltLabel 1 'GoO_AL-SE' -gltCode 1  'Outcome : 1*GoGood +1*GoBad Context : 1*AL -1*SE' \
+	-gltLabel 2 'GoO_AL-PR' -gltCode 2  'Outcome : 1*GoGood +1*GoBad Context : 1*AL -1*PR' \
+	-gltLabel 3 'GoO_PR-SE' -gltCode 3  'Outcome : 1*GoGood +1*GoBad Context : 1*PR -1*SE' \
+	-gltLabel 4 'Good_AL-SE' -gltCode 4  'Outcome : 1*GoGood +1*StopGood Context : 1*AL -1*SE' \
+	-gltLabel 5 'Good_AL-PR' -gltCode 5  'Outcome : 1*GoGood +1*StopGood Context : 1*AL -1*PR' \
+	-gltLabel 6 'Good_PR-SE' -gltCode 6  'Outcome : 1*GoGood +1*StopGood Context : 1*PR -1*SE' \
+	-gltLabel 7 'Bad_AL-SE' -gltCode 7  'Outcome : 1*GoBad +1*StopBad Context : 1*AL -1*SE' \
+	-gltLabel 8 'Bad_AL-PR' -gltCode 8  'Outcome : 1*GoBad +1*StopBad Context : 1*AL -1*PR' \
+	-gltLabel 9 'Bad_PR-SE' -gltCode 9  'Outcome : 1*GoBad +1*StopBad Context : 1*PR -1*SE' \
+	-gltLabel 10 'StopO_AL-SE' -gltCode 10  'Outcome : 1*StopGood +1*StopBad Context : 1*AL -1*SE' \
+	-gltLabel 11 'StopO_AL-PR' -gltCode 11 'Outcome : 1*StopGood +1*StopBad Context : 1*AL -1*PR' \
+	-gltLabel 12 'StopO_PR-SE' -gltCode 12 'Outcome : 1*StopGood +1*StopBad Context : 1*PR -1*SE' \
+	-gltLabel 13 'GG_AL' -gltCode 13 'Outcome : 1*GoGood Context : 1*AL' \
+	-gltLabel 14 'GB_AL' -gltCode 14 'Outcome : 1*GoBad Context : 1*AL' \
+	-gltLabel 15 'SG_AL' -gltCode 15 'Outcome : 1*StopGood Context : 1*AL' \
+	-gltLabel 16 'SB_AL' -gltCode 16 'Outcome : 1*StopBad Context : 1*AL' \
+	-gltLabel 17 'GG_PR' -gltCode 17 'Outcome : 1*GoGood Context : 1*PR' \
+	-gltLabel 18 'GB_PR' -gltCode 18 'Outcome : 1*GoBad Context : 1*PR ' \
+	-gltLabel 19 'SG_PR' -gltCode 19 'Outcome : 1*StopGood Context : 1*PR' \
+	-gltLabel 20 'SB_PR' -gltCode 20 'Outcome : 1*StopBad Context : 1*PR' \
+	-gltLabel 21 'GG_SE' -gltCode 21 'Outcome : 1*GoGood Context : 1*SE' \
+	-gltLabel 22 'GB_SE' -gltCode 22 'Outcome : 1*GoBad Context : 1*SE' \
+	-gltLabel 23 'SG_SE' -gltCode 23 'Outcome : 1*StopGood Context : 1*SE' \
+	-gltLabel 24 'SB_SE' -gltCode 24 'Outcome : 1*StopBad Context : 1*SE' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Outcome Context Group InputFile \
