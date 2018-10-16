@@ -44,11 +44,13 @@ colnames(subjectList)[1] <- "SID"
 # Find relevant NTS scores
 ```{r}
 # scored need threat scale
-setwd("/Volumes/TDS/behavior/Qualtrics/scoring_script_output")
+setwd("/Volumes/psy-ctn/psy-ctn/TDS/behavior/Qualtrics/scoring_script_output")
 df=as.data.frame(read.csv("TDS-2-auto_scored_scales_wide.csv", header=TRUE)) # input all scored data
 df.nts=df[,grepl("NTS", names(df))] # subset by NTS relevant
 df.nts$SID=df$SID
 df.nts=merge(df.nts, subjectList) #subset by 69 subjects in cyb analysis
+
+write.csv(df.nts, '/Volumes/psy-ctn/psy-ctn/TDS/behavior/CyberBall/nts.csv')
 
 # group average
 mean_ntsBelongingness=mean(df.nts$NTS_belongingness_score, na.rm=TRUE)/df.nts$NTS_belongingness_n_items[1]

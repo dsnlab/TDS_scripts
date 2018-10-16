@@ -11,8 +11,12 @@ subDir <- '/projects/dsnlab/tds/TDS_scripts/fMRI/fx/shell/schedule_spm_jobs/cyb/
 sub <- read.csv(paste0(subDir,'/subject_list_fx.txt'), header=F)
 colnames(sub)[1] <- "SID"
 
-demoDir <- '/Volumes/TDS/behavior/CyberBall/tds2_demographics'
-demo <- read.csv(paste0(demoDir,'/Cyb_demo.csv'))
+demoDir <- '/Volumes/psy-ctn/psy-ctn/TDS/behavior/CyberBall/'
+demo <- read.csv(paste0(demoDir,'tds2_demographics/Cyb_demo.csv'))
+
+rsq <- read.csv(paste0(demoDir,'tds2_rsq_imputed_centered.csv'))
+nts <- read.csv(paste0(demoDir,'nts.csv'))
+
 ```
 
 #Merge data and calculate age
@@ -32,6 +36,16 @@ mean(demo$Age) #14.22
 sd(demo$Age) #1.53
 
 summary(demo$Gender) #0:33 1:36
+
+temp <- merge(demo, rsq_exp, by = "SID")
+temp <- merge(temp, nts, by = "SID")
+temp$exp <- as.numeric(temp$exp)
+cor(temp$Age, temp$exp)
+cor(temp$Age, temp$NTS_total_score_score, use = "complete.obs")
+
+plot(temp$Age, temp$exp)
+plot(temp$Age, temp$NTS_total_score_score)
+
 ```
 
 #Write statistics
