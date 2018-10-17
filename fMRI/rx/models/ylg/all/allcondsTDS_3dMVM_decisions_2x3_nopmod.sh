@@ -18,6 +18,7 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/Decisi
 	-jobs 28 \
 	-wsVars  "Decision*Context" \
 	-SS_type 3 \
+	-resid	all2_residuals	\
 	-num_glt 18 \
 	-gltLabel 1 'D_AL-SE' -gltCode 1  'Decision : 1*DS +1*DG Context : 1*AL -1*SE' \
 	-gltLabel 2 'D_AL-PR' -gltCode 2  'Decision : 1*DS +1*DG Context : 1*AL -1*PR' \
