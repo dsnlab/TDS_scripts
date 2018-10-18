@@ -1,0 +1,132 @@
+
+
+Note that the PRL tree is NOT supported by RACS.
+
+Please contact user at sameer@cs.uoregon.edu for questions regarding this tree.
+
+
+** Error: 
+   Expecting 1 parameters for option "-SS_type".
+   Have 3 parameter(s) in string "3 -resid all2_residuals" instead.
+   NOTE that -resid in bad option above is not a recognized option.
+
+** Error: 
+   Error parsing arguments. See 3dMVM -help for details.
+++ Smallest FDR q [0 (Intercept) F] = 9.95461e-14
+++ Smallest FDR q [1 Decision F] = 1.32435e-12
+++ Smallest FDR q [2 Context F] = 0.00542918
+[7m*+ WARNING:[0m Smallest FDR q [3 Decision:Context F] = 0.283116 ==> few true single voxel detections
+++ Smallest FDR q [5 D_AL-SE t] = 0.0327226
+++ Smallest FDR q [7 D_AL-PR t] = 0.0671534
+++ Smallest FDR q [9 D_PR-SE t] = 0.0852466
+[7m*+ WARNING:[0m Smallest FDR q [11 DS_DG_AL-SE t] = 0.989019 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [13 DS_DG_AL-PR t] = 0.133438 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [15 DS_DG_PR-SE t] = 0.197391 ==> few true single voxel detections
+++ Smallest FDR q [17 DS_AL t] = 7.17281e-14
+++ Smallest FDR q [19 DG_AL t] = 7.51662e-14
+++ Smallest FDR q [21 DS_PR t] = 2.22649e-13
+++ Smallest FDR q [23 DG_PR t] = 3.68202e-14
+++ Smallest FDR q [25 DS_SE t] = 1.56304e-12
+++ Smallest FDR q [27 DG_SE t] = 1.2288e-13
+++ Smallest FDR q [29 DS_AL-SE t] = 0.0278599
+[7m*+ WARNING:[0m Smallest FDR q [31 DS_AL-PR t] = 0.210207 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [33 DS_PR-SE t] = 0.999703 ==> few true single voxel detections
+++ Smallest FDR q [35 DG_AL-SE t] = 0.0300928
+++ Smallest FDR q [37 DG_AL-PR t] = 0.0922947
+++ Smallest FDR q [39 DG_PR-SE t] = 0.0125184
+++ Smallest FDR q [0 (Intercept) F] = 9.95461e-14
+++ Smallest FDR q [1 Decision F] = 1.32435e-12
+++ Smallest FDR q [2 Context F] = 0.00542918
+[7m*+ WARNING:[0m Smallest FDR q [3 Decision:Context F] = 0.283116 ==> few true single voxel detections
+++ Smallest FDR q [5 D_AL-SE t] = 0.0327226
+++ Smallest FDR q [7 D_AL-PR t] = 0.0671534
+++ Smallest FDR q [9 D_PR-SE t] = 0.0852466
+[7m*+ WARNING:[0m Smallest FDR q [11 DS_DG_AL-SE t] = 0.989019 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [13 DS_DG_AL-PR t] = 0.133438 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [15 DS_DG_PR-SE t] = 0.197391 ==> few true single voxel detections
+++ Smallest FDR q [17 DS_AL t] = 7.17281e-14
+++ Smallest FDR q [19 DG_AL t] = 7.51662e-14
+++ Smallest FDR q [21 DS_PR t] = 2.22649e-13
+++ Smallest FDR q [23 DG_PR t] = 3.68202e-14
+++ Smallest FDR q [25 DS_SE t] = 1.56304e-12
+++ Smallest FDR q [27 DG_SE t] = 1.2288e-13
+++ Smallest FDR q [29 DS_AL-SE t] = 0.0278599
+[7m*+ WARNING:[0m Smallest FDR q [31 DS_AL-PR t] = 0.210207 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [33 DS_PR-SE t] = 0.999703 ==> few true single voxel detections
+++ Smallest FDR q [35 DG_AL-SE t] = 0.0300928
+++ Smallest FDR q [37 DG_AL-PR t] = 0.0922947
+++ Smallest FDR q [39 DG_PR-SE t] = 0.0125184
+[7m** ERROR:[0m output dataset name 'DecisionsXContextTDS2_nopmod' conflicts with existing file
+[7m** ERROR:[0m dataset NOT written to disk!
+++ Smallest FDR q [0 (Intercept) F] = 9.95461e-14
+++ Smallest FDR q [1 Decision F] = 1.32435e-12
+++ Smallest FDR q [2 Context F] = 0.00542918
+[7m*+ WARNING:[0m Smallest FDR q [3 Decision:Context F] = 0.283116 ==> few true single voxel detections
+++ Smallest FDR q [5 D_AL-SE t] = 0.0327226
+++ Smallest FDR q [7 D_AL-PR t] = 0.0671534
+++ Smallest FDR q [9 D_PR-SE t] = 0.0852466
+[7m*+ WARNING:[0m Smallest FDR q [11 DS_DG_AL-SE t] = 0.989019 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [13 DS_DG_AL-PR t] = 0.133438 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [15 DS_DG_PR-SE t] = 0.197391 ==> few true single voxel detections
+++ Smallest FDR q [17 DS_AL t] = 7.17281e-14
+++ Smallest FDR q [19 DG_AL t] = 7.51662e-14
+++ Smallest FDR q [21 DS_PR t] = 2.22649e-13
+++ Smallest FDR q [23 DG_PR t] = 3.68202e-14
+++ Smallest FDR q [25 DS_SE t] = 1.56304e-12
+++ Smallest FDR q [27 DG_SE t] = 1.2288e-13
+++ Smallest FDR q [29 DS_AL-SE t] = 0.0278599
+[7m*+ WARNING:[0m Smallest FDR q [31 DS_AL-PR t] = 0.210207 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [33 DS_PR-SE t] = 0.999703 ==> few true single voxel detections
+++ Smallest FDR q [35 DG_AL-SE t] = 0.0300928
+++ Smallest FDR q [37 DG_AL-PR t] = 0.0922947
+++ Smallest FDR q [39 DG_PR-SE t] = 0.0125184
+[7m** ERROR:[0m output dataset name 'DecisionsXContextTDS2_nopmod' conflicts with existing file
+[7m** ERROR:[0m dataset NOT written to disk!
+++ Smallest FDR q [0 (Intercept) F] = 9.95461e-14
+++ Smallest FDR q [1 Decision F] = 1.32435e-12
+++ Smallest FDR q [2 Context F] = 0.00542918
+[7m*+ WARNING:[0m Smallest FDR q [3 Decision:Context F] = 0.283116 ==> few true single voxel detections
+++ Smallest FDR q [5 D_AL-SE t] = 0.0327226
+++ Smallest FDR q [7 D_AL-PR t] = 0.0671534
+++ Smallest FDR q [9 D_PR-SE t] = 0.0852466
+[7m*+ WARNING:[0m Smallest FDR q [11 DS_DG_AL-SE t] = 0.989019 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [13 DS_DG_AL-PR t] = 0.133438 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [15 DS_DG_PR-SE t] = 0.197391 ==> few true single voxel detections
+++ Smallest FDR q [17 DS_AL t] = 7.17281e-14
+++ Smallest FDR q [19 DG_AL t] = 7.51662e-14
+++ Smallest FDR q [21 DS_PR t] = 2.22649e-13
+++ Smallest FDR q [23 DG_PR t] = 3.68202e-14
+++ Smallest FDR q [25 DS_SE t] = 1.56304e-12
+++ Smallest FDR q [27 DG_SE t] = 1.2288e-13
+++ Smallest FDR q [29 DS_AL-SE t] = 0.0278599
+[7m*+ WARNING:[0m Smallest FDR q [31 DS_AL-PR t] = 0.210207 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [33 DS_PR-SE t] = 0.999703 ==> few true single voxel detections
+++ Smallest FDR q [35 DG_AL-SE t] = 0.0300928
+++ Smallest FDR q [37 DG_AL-PR t] = 0.0922947
+++ Smallest FDR q [39 DG_PR-SE t] = 0.0125184
+[7m** ERROR:[0m output dataset name 'DecisionsXContextTDS2_nopmod' conflicts with existing file
+[7m** ERROR:[0m dataset NOT written to disk!
+++ Smallest FDR q [0 (Intercept) F] = 9.95461e-14
+++ Smallest FDR q [1 Decision F] = 1.32435e-12
+++ Smallest FDR q [2 Context F] = 0.00542918
+[7m*+ WARNING:[0m Smallest FDR q [3 Decision:Context F] = 0.283116 ==> few true single voxel detections
+++ Smallest FDR q [5 D_AL-SE t] = 0.0327226
+++ Smallest FDR q [7 D_AL-PR t] = 0.0671534
+++ Smallest FDR q [9 D_PR-SE t] = 0.0852466
+[7m*+ WARNING:[0m Smallest FDR q [11 DS_DG_AL-SE t] = 0.989019 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [13 DS_DG_AL-PR t] = 0.133438 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [15 DS_DG_PR-SE t] = 0.197391 ==> few true single voxel detections
+++ Smallest FDR q [17 DS_AL t] = 7.17281e-14
+++ Smallest FDR q [19 DG_AL t] = 7.51662e-14
+++ Smallest FDR q [21 DS_PR t] = 2.22649e-13
+++ Smallest FDR q [23 DG_PR t] = 3.68202e-14
+++ Smallest FDR q [25 DS_SE t] = 1.56304e-12
+++ Smallest FDR q [27 DG_SE t] = 1.2288e-13
+++ Smallest FDR q [29 DS_AL-SE t] = 0.0278599
+[7m*+ WARNING:[0m Smallest FDR q [31 DS_AL-PR t] = 0.210207 ==> few true single voxel detections
+[7m*+ WARNING:[0m Smallest FDR q [33 DS_PR-SE t] = 0.999703 ==> few true single voxel detections
+++ Smallest FDR q [35 DG_AL-SE t] = 0.0300928
+++ Smallest FDR q [37 DG_AL-PR t] = 0.0922947
+++ Smallest FDR q [39 DG_PR-SE t] = 0.0125184
+[7m** ERROR:[0m output dataset name 'DecisionsXContextTDS2_nopmod' conflicts with existing file
+[7m** ERROR:[0m dataset NOT written to disk!
