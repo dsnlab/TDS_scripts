@@ -18,6 +18,7 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/Outcom
 	-jobs 28 \
 	-wsVars  "Outcome*Context" \
 	-SS_type 3 \
+	-resid	all2_residuals	\
 	-num_glt 18 \
 	-gltLabel 1 'Out_AL-SE' -gltCode 1  'Outcome : 1*Good +1*Bad Context : 1*AL -1*SE' \
 	-gltLabel 2 'Out_AL-PR' -gltCode 2  'Outcome : 1*Good +1*Bad Context : 1*AL -1*PR' \
