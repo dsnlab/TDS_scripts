@@ -33,15 +33,16 @@ files <- lapply(file_list, FUN=function(file) {
               Z = mean(V8,na.rm=T)) %>%
     mutate(sid = sid) }) 
 
-# files <- rbindlist(files) %>%
-#   mutate(sid = as.numeric(gsub("sub-TAG","",sid)))
+files <- rbindlist(files)
+# %>%
+#   mutate(sid = as.numeric(sid))
 ```
 
 #import final DSD subject list and limit ACF estimates to these subjects 
 ```{r}
-dsd_overview <- read.csv('~/Desktop/dsd_overview.csv',header=T)
-dsd_overview <- dsd_overview %>% filter(final_sample==1)
-files <- files %>% filter(sid %in% dsd_overview$SID) #limit FX models to final dsd list (i.e. excluding those with bad motion)
+# dsd_overview <- read.csv('~/Desktop/dsd_overview.csv',header=T)
+# dsd_overview <- dsd_overview %>% filter(final_sample==1)
+# files <- files %>% filter(sid %in% dsd_overview$SID) #limit FX models to final dsd list (i.e. excluding those with bad motion)
 ```
 
 # calculate group-level ACF summary
