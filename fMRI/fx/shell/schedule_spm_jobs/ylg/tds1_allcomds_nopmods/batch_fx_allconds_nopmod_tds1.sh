@@ -23,7 +23,7 @@ SUBJLIST=`cat subject_list_fx_TDS1_full.txt`
 #SUBJLIST=`cat subject_list_fx_allconds_redo.txt`
 
 #Which SID should be replaced?
-REPLACESID='101'
+REPLACESID='301'
 
 #SPM Path
 SPM_PATH=/projects/dsnlab/shared/SPM12
@@ -32,7 +32,7 @@ SPM_PATH=/projects/dsnlab/shared/SPM12
 SCRIPT=${STUDY}/fMRI/fx/models/ylg/fx_ylg_TDS1_II_nonorth_nopmod.m
 
 # Tag the results files
-RESULTS_INFIX=fx_ylg_allconds_nopmod
+RESULTS_INFIX=fx_ylg_allconds_nopmod_tds1
 
 # Set output dir
 OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/ylg/tds1_allcomds_nopmods/output/
