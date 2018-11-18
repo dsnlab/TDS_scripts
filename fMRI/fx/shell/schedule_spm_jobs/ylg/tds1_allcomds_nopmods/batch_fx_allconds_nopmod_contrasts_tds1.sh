@@ -19,22 +19,22 @@ STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
 # Set subject list
 #SUBJLIST=`cat subject_list_fx_alone.txt`
-SUBJLIST=`cat subject_list_fx_allconds_nopmod_main.txt`
+SUBJLIST=`cat subject_list_fx_TDS1_full.txt`
 
 #Which SID should be replaced?
-REPLACESID='109'
+REPLACESID='301'
 
 #SPM Path
 SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_nopmod_cons.m
+SCRIPT=${STUDY}/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_nopmod_contrasts_tds1.m
 
 # Tag the results files
-RESULTS_INFIX=fx_ylg_allconds_nopmod_contrasts
+RESULTS_INFIX=fx_ylg_allconds_nopmod_contrasts_tds1
 
 # Set output dir
-OUTPUTDIR=/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod
+OUTPUTDIR=/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1
 
 # Set processor
 # use "qsub" for HPC
@@ -48,14 +48,14 @@ MAXJOBS=8
 
 #Only matters for slurm
 cpuspertask=1
-mempercpu=5G
+mempercpu=8G
 
 # Create and execute batch job
 if [ "${PROCESS}" == "slurm" ]; then 
 	for SUB in $SUBJLIST
 	do
 	 echo "submitting via qsub"
-	 sbatch --export=REPLACESID=$REPLACESID,SCRIPT=$SCRIPT,SUB=$SUB,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+	 sbatch --export=ALL,REPLACESID=$REPLACESID,SCRIPT=$SCRIPT,SUB=$SUB,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
 		 --job-name=${RESULTS_INFIX} \
 		 -o "${OUTPUTDIR}"/"${SUB}"_"${RESULTS_INFIX}".log \
 		 --cpus-per-task=${cpuspertask} \
