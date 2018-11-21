@@ -20,7 +20,7 @@ sub_dir=/projects/dsnlab/shared/tds/fMRI/subjects_tdsall/${SUB}
 #RUNS=(6)
 STOP=(stop3 stop4 stop5 stop6 stop7 stop8)
 # Make text file with residual files for each run
-for i in $STOP; do 
+for i in "${string[@]}"; do 
 	cd $sub_dir/$i
 	num=$(ls -l | grep -v ${i}_0*  | wc -l)
 	touch $fx_dir/residuals_${i}.txt 
@@ -38,7 +38,7 @@ module load fsl
 
 cd ${fx_dir}
 
-for i in $STOP; do
+for i in "${string[@]}"; do
 	echo "merging residuals for ${i}"
 	residual_files=`cat ${fx_dir}/residuals_${i}.txt`
 	fslmerge -t residuals_${i} ${residual_files}
@@ -52,7 +52,7 @@ echo ---------------------------------------------------------------------------
 
 module load afni
 
-for i in $STOP; do
+for i in "${string[@]}"; do
 	echo "calculating ACF parameters for ${i}"
 	3dFWHMx -acf -mask mask.nii residuals_${i}.nii.gz >> ACFparameters.1D
 done
