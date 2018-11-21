@@ -9,13 +9,13 @@
 
 
 # Set your study
-STUDY=/projects/dsnlab/shared/tag/TAG_scripts
+STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
 # Set subject list
 SUBJLIST=`cat subject_list_test.txt`
 
 # Which SID should be replaced?
-REPLACESID='001'
+REPLACESID='109'
 
 # Set shell script to execute
 SHELL_SCRIPT=job_fx_threshold.sh
@@ -24,18 +24,18 @@ SHELL_SCRIPT=job_fx_threshold.sh
 RESULTS_INFIX=fx_threshold
 
 # Set output dir and make it if it doesn't exist
-OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/dsd/wave1/output
+OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/ylg/tds2_allconds_nopmod/output
 
 if [ ! -d ${OUTPUTDIR} ]; then
 	mkdir -p ${OUTPUTDIR}
 fi
 
 # N runs for residual calculation
-RUNS=(1 2)
+#RUNS=(1 2)
 
 # Make text file with residual files for each run
-echo $(printf "Res_%04d.nii\n" {1..225}) > residuals_run1.txt
-echo $(printf "Res_%04d.nii\n" {226..450}) > residuals_run2.txt
+#echo $(printf "Res_%04d.nii\n" {1..225}) > residuals_run1.txt
+#echo $(printf "Res_%04d.nii\n" {226..450}) > residuals_run2.txt
 
 # Set job parameters
 cpuspertask=1

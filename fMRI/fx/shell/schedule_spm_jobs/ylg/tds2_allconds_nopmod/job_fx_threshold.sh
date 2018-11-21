@@ -14,10 +14,10 @@ echo "${SUB}"
 echo "Merging residuals"
 echo -------------------------------------------------------------------------------
 
-fx_dir=/projects/dsnlab/shared/tag/nonbids_data/fMRI/fx/models/dsd/wave1/pmod/MLmotion_FAST_RT/sub-TAG${SUB}
-sub_dir= (use for loop)
+fx_dir=/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/${SUB}
+sub_dir= /projects/dsnlab/shared/tds/fMRI/subjects_tdsall/${SUB}
 # N runs for residual calculation
-RUNS=(6)
+#RUNS=(6)
 STOP=(stop3 stop4 stop5 stop6 stop7 stop8)
 # Make text file with residual files for each run
 for i in $STOP; do 
