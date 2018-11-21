@@ -15,7 +15,7 @@ echo "Merging residuals"
 echo -------------------------------------------------------------------------------
 
 fx_dir=/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/${SUB}
-sub_dir= /projects/dsnlab/shared/tds/fMRI/subjects_tdsall/${SUB}
+sub_dir=/projects/dsnlab/shared/tds/fMRI/subjects_tdsall/${SUB}
 # N runs for residual calculation
 #RUNS=(6)
 STOP=(stop3 stop4 stop5 stop6 stop7 stop8)
@@ -23,7 +23,7 @@ STOP=(stop3 stop4 stop5 stop6 stop7 stop8)
 for i in $STOP; do 
 	cd $sub_dir/$i
 	num=$(ls -l | grep -v ${i}_0*  | wc -l)
-	echo $(printf "Res_%04d.nii\n" {1..$num}) > $res_dir/residuals_${i}.txt
+	echo $(printf "Res_%04d.nii\n" {1..$(num)}) > $fx_dir/residuals_${i}.txt
 done
 
 #echo $(printf "Res_%04d.nii\n" {226..450}) > residuals_run2.txt
