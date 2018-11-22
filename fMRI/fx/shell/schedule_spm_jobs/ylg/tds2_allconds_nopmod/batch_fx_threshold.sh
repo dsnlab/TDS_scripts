@@ -12,7 +12,7 @@
 STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
 # Set subject list
-SUBJLIST=`cat subject_list_test.txt`
+SUBJLIST=`cat subject_list_fx_allconds_nopmod_main.txt`
 
 # Which SID should be replaced?
 REPLACESID='109'
