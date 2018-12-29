@@ -18,6 +18,14 @@ rsq_exp <- rsq_scores %>%
   filter(rsq_scores$SID %in% subject_ids) %>% 
   mutate(exp = rowMeans(select(., ends_with("B")), na.rm=TRUE))
 
+# calculate alpha for
+
+rsq_alpha <- rsq_scores %>% 
+  filter(rsq_scores$SID %in% subject_ids) %>% 
+  select(contains("B"))
+
+psych::alpha(rsq_alpha)
+
 # it looks like subjects 160 and 174 have missing data, so let's mean impute
 #subject_ids[which(!subject_ids %in% rsq_exp$SID)]
 mean_exp <- round(mean(rsq_exp$exp), 2)
