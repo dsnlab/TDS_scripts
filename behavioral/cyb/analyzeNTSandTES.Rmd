@@ -114,4 +114,6 @@ df.tes$Believed=mapvalues(df.tes$Believed, c("MISSING TES"), c(NA))
 numBelieved=table(df.tes$Believed)
 numBelieved
 
+df.tes[which(df.tes$Believed == 2), ]$SID
+
 ```
