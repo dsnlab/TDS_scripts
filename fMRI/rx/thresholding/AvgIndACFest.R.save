@@ -5,7 +5,6 @@
 
 # This script should be run after "acquireACFest.sh". It outputs the mean and median of the individual level acf estimates from second level residuals. The decision to use the mean versus the median is up to the researcher, and might be based on the usual considerations (e.g., examining the distribution and/or presence of outliers). The first three values of either the mean or median are the input for 3dClustSim. 
 
-#install.packages("plyr")
 library(plyr)
 
 args = commandArgs(trailingOnly=TRUE)
@@ -13,7 +12,7 @@ args = commandArgs(trailingOnly=TRUE)
 # Inputs
 if (length(args)==0) {
   rm(list=ls())
-  rx_directory="/Volumes/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_N69/F_conj_pmod_flexi_rsq_exp"
+  rx_directory="/projects/dsnlab/tds/fMRI/analysis/rx/cyb"
 } else if (length(args)==1) {
   rx_directory=args[1]
 } else {

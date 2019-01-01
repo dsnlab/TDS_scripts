@@ -10,13 +10,13 @@ if(length(setdiff(packages, rownames(installed.packages())))>0) {
 lapply(packages, library, character.only=TRUE)
 
 ##Set paths (data is located on psi-svr-filer)
-tds_folder<-'/Volumes/TDS/behavior/'
+tds_folder<-'/Volumes/psy-ctn/psy-ctn/TDS/behavior/'
 ylg_folder<-paste(tds_folder, 'YLG/processed/', sep='')
 demo_folder<-paste(tds_folder, 'Redcap/', sep='')
 qualtrics_folder<-paste(tds_folder, 'Qualtrics/', sep='')
 
 ##Collect data
-ylg_data<-read.csv(paste(ylg_folder,'tds-all_trial_by_trial.csv',sep=''))
+ylg_data<-read.csv(paste(ylg_folder,'tds_events_by_sid_11.19.18.csv',sep=''))
 demo_data<-read.csv(paste(demo_folder,'age_gender_iq.csv',sep=''))
 qualtrics_data<-read.csv(paste(qualtrics_folder, 'scoring_script_output/TDS-2-auto_scored_scales_wide.csv', sep=''))
 ```
@@ -69,6 +69,11 @@ age_by_sex<-demo_filtered_context %>% filter(!is.na(age)) %>% group_by(gender) %
   summarize(mean = mean(age, na.rm=T), sd = sd(age, na.rm=T), 
             min = min(age, na.rm=T), max = max(age, na.rm=T),
             n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) # n=37 females
+
+age_combined<-demo_filtered_context %>% filter(!is.na(age)) %>% 
+  summarize(mean = mean(age, na.rm=T), sd = sd(age, na.rm=T), 
+            min = min(age, na.rm=T), max = max(age, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
 t.test(demo_filtered_context$age~demo_filtered_context$gender) 
       # t = -0.43967, df = 67.653, p-value = 0.6616
       # alternative hypothesis: true difference in means is not equal to 0
