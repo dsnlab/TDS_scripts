@@ -10,6 +10,7 @@ mask=/projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group
 # Estimate acf parameters for each subject and save as text file
 # ------------------------------------------------------------------------------------------
 cd ${fxDir}/${SUBID}
+echo $PWD
 
 touch ${SUBID}_acf.txt
 
