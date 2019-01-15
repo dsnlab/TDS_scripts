@@ -67,9 +67,6 @@ pmod_conds(5)=struct('includeconds',[6]);
 pmod_conds(6)=struct('includeconds',[7]);
 
 %CHANGE ME%
-multicond_WriteDir = '/Volumes/TDS/nonbids_data/derivatives/fMRI/fx/multicond/ylg/nopmod/';
-multicondSRCFileName = '/Volumes/TDS/behavior/YLG/processed/tds-multicond_for_processing_decout_collapsed_nopmod.mat';
-
 multicond_WriteDir = '/data/jflournoy/TDS/nonbids_data/derivatives/fMRI/fx/multicond/ylg/nopmod/';
 multicondSRCFileName = '/data/jflournoy/TDS/tds-multicond_for_processing_decout_collapsed_jan2019.mat';
 
