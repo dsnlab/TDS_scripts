@@ -51,7 +51,7 @@ pmodNames=c("Increasing_Inclusion", "Increasing_Exclusion")
 
 #### LOAD DATA ####
 # Set working directory to where marsbar ROI summary time course .csv files are kept
-setwd("/Volumes/TDS/nonbids_data/derivatives/fMRI/parcellations/cyb/tds2_N69")
+setwd("/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/parcellations/cyb/tds2_N69")
 
 # Load file - NEED TO CREATE THE SUMMARY TIME COURSE FILE!
 df_raw<-read.csv("summary_F_conj_pmod_flexi_craddock.csv", header=FALSE)
@@ -67,21 +67,43 @@ df_raw$SID=rep(subjectList, each=length(pmodNames)) # add the list of SIDs
 df_raw$pmod=rep(pmodNames, length(subjectList)) # for a flexi-factorial model, use length(subjectList); for a standard model, use each=length(subjectList)
 #df_raw$roi= rep(roiList, each=length(roiList))
 df_raw=df_raw[,c("SID", "pmod", "roiList", "value")] # rearrange with SIDs on the left
+```
+
+```{r sensitivity analyses}
+
+med_mental_sens_test = FALSE
+believe_tes_sens_test = FALSE
+
+med_mental_SIDs = c(126, 127, 133, 136, 139, 146, 168, 173)
+believe_tes_SIDs = c(131, 134, 144, 151, 159, 167, 175, 190)
+  
+if (med_mental_sens_test == TRUE) {
+  df_raw <- df_raw %>% 
+    filter(!SID %in% med_mental_SIDs)
+} else if (believe_tes_sens_test == TRUE) {
+  df_raw <- df_raw %>% 
+    filter(!SID %in% believe_tes_SIDs)
+}
 
 # Calculate parameter estimate mean and sd per ROI per pmod
 df_avg=df_raw %>% group_by(pmod, roiList) %>% dplyr::summarise(mean=mean(value), sem=sd(value)/sqrt(length(subjectList))) 
 
 ```
 
+
 ```{r t-tests}
 
 for (i in 1:length(roiList)){
-  II = filter(df_raw, pmod=="Increasing_Inclusion" & roiList== paste0("ROI",i))$value
-  IE= filter(df_raw, pmod=="Increasing_Exclusion" & roiList== paste0("ROI",i))$value
-  assign(paste0(roiList[i], '_II_ttest'), t.test(II, alternative="two.sided"))
-  assign(paste0(roiList[i], '_IE_ttest'), t.test(IE, alternative="two.sided"))
-  assign(paste0(roiList[i], '_IEvII_ttest'), t.test(IE, II, alternative="two.sided", paired=TRUE))
+  assign(paste0(roiList[i], 'II'), filter(df_raw, pmod=="Increasing_Inclusion" & roiList== paste0("ROI",i))$value)
+  assign(paste0(roiList[i], 'IE'), filter(df_raw, pmod=="Increasing_Exclusion" & roiList== paste0("ROI",i))$value)
+  assign(paste0(roiList[i], '_II_ttest'), t.test(get(paste0(roiList[i], 'II')), alternative="two.sided"))
+  assign(paste0(roiList[i], '_IE_ttest'), t.test(get(paste0(roiList[i], 'IE')), alternative="two.sided"))
+  assign(paste0(roiList[i], '_IEvII_ttest'), t.test(get(paste0(roiList[i], 'IE')), get(paste0(roiList[i], 'II')), alternative="two.sided", paired=TRUE))
+  assign(paste0(roiList[i], '_se_II'), sd(get(paste0(roiList[i], 'II')))/sqrt(length(get(paste0(roiList[i], 'II')))))
+  assign(paste0(roiList[i], '_se_IE'), sd(get(paste0(roiList[i], 'IE')))/sqrt(length(get(paste0(roiList[i], 'IE')))))
+  
 }
+
 
 ```
 

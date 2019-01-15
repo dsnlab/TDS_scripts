@@ -50,7 +50,7 @@ df.nts=df[,grepl("NTS", names(df))] # subset by NTS relevant
 df.nts$SID=df$SID
 df.nts=merge(df.nts, subjectList) #subset by 69 subjects in cyb analysis
 
-write.csv(df.nts, '/Volumes/psy-ctn/psy-ctn/TDS/behavior/CyberBall/nts.csv')
+#write.csv(df.nts, '/Volumes/psy-ctn/psy-ctn/TDS/behavior/CyberBall/nts.csv')
 
 # group average
 mean_ntsBelongingness=mean(df.nts$NTS_belongingness_score, na.rm=TRUE)/df.nts$NTS_belongingness_n_items[1]
@@ -68,6 +68,39 @@ colnames(df.nts.ind)=c("SID","NTS")
 #setwd("/Volumes/research/tds/behavioral/processed/cyberball")
 #write.csv(df.nts.ind, "NTS.csv")
 
+### find alpha for NTS
+
+# get SIDs 
+get_sid_here <- read.csv("/Volumes/psy-ctn/psy-ctn/TDS/behavior/CyberBall/TDS2_N69_rsq.csv")
+get_sid_here <- get_sid_here[1:138, ]
+get_sid_here$SID <- as.character(get_sid_here$SID)
+subject_ids <- unique(get_sid_here$SID)
+
+# read in raw data
+setwd("/Volumes/psy-ctn/psy-ctn/TDS/org/TDS-II/Qualtrics\ Data/Raw/Session_2/2015.08.25/")
+
+raw_qualtrics <- read.csv("TDS2_Session_2_B.csv")
+
+raw_qualtrics_nts <- raw_qualtrics %>% 
+  select(contains("NTS"))
+
+raw_qualtrics_nts$SID <- raw_qualtrics$SID
+raw_nts <- raw_qualtrics_nts[2:84, ]
+
+raw_nts <- nts_df %>% 
+  filter(nts_df$SID %in% subject_ids)
+
+raw_nts <- as.data.frame(sapply(raw_nts, function(x) as.numeric.factor(x))) # change from factor to numeric
+
+# reverse score items 4, 5, 6, 10, 11, and 12
+rs_cols = c("NTS_4", "NTS_5", "NTS_6", "NTS_10", "NTS_11", "NTS_12")
+test <- raw_nts
+test[, rs_cols] =  6 - raw_nts[, rs_cols]
+
+nts_alpha <- test %>% 
+  select(contains("NTS")) %>% 
+  psych::alpha(check.keys = FALSE) # don't calculate alpha on SID
+
 ```
 
 # Find relevant TES scores
@@ -80,5 +113,7 @@ df.tes$Believed=mapvalues(df.tes$Believed, c("MISSING TES"), c(NA))
 
 numBelieved=table(df.tes$Believed)
 numBelieved
+
+df.tes[which(df.tes$Believed == 2), ]$SID
 
 ```

@@ -1,0 +1,61 @@
+---
+title: "average_indACF"
+author: "Nandi"
+date: "29 September 2018"
+output: html_document
+---
+#This script inputs the ACF estimates for each volume of each subject, and calculates an average per subject, and then an average for the group.
+  
+```{r}
+packages <- c("tidyr", "stringr","data.table", "dplyr","stringi")
+if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+  install.packages(setdiff(packages, rownames(installed.packages())))  
+}
+lapply(packages, library, character.only = TRUE)
+
+options(digits=5)
+```
+
+#import individual ACF estimates from FX models
+```{r}
+fileDir='/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/acf_txt/'
+
+file_list = list.files(fileDir, pattern="acf.txt",recursive=T)
+
+files <- lapply(file_list, FUN=function(file) {
+  
+  sid = gsub("/.*$", "", file)
+  
+  dataset <- read.table(paste0(fileDir, file)) %>%
+    group_by() %>%
+    summarise(X = mean(V6,na.rm=T),
+              Y = mean(V7,na.rm=T),
+              Z = mean(V8,na.rm=T)) %>%
+    mutate(sid = sid) }) 
+
+files2 <- rbindlist(files) %>%
+  mutate(sid = as.numeric(gsub("_acf.txt","",sid))) # sid = as.numeric(gsub("sub-TAG","",sid)))
+```
+
+#import final DSD subject list and limit ACF estimates to these subjects 
+```{r, include == FALSE}
+#dsd_overview <- read.csv('~/Desktop/dsd_overview.csv',header=T)
+#dsd_overview <- dsd_overview %>% filter(final_sample==1)
+#files <- files %>% filter(sid %in% dsd_overview$SID) #limit FX models to final dsd list (i.e. excluding those with bad motion)
+```
+
+# calculate group-level ACF summary
+```{r}
+summaryACF <- files2 %>% #group_by() %>%
+  summarise(Xmean = mean(X,na.rm=T),
+            Ymean = mean(Y,na.rm=T),
+            Zmean = mean(Z,na.rm=T),
+            Xmedian = median(X,na.rm=T),
+            Ymedian = median(Y,na.rm=T),
+            Zmedian = median(Z,na.rm=T))
+```
+
+# TDS CYB 
+# Xmean	Ymean	Zmean	Xmedian	Ymedian	Zmedian
+# 0.70986 4.667 8.5925 0.71952 4.6256 7.8866
+
