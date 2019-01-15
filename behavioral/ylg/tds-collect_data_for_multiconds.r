@@ -2,8 +2,6 @@
 #!!! Remember to run 'module add R' at the command line first
 #########
 #Paths are set to run locally, not on the grid.
-#If you want to run this whole file, you can copy/paste the line below into the console in R Studio. 
-#Don't uncomment it, or it will recursively run itself.
 
 osuRepo<-'http://ftp.osuosl.org/pub/cran/'
 
@@ -15,9 +13,11 @@ if(length(setdiff(packages, rownames(installed.packages())))>0) {
 lapply(packages, library, character.only=TRUE)
 
 ## CHANGE IF NEEDED ##
-tds_folder<-'/Volumes/TDS/'
+tds_folder<-'/media/psy-ctn/psy-ctn/TDS/'
 behave_folder<-'behavior/YLG/'
 scans_folder<-paste(tds_folder,'/nonbids_data/fMRI/subjects/',sep='')
+# For testing:
+#files_folder <- '/data/jflournoy/TDS/raw/'
 files_folder<-paste(tds_folder,behave_folder,'raw/',sep='')
 folder_to_write_agglom<-paste(tds_folder,behave_folder,'processed/',sep='')
 intersection_types_file<-paste(files_folder,'intersection_types.csv',sep='')
@@ -25,6 +25,10 @@ scans_to_count_folder<-paste(scans_folder,sep='')
 
 # These lines will take some time to run because they involve data collection
 files_to_read<-as.list(dir(files_folder,recursive=T,pattern='csv_run_output.*csv$'))
+# For testing:
+#scans_to_count <- as.data.table(read.table('/data/jflournoy/TDS/tds_scan_file_list.txt'))
+#names(scans_to_count) <- 'scan_files'
+#scans_to_count$scan_files <- gsub('^\\./', '', scans_to_count$scan_files)
 scans_to_count<-data.table(scan_files=dir(
 	scans_to_count_folder,
 	recursive=T,
@@ -52,8 +56,9 @@ missing_vols = counted_scans %>% mutate(check=n_vols==max_trid) %>% filter(!chec
 # alone_runs_tds2 = alone_runs %>% filter(sid<200) 
 # count_vols_alone_tds2 = alone_runs_tds2 %>% group_by(rid) %>% summarize(min_vols = min(n_vols), max_vols = max(n_vols))
 
-intersection_types<-fread(intersection_types_file) %>% 
-gather(`profile-name`,value) %>% separate(value,c('intersection_num','type'),sep=-2) %>% 
+intersection_types <- fread(intersection_types_file) 
+intersection_types <- intersection_types %>% 
+gather(`profile-name`,value) %>% separate(value,c('intersection_num','type'),sep=-1) %>% 
 group_by(`profile-name`) %>%
 mutate(trial_index=1:n()) %>%
 left_join(data.table(
@@ -81,12 +86,6 @@ sl_numeric_cols<-c(1:2,4:6,9:12,15,17:18)
 
 ## CHANGE IF NEEDED ##
 # Edits to specific subjects' data
-sl_data[`subject-name`=='127' & `profile-name`=='B', run_index:=3] # missing the 2nd practice run for 127
-sl_data[`subject-name`=='127' & `profile-name`=='E', run_index:=4]
-sl_data[`subject-name`=='127' & `profile-name`=='C', run_index:=5]
-sl_data[`subject-name`=='127' & `profile-name`=='D', run_index:=6]
-sl_data[`subject-name`=='127' & `profile-name`=='A', run_index:=7]
-sl_data[`subject-name`=='127' & `profile-name`=='H', run_index:=8]
 sl_data[`subject-name`=='107C',`subject-name`:='107'] # For some reason this subject has a misnamed run
 sl_data[`subject-name`=='170' & grepl('2015-04-25', `when-run-started`),`subject-name`:='168'] # Accidentaly misnamed subject for all runs
 sl_data[`subject-name`=='174' & grepl('2015-05-02', `when-run-started`),`subject-name`:='172'] # Accidentaly misnamed subject for practice runs only
@@ -130,10 +129,20 @@ setkey(sl_data,`profile-name`,trial_index)
 sl_data<-copy(intersection_types[sl_data])
 sl_data[,subject_index:=.GRP,by=`subject-name`]
 
+## CHANGE IF NEEDED ##
+# Edits to specific subjects' data
+sl_data[`subject-name`=='127' & `profile-name`=='B', run_index:=3] # missing the 2nd practice run for 127
+sl_data[`subject-name`=='127' & `profile-name`=='E', run_index:=4]
+sl_data[`subject-name`=='127' & `profile-name`=='C', run_index:=5]
+sl_data[`subject-name`=='127' & `profile-name`=='D', run_index:=6]
+sl_data[`subject-name`=='127' & `profile-name`=='A', run_index:=7]
+sl_data[`subject-name`=='127' & `profile-name`=='H', run_index:=8]
+#######################
+
 setorder(sl_data,`subject-name`,`run_index`,`trial_index`)
 
 # Prints YLG behavioral data for behavioral analysis:
-write.csv(sl_data,file=paste(folder_to_write_agglom,'/tds-all_trial_by_trial.csv',sep=''))
+#write.csv(sl_data,file=paste(folder_to_write_agglom,'/tds-all_trial_by_trial.csv',sep=''))
 
 # Manually edit multicond for stop3 for 157 (volume #44 is missing);
 # This inserts NA for events occurring during volume #44 (i.e., between 86-88s)
@@ -355,7 +364,7 @@ multicond_for_processingMat_decout_collapsed<-na.omit(as.matrix(
 #   paste(folder_to_write_agglom,'/tds-multicond_for_processing_decout_outcomes.mat',sep=''),
 #   multicondSRC=multicond_for_processingMat_decout_outcomes)
 writeMat(
-	paste(folder_to_write_agglom,'/tds-multicond_for_processing_decout_collapsed.mat',sep=''),
+	paste(folder_to_write_agglom,'/tds-multicond_for_processing_decout_collapsed_jan2019.mat',sep=''),
 	multicondSRC=multicond_for_processingMat_decout_collapsed)
 
 #### Check to make sure reaction time and number of events is similar across peer and exclusion runs
