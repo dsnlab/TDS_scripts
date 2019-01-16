@@ -2,8 +2,8 @@
 # D.Cos 12/2018
 
 # user input
-model_dir = "/projects/dsnlab/shared/FP/nonbids_data/fMRI/fx/models/svc/wave1/event_noderiv/"
-output_dir = "/projects/dsnlab/shared/FP/FP_scripts/fMRI/fx/thresholding/"
+model_dir = "/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/"
+output_dir = "/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/shell/schedule_spm_jobs/ylg/tds2_allconds_nopmod/threshold/thresholding/output/"
 
 # load packages
 library(tidyverse)
@@ -19,7 +19,7 @@ for (file in file_list) {
       mutate(file = file) %>%
       rownames_to_column() %>%
       spread(rowname, V1) %>%
-      extract(file, "subjectID", "(FP[0-9]{3}).*"), error = function(e) NULL)
+      extract(file, "subjectID", "([0-9]{3}).*"), error = function(e) NULL)
     task = rbind(task, temp)
     rm(temp)
 }

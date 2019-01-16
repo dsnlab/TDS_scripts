@@ -7,4 +7,4 @@ module load afni
 PARAMS=`cat ACFparameters_group_average.txt`
 
 echo "running $MODEL"
-3dClustSim -mask "${MODELDIR}"/"${MODEL}"/mask.nii -acf `echo "${PARAMS}"` > "${OUTPUTDIR}"/3dClustStim_"${MODEL}".txt
+3dClustSim -mask "${MODELDIR}"/"${MODEL}"/mask*.HEAD -acf `echo "${PARAMS}"` > "${OUTPUTDIR}"/3dClustStim_"${MODEL}".txt

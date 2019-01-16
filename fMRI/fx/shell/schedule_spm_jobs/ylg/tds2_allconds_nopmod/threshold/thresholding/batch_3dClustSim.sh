@@ -8,7 +8,8 @@
 #--------------------------------------------------------------
 
 # Set your study
-STUDY=/projects/dsnlab/shared/FP/FP_scripts
+#STUDY=/projects/dsnlab/shared/FP/FP_scripts
+STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
 # Set shell script to execute
 SHELL_SCRIPT=3dClustSim.sh
@@ -17,15 +18,19 @@ SHELL_SCRIPT=3dClustSim.sh
 RESULTS_INFIX=3dclustsim
 
 # Set output dir and make it if it doesn't exist
-OUTPUTDIR=${STUDY}/fMRI/fx/thresholding/output
+#OUTPUTDIR=${STUDY}/fMRI/fx/thresholding/output
+OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/ylg/tds2_allconds_nopmod/threshold/thresholding/output
 
 if [ ! -d ${OUTPUTDIR} ]; then
 	mkdir -p ${OUTPUTDIR}
 fi
 
 # Set model dir and specify RX models
-MODELDIR=/projects/dsnlab/shared/FP/nonbids_data/fMRI/rx/svc/wave1
-MODELS=(event_noderiv illbeing_self_change social_self_change wellbeing_self_change)
+#MODELDIR=/projects/dsnlab/shared/FP/nonbids_data/fMRI/rx/svc/wave1
+#MODELS=(event_noderiv illbeing_self_change social_self_change wellbeing_self_change)
+
+MODELDIR=/projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod
+MODELS=(OutcomesXContext DecisionXContext)
 
 # Set job parameters
 cpuspertask=1
