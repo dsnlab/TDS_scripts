@@ -22,10 +22,10 @@
 
 
 SPM_PATH='/projects/dsnlab/shared/SPM12/';
-multicondDir='/projects/dsnlab/shared/tds/fMRI/analysis/fx/multicond/ylg/pmods_to_conditions/';
-contrastJobMat='/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_nopmod_cons.m'; %.m file for version control and readability
-outputDir='/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_nopmod_cons/';
-outprefix='fx_ylg_allconds_nopmod';
+multicondDir='/projects/dsnlab/shared/tds/fMRI/analysis/fx/multicond/ylg/nopmods/';
+contrastJobMat='/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_nopmod_cons_tds1.m'; %.m file for version control and readability
+outputDir='/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_nopmod_cons_tds1/';
+outprefix='fx_ylg_allconds_nopmod_tds1';
 outpostfix='.mat';
 outcomeCSV=fullfile(outputDir, 'multicondinfo-base.csv');  
 numColsPerRun=7; % how many columns per run in the template file?
