@@ -6,7 +6,7 @@
 #    sbatch batch_arbitrary_matlab_script.m <matlab_script.m> 
 #
 #SBATCH --job-name=custom_contrasts
-#SBATCH --output=output/custom_contrasts.log
+#SBATCH --output=output/custom_contrasts_tds1.log
 #
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1

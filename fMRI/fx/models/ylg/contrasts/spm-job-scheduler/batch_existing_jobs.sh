@@ -7,7 +7,7 @@
 #    sbatch -a 0-[number of .mat files minus 1] batch_existing_jobs.sh directory/where/jobs/are/job_name_pattern*mat 
 #
 #SBATCH --job-name=spm_con
-#SBATCH --output=/home/flournoy/output/spm_con-%A_%a.log
+#SBATCH --output=/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_nopmod_cons_tds1/output_tds1/spm_con-%A_%a.log
 #
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1

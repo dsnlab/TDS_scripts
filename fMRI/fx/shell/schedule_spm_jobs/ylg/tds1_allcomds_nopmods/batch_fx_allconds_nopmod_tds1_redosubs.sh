@@ -23,13 +23,13 @@ SUBJLIST=`cat redofx_TDS1_sublist.txt`
 #SUBJLIST=`cat subject_list_fx_allconds_redo.txt`
 
 #Which SID should be replaced?
-REPLACESID='344'
+REPLACESID='372'
 
 #SPM Path
 SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/fx/models/ylg/fx_ylg_TDS1_II_nonorth_nopmod_redo.m
+SCRIPT=${STUDY}/fMRI/fx/models/ylg/fx_ylg_TDS1_I_nonorth_nopmod_redo.m
 
 # Tag the results files
 RESULTS_INFIX=fx_ylg_allconds_nopmod_tds1

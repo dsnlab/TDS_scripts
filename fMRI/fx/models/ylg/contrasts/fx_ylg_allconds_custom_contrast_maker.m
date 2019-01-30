@@ -25,7 +25,7 @@ SPM_PATH='/projects/dsnlab/shared/SPM12/';
 multicondDir='/projects/dsnlab/shared/tds/fMRI/analysis/fx/multicond/ylg/nopmods/';
 contrastJobMat='/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/fx_ylg_allconds_nopmod_cons_tds1.m'; %.m file for version control and readability
 outputDir='/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_nopmod_cons_tds1/';
-outprefix='fx_ylg_allconds_nopmod_tds1';
+outprefix='fx_ylg_allconds_nopmod_tds1_';
 outpostfix='.mat';
 outcomeCSV=fullfile(outputDir, 'multicondinfo-base.csv');  
 numColsPerRun=7; % how many columns per run in the template file?
@@ -35,11 +35,11 @@ excludeThese={'101' '102' '104' '105' '106' '108' '110' '111' '139' '158' '189'}
 
 %You shouldn't need to change these options unless the multiple conditions setup has changed substantially
 numCondsWithoutPenalties=7; %this is the number of conditions when one has no penalty conditions - should include GAMEOVER (doesn't include pmods)
-expression='multicond_decout_pmod_(?<pid>[0-9]{3})_stop(?<run>\w+)\.mat'; %regular expression for extracting information from multicond file names.
+expression='multicond_decout_nopmod_(?<pid>[0-9]{3})_stop(?<run>\w+)\.mat'; %regular expression for extracting information from multicond file names.
 
 %this determines the filename for the multicond file to be read to infer
 %how to adjust the contrast coding.
-prefix='multicond_decout_pmod_'; 
+prefix='multicond_decout_nopmod_'; 
 midfix='_stop';
 postfix='.mat';
 
@@ -63,7 +63,7 @@ end
 %if a multicond has penalty conditions, add 7 zeros, otherwise, add just
 %the 5 for motion parameters
 
-dirsearchstring=fullfile(multicondDir, 'multicond_decout_pmod_*stop*mat');
+dirsearchstring=fullfile(multicondDir, 'multicond_decout_nopmod_*stop*mat');
 
 filenames=dir(dirsearchstring);
 
