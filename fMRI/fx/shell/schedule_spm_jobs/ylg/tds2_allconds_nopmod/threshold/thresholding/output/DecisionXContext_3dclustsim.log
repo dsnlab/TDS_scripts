@@ -1,0 +1,8 @@
+cat: ACFparameters_group_average.txt: No such file or directory
+running DecisionXContext
+++ WARNING: file /home/jpfeifer/.afni.log is now 414325809 (414 million [mega]) bytes long!
+++ 3dClustSim: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: RW Cox and BD Ward
+** ERROR (nifti_image_read): failed to find header file for '/projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/DecisionXContext/mask.nii'
+[7m** FATAL ERROR:[0m can't open -mask dataset!
+** Program compile date = Jul  6 2018

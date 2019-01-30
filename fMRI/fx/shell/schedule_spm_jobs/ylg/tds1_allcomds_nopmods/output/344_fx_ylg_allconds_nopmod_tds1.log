@@ -1,0 +1,67 @@
+-------------------------------------------------------------------------------
+344
+Running /projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/fx_ylg_TDS1_I_nonorth_nopmod_redo.m
+-------------------------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2018 The MathWorks, Inc.
+                   R2018b (9.5.0.944444) 64-bit (glnxa64)
+                              August 28, 2018
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'File Selector (Batch Mode)'
+Done    'File Selector (Batch Mode)'
+Running 'fMRI model specification'
+write cache: Disk quota exceeded
+write cache: Disk quota exceeded
+[Warning: dialog is no longer supported when MATLAB is started with the
+-nodisplay or -noFigureWindows option or there is no display. For more
+information, see "Changes to -nodisplay and -noFigureWindows Startup Options"
+in the MATLAB Release Notes. To view the release note in your system browser,
+run web('www.mathworks.com/help/matlab/release-notes.html#br5ktrh-3',
+'-browser')] 
+[> In warnfiguredialog (line 21)
+  In dialog (line 39)
+  In questdlg (line 163)
+  In spm_input (line 1040)
+  In spm_run_fmri_spec (line 34)
+  In cfg_run_cm (line 29)
+  In cfg_util>local_runcj (line 1688)
+  In cfg_util (line 959)
+  In spm_jobman>fill_run_job (line 458)
+  In spm_jobman (line 247)] 
+[Warning: uiwait is no longer supported when MATLAB is started with the
+-nodisplay or -noFigureWindows option or there is no display. For more
+information, see "Changes to -nodisplay and -noFigureWindows Startup Options"
+in the MATLAB Release Notes. To view the release note in your system browser,
+run web('www.mathworks.com/help/matlab/release-notes.html#br5ktrh-3',
+'-browser')] 
+[> In warnfiguredialog (line 21)
+  In uiwait (line 40)
+  In questdlg (line 428)
+  In spm_input (line 1040)
+  In spm_run_fmri_spec (line 34)
+  In cfg_run_cm (line 29)
+  In cfg_util>local_runcj (line 1688)
+  In cfg_util (line 959)
+  In spm_jobman>fill_run_job (line 458)
+  In spm_jobman (line 247)] 
+slurmstepd: error: *** JOB 3122609 ON n077 CANCELLED AT 2019-01-21T15:25:19 DUE TO TIME LIMIT ***
