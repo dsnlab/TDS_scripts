@@ -14,29 +14,30 @@ module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Outcomes/
-	3dMVM -prefix OutcomesXContextXGroup\
+	3dMVM -prefix OutcomesXContextXGroup \
 	-jobs 28 \
-	-wsVars  "Outcome*Context*Group" \
+        -bsVars "Group" \
+	-wsVars  "Outcome*Context" \
 	-SS_type 3 \
 	-num_glt 18 \
-	-gltLabel 1  'Out_AL-SE_EA-COM' -gltCode  1  'Outcome : 1*Good +1*Bad Context : 1*AL -1*SE : 1*EA - 1*COM' \
-	-gltLabel 2  'Out_AL-PR_EA-COM' -gltCode  2  'Outcome : 1*Good +1*Bad Context : 1*AL -1*PR : 1*EA - 1*COM' \
-	-gltLabel 3  'Out_PR-SE_EA-COM' -gltCode  3  'Outcome : 1*Good +1*Bad Context : 1*PR -1*SE : 1*EA - 1*COM' \
-	-gltLabel 4  'G_B_AL-SE_EA-COM' -gltCode  4  'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE : 1*EA - 1*COM' \
-	-gltLabel 5  'G_B_AL-PR_EA-COM' -gltCode  5  'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR : 1*EA - 1*COM' \
-	-gltLabel 6  'G_B_PR-SE_EA-COM' -gltCode  6  'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE : 1*EA - 1*COM' \
-	-gltLabel 7  'Good_AL_EA-COM' -gltCode    7 'Outcome : 1*Good Context : 1*AL : 1*EA - 1*COM' \
-	-gltLabel 8  'Bad_AL_EA-COM' -gltCode     8 'Outcome : 1*Bad Context : 1*AL : 1*EA - 1*COM' \
-	-gltLabel 9  'Good_PR_EA-COM' -gltCode    9 'Outcome : 1*Good Context : 1*PR : 1*EA - 1*COM' \
-	-gltLabel 10 'Bad_PR_EA-COM' -gltCode     10 'Outcome : 1*Bad Context : 1*PR : 1*EA - 1*COM' \
-	-gltLabel 11 'Good_SE_EA-COM' -gltCode    11 'Outcome : 1*Good Context : 1*SE : 1*EA - 1*COM' \
-	-gltLabel 12 'Bad_SE_EA-COM' -gltCode     12 'Outcome : 1*Bad Context : 1*SE : 1*EA - 1*COM' \
-	-gltLabel 13 'Good_AL-SE_EA-COM' -gltCode 13  'Outcome : 1*Good Context : 1*AL -1*SE : 1*EA - 1*COM' \
-	-gltLabel 14 'Good_AL-PR_EA-COM' -gltCode 14  'Outcome : 1*Good Context : 1*AL -1*PR : 1*EA - 1*COM' \
-	-gltLabel 15 'Good_PR-SE_EA-COM' -gltCode 15  'Outcome : 1*Good Context : 1*PR -1*SE : 1*EA - 1*COM' \
-	-gltLabel 16 'Bad_AL-SE_EA-COM' -gltCode  16  'Outcome : 1*Bad Context : 1*AL -1*SE : 1*EA - 1*COM' \
-	-gltLabel 17 'Bad_AL-PR_EA-COM' -gltCode  17  'Outcome : 1*Bad Context : 1*AL -1*PR : 1*EA - 1*COM' \
-	-gltLabel 18 'Bad_PR-SE_EA-COM' -gltCode  18  'Outcome : 1*Bad Context : 1*PR -1*SE : 1*EA - 1*COM' \
+	-gltLabel 1  'Out_AL-SE_EA-COM' -gltCode  1  'Outcome : 1*Good +1*Bad Context : 1*AL -1*SE Group : 1*EA -1*COM' \
+	-gltLabel 2  'Out_AL-PR_EA-COM' -gltCode  2  'Outcome : 1*Good +1*Bad Context : 1*AL -1*PR Group : 1*EA -1*COM' \
+	-gltLabel 3  'Out_PR-SE_EA-COM' -gltCode  3  'Outcome : 1*Good +1*Bad Context : 1*PR -1*SE Group : 1*EA -1*COM' \
+	-gltLabel 4  'G_B_AL-SE_EA-COM' -gltCode  4  'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE Group : 1*EA -1*COM' \
+	-gltLabel 5  'G_B_AL-PR_EA-COM' -gltCode  5  'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR Group : 1*EA -1*COM' \
+	-gltLabel 6  'G_B_PR-SE_EA-COM' -gltCode  6  'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE Group : 1*EA -1*COM' \
+	-gltLabel 7  'Good_AL_EA-COM' -gltCode    7 'Outcome : 1*Good Context : 1*AL Group : 1*EA -1*COM' \
+	-gltLabel 8  'Bad_AL_EA-COM' -gltCode     8 'Outcome : 1*Bad Context : 1*AL Group : 1*EA -1*COM' \
+	-gltLabel 9  'Good_PR_EA-COM' -gltCode    9 'Outcome : 1*Good Context : 1*PR Group : 1*EA -1*COM' \
+	-gltLabel 10 'Bad_PR_EA-COM' -gltCode     10 'Outcome : 1*Bad Context : 1*PR Group : 1*EA -1*COM' \
+	-gltLabel 11 'Good_SE_EA-COM' -gltCode    11 'Outcome : 1*Good Context : 1*SE Group : 1*EA -1*COM' \
+	-gltLabel 12 'Bad_SE_EA-COM' -gltCode     12 'Outcome : 1*Bad Context : 1*SE Group : 1*EA -1*COM' \
+	-gltLabel 13 'Good_AL-SE_EA-COM' -gltCode 13  'Outcome : 1*Good Context : 1*AL -1*SE Group : 1*EA -1*COM' \
+	-gltLabel 14 'Good_AL-PR_EA-COM' -gltCode 14  'Outcome : 1*Good Context : 1*AL -1*PR Group : 1*EA -1*COM' \
+	-gltLabel 15 'Good_PR-SE_EA-COM' -gltCode 15  'Outcome : 1*Good Context : 1*PR -1*SE Group : 1*EA -1*COM' \
+	-gltLabel 16 'Bad_AL-SE_EA-COM' -gltCode  16  'Outcome : 1*Bad Context : 1*AL -1*SE Group : 1*EA -1*COM' \
+	-gltLabel 17 'Bad_AL-PR_EA-COM' -gltCode  17  'Outcome : 1*Bad Context : 1*AL -1*PR Group : 1*EA -1*COM' \
+	-gltLabel 18 'Bad_PR-SE_EA-COM' -gltCode  18  'Outcome : 1*Bad Context : 1*PR -1*SE Group : 1*EA -1*COM' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 Subj Outcome Context Group InputFile \
