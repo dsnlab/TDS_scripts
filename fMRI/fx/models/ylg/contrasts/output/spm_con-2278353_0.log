@@ -1,0 +1,18 @@
+Running batch job
+   /gpfs/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_simple/1*_fx_ylg_allconds_nopmod_cons.mat
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (glnxa64)
+                             September 14, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+{Error using load
+Unable to read file
+'/gpfs/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_simple/1*_fx_ylg_allconds_nopmod_cons.mat'.
+No such file or directory.
+} 
+>> 

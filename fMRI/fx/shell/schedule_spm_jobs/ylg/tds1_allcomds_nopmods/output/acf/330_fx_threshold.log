@@ -1,0 +1,109 @@
+-------------------------------------------------------------------------------
+330
+Merging residuals
+-------------------------------------------------------------------------------
+merging residuals for stop3
+merging residuals for stop4
+merging residuals for stop5
+merging residuals for stop6
+merging residuals for stop7
+merging residuals for stop8
+-------------------------------------------------------------------------------
+Calculating ACF parameters
+-------------------------------------------------------------------------------
+calculating ACF parameters for stop3
+++ 3dFWHMx: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: The Bob
+++ WARNING: file /home/jpfeifer/.afni.log is now 414384078 (414 million [mega]) bytes long!
+++ Number of voxels in mask = 220214
+** AFNI converts NIFTI_datatype=64 (FLOAT64) in file residuals_stop3.nii.gz to FLOAT32
+     Warnings of this type will be muted for this session.
+     Set AFNI_NIFTI_TYPE_WARN to YES to see them all, NO to see none.
+++ start ACF calculations out to radius = 23.10 mm
+ + ACF done (0.00 CPU s thus far)
+++ ACF 1D file [radius ACF mixed_model gaussian_NEWmodel] written to 3dFWHMx.1D
+++ 1dplot: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: RWC et al.
+ + and 1dplot-ed to file 3dFWHMx.1D.png
+calculating ACF parameters for stop4
+++ 3dFWHMx: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: The Bob
+++ WARNING: file /home/jpfeifer/.afni.log is now 414384078 (414 million [mega]) bytes long!
+++ Number of voxels in mask = 220214
+** AFNI converts NIFTI_datatype=64 (FLOAT64) in file residuals_stop4.nii.gz to FLOAT32
+     Warnings of this type will be muted for this session.
+     Set AFNI_NIFTI_TYPE_WARN to YES to see them all, NO to see none.
+++ start ACF calculations out to radius = 23.15 mm
+ + ACF done (0.00 CPU s thus far)
+[7m** ERROR:[0m (FAILED) attempt to over-write file 3dFWHMx.1D
+++ ACF 1D file [radius ACF mixed_model gaussian_NEWmodel] written to 3dFWHMx.1D
+++ 1dplot: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: RWC et al.
+ + and 1dplot-ed to file 3dFWHMx.1D.png
+calculating ACF parameters for stop5
+++ 3dFWHMx: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: The Bob
+++ WARNING: file /home/jpfeifer/.afni.log is now 414384078 (414 million [mega]) bytes long!
+++ Number of voxels in mask = 220214
+** AFNI converts NIFTI_datatype=64 (FLOAT64) in file residuals_stop5.nii.gz to FLOAT32
+     Warnings of this type will be muted for this session.
+     Set AFNI_NIFTI_TYPE_WARN to YES to see them all, NO to see none.
+++ start ACF calculations out to radius = 23.10 mm
+ + ACF done (0.00 CPU s thus far)
+[7m** ERROR:[0m (FAILED) attempt to over-write file 3dFWHMx.1D
+++ ACF 1D file [radius ACF mixed_model gaussian_NEWmodel] written to 3dFWHMx.1D
+++ 1dplot: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: RWC et al.
+ + and 1dplot-ed to file 3dFWHMx.1D.png
+calculating ACF parameters for stop6
+++ 3dFWHMx: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: The Bob
+++ WARNING: file /home/jpfeifer/.afni.log is now 414384078 (414 million [mega]) bytes long!
+++ Number of voxels in mask = 220214
+** AFNI converts NIFTI_datatype=64 (FLOAT64) in file residuals_stop6.nii.gz to FLOAT32
+     Warnings of this type will be muted for this session.
+     Set AFNI_NIFTI_TYPE_WARN to YES to see them all, NO to see none.
+++ start ACF calculations out to radius = 23.04 mm
+ + ACF done (0.00 CPU s thus far)
+[7m** ERROR:[0m (FAILED) attempt to over-write file 3dFWHMx.1D
+++ ACF 1D file [radius ACF mixed_model gaussian_NEWmodel] written to 3dFWHMx.1D
+++ 1dplot: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: RWC et al.
+ + and 1dplot-ed to file 3dFWHMx.1D.png
+calculating ACF parameters for stop7
+++ 3dFWHMx: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: The Bob
+++ WARNING: file /home/jpfeifer/.afni.log is now 414384078 (414 million [mega]) bytes long!
+++ Number of voxels in mask = 220214
+** AFNI converts NIFTI_datatype=64 (FLOAT64) in file residuals_stop7.nii.gz to FLOAT32
+     Warnings of this type will be muted for this session.
+     Set AFNI_NIFTI_TYPE_WARN to YES to see them all, NO to see none.
+++ start ACF calculations out to radius = 23.17 mm
+ + ACF done (0.00 CPU s thus far)
+[7m** ERROR:[0m (FAILED) attempt to over-write file 3dFWHMx.1D
+++ ACF 1D file [radius ACF mixed_model gaussian_NEWmodel] written to 3dFWHMx.1D
+++ 1dplot: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: RWC et al.
+ + and 1dplot-ed to file 3dFWHMx.1D.png
+calculating ACF parameters for stop8
+++ 3dFWHMx: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: The Bob
+++ WARNING: file /home/jpfeifer/.afni.log is now 414384078 (414 million [mega]) bytes long!
+++ Number of voxels in mask = 220214
+** AFNI converts NIFTI_datatype=64 (FLOAT64) in file residuals_stop8.nii.gz to FLOAT32
+     Warnings of this type will be muted for this session.
+     Set AFNI_NIFTI_TYPE_WARN to YES to see them all, NO to see none.
+++ start ACF calculations out to radius = 23.03 mm
+ + ACF done (0.00 CPU s thus far)
+[7m** ERROR:[0m (FAILED) attempt to over-write file 3dFWHMx.1D
+++ ACF 1D file [radius ACF mixed_model gaussian_NEWmodel] written to 3dFWHMx.1D
+++ 1dplot: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: RWC et al.
+ + and 1dplot-ed to file 3dFWHMx.1D.png
+-------------------------------------------------------------------------------
+Averaging ACF parameters
+-------------------------------------------------------------------------------
+++ WARNING: file /home/jpfeifer/.afni.log is now 414384078 (414 million [mega]) bytes long!
+++ 3dTstat: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
+++ Authored by: KR Hammett & RW Cox
+[7m*+ WARNING:[0m Input dataset is not 3D+time; assuming TR=1.0

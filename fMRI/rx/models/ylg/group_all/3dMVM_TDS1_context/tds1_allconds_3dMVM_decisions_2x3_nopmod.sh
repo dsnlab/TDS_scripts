@@ -37,10 +37,10 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Decisions/
 	-gltLabel 16 'DG_AL-SE_EA' -gltCode 16  'Decision : 1*DG Context : 1*AL -1*SE' \
 	-gltLabel 17 'DG_AL-PR_EA' -gltCode 17  'Decision : 1*DG Context : 1*AL -1*PR' \
 	-gltLabel 18 'DG_PR-SE_EA' -gltCode 18  'Decision : 1*DG Context : 1*PR -1*SE' \
-	-gltLabel 19 'DGo_social_vs_alone_EA' -gltCode 19  'Decision : 1*DG Context : 1*PR + 1*SE -2*AL' \
-	-gltLabel 20 'DStop_social_vs_alone_EA' -gltCode 20  'Decision : 1*DS Context : 1*PR + 1*SE -2*AL' \
-	-gltLabel 21 'D_social_vs_alone_EA' -gltCode 21  'Decision : 1*DS +1*DG Context : 1*PR + 1*SE -2*AL' \
-	-gltLabel 22 'DStop_DGo_social_vs_alone_EA' -gltCode 22  'Decision : 1*DS -1*DG Context : 1*PR + 1*SE -2*AL' \
+	-gltLabel 19 'DGo_social_vs_alone_EA' -gltCode 19  'Decision : 1*DG Context : 1*PR +1*SE -2*AL' \
+	-gltLabel 20 'DStop_social_vs_alone_EA' -gltCode 20  'Decision : 1*DS Context : 1*PR +1*SE -2*AL' \
+	-gltLabel 21 'D_social_vs_alone_EA' -gltCode 21  'Decision : 1*DS +1*DG Context : 1*PR +1*SE -2*AL' \
+	-gltLabel 22 'DStop_DGo_social_vs_alone_EA' -gltCode 22  'Decision : 1*DS -1*DG Context : 1*PR +1*SE -2*AL' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Decision Context Group InputFile \

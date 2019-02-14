@@ -1,0 +1,19 @@
+realpath: missing operand
+Try 'realpath --help' for more information.
+Running batch job
+   
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (glnxa64)
+                             September 14, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+[Warning: Name is nonexistent or not a directory: /projects/dsnlab/SPM12] 
+[> In path (line 109)
+  In addpath (line 94)] 
+{Undefined function or variable 'spm_jobman'.
+} 

@@ -37,8 +37,8 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Outcomes/
 	-gltLabel 16 'Bad_AL-SE_EA' -gltCode 16  'Outcome : 1*Bad Context : 1*AL -1*SE' \
 	-gltLabel 17 'Bad_AL-PR_EA' -gltCode 17  'Outcome : 1*Bad Context : 1*AL -1*PR' \
 	-gltLabel 18 'Bad_PR-SE_EA' -gltCode 18  'Outcome : 1*Bad Context : 1*PR -1*SE' \
-	-gltLabel 19 'Bad_social_vs_alone_EA' -gltCode 19  'Outcome : 1*Bad Context : 1*PR + 1*SE -2*AL' \
-	-gltLabel 20 'Good_social_vs_alone_EA' -gltCode 20  'Outcome : 1*Good Context : 1*PR + 1*SE -2*AL' \
+	-gltLabel 19 'Bad_social_vs_alone_EA' -gltCode 19  'Outcome : 1*Bad Context : 1*PR +1*SE -2*AL' \
+	-gltLabel 20 'Good_social_vs_alone_EA' -gltCode 20  'Outcome : 1*Good Context : 1*PR +1*SE -2*AL' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Outcome Context Group InputFile \

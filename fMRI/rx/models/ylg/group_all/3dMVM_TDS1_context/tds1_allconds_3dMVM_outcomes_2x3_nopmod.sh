@@ -18,7 +18,7 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Outcomes/
 	-jobs 28 \
 	-wsVars  "Outcome*Context" \
 	-SS_type 3 \
-	-num_glt 33 \
+	-num_glt 28 \
 	-gltLabel 1 'GoOutcome_AL-SE_EA'    -gltCode 1  'Outcome : 1*GoGood +1*GoBad Context : 1*AL -1*SE' \
 	-gltLabel 2 'GoOutcome_AL-PR_EA'    -gltCode 2  'Outcome : 1*GoGood +1*GoBad Context : 1*AL -1*PR' \
 	-gltLabel 3 'GoOutcome_PR-SE_EA'    -gltCode 3  'Outcome : 1*GoGood +1*GoBad Context : 1*PR -1*SE' \

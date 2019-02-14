@@ -1,0 +1,153 @@
+# 3dClustSim -mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -acf 0.220568 4.04762 8.00892
+# 1-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220919 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 1  | alpha = Prob(Cluster >= given size)
+#  pthr  | .10000 .05000 .02000 .01000
+# ------ | ------ ------ ------ ------
+ 0.050000  1904.0 2282.8 2905.5 3295.0
+ 0.020000   578.6  700.6  864.0 1013.0
+ 0.010000   295.5  358.4  457.0  519.0
+ 0.005000   165.4  206.3  260.4  306.0
+ 0.002000    85.4  106.7  136.0  156.5
+ 0.001000    53.9   67.8   87.0  104.7
+ 0.000500    34.7   44.1   57.5   69.8
+ 0.000200    19.1   25.5   34.7   42.5
+ 0.000100    11.9   16.5   23.0   29.0
+# 3dClustSim -mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -acf 0.220568 4.04762 8.00892
+# 1-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220919 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 2  | alpha = Prob(Cluster >= given size)
+#  pthr  | .10000 .05000 .02000 .01000
+# ------ | ------ ------ ------ ------
+ 0.050000  3292.0 3982.0 4814.0 5543.0
+ 0.020000   795.3  964.5 1195.0 1358.0
+ 0.010000   373.8  455.5  564.5  660.5
+ 0.005000   202.4  250.0  309.0  357.0
+ 0.002000   100.4  126.5  159.3  185.2
+ 0.001000    62.9   78.3  102.2  118.7
+ 0.000500    40.2   50.9   67.1   78.9
+ 0.000200    22.3   29.0   38.9   47.4
+ 0.000100    14.4   19.0   26.1   32.0
+# 3dClustSim -mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -acf 0.220568 4.04762 8.00892
+# 1-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220919 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 3  | alpha = Prob(Cluster >= given size)
+#  pthr  | .10000 .05000 .02000 .01000
+# ------ | ------ ------ ------ ------
+ 0.050000  3947.0 4806.0 5801.0 6616.0
+ 0.020000   874.4 1060.0 1303.0 1491.0
+ 0.010000   401.4  487.6  599.5  704.7
+ 0.005000   213.5  260.6  322.9  379.0
+ 0.002000   104.1  131.4  165.5  191.7
+ 0.001000    64.7   81.0  104.6  122.7
+ 0.000500    41.1   52.3   68.5   81.0
+ 0.000200    23.0   29.5   39.5   48.0
+ 0.000100    14.7   19.5   26.4   32.7
+# 3dClustSim -mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -acf 0.220568 4.04762 8.00892
+# 2-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220919 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 1  | alpha = Prob(Cluster >= given size)
+#  pthr  | .10000 .05000 .02000 .01000
+# ------ | ------ ------ ------ ------
+ 0.050000   882.7 1047.0 1275.0 1449.0
+ 0.020000   355.5  427.4  527.5  604.0
+ 0.010000   204.4  247.7  304.0  353.5
+ 0.005000   123.6  151.7  191.3  218.0
+ 0.002000    68.1   83.4  107.7  125.6
+ 0.001000    44.4   55.2   70.6   84.3
+ 0.000500    29.4   36.9   48.2   59.0
+ 0.000200    16.8   22.3   29.7   38.2
+ 0.000100    10.9   14.9   21.3   26.6
+# 3dClustSim -mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -acf 0.220568 4.04762 8.00892
+# 2-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220919 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 2  | alpha = Prob(Cluster >= given size)
+#  pthr  | .10000 .05000 .02000 .01000
+# ------ | ------ ------ ------ ------
+ 0.050000  1260.0 1470.7 1765.0 1929.0
+ 0.020000   451.0  542.5  662.7  755.5
+ 0.010000   248.3  295.1  366.7  428.0
+ 0.005000   145.9  177.9  219.3  254.0
+ 0.002000    79.1   96.0  120.9  142.5
+ 0.001000    51.0   62.7   80.7   94.5
+ 0.000500    33.3   41.9   54.9   66.0
+ 0.000200    19.3   25.1   33.3   41.4
+ 0.000100    12.9   17.1   23.2   29.1
+# 3dClustSim -mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -acf 0.220568 4.04762 8.00892
+# 2-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220919 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 3  | alpha = Prob(Cluster >= given size)
+#  pthr  | .10000 .05000 .02000 .01000
+# ------ | ------ ------ ------ ------
+ 0.050000  1412.0 1664.0 1970.0 2188.0
+ 0.020000   481.0  575.7  704.2  805.5
+ 0.010000   257.7  308.0  384.0  441.5
+ 0.005000   152.4  184.2  227.4  268.0
+ 0.002000    81.4   99.6  124.5  146.7
+ 0.001000    52.5   64.7   82.7   96.0
+ 0.000500    34.0   42.9   55.7   67.5
+ 0.000200    19.9   25.5   33.9   42.2
+ 0.000100    13.2   17.5   23.6   29.9
+# 3dClustSim -mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -acf 0.220568 4.04762 8.00892
+# bi-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220919 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 1  | alpha = Prob(Cluster >= given size)
+#  pthr  | .10000 .05000 .02000 .01000
+# ------ | ------ ------ ------ ------
+ 0.050000   882.7 1047.0 1275.0 1449.0
+ 0.020000   355.5  427.4  527.5  604.0
+ 0.010000   204.4  247.7  304.0  353.5
+ 0.005000   123.6  151.7  191.3  218.0
+ 0.002000    68.1   83.4  107.7  125.6
+ 0.001000    44.4   55.2   70.6   84.3
+ 0.000500    29.4   36.9   48.2   59.0
+ 0.000200    16.8   22.3   29.7   38.2
+ 0.000100    10.9   14.9   21.3   26.6
+# 3dClustSim -mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -acf 0.220568 4.04762 8.00892
+# bi-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220919 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 2  | alpha = Prob(Cluster >= given size)
+#  pthr  | .10000 .05000 .02000 .01000
+# ------ | ------ ------ ------ ------
+ 0.050000  1259.7 1470.3 1765.0 1929.0
+ 0.020000   451.0  542.5  662.7  755.5
+ 0.010000   248.3  295.1  366.7  428.0
+ 0.005000   145.9  177.9  219.3  254.0
+ 0.002000    79.1   96.0  120.9  142.5
+ 0.001000    51.0   62.7   80.7   94.5
+ 0.000500    33.3   41.9   54.9   66.0
+ 0.000200    19.3   25.1   33.3   41.4
+ 0.000100    12.9   17.1   23.2   29.1
+# 3dClustSim -mask /projects/dsnlab/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -acf 0.220568 4.04762 8.00892
+# bi-sided thresholding
+# Grid: 91x109x91 2.00x2.00x2.00 mm^3 (220919 voxels in mask)
+#
+# CLUSTER SIZE THRESHOLD(pthr,alpha) in Voxels
+# -NN 3  | alpha = Prob(Cluster >= given size)
+#  pthr  | .10000 .05000 .02000 .01000
+# ------ | ------ ------ ------ ------
+ 0.050000  1407.5 1659.5 1966.0 2188.0
+ 0.020000   481.0  575.7  704.2  805.5
+ 0.010000   257.7  308.0  384.0  441.5
+ 0.005000   152.4  184.2  227.4  268.0
+ 0.002000    81.4   99.6  124.5  146.7
+ 0.001000    52.5   64.7   82.7   96.0
+ 0.000500    34.0   42.9   55.7   67.5
+ 0.000200    19.9   25.5   33.9   42.2
+ 0.000100    13.2   17.5   23.6   29.9

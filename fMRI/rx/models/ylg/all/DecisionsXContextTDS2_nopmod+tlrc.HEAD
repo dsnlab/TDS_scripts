@@ -1,0 +1,964 @@
+
+type = string-attribute
+name = IDCODE_STRING
+count = 27
+'XYZ_p7K9qi2ws3v952JeuI5c1P~
+
+type  = float-attribute
+name  = ORIGIN
+count = 3
+            -90            126            -72
+
+type  = float-attribute
+name  = DELTA
+count = 3
+              2             -2              2
+
+type = integer-attribute
+name = ORIENT_SPECIFIC
+count = 3
+ 0 2 4
+
+type = integer-attribute
+name = DATASET_DIMENSIONS
+count = 5
+ 91 109 91 0 0
+
+type = integer-attribute
+name = DATASET_RANK
+count = 8
+ 3 40 0 0 0
+ 0 0 0
+
+type = string-attribute
+name = TYPESTRING
+count = 14
+'3DIM_GEN_FUNC~
+
+type = integer-attribute
+name = SCENE_DATA
+count = 8
+ 2 11 3 -999 -999
+ -999 -999 -999
+
+type  = float-attribute
+name  = IJK_TO_DICOM_REAL
+count = 12
+              2              0              0            -90              0
+             -2              0            126              0              0
+              2            -72
+
+type = string-attribute
+name = BRICK_LABS
+count = 390
+'(Intercept) F~Decision F~Context F~Decision:Context F~D_AL-SE~D_AL-SE t~D_AL-PR~D_AL-PR t~D_PR-SE~D_PR-SE t~DS_DG_AL-SE~DS_DG_AL-SE t~DS_DG_AL-PR~DS_DG_AL-PR t~DS_DG_PR-SE~DS_DG_PR-SE t~DS_AL~DS_AL t~DG_AL~DG_AL t~DS_PR~DS_PR t~DG_PR~DG_PR t~DS_SE~DS_SE t~DG_SE~DG_SE t~DS_AL-SE~DS_AL-SE t~DS_AL-PR~DS_AL-PR t~DS_PR-SE~DS_PR-SE t~DG_AL-SE~DG_AL-SE t~DG_AL-PR~DG_AL-PR t~DG_PR-SE~DG_PR-SE t~
+
+type = string-attribute
+name = TEMPLATE_SPACE
+count = 5
+'TLRC~
+
+type = integer-attribute
+name = BRICK_TYPES
+count = 40
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+
+type = string-attribute
+name = BRICK_STATSYM
+count = 320
+'Ftest(1,66);Ftest(1,66);Ftest(2,132);Ftest(2,132);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66);none;Ttest(66)~
+
+type = string-attribute
+name = HISTORY_NOTE
+count = 50740
+'[jpfeifer@n125: Thu Oct  4 10:31:54 2018] [jpfeifer@n125: Thu Oct  4 09:20:25 2018] 3dMVM -prefix DecisionsXContextTDS2_nopmod -jobs 28 -wsVars 'Decision*Context' -SS_type 3 -num_glt 18 -gltLabel 1 D_AL-SE -gltCode 1 Decision : '1*DS' '+1*DG' Context : '1*AL' '-1*SE' -gltLabel 2 D_AL-PR -gltCode 2 Decision : '1*DS' '+1*DG' Context : '1*AL' '-1*PR' -gltLabel 3 D_PR-SE -gltCode 3 Decision : '1*DS' '+1*DG' Context : '1*PR' '-1*SE' -gltLabel 4 DS_DG_AL-SE -gltCode 4 Decision : '1*DS' '-1*DG' Context : '1*AL' '-1*SE' -gltLabel 5 DS_DG_AL-PR -gltCode 5 Decision : '1*DS' '-1*DG' Context : '1*AL' '-1*PR' -gltLabel 6 DS_DG_PR-SE -gltCode 6 Decision : '1*DS' '-1*DG' Context : '1*PR' '-1*SE' -gltLabel 7 DS_AL -gltCode 7 Decision : '1*DS' Context : '1*AL' -gltLabel 8 DG_AL -gltCode 8 Decision : '1*DG' Context : '1*AL' -gltLabel 9 DS_PR -gltCode 9 Decision : '1*DS' Context : '1*PR' -gltLabel 10 DG_PR -gltCode 10 Decision : '1*DG' Context : '1*PR' -gltLabel 11 DS_SE -gltCode 11 Decision : '1*DS' Context : '1*SE' -gltLabel 12 DG_SE -gltCode 12 Decision : '1*DG' Context : '1*SE' -gltLabel 13 DS_AL-SE -gltCode 13 Decision : '1*DS' Context : '1*AL' '-1*SE' -gltLabel 14 DS_AL-PR -gltCode 14 Decision : '1*DS' Context : '1*AL' '-1*PR' -gltLabel 15 DS_PR-SE -gltCode 15 Decision : '1*DS' Context : '1*PR' '-1*SE' -gltLabel 16 DG_AL-SE -gltCode 16 Decision : '1*DG' Context : '1*AL' '-1*SE' -gltLabel 17 DG_AL-PR -gltCode 17 Decision : '1*DG' Context : '1*AL' '-1*PR' -gltLabel 18 DG_PR-SE -gltCode 18 Decision : '1*DG' Context : '1*PR' '-1*SE' -mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii -dataTable Subj Decision Context Group InputFile 109 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0003.nii 109 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0013.nii 109 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0023.nii 109 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0002.nii 109 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0012.nii 109 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0022.nii 113 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/113/con_0003.nii 113 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/113/con_0013.nii 113 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/113/con_0023.nii 113 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/113/con_0002.nii 113 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/113/con_0012.nii 113 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/113/con_0022.nii 114 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/114/con_0003.nii 114 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/114/con_0013.nii 114 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/114/con_0023.nii 114 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/114/con_0002.nii 114 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/114/con_0012.nii 114 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/114/con_0022.nii 115 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/115/con_0003.nii 115 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/115/con_0013.nii 115 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/115/con_0023.nii 115 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/115/con_0002.nii 115 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/115/con_0012.nii 115 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/115/con_0022.nii 116 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/116/con_0003.nii 116 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/116/con_0013.nii 116 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/116/con_0023.nii 116 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/116/con_0002.nii 116 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/116/con_0012.nii 116 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/116/con_0022.nii 117 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0003.nii 117 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0013.nii 117 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0023.nii 117 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0002.nii 117 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0012.nii 117 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/117/con_0022.nii 119 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/119/con_0003.nii 119 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/119/con_0013.nii 119 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/119/con_0023.nii 119 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/119/con_0002.nii 119 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/119/con_0012.nii 119 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/119/con_0022.nii 120 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/120/con_0003.nii 120 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/120/con_0013.nii 120 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/120/con_0023.nii 120 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/120/con_0002.nii 120 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/120/con_0012.nii 120 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/120/con_0022.nii 121 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/121/con_0003.nii 121 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/121/con_0013.nii 121 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/121/con_0023.nii 121 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/121/con_0002.nii 121 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/121/con_0012.nii 121 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/121/con_0022.nii 122 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/122/con_0003.nii 122 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/122/con_0013.nii 122 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/122/con_0023.nii 122 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/122/con_0002.nii 122 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/122/con_0012.nii 122 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/122/con_0022.nii 124 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/124/con_0003.nii 124 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/124/con_0013.nii 124 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/124/con_0023.nii 124 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/124/con_0002.nii 124 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/124/con_0012.nii 124 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/124/con_0022.nii 125 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/125/con_0003.nii 125 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/125/con_0013.nii 125 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/125/con_0023.nii 125 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/125/con_0002.nii 125 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/125/con_0012.nii 125 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/125/con_0022.nii 126 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/126/con_0003.nii 126 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/126/con_0013.nii 126 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/126/con_0023.nii 126 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/126/con_0002.nii 126 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/126/con_0012.nii 126 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/126/con_0022.nii 128 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/128/con_0003.nii 128 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/128/con_0013.nii 128 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/128/con_0023.nii 128 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/128/con_0002.nii 128 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/128/con_0012.nii 128 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/128/con_0022.nii 129 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/129/con_0003.nii 129 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/129/con_0013.nii 129 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/129/con_0023.nii 129 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/129/con_0002.nii 129 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/129/con_0012.nii 129 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/129/con_0022.nii 130 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/130/con_0003.nii 130 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/130/con_0013.nii 130 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/130/con_0023.nii 130 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/130/con_0002.nii 130 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/130/con_0012.nii 130 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/130/con_0022.nii 131 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/131/con_0003.nii 131 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/131/con_0013.nii 131 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/131/con_0023.nii 131 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/131/con_0002.nii 131 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/131/con_0012.nii 131 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/131/con_0022.nii 132 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/132/con_0003.nii 132 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/132/con_0013.nii 132 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/132/con_0023.nii 132 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/132/con_0002.nii 132 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/132/con_0012.nii 132 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/132/con_0022.nii 133 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/133/con_0003.nii 133 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/133/con_0013.nii 133 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/133/con_0023.nii 133 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/133/con_0002.nii 133 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/133/con_0012.nii 133 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/133/con_0022.nii 134 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/134/con_0003.nii 134 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/134/con_0013.nii 134 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/134/con_0023.nii 134 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/134/con_0002.nii 134 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/134/con_0012.nii 134 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/134/con_0022.nii 136 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/136/con_0003.nii 136 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/136/con_0013.nii 136 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/136/con_0023.nii 136 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/136/con_0002.nii 136 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/136/con_0012.nii 136 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/136/con_0022.nii 140 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/140/con_0003.nii 140 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/140/con_0013.nii 140 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/140/con_0023.nii 140 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/140/con_0002.nii 140 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/140/con_0012.nii 140 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/140/con_0022.nii 141 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/141/con_0003.nii 141 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/141/con_0013.nii 141 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/141/con_0023.nii 141 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/141/con_0002.nii 141 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/141/con_0012.nii 141 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/141/con_0022.nii 142 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/142/con_0003.nii 142 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/142/con_0013.nii 142 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/142/con_0023.nii 142 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/142/con_0002.nii 142 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/142/con_0012.nii 142 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/142/con_0022.nii 144 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/144/con_0003.nii 144 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/144/con_0013.nii 144 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/144/con_0023.nii 144 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/144/con_0002.nii 144 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/144/con_0012.nii 144 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/144/con_0022.nii 145 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/145/con_0003.nii 145 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/145/con_0013.nii 145 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/145/con_0023.nii 145 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/145/con_0002.nii 145 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/145/con_0012.nii 145 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/145/con_0022.nii 146 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/146/con_0003.nii 146 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/146/con_0013.nii 146 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/146/con_0023.nii 146 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/146/con_0002.nii 146 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/146/con_0012.nii 146 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/146/con_0022.nii 150 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/150/con_0003.nii 150 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/150/con_0013.nii 150 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/150/con_0023.nii 150 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/150/con_0002.nii 150 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/150/con_0012.nii 150 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/150/con_0022.nii 151 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/151/con_0003.nii 151 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/151/con_0013.nii 151 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/151/con_0023.nii 151 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/151/con_0002.nii 151 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/151/con_0012.nii 151 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/151/con_0022.nii 152 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/152/con_0003.nii 152 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/152/con_0013.nii 152 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/152/con_0023.nii 152 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/152/con_0002.nii 152 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/152/con_0012.nii 152 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/152/con_0022.nii 155 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/155/con_0003.nii 155 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/155/con_0013.nii 155 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/155/con_0023.nii 155 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/155/con_0002.nii 155 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/155/con_0012.nii 155 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/155/con_0022.nii 156 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/156/con_0003.nii 156 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/156/con_0013.nii 156 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/156/con_0023.nii 156 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/156/con_0002.nii 156 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/156/con_0012.nii 156 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/156/con_0022.nii 157 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/157/con_0003.nii 157 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/157/con_0013.nii 157 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/157/con_0023.nii 157 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/157/con_0002.nii 157 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/157/con_0012.nii 157 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/157/con_0022.nii 159 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/159/con_0003.nii 159 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/159/con_0013.nii 159 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/159/con_0023.nii 159 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/159/con_0002.nii 159 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/159/con_0012.nii 159 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/159/con_0022.nii 160 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/160/con_0003.nii 160 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/160/con_0013.nii 160 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/160/con_0023.nii 160 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/160/con_0002.nii 160 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/160/con_0012.nii 160 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/160/con_0022.nii 161 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/161/con_0003.nii 161 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/161/con_0013.nii 161 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/161/con_0023.nii 161 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/161/con_0002.nii 161 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/161/con_0012.nii 161 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/161/con_0022.nii 162 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/162/con_0003.nii 162 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/162/con_0013.nii 162 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/162/con_0023.nii 162 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/162/con_0002.nii 162 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/162/con_0012.nii 162 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/162/con_0022.nii 163 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/163/con_0003.nii 163 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/163/con_0013.nii 163 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/163/con_0023.nii 163 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/163/con_0002.nii 163 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/163/con_0012.nii 163 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/163/con_0022.nii 164 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/164/con_0003.nii 164 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/164/con_0013.nii 164 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/164/con_0023.nii 164 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/164/con_0002.nii 164 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/164/con_0012.nii 164 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/164/con_0022.nii 165 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/165/con_0003.nii 165 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/165/con_0013.nii 165 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/165/con_0023.nii 165 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/165/con_0002.nii 165 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/165/con_0012.nii 165 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/165/con_0022.nii 167 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/167/con_0003.nii 167 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/167/con_0013.nii 167 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/167/con_0023.nii 167 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/167/con_0002.nii 167 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/167/con_0012.nii 167 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/167/con_0022.nii 168 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/168/con_0003.nii 168 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/168/con_0013.nii 168 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/168/con_0023.nii 168 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/168/con_0002.nii 168 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/168/con_0012.nii 168 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/168/con_0022.nii 169 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/169/con_0003.nii 169 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/169/con_0013.nii 169 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/169/con_0023.nii 169 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/169/con_0002.nii 169 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/169/con_0012.nii 169 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/169/con_0022.nii 170 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/170/con_0003.nii 170 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/170/con_0013.nii 170 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/170/con_0023.nii 170 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/170/con_0002.nii 170 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/170/con_0012.nii 170 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/170/con_0022.nii 171 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/171/con_0003.nii 171 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/171/con_0013.nii 171 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/171/con_0023.nii 171 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/171/con_0002.nii 171 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/171/con_0012.nii 171 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/171/con_0022.nii 172 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/172/con_0003.nii 172 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/172/con_0013.nii 172 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/172/con_0023.nii 172 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/172/con_0002.nii 172 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/172/con_0012.nii 172 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/172/con_0022.nii 173 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/173/con_0003.nii 173 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/173/con_0013.nii 173 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/173/con_0023.nii 173 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/173/con_0002.nii 173 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/173/con_0012.nii 173 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/173/con_0022.nii 174 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/174/con_0003.nii 174 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/174/con_0013.nii 174 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/174/con_0023.nii 174 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/174/con_0002.nii 174 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/174/con_0012.nii 174 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/174/con_0022.nii 175 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/175/con_0003.nii 175 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/175/con_0013.nii 175 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/175/con_0023.nii 175 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/175/con_0002.nii 175 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/175/con_0012.nii 175 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/175/con_0022.nii 177 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/177/con_0003.nii 177 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/177/con_0013.nii 177 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/177/con_0023.nii 177 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/177/con_0002.nii 177 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/177/con_0012.nii 177 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/177/con_0022.nii 178 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/178/con_0003.nii 178 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/178/con_0013.nii 178 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/178/con_0023.nii 178 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/178/con_0002.nii 178 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/178/con_0012.nii 178 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/178/con_0022.nii 179 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/179/con_0003.nii 179 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/179/con_0013.nii 179 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/179/con_0023.nii 179 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/179/con_0002.nii 179 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/179/con_0012.nii 179 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/179/con_0022.nii 181 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/181/con_0003.nii 181 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/181/con_0013.nii 181 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/181/con_0023.nii 181 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/181/con_0002.nii 181 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/181/con_0012.nii 181 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/181/con_0022.nii 182 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/182/con_0003.nii 182 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/182/con_0013.nii 182 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/182/con_0023.nii 182 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/182/con_0002.nii 182 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/182/con_0012.nii 182 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/182/con_0022.nii 183 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/183/con_0003.nii 183 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/183/con_0013.nii 183 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/183/con_0023.nii 183 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/183/con_0002.nii 183 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/183/con_0012.nii 183 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/183/con_0022.nii 184 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/184/con_0003.nii 184 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/184/con_0013.nii 184 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/184/con_0023.nii 184 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/184/con_0002.nii 184 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/184/con_0012.nii 184 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/184/con_0022.nii 185 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/185/con_0003.nii 185 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/185/con_0013.nii 185 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/185/con_0023.nii 185 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/185/con_0002.nii 185 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/185/con_0012.nii 185 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/185/con_0022.nii 186 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/186/con_0003.nii 186 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/186/con_0013.nii 186 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/186/con_0023.nii 186 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/186/con_0002.nii 186 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/186/con_0012.nii 186 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/186/con_0022.nii 187 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/187/con_0003.nii 187 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/187/con_0013.nii 187 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/187/con_0023.nii 187 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/187/con_0002.nii 187 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/187/con_0012.nii 187 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/187/con_0022.nii 188 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/188/con_0003.nii 188 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/188/con_0013.nii 188 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/188/con_0023.nii 188 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/188/con_0002.nii 188 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/188/con_0012.nii 188 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/188/con_0022.nii 190 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/190/con_0003.nii 190 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/190/con_0013.nii 190 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/190/con_0023.nii 190 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/190/con_0002.nii 190 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/190/con_0012.nii 190 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/190/con_0022.nii 192 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/192/con_0003.nii 192 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/192/con_0013.nii 192 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/192/con_0023.nii 192 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/192/con_0002.nii 192 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/192/con_0012.nii 192 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/192/con_0022.nii 193 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0003.nii 193 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0013.nii 193 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0023.nii 193 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0002.nii 193 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0012.nii 193 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0022.nii 194 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/194/con_0003.nii 194 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/194/con_0013.nii 194 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/194/con_0023.nii 194 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/194/con_0002.nii 194 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/194/con_0012.nii 194 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/194/con_0022.nii 195 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/195/con_0003.nii 195 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/195/con_0013.nii 195 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/195/con_0023.nii 195 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/195/con_0002.nii 195 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/195/con_0012.nii 195 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/195/con_0022.nii 196 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/196/con_0003.nii 196 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/196/con_0013.nii 196 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/196/con_0023.nii 196 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/196/con_0002.nii 196 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/196/con_0012.nii 196 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/196/con_0022.nii 197 DS AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/197/con_0003.nii 197 DS PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/197/con_0013.nii 197 DS SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/197/con_0023.nii 197 DG AL control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/197/con_0002.nii 197 DG PR control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/197/con_0012.nii 197 DG SE control /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/197/con_0022.nii~
+
+type = string-attribute
+name = IDCODE_DATE
+count = 1
+'~
+
+type = string-attribute
+name = LABEL_1
+count = 7
+'Viggo!~
+
+type = string-attribute
+name = LABEL_2
+count = 7
+'Viggo!~
+
+type = string-attribute
+name = DATASET_NAME
+count = 7
+'Viggo!~
+
+type  = float-attribute
+name  = IJK_TO_DICOM
+count = 12
+              2              0              0            -90              0
+             -2              0            126              0              0
+              2            -72
+
+type  = float-attribute
+name  = BRICK_STATS
+count = 80
+              0       99.99999              0       99.99999              0
+       19.85631              0       12.91574      -10.03763        12.5201
+       -5.41787        5.26691      -8.243879       12.38718       -5.27823
+       4.774682      -11.76639       5.289795      -3.648167       5.205744
+      -4.413565       8.353703      -4.264498       4.305892      -4.270458
+       2.813652      -4.492777         5.2858      -3.755033       7.308653
+      -5.086568       4.879485      -4.994473        6.76116      -10.73187
+       15.60536      -6.969853       11.27307      -11.77559       15.35114
+      -4.857709       6.531764       -12.2938         14.125       -7.31913
+       11.42463      -15.31495       16.30944      -5.116826       5.513237
+      -12.67981        10.7883         -7.483       9.183695       -13.4895
+       14.10777      -5.070174       7.407124      -4.952733       5.805473
+      -3.948506       6.603414      -4.728699       4.980562      -4.251782
+       4.653244      -3.602614       4.170678      -6.942852       7.465753
+      -5.385395       5.505702      -5.040472       5.783763      -5.312831
+       4.947368      -9.045118       3.063531       -3.71692       5.958528
+
+type  = float-attribute
+name  = BRICK_FLOAT_FACS
+count = 40
+    0.003051851    0.003051851   0.0006059851   0.0003941691   0.0003820947
+   0.0001653453   0.0003780382   0.0001610837   0.0003590927   0.0001588715
+   0.0002549425   0.0001314094    0.000130328   0.0001613147   0.0002230492
+   0.0001552345   0.0002063405   0.0004762524   0.0003440374   0.0004684938
+   0.0001993397   0.0004310739   0.0003486628   0.0004977398   0.0001682558
+   0.0003869688   0.0002802727   0.0004305481   0.0002260544   0.0001771744
+   0.0002015264   0.0001519993   0.0001420101   0.0001272829   0.0002278436
+   0.0001680258   0.0001765118   0.0001621397   0.0002760435   0.0001818454
+
+type = string-attribute
+name = BRICK_KEYWORDS
+count = 40
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+type  = float-attribute
+name  = BRICK_STATAUX
+count = 92
+              0              4              2              1             66
+              1              4              2              1             66
+              2              4              2              2            132
+              3              4              2              2            132
+              5              3              1             66              7
+              3              1             66              9              3
+              1             66             11              3              1
+             66             13              3              1             66
+             15              3              1             66             17
+              3              1             66             19              3
+              1             66             21              3              1
+             66             23              3              1             66
+             25              3              1             66             27
+              3              1             66             29              3
+              1             66             31              3              1
+             66             33              3              1             66
+             35              3              1             66             37
+              3              1             66             39              3
+              1             66
+
+type  = float-attribute
+name  = FDRCURVE_000000
+count = 103
+    0.003051851      0.9999694      0.9971538       1.513121       1.797464
+       2.031109       2.234516        2.41784       2.585666        2.74056
+       2.885456       3.021225       3.149659       3.271425       3.387497
+       3.498306       3.604211       3.705412       3.802992       3.897083
+       3.987608       4.075108       4.159605       4.241302       4.320889
+       4.397848       4.472493       4.545151        4.61562       4.684689
+       4.751937        4.81756        4.88145       4.944022       5.005193
+       5.064872       5.122997       5.180029       5.235781       5.290572
+       5.344036       5.396661       5.448066       5.498137       5.547128
+        5.59529        5.64287       5.689663       5.735769       5.780993
+       5.825372       5.868816       5.911293       5.953048       5.994777
+       6.035728       6.075993       6.115867       6.154879       6.193157
+       6.230984       6.268444        6.30506       6.341272       6.376855
+       6.412216       6.446743       6.480648       6.514283       6.547171
+       6.579988       6.611992       6.643639       6.675522       6.706225
+       6.737121       6.767454       6.797402       6.827068       6.856689
+       6.885672       6.913975       6.941965       6.969617       6.997167
+       7.024196       7.051444       7.077898       7.104259       7.130393
+       7.156118        7.18129       7.205969       7.230551       7.254872
+        7.27934       7.303311       7.326543       7.350039       7.372927
+       7.395659       7.419158       7.441503
+
+type  = float-attribute
+name  = FDRCURVE_000001
+count = 103
+    0.003051851      0.9999694      0.8630606       1.361806        1.64061
+       1.870705       2.071446       2.250908        2.41538       2.566344
+       2.707314       2.839183       2.963572       3.081761       3.193907
+       3.300417       3.401967       3.499515       3.593496       3.683796
+       3.770787       3.854837        3.93618       4.014431       4.090945
+       4.164428       4.235919       4.306018       4.374897       4.441319
+       4.506773       4.570673       4.633143       4.694588       4.754223
+       4.813067       4.870618       4.927485       4.982326       5.036485
+       5.089287       5.140842       5.190986       5.241149       5.289992
+       5.338029       5.383975       5.430414       5.475763       5.520205
+        5.56353       5.606161        5.64857       5.690156       5.730281
+       5.770114       5.808879       5.847361       5.885913       5.923031
+       5.959576       5.993843       6.028522       6.062704       6.096716
+       6.128986       6.161901       6.194273       6.225129       6.257072
+       6.287072       6.318148       6.347894        6.37639       6.405869
+       6.434284       6.461831       6.490958       6.519036       6.546357
+       6.574342        6.60245       6.629349       6.655817       6.681521
+       6.706589       6.733269       6.759148       6.783956       6.807687
+       6.832241       6.854053       6.876304       6.898246        6.91935
+       6.937781       6.959738       6.983237        7.00495       7.027125
+       7.051401       7.071652       7.091742
+
+type  = float-attribute
+name  = FDRCURVE_000002
+count = 103
+   0.0006059851      0.1985571      0.1890919      0.2284933      0.2728319
+      0.3209831      0.3716636      0.4254721      0.4793381      0.5316249
+      0.5827237      0.6345364      0.6840971      0.7320946       0.781794
+      0.8289318      0.8754187      0.9203926      0.9654596       1.008887
+       1.053836       1.097821       1.139141       1.180004       1.217165
+        1.25706       1.293046       1.328852       1.364623       1.399903
+       1.428365       1.458739       1.488525        1.52034       1.550816
+       1.580194       1.605118       1.631555       1.651883       1.673324
+       1.696893        1.71658        1.74532       1.762624       1.781396
+       1.805806        1.82658        1.85055       1.873277       1.900793
+       1.926806       1.947536       1.966859       1.987173       2.011232
+       2.022979       2.044197       2.049185       2.059728       2.065358
+        2.09339       2.133364       2.154828       2.171211       2.201707
+       2.208931       2.226364       2.247967       2.256698       2.288118
+       2.309039       2.341963       2.363842       2.372702       2.400014
+       2.418838       2.426921       2.442437       2.459158       2.460396
+       2.461634       2.508516       2.526131       2.543746       2.568273
+        2.60316        2.63271       2.652709       2.672707       2.683071
+       2.687058       2.691046       2.695034       2.697085       2.697085
+       2.697085        2.73886       2.745784       2.752707       2.759631
+       2.766554       2.773478       2.780401
+
+type  = float-attribute
+name  = FDRCURVE_000003
+count = 103
+   0.0003941691      0.1116996   0.0004939385     0.01911533     0.03845721
+     0.05668803     0.07485522     0.09356817      0.1116863      0.1292529
+      0.1469533      0.1647777      0.1825348      0.2021231      0.2209783
+      0.2389983      0.2563172      0.2752642      0.2962112      0.3185856
+      0.3395352      0.3594356      0.3781989      0.3979853      0.4177983
+      0.4393625      0.4593158      0.4780294      0.4956798      0.5159922
+       0.536767      0.5569085      0.5754504       0.595328       0.615774
+      0.6309934      0.6495492      0.6661187      0.6841363      0.7026625
+      0.7210912      0.7388484       0.757898      0.7718769      0.7896813
+      0.7997245      0.8133717      0.8259429      0.8435968      0.8480171
+      0.8609344      0.8751653      0.8899711      0.8948834      0.9054388
+      0.9100368      0.9170018      0.9276283      0.9280668       0.939325
+      0.9410087      0.9469559      0.9536461      0.9567584      0.9574865
+      0.9665678      0.9738812      0.9880481      0.9880822      0.9881164
+      0.9881361      0.9881361      0.9906871      0.9996078       1.009852
+        1.01557       1.016733       1.027821       1.032409       1.032593
+       1.046143       1.059635       1.063157       1.070198       1.071819
+       1.073346       1.073346       1.073346       1.073346       1.073346
+       1.073346       1.073346       1.073346       1.073346       1.073346
+       1.073346       1.073346       1.073346       1.073346       1.073346
+       1.073346       1.073346       1.073346
+
+type  = float-attribute
+name  = FDRCURVE_000005
+count = 103
+   0.0001653453     0.04818659      0.2102575      0.2199724      0.2306175
+      0.2410939      0.2527492      0.2643593      0.2773592      0.2907474
+      0.3045884      0.3190784      0.3337977      0.3482037      0.3640828
+      0.3808244      0.3978708      0.4152256      0.4323817       0.450385
+       0.469817      0.4885621      0.5087366      0.5285982      0.5505193
+      0.5715153      0.5942535      0.6147583      0.6366192      0.6607809
+      0.6838627       0.708356      0.7320267      0.7575895      0.7822495
+      0.8062495      0.8313438      0.8575498      0.8837089      0.9105315
+      0.9381081      0.9656789      0.9923738       1.019726       1.045173
+       1.071686       1.096013       1.123663       1.151051       1.176083
+       1.202041       1.229456       1.255976       1.281591       1.309158
+       1.333867       1.360628       1.387748       1.414523       1.438072
+       1.464705          1.489       1.516763       1.543043       1.565038
+       1.589684       1.611453       1.635944        1.66142       1.682047
+       1.704749       1.729056       1.750875       1.771914       1.792801
+       1.815634       1.834841       1.856967       1.873627       1.892914
+        1.91493       1.936773       1.958885       1.979717       1.996318
+       2.010734       2.032489       2.049056       2.055357       2.068699
+       2.074605       2.079007       2.080853       2.082581       2.097071
+       2.118436       2.119552       2.119552       2.125334       2.127263
+       2.127263       2.127263        2.13547
+
+type  = float-attribute
+name  = FDRCURVE_000007
+count = 103
+   0.0001610837     0.05058834     0.08613393     0.09015135     0.09338458
+      0.0970006      0.1024533      0.1082684      0.1139561      0.1191778
+      0.1258495       0.132763      0.1410585      0.1489322      0.1574679
+      0.1674962      0.1779493      0.1874982      0.1972102       0.209362
+      0.2206175      0.2346159      0.2478996      0.2602197      0.2731592
+      0.2871223      0.3012783      0.3166541      0.3319244      0.3462754
+      0.3606904      0.3745286      0.3894292      0.4031227      0.4186594
+      0.4305778       0.446151      0.4606289        0.47302      0.4858779
+      0.4986561      0.5118008      0.5253823      0.5428758      0.5561898
+      0.5711621      0.5858325      0.6027266      0.6190789      0.6321863
+       0.644991      0.6566962      0.6694983      0.6829162      0.6957791
+      0.7071874      0.7211992      0.7431946      0.7602716      0.7792497
+      0.8075886      0.8335788      0.8663362      0.8891838      0.9184753
+      0.9330487       0.960606      0.9924335       1.021084       1.037448
+       1.060611       1.091773       1.128166       1.154492       1.184125
+        1.19985       1.216174       1.252158       1.268908       1.305642
+       1.334703       1.378794       1.419173       1.422622       1.425927
+       1.442245       1.473894       1.505237       1.506945       1.524699
+       1.553819       1.604996        1.62884       1.652134        1.65644
+       1.685046       1.695251       1.724242       1.789834       1.830168
+       1.830168       1.830237       1.830646
+
+type  = float-attribute
+name  = FDRCURVE_000009
+count = 103
+   0.0001588715      0.0518652     0.06270597     0.06664093     0.07010759
+     0.07424548     0.07876649     0.08199666     0.08657286     0.09160236
+     0.09665468      0.1022884      0.1077571      0.1149923      0.1223103
+      0.1295645      0.1357087      0.1435938      0.1519222      0.1595294
+      0.1709407      0.1802559      0.1914415      0.2038208      0.2192757
+      0.2338141      0.2475348      0.2606281      0.2752727      0.2922088
+      0.3090537      0.3250246      0.3402781      0.3571896      0.3764216
+      0.3945826      0.4112966      0.4299477      0.4482214      0.4650749
+      0.4866621      0.5092722      0.5277769      0.5454379      0.5603804
+      0.5776266      0.5942284      0.6137647      0.6341559      0.6482931
+       0.669414      0.6880231       0.714272      0.7393962       0.768188
+      0.7906744       0.815256      0.8381998      0.8601174      0.8907604
+      0.9159793         0.9473      0.9791062      0.9909533       1.015204
+       1.039317         1.0447       1.063289       1.076751        1.09987
+       1.115196       1.129991       1.155046        1.17149       1.211773
+       1.251169       1.286095       1.298848       1.314487       1.333314
+       1.375585       1.407994       1.446744       1.454708       1.485249
+       1.527731       1.564847       1.617042       1.637779       1.651351
+       1.659878       1.697947       1.718137       1.718612       1.719088
+       1.719563       1.720038       1.720513       1.720989       1.721024
+       1.721023       1.721023       1.721023
+
+type  = float-attribute
+name  = FDRCURVE_000011
+count = 103
+   0.0003942282    0.008729527   0.0001308803    0.000144028   0.0004646548
+    0.001131732     0.00127302    0.001501687       0.001798    0.001958533
+    0.002634222    0.002816091    0.003113392    0.003336108    0.003578821
+    0.003655207    0.003862005    0.003894384     0.00411079    0.004116986
+    0.004123181    0.004129377    0.004135572    0.004137382    0.004271924
+    0.004637261     0.00484722    0.005239791    0.005685485    0.005818489
+    0.005976452    0.006075079    0.006087015    0.006108007    0.006426101
+    0.006790866    0.006883307      0.0069577    0.007507981    0.007715289
+    0.007930216    0.008622307    0.008864916    0.008937838    0.009390572
+    0.009885878    0.009885878     0.01001754       0.010752     0.01085028
+     0.01085027     0.01085028     0.01085028     0.01130532     0.01162406
+     0.01195168      0.0125788     0.01295788     0.01324626     0.01374309
+     0.01374328     0.01374347     0.01374365     0.01374384     0.01374403
+     0.01374422      0.0137444     0.01374459     0.01374478     0.01374497
+     0.01374516     0.01374534     0.01374553     0.01374572     0.01374591
+     0.01374609     0.01374628     0.01374647     0.01374666     0.01374684
+     0.01374703     0.01374722     0.01374741      0.0137476     0.01374778
+     0.01374797     0.01374816     0.01374835     0.01374853     0.01374872
+     0.01374891      0.0137491     0.01374928     0.01374947     0.01374966
+     0.01374985     0.01375004     0.01375022     0.01375041      0.0137506
+     0.01375079     0.01375097     0.01376273
+
+type  = float-attribute
+name  = FDRCURVE_000013
+count = 103
+   0.0001613147     0.04074165      0.1271595      0.1316064      0.1358844
+      0.1409072      0.1464124      0.1529165      0.1595125      0.1663329
+      0.1735255      0.1807376      0.1888107      0.1970932      0.2062611
+      0.2146457       0.224067      0.2342652      0.2445406      0.2546517
+      0.2642127      0.2744761      0.2852913      0.2956857      0.3073102
+      0.3188971      0.3317464      0.3448739      0.3568389      0.3703991
+      0.3836551      0.3960463      0.4090386      0.4224715      0.4378014
+      0.4517632      0.4669138      0.4813466      0.4988136      0.5142869
+       0.529608      0.5466664      0.5637668      0.5826541      0.5998667
+      0.6185509       0.636429      0.6563209      0.6747795      0.6935625
+      0.7143327       0.733373      0.7551999      0.7749702      0.7949722
+      0.8150178      0.8352995      0.8545519      0.8725773      0.8937256
+      0.9146987       0.937555      0.9562292      0.9784625       1.001249
+       1.020414       1.038233       1.059591        1.07878        1.09972
+       1.119258       1.144814       1.166805       1.184852       1.205046
+       1.228102       1.243633       1.264039        1.28319       1.296792
+       1.312926       1.332641         1.3437       1.359217       1.374916
+       1.384494       1.398361       1.407076       1.420469       1.431515
+       1.431515       1.445958       1.451553         1.4692       1.480399
+       1.485409       1.496706       1.497142       1.497464       1.497464
+       1.500336       1.500682       1.500682
+
+type  = float-attribute
+name  = FDRCURVE_000015
+count = 103
+   0.0001552345     0.04453522   0.0001546359    0.002558543     0.00676398
+     0.01073672     0.01407256     0.01883779     0.02250605     0.02739023
+     0.03259706     0.03931836     0.04481351     0.05040164     0.05757928
+     0.06439702     0.07326247     0.08023459      0.0897617     0.09947007
+      0.1073236      0.1159786      0.1256994      0.1369594      0.1466368
+      0.1558766      0.1662601      0.1770249      0.1874083      0.1985333
+      0.2108528      0.2227302      0.2350797      0.2475732      0.2611876
+      0.2730438      0.2862037      0.2994751      0.3137197      0.3259656
+      0.3408662      0.3548753      0.3693873      0.3822255      0.3943533
+      0.4065194      0.4186292      0.4308302      0.4447462       0.459161
+      0.4739611      0.4907601      0.5080335      0.5229595      0.5363429
+      0.5516853      0.5692831      0.5870656      0.6076748      0.6261563
+      0.6440431      0.6606021      0.6771824      0.6955258      0.7144019
+       0.725952      0.7383363      0.7544234       0.776971      0.7887214
+      0.8035723      0.8240544      0.8387545      0.8651209      0.8696664
+      0.8854166      0.8933116      0.8936239      0.8936239      0.9083452
+      0.9266379       0.946255      0.9506246      0.9550331      0.9695542
+      0.9814956      0.9840822       1.004673       1.020733       1.039154
+       1.045413       1.060236       1.079876        1.08103       1.110023
+        1.14997       1.177928       1.195106       1.208128       1.232138
+       1.279051       1.285666        1.28902
+
+type  = float-attribute
+name  = FDRCURVE_000017
+count = 103
+   0.0004762524      0.1067567      0.8302764      0.8726063      0.9184173
+      0.9679729        1.02036       1.075979       1.134595       1.196442
+       1.260523       1.327499       1.396418       1.467372       1.540097
+       1.614563       1.690513       1.767387       1.846007       1.925997
+       2.006296       2.087494        2.16943       2.251883       2.334746
+       2.417991       2.501321        2.58489       2.668109       2.751357
+       2.834465        2.91733       2.999992       3.082622       3.165419
+       3.247463       3.329232       3.410451       3.491177       3.572087
+       3.652545       3.732729       3.811539       3.890607       3.969016
+        4.04705       4.124709       4.201384       4.277968       4.354049
+       4.429718       4.504954       4.580092       4.654269       4.727422
+       4.800798       4.872663       4.944005       5.015594       5.086667
+       5.156513       5.226121       5.294928         5.3629       5.429739
+       5.496501        5.56363        5.62855       5.693176        5.75747
+       5.821992       5.885318       5.948131       6.009722       6.071033
+       6.132827       6.193379       6.253467       6.312723       6.371799
+       6.430419       6.487604       6.545271       6.601481       6.656672
+       6.712288       6.766992       6.820675        6.87427       6.926663
+       6.978517       7.030836       7.081489       7.131533       7.182015
+       7.231196       7.279366       7.326315       7.373995       7.421264
+       7.466184        7.48392       7.484668
+
+type  = float-attribute
+name  = FDRCURVE_000019
+count = 103
+   0.0004684938      0.1207871      0.8550636      0.9034066      0.9566981
+       1.013862        1.07564       1.140933       1.210165       1.282677
+       1.357975       1.436031       1.516461       1.599416        1.68495
+       1.772335       1.861259        1.95171       2.043344       2.136395
+       2.230208       2.325018       2.420184       2.515553        2.61119
+       2.707099       2.803721       2.899398       2.995124       3.090098
+       3.184739       3.279396       3.372602       3.465904        3.55845
+       3.650382       3.741488       3.832182        3.92189       4.010947
+       4.099386       4.187156       4.273579       4.359869       4.445126
+        4.52992        4.61405        4.69727       4.779615       4.861362
+        4.94192       5.022273       5.100999       5.178891       5.255794
+       5.332325       5.408083       5.482654       5.556532       5.630046
+       5.703317       5.774595       5.845342       5.915395       5.985458
+       6.054745       6.121534       6.187791       6.253944       6.319059
+       6.383693       6.448014       6.511445        6.57313        6.63374
+       6.695956       6.756253       6.815118       6.874979       6.932879
+       6.989749       7.045661       7.102705       7.159194       7.214212
+        7.26757       7.321131       7.373323       7.426684       7.476142
+       7.476618       7.477095       7.477571       7.478048       7.478516
+       7.478517       7.478517       7.478517       7.478517       7.478517
+       7.478517       7.478517       7.478517
+
+type  = float-attribute
+name  = FDRCURVE_000021
+count = 103
+   0.0004310739       0.129486      0.7957292      0.8465197      0.9032618
+      0.9648983       1.031052        1.10209       1.176663       1.255466
+       1.338054       1.424014       1.512716       1.603554       1.696931
+       1.791745       1.888557       1.986548       2.085584       2.185975
+        2.28674       2.387942       2.489317       2.591163       2.692839
+        2.79416       2.895431       2.996676       3.097486       3.197705
+       3.296948       3.396111       3.494364       3.592961        3.69032
+       3.787097       3.882902       3.978065       4.072411       4.166189
+       4.259469       4.351714       4.442102       4.530873       4.619576
+       4.707335       4.793262       4.878904       4.963815       5.047926
+       5.130519       5.211907       5.292439        5.37155       5.450735
+       5.529322       5.605486       5.681564       5.756498       5.830725
+       5.903027       5.973314       6.041606       6.111836       6.180675
+       6.247048       6.314078       6.379419       6.442196       6.506104
+        6.56997       6.634286       6.695589       6.755882       6.819513
+       6.878138        6.93881       6.999325       7.058037       7.109252
+       7.166664       7.220119       7.277808       7.328375       7.333899
+       7.333979       7.334058       7.334138       7.334218       7.334297
+       7.334377       7.334441       7.334441       7.334441        7.33444
+       7.334441       7.334441       7.334441        7.33444       7.334441
+       7.334441       7.334441       7.334441
+
+type  = float-attribute
+name  = FDRCURVE_000023
+count = 103
+   0.0004977398      0.1256494      0.8882978      0.9398698      0.9962528
+       1.057191       1.122386       1.191814       1.264687       1.341364
+       1.421535       1.504654       1.590211       1.678136       1.768142
+       1.860291       1.953737       2.048667       2.144495       2.241422
+       2.338808        2.43717       2.536147       2.634823        2.73383
+       2.832921          2.932       3.030889       3.129616       3.228304
+        3.32654       3.424057        3.52087       3.617312       3.712799
+       3.807933       3.902552       3.996115       4.088532       4.180542
+       4.271669        4.36185        4.45161       4.540774       4.628961
+       4.716672       4.803328        4.88891       4.973871       5.057754
+       5.141192       5.223714       5.305077       5.385305       5.465127
+         5.5436       5.622162       5.699427        5.77584       5.851379
+       5.925895       5.999949       6.072879          6.145       6.216088
+       6.286972       6.356309        6.42578       6.493548       6.560859
+       6.627355       6.693714       6.758793        6.82296       6.886107
+       6.948191        7.00893       7.070319       7.131533       7.192379
+       7.251025       7.309585       7.367473       7.425827       7.481885
+       7.538174       7.571423       7.571455       7.571488       7.571521
+       7.571554       7.571587        7.57162       7.571653       7.571686
+       7.571718       7.571751        7.57176        7.57176        7.57176
+        7.57176       7.571759        7.57176
+
+type  = float-attribute
+name  = FDRCURVE_000025
+count = 103
+   0.0003869688      0.1074419       0.762746      0.8050187      0.8511018
+      0.9003914      0.9531233        1.00848       1.066898       1.128064
+        1.19162       1.258016       1.326259        1.39628       1.468199
+       1.542603       1.617787       1.694425       1.772402       1.851246
+       1.930878       2.011117       2.092518       2.173928       2.256056
+       2.338621       2.421106       2.504019       2.585852       2.668423
+       2.750527       2.832607       2.914301       2.995608       3.076811
+       3.158284       3.238726        3.31842       3.398122       3.477266
+       3.555599        3.63422       3.712104        3.78909       3.865314
+       3.942377       4.018887       4.093975       4.169659       4.244819
+       4.319278       4.393052       4.465892       4.538828       4.611126
+       4.682888       4.753942        4.82487       4.895294       4.964533
+       5.033554       5.102214       5.170635       5.237586       5.303345
+       5.368425       5.433873       5.497447       5.559948       5.624787
+       5.685226       5.746559       5.806703       5.864329       5.922182
+        5.97927       6.034741       6.089085        6.14326       6.193983
+        6.24415       6.292977       6.342793       6.390718       6.438788
+       6.488137       6.533835       6.581428        6.62307       6.667624
+       6.710309       6.746755       6.791734        6.82777        6.86198
+        6.89874       6.931796       6.971508       7.008664       7.049757
+       7.068701       7.068778       7.068778
+
+type  = float-attribute
+name  = FDRCURVE_000027
+count = 103
+   0.0004305481      0.1096046      0.8106029      0.8530037      0.8987136
+      0.9487492       1.003119       1.060485       1.120965       1.184484
+       1.251183       1.321249       1.393277       1.466813       1.543487
+       1.621562       1.701532       1.782216       1.864708        1.94794
+       2.032861       2.118133       2.203954       2.290069       2.376406
+       2.463159       2.550015       2.636725       2.723062       2.809539
+       2.895669       2.982035       3.068021       3.153449       3.238663
+       3.323512       3.407916       3.491574       3.575003        3.65758
+       3.739975       3.821576       3.902364       3.983127       4.062815
+       4.142267       4.220643       4.297929       4.374925       4.450934
+       4.526402       4.601544       4.676069       4.749937       4.822665
+       4.895135       4.966606       5.037186       5.106809       5.177046
+       5.245094       5.312742       5.379973       5.446375       5.512426
+       5.577239       5.641141       5.704829       5.768865       5.832096
+       5.894388       5.957081       6.018198       6.078215       6.138765
+       6.198194       6.258373       6.315765       6.373338       6.429534
+       6.486237       6.542576       6.597872       6.654025       6.709473
+       6.764284       6.817029       6.869283       6.921059       6.971892
+       7.023369       7.072236       7.123628       7.173274       7.222523
+       7.272938       7.322307       7.371634       7.413188       7.413245
+       7.413302       7.413359       7.413639
+
+type  = float-attribute
+name  = FDRCURVE_000029
+count = 103
+   0.0001771744     0.05579753       0.204796      0.2145147      0.2257739
+      0.2384302      0.2519159       0.265381      0.2797918      0.2941026
+      0.3094313      0.3260742      0.3438733      0.3614541      0.3802849
+      0.4002525      0.4204052      0.4401274      0.4623879      0.4854843
+      0.5088282      0.5332662       0.558012      0.5834819      0.6095572
+      0.6363561      0.6638108       0.692563      0.7215576      0.7504035
+      0.7805214      0.8092139      0.8408797      0.8707478      0.9028466
+      0.9333827      0.9629569      0.9927634        1.02489       1.057881
+       1.087605       1.118349       1.147465        1.17899       1.209172
+       1.238713       1.267232       1.295293       1.323812       1.352594
+       1.382942       1.411264       1.438539       1.466502       1.496495
+       1.524638       1.553542       1.576601       1.604033       1.626659
+       1.648638       1.673842       1.695653       1.716549       1.737122
+       1.756674       1.775096       1.789498       1.798308       1.818442
+       1.840174       1.861456       1.876358       1.900398        1.91435
+       1.933146       1.945323       1.958351       1.967098       1.967341
+       1.970504       1.999784       2.017323       2.033271         2.0381
+       2.052035       2.055305       2.074121       2.074271       2.074346
+       2.074346       2.083047       2.094769       2.106492       2.122676
+       2.168869       2.178939       2.188995       2.194543       2.195681
+       2.197161       2.197507       2.199254
+
+type  = float-attribute
+name  = FDRCURVE_000031
+count = 103
+   0.0001519993      0.0498041   0.0001514237     0.00676545     0.01329522
+     0.02105748     0.02895846     0.03600121     0.04588679     0.05542771
+      0.0657314     0.07721052     0.08775774     0.09881414      0.1099002
+      0.1216804       0.133069      0.1441951      0.1586495      0.1712772
+       0.183584      0.1970991      0.2100748      0.2242409      0.2392262
+      0.2542869      0.2663004      0.2811369      0.2927982      0.3061519
+      0.3197779      0.3335082      0.3476598       0.362796      0.3750949
+      0.3902109      0.4043082      0.4178888      0.4355278      0.4477877
+      0.4608727      0.4760844      0.4885678      0.5001115      0.5163803
+        0.52781      0.5395681      0.5504512      0.5599619      0.5747051
+      0.5840665      0.5924342      0.5997663      0.6059586      0.6237175
+      0.6289039       0.633967      0.6350308      0.6359531      0.6401855
+      0.6452188      0.6497394      0.6504956      0.6531311      0.6531973
+      0.6532634      0.6532843      0.6532843      0.6532843      0.6532843
+      0.6532843      0.6532843      0.6532843      0.6532842      0.6532843
+      0.6532843      0.6622909      0.6663084      0.6869792      0.7125515
+      0.7358257      0.7641278      0.7757604      0.8098153      0.8365528
+      0.8583147      0.9318009      0.9644465      0.9961057       1.010844
+       1.010844        1.04384       1.074468       1.127436       1.163209
+       1.239325       1.251839       1.252995       1.252995       1.252995
+       1.252995       1.252995       1.252995
+
+type  = float-attribute
+name  = FDRCURVE_000033
+count = 103
+   0.0001272829     0.01287084   0.0001267716   0.0003522427    0.000353377
+   0.0003545114   0.0003556458   0.0003567802   0.0003579145   0.0003590489
+   0.0003601833   0.0003613177    0.000362452   0.0003635864   0.0003647208
+   0.0003658552   0.0003669895   0.0003681239   0.0003692583   0.0003703927
+    0.000371527   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720973   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720973
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720973
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974   0.0003720974   0.0003720974
+   0.0003720974   0.0003720974   0.0003720974
+
+type  = float-attribute
+name  = FDRCURVE_000035
+count = 103
+   0.0001680258      0.0515436      0.1284382      0.1365651      0.1446414
+      0.1528942      0.1613928      0.1719951      0.1830398      0.1935273
+      0.2039981      0.2161076      0.2270819      0.2399176      0.2532797
+      0.2657589      0.2798895      0.2934979      0.3084314      0.3247026
+      0.3410615      0.3591124      0.3777017      0.3951107      0.4141622
+      0.4356313      0.4572987      0.4785488      0.5019903      0.5240005
+       0.547252      0.5704226       0.597119      0.6230602      0.6474483
+       0.674958      0.7014676      0.7273589      0.7540745      0.7774729
+       0.803085      0.8273113       0.850979      0.8754589      0.8989075
+      0.9260572      0.9554472      0.9833568       1.008782       1.031992
+       1.058292       1.083114       1.108911       1.135537       1.159298
+       1.185315       1.211288       1.234407       1.263561        1.28669
+       1.309134       1.330649        1.35795        1.38127       1.409428
+       1.436505        1.46187       1.481262       1.507231       1.544039
+       1.570908       1.602103       1.631884       1.651672       1.671259
+       1.690915       1.716899       1.742462       1.768964       1.801539
+       1.834766       1.874039       1.894177       1.921365       1.927042
+        1.94277       1.978146       1.992067       2.013149       2.039971
+       2.048216       2.068924       2.084977       2.106773       2.118814
+       2.127943       2.157726       2.168559       2.168593       2.168628
+       2.168662       2.168697       2.168866
+
+type  = float-attribute
+name  = FDRCURVE_000037
+count = 103
+   0.0001621397     0.04797551     0.06646443     0.07023225      0.0735713
+     0.07570802     0.07905753     0.08257018      0.0861002     0.09014229
+     0.09431288     0.09964809      0.1038652      0.1095247      0.1159233
+      0.1231912      0.1313322      0.1393072      0.1477245      0.1556323
+      0.1652951      0.1757294       0.187012      0.1984404      0.2104799
+      0.2238168      0.2361704       0.249405      0.2640307      0.2793239
+      0.2945959      0.3109798      0.3286535      0.3464939      0.3659437
+      0.3850144       0.405892      0.4260252      0.4455966      0.4659677
+      0.4873662      0.5089732      0.5287748      0.5542496      0.5777876
+      0.6014429      0.6259314      0.6499348      0.6737212      0.6968342
+      0.7220004      0.7473549      0.7699859      0.7954224      0.8223048
+      0.8473529      0.8726799      0.8957508      0.9189788       0.946277
+      0.9737718       1.001927       1.025281       1.052013       1.080618
+       1.105006       1.129295       1.143956       1.164975        1.18504
+       1.201934       1.222645       1.242614        1.26068       1.286559
+       1.307693       1.328811       1.346763       1.361316       1.373924
+       1.396469       1.417214       1.445406       1.459401        1.47539
+       1.475528       1.483603       1.507702       1.521979        1.54167
+       1.564438       1.580587       1.617461       1.643966       1.666279
+       1.682053       1.682053        1.68227       1.682458       1.682646
+       1.682833       1.683021       1.683416
+
+type  = float-attribute
+name  = FDRCURVE_000039
+count = 103
+   0.0001818454      0.0561684     0.09708302      0.1030555      0.1102768
+       0.118049      0.1248988       0.132664      0.1406747      0.1489653
+      0.1585266      0.1688504       0.178542       0.189213      0.1999583
+      0.2126098      0.2260913      0.2391547      0.2535415      0.2689372
+      0.2849448      0.3017944      0.3190606      0.3370125      0.3559205
+      0.3767001       0.398156      0.4210626      0.4446589      0.4687855
+       0.493081      0.5208451      0.5511746      0.5792531      0.6079025
+      0.6356945      0.6667506       0.697345       0.726936      0.7584292
+      0.7880102      0.8195897      0.8522073      0.8857825      0.9193705
+      0.9519078      0.9868057       1.020995       1.058303       1.096209
+       1.132977       1.170273       1.206812       1.245382       1.285946
+       1.327003       1.367941       1.409104       1.451708       1.492714
+       1.540336       1.579482       1.611197       1.650498       1.689631
+       1.725306       1.766175       1.800981       1.834347       1.874728
+       1.911327       1.945375       1.973481       2.010867       2.037403
+       2.054466       2.090701       2.105942        2.12199       2.150504
+        2.16998       2.188213       2.196319       2.213111       2.235629
+       2.237876       2.238762       2.238762       2.238762       2.238762
+       2.238762       2.238762       2.238762       2.238762       2.238762
+        2.26858       2.290531        2.34332       2.381901       2.393656
+        2.44132       2.472696       2.497185
+
+type  = float-attribute
+name  = MDFCURVE_000000
+count = 68
+      -14.12216      0.2001386      0.9990051      0.9553311      0.9518617
+      0.9483385       0.944707      0.9407064      0.9366256       0.932505
+      0.9282845      0.9236163      0.9185385      0.9136839      0.9085936
+      0.9030189      0.8970481      0.8910396      0.8844513      0.8774918
+      0.8703699      0.8632107      0.8556777      0.8479108      0.8397664
+      0.8313195      0.8227122      0.8138912        0.80371      0.7929366
+      0.7826181      0.7716306      0.7605088      0.7483472      0.7352585
+      0.7217393      0.7090253      0.6951786      0.6811483      0.6663764
+      0.6509449      0.6355168      0.6194735      0.6022192      0.5848011
+       0.566571      0.5465415       0.526273      0.5054193      0.4843286
+      0.4620156       0.438718       0.414894      0.3899281      0.3645298
+      0.3379709      0.3099903      0.2815416      0.2520331      0.2214759
+      0.1894316      0.1566951      0.1236298     0.09056515     0.05883507
+     0.03110643     0.01004986              0
+
+type  = float-attribute
+name  = MDFCURVE_000001
+count = 68
+      -14.12216        0.20275      0.9990027       0.994688      0.9941808
+      0.9935241      0.9924583      0.9914306      0.9902647      0.9892206
+       0.988208      0.9869652      0.9856323      0.9841939      0.9826252
+       0.980729      0.9786648      0.9763507       0.973863      0.9711213
+      0.9683211      0.9650285      0.9618179      0.9577649      0.9540634
+      0.9503182      0.9462489      0.9417439      0.9371217      0.9321704
+      0.9270006      0.9213412      0.9152249      0.9088798      0.9022334
+      0.8948994      0.8871055      0.8788764      0.8698329      0.8608605
+      0.8506751       0.839507      0.8272355      0.8139895      0.7992514
+      0.7830489      0.7657238      0.7459285      0.7244582      0.7019802
+      0.6769287      0.6505291      0.6218686        0.59114      0.5582047
+      0.5222389      0.4835718      0.4425284      0.3992786      0.3535286
+       0.304234      0.2531655      0.2002935      0.1468715     0.09608141
+     0.04832855     0.01405625              0
+
+type  = float-attribute
+name  = MDFCURVE_000002
+count = 28
+      -5.701262      0.2020098      0.9990189      0.9986717      0.9983462
+      0.9975619      0.9965786      0.9953026      0.9939795      0.9908049
+      0.9872664      0.9818891       0.975949      0.9667282      0.9531416
+      0.9356185      0.9102603      0.8775091      0.8376064      0.7826249
+      0.7171857       0.636831      0.5385302      0.4299866      0.3055322
+      0.1763497     0.06360659              0
+
+type  = float-attribute
+name  = MDFCURVE_000005
+count = 25
+      -5.197873      0.2089746      0.9990156      0.9980851      0.9969599
+      0.9953935       0.992839      0.9884497       0.982679      0.9752189
+      0.9652336      0.9516554      0.9323745      0.9076909      0.8745512
+      0.8314865       0.776603      0.7071115      0.6227404      0.5215244
+      0.4025402      0.2699351      0.1500417     0.04709816              0
+
+type  = float-attribute
+name  = MDFCURVE_000007
+count = 26
+      -5.395028      0.2073533      0.9990084      0.9983845      0.9980642
+      0.9973159      0.9959109      0.9947164      0.9925435      0.9888701
+      0.9847992      0.9799712      0.9718405      0.9621342      0.9493831
+      0.9325632      0.9082532      0.8822959      0.8400155      0.7716793
+      0.6799521       0.567921       0.432232      0.2494382      0.0862563
+              0
+
+type  = float-attribute
+name  = MDFCURVE_000009
+count = 26
+      -5.320133      0.2023331      0.9990613       0.998323      0.9970923
+      0.9953934      0.9934052      0.9914711      0.9892069      0.9844342
+      0.9797558      0.9718029      0.9629164      0.9479132      0.9254678
+      0.8936206       0.855644      0.8149936      0.7511517        0.68619
+      0.5807514       0.451438      0.3056861      0.1657638     0.04386079
+              0
+
+type  = float-attribute
+name  = MDFCURVE_000013
+count = 23
+      -4.705246      0.2063076      0.9990485      0.9983644      0.9966201
+      0.9938747       0.990256      0.9840565      0.9742409      0.9619488
+      0.9432006      0.9167697      0.8832235      0.8391804      0.7840539
+      0.7197753      0.6323527      0.5357293      0.4158266      0.2949468
+      0.1703914     0.06348488              0
+
+type  = float-attribute
+name  = MDFCURVE_000017
+count = 73
+            -15      0.2003509      0.9990047      0.9872945      0.9861521
+      0.9850224      0.9838073      0.9824767      0.9811503      0.9798258
+      0.9782963      0.9766884      0.9750057      0.9732425      0.9713413
+      0.9694122      0.9674279      0.9654006      0.9629713      0.9606562
+      0.9580272      0.9553253      0.9525754      0.9496877       0.946571
+      0.9432849       0.939806      0.9363104      0.9321584      0.9275514
+      0.9231845      0.9183503      0.9133738      0.9076868       0.901745
+      0.8957148      0.8890002      0.8820193      0.8743345      0.8662606
+      0.8582251      0.8493249      0.8403309      0.8304981      0.8194163
+      0.8077075      0.7954729      0.7825344      0.7690583      0.7543923
+      0.7384792      0.7208248      0.7018284      0.6818053      0.6602072
+      0.6370542      0.6119688       0.584735      0.5564174      0.5259318
+      0.4920796      0.4560584      0.4179234      0.3776361      0.3342862
+      0.2881148      0.2397253       0.189757      0.1407093     0.09324497
+     0.04897812     0.01568013              0
+
+type  = float-attribute
+name  = MDFCURVE_000019
+count = 73
+            -15      0.2002304      0.9990005       0.988804      0.9879116
+      0.9867871      0.9856938      0.9843864      0.9830791      0.9817338
+      0.9803737      0.9787114      0.9768933      0.9750727      0.9729801
+      0.9708644      0.9685936      0.9661469       0.963786      0.9606773
+      0.9575224      0.9543693      0.9510557      0.9475272      0.9435132
+      0.9394819      0.9345919      0.9296988      0.9247027      0.9195253
+      0.9142832      0.9081832      0.9018646      0.8948121      0.8879654
+      0.8805366      0.8722205      0.8631421      0.8539584      0.8444611
+      0.8337043      0.8224344      0.8106326      0.7984329      0.7855011
+      0.7715211      0.7573561      0.7418973      0.7256658      0.7082012
+      0.6897542      0.6701527      0.6491525      0.6268523      0.6035582
+      0.5791094      0.5520422      0.5248213      0.4952445      0.4644589
+      0.4319785      0.3979081      0.3615611      0.3240125      0.2853958
+      0.2449529      0.2040492       0.161866      0.1188143     0.07697949
+     0.04088646     0.01267508              0
+
+type  = float-attribute
+name  = MDFCURVE_000021
+count = 73
+            -15      0.2009456      0.9990065      0.9953352       0.994879
+      0.9943751      0.9937708      0.9930236       0.992205      0.9914082
+      0.9906729      0.9898019      0.9886839      0.9877621      0.9865867
+      0.9852052      0.9836833      0.9823028      0.9806852      0.9787852
+      0.9765021      0.9741651      0.9716759      0.9687719      0.9657583
+      0.9626483       0.959504      0.9553975      0.9511426      0.9467989
+      0.9419761      0.9373735      0.9323522      0.9267869      0.9205612
+      0.9145325      0.9078997      0.9004596      0.8926935      0.8842729
+      0.8749737      0.8655101      0.8556297      0.8449457       0.833447
+      0.8204961      0.8075767      0.7929319      0.7776504      0.7606983
+      0.7437913       0.726571      0.7078497      0.6876268      0.6657867
+      0.6421092      0.6167332      0.5896287      0.5608968       0.530525
+      0.4963087      0.4600067      0.4206736      0.3797983      0.3361382
+      0.2893446      0.2403725       0.190644      0.1396792     0.09071431
+     0.04717934     0.01388486              0
+
+type  = float-attribute
+name  = MDFCURVE_000023
+count = 72
+            -15      0.2025768      0.9990033      0.9795231       0.978125
+      0.9765373      0.9750144      0.9733152      0.9714674      0.9695488
+      0.9674985      0.9655123      0.9632574      0.9605784      0.9576956
+      0.9547943      0.9517348      0.9485946      0.9454306      0.9420642
+      0.9383507      0.9344856      0.9301701      0.9259579        0.92138
+      0.9165044      0.9114413      0.9059943      0.9003761      0.8942484
+      0.8880448      0.8812971      0.8741633      0.8669494      0.8589056
+      0.8508235      0.8420038      0.8328635      0.8226862      0.8121527
+      0.8012027      0.7899631      0.7779902      0.7649031      0.7515423
+      0.7369376      0.7218171      0.7064096      0.6899643      0.6719946
+      0.6533682      0.6330193      0.6110497      0.5888561      0.5645316
+      0.5390583      0.5130722      0.4853737      0.4558018      0.4252213
+      0.3926939      0.3585396      0.3233171      0.2864305      0.2467084
+      0.2054222      0.1626652      0.1196538     0.07950795     0.04177266
+     0.01273713              0
+
+type  = float-attribute
+name  = MDFCURVE_000025
+count = 71
+      -14.54268      0.2012146      0.9990054      0.9988111      0.9985656
+      0.9982371      0.9978441        0.99738       0.996969      0.9964081
+      0.9957819      0.9950888      0.9943314      0.9935633      0.9925404
+      0.9915228      0.9902982      0.9890214      0.9874401      0.9857613
+      0.9837824      0.9818936       0.979722      0.9774845      0.9751437
+       0.972643      0.9697428      0.9667868       0.963995      0.9605783
+      0.9576765      0.9535551      0.9497309      0.9455103      0.9408125
+      0.9355822      0.9305542       0.924876      0.9189735      0.9123236
+       0.905075      0.8973697      0.8888169      0.8793739      0.8691105
+      0.8582613      0.8456963      0.8324288      0.8180778      0.8027129
+      0.7848257       0.765656      0.7444042      0.7203137      0.6952146
+      0.6672309      0.6361755      0.6032809      0.5667036      0.5274354
+      0.4849241      0.4385423      0.3889256      0.3355683      0.2786402
+      0.2202828      0.1620089      0.1043451       0.052331     0.01328835
+              0
+
+type  = float-attribute
+name  = MDFCURVE_000027
+count = 72
+            -15      0.2027945      0.9990034      0.9924736      0.9918971
+      0.9912611      0.9905163      0.9896715      0.9888362      0.9878138
+      0.9866683      0.9855468      0.9843185      0.9829146      0.9813452
+      0.9798471      0.9783665      0.9767782      0.9747894      0.9727428
+      0.9705387      0.9678783      0.9650069      0.9621556      0.9594839
+      0.9561508       0.952745      0.9486477       0.944451      0.9403094
+      0.9354321      0.9305801      0.9248972       0.918505      0.9114122
+      0.9044163      0.8965983      0.8884054      0.8792077      0.8695219
+      0.8597792       0.848634      0.8369284      0.8245671      0.8115584
+      0.7972365      0.7827847       0.766763      0.7501383      0.7315363
+      0.7120745       0.690783      0.6688644      0.6459703      0.6213494
+      0.5954649      0.5674954       0.538486      0.5070649      0.4732469
+      0.4379622      0.4001654      0.3606181      0.3190919       0.274259
+      0.2282968      0.1799005      0.1323027     0.08657275      0.0456927
+     0.01522909              0
+
+type  = float-attribute
+name  = MDFCURVE_000029
+count = 25
+       -5.16538      0.2059351      0.9990114      0.9981515      0.9971551
+      0.9957382      0.9938116      0.9906147      0.9857942      0.9790851
+      0.9701656      0.9580485      0.9384054      0.9129674       0.879847
+      0.8352658      0.7803811      0.7110571       0.626546      0.5178781
+      0.3957444      0.2704678      0.1418309     0.04272336              0
+
+type  = float-attribute
+name  = MDFCURVE_000035
+count = 27
+      -5.464631      0.2002662      0.9990259      0.9982571      0.9972412
+       0.996135      0.9943396      0.9920518      0.9889062      0.9844068
+      0.9785656      0.9728655      0.9635718      0.9494652      0.9329423
+       0.912145      0.8818232      0.8433218      0.7888381      0.7222285
+      0.6387634      0.5331206      0.4199265       0.277454      0.1419499
+     0.05165868              0
+
+type  = float-attribute
+name  = MDFCURVE_000037
+count = 25
+      -5.175859      0.2028715      0.9990512       0.997896      0.9970468
+      0.9945681      0.9913312      0.9887487      0.9837813      0.9767284
+       0.965058      0.9525578      0.9311625      0.9063694       0.869562
+      0.8187734      0.7594702      0.6879079      0.5973312      0.4942813
+      0.3698831      0.2430472      0.1223922     0.03064158              0
+
+type  = float-attribute
+name  = MDFCURVE_000039
+count = 29
+      -5.947798      0.2057482       0.999063      0.9989104      0.9987922
+      0.9975633      0.9958557      0.9934549       0.989018      0.9841654
+      0.9767482      0.9673646      0.9551379       0.939772      0.9203104
+      0.8992032      0.8708434      0.8360152      0.7965453       0.750607
+      0.6955878      0.6221018       0.537776      0.4308128      0.3110109
+      0.1850012     0.07649741     0.01476014              0
+
+type = integer-attribute
+name = INT_CMAP
+count = 1
+ 0
+
+type = string-attribute
+name = BYTEORDER_STRING
+count = 10
+'LSB_FIRST~

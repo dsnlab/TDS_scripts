@@ -14,18 +14,18 @@ module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Outcomes/
-	3dMVM -prefix OutcomesXContextXGroup \
+	3dMVM -prefix OutcomesXContextXGroup\
 	-jobs 28 \
-        -bsVars "Group" \
+	-bsVars "Group" \
 	-wsVars  "Outcome*Context" \
 	-SS_type 3 \
-	-num_glt 18 \
+	-num_glt 66 \
 	-gltLabel 1  'Out_AL-SE_EA-COM' -gltCode  1  'Outcome : 1*Good +1*Bad Context : 1*AL -1*SE Group : 1*EA -1*COM' \
 	-gltLabel 2  'Out_AL-PR_EA-COM' -gltCode  2  'Outcome : 1*Good +1*Bad Context : 1*AL -1*PR Group : 1*EA -1*COM' \
 	-gltLabel 3  'Out_PR-SE_EA-COM' -gltCode  3  'Outcome : 1*Good +1*Bad Context : 1*PR -1*SE Group : 1*EA -1*COM' \
-	-gltLabel 4  'G_B_AL-SE_EA-COM' -gltCode  4  'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE Group : 1*EA -1*COM' \
-	-gltLabel 5  'G_B_AL-PR_EA-COM' -gltCode  5  'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR Group : 1*EA -1*COM' \
-	-gltLabel 6  'G_B_PR-SE_EA-COM' -gltCode  6  'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE Group : 1*EA -1*COM' \
+	-gltLabel 4  'Good_Bad_AL-SE_EA-COM' -gltCode  4  'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE Group : 1*EA -1*COM' \
+	-gltLabel 5  'Good_Bad_AL-PR_EA-COM' -gltCode  5  'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR Group : 1*EA -1*COM' \
+	-gltLabel 6  'Good_Bad_PR-SE_EA-COM' -gltCode  6  'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE Group : 1*EA -1*COM' \
 	-gltLabel 7  'Good_AL_EA-COM' -gltCode    7 'Outcome : 1*Good Context : 1*AL Group : 1*EA -1*COM' \
 	-gltLabel 8  'Bad_AL_EA-COM' -gltCode     8 'Outcome : 1*Bad Context : 1*AL Group : 1*EA -1*COM' \
 	-gltLabel 9  'Good_PR_EA-COM' -gltCode    9 'Outcome : 1*Good Context : 1*PR Group : 1*EA -1*COM' \
@@ -38,7 +38,55 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Outcomes/
 	-gltLabel 16 'Bad_AL-SE_EA-COM' -gltCode  16  'Outcome : 1*Bad Context : 1*AL -1*SE Group : 1*EA -1*COM' \
 	-gltLabel 17 'Bad_AL-PR_EA-COM' -gltCode  17  'Outcome : 1*Bad Context : 1*AL -1*PR Group : 1*EA -1*COM' \
 	-gltLabel 18 'Bad_PR-SE_EA-COM' -gltCode  18  'Outcome : 1*Bad Context : 1*PR -1*SE Group : 1*EA -1*COM' \
-	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
+	-gltLabel 19 'Bad_social_vs_alone_EA-COM' -gltCode 19  'Outcome : 1*Bad Context : 1*PR +1*SE -2*AL Group : 1*EA -1*COM' \
+	-gltLabel 20 'Good_social_vs_alone_EA-COM' -gltCode 20  'Outcome : 1*Good Context : 1*PR +1*SE -2*AL Group : 1*EA -1*COM' \
+	-gltLabel 21 'Out_social_vs_alone_EA-COM' -gltCode  21  'Outcome : 1*Good +1*Bad Context : 1*PR +1*SE -2*AL Group : 1*EA -1*COM' \
+	-gltLabel 22 'Good_Bad_social_vs_alone_EA-COM' -gltCode  22  'Outcome : 1*Good -1*Bad Context : 1*PR +1*SE -2*AL Group : 1*EA -1*COM' \
+	-gltLabel 23 'Out_AL-SE_EA' -gltCode  23  'Outcome : 1*Good +1*Bad Context : 1*AL -1*SE Group : 1*EA' \
+	-gltLabel 24 'Out_AL-PR_EA' -gltCode  24  'Outcome : 1*Good +1*Bad Context : 1*AL -1*PR Group : 1*EA' \
+	-gltLabel 25 'Out_PR-SE_EA' -gltCode  25  'Outcome : 1*Good +1*Bad Context : 1*PR -1*SE Group : 1*EA' \
+	-gltLabel 26 'Good_Bad_AL-SE_EA' -gltCode  26  'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE Group : 1*EA' \
+	-gltLabel 27 'Good_Bad_AL-PR_EA' -gltCode  27  'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR Group : 1*EA' \
+	-gltLabel 28 'Good_Bad_PR-SE_EA' -gltCode  28  'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE Group : 1*EA' \
+	-gltLabel 29 'Good_AL_EA' -gltCode    29 'Outcome : 1*Good Context : 1*AL Group : 1*EA' \
+	-gltLabel 30 'Bad_AL_EA' -gltCode     30 'Outcome : 1*Bad Context : 1*AL Group : 1*EA' \
+	-gltLabel 31 'Good_PR_EA' -gltCode    31 'Outcome : 1*Good Context : 1*PR Group : 1*EA' \
+	-gltLabel 32 'Bad_PR_EA' -gltCode     32  'Outcome : 1*Bad Context : 1*PR Group : 1*EA' \
+	-gltLabel 33 'Good_SE_EA' -gltCode    33  'Outcome : 1*Good Context : 1*SE Group : 1*EA' \
+	-gltLabel 34 'Bad_SE_EA' -gltCode     34  'Outcome : 1*Bad Context : 1*SE Group : 1*EA' \
+	-gltLabel 35 'Good_AL-SE_EA' -gltCode 35   'Outcome : 1*Good Context : 1*AL -1*SE Group : 1*EA' \
+	-gltLabel 36 'Good_AL-PR_EA' -gltCode 36   'Outcome : 1*Good Context : 1*AL -1*PR Group : 1*EA' \
+	-gltLabel 37 'Good_PR-SE_EA' -gltCode 37   'Outcome : 1*Good Context : 1*PR -1*SE Group : 1*EA' \
+	-gltLabel 38 'Bad_AL-SE_EA' -gltCode  38   'Outcome : 1*Bad Context : 1*AL -1*SE Group : 1*EA' \
+	-gltLabel 39 'Bad_AL-PR_EA' -gltCode  39   'Outcome : 1*Bad Context : 1*AL -1*PR Group : 1*EA' \
+	-gltLabel 40 'Bad_PR-SE_EA' -gltCode  40   'Outcome : 1*Bad Context : 1*PR -1*SE Group : 1*EA' \
+	-gltLabel 41 'Bad_social_vs_alone_EA' -gltCode 41  'Outcome : 1*Bad Context : 1*PR +1*SE -2*AL Group : 1*EA' \
+	-gltLabel 42 'Good_social_vs_alone_EA' -gltCode 42  'Outcome : 1*Good Context : 1*PR +1*SE -2*AL Group : 1*EA' \
+	-gltLabel 43 'Out_social_vs_alone_EA' -gltCode  43  'Outcome : 1*Good +1*Bad Context : 1*PR +1*SE -2*AL Group : 1*EA' \
+	-gltLabel 44 'Good_Bad_social_vs_alone_EA' -gltCode  44  'Outcome : 1*Good -1*Bad Context : 1*PR +1*SE -2*AL Group : 1*EA' \
+	-gltLabel 45 'Out_AL-SE_COM' -gltCode  45  'Outcome : 1*Good +1*Bad Context : 1*AL -1*SE Group : 1*COM' \
+	-gltLabel 46 'Out_AL-PR_COM' -gltCode  46  'Outcome : 1*Good +1*Bad Context : 1*AL -1*PR Group : 1*COM' \
+	-gltLabel 47 'Out_PR-SE_COM' -gltCode  47  'Outcome : 1*Good +1*Bad Context : 1*PR -1*SE Group : 1*COM' \
+	-gltLabel 48 'Good_Bad_AL-SE_COM' -gltCode  48  'Outcome : 1*Good -1*Bad Context : 1*AL -1*SE Group : 1*COM' \
+	-gltLabel 49 'Good_Bad_AL-PR_COM' -gltCode  49  'Outcome : 1*Good -1*Bad Context : 1*AL -1*PR Group : 1*COM' \
+	-gltLabel 50 'Good_Bad_PR-SE_COM' -gltCode  50  'Outcome : 1*Good -1*Bad Context : 1*PR -1*SE Group : 1*COM' \
+	-gltLabel 51 'Good_AL_COM' -gltCode    51 'Outcome : 1*Good Context : 1*AL Group : 1*COM' \
+	-gltLabel 52 'Bad_AL_COM' -gltCode     52 'Outcome : 1*Bad Context : 1*AL Group : 1*COM' \
+	-gltLabel 53 'Good_PR_COM' -gltCode    53 'Outcome : 1*Good Context : 1*PR Group : 1*COM' \
+	-gltLabel 54 'Bad_PR_COM' -gltCode     54  'Outcome : 1*Bad Context : 1*PR Group : 1*COM' \
+	-gltLabel 55 'Good_SE_COM' -gltCode    55  'Outcome : 1*Good Context : 1*SE Group : 1*COM' \
+	-gltLabel 56 'Bad_SE_COM' -gltCode     56  'Outcome : 1*Bad Context : 1*SE Group : 1*COM' \
+	-gltLabel 57 'Good_AL-SE_COM' -gltCode 57   'Outcome : 1*Good Context : 1*AL -1*SE Group : 1*COM' \
+	-gltLabel 58 'Good_AL-PR_COM' -gltCode 58   'Outcome : 1*Good Context : 1*AL -1*PR Group : 1*COM' \
+	-gltLabel 59 'Good_PR-SE_COM' -gltCode 59   'Outcome : 1*Good Context : 1*PR -1*SE Group : 1*COM' \
+	-gltLabel 60 'Bad_AL-SE_COM' -gltCode  60   'Outcome : 1*Bad Context : 1*AL -1*SE Group : 1*COM' \
+	-gltLabel 61 'Bad_AL-PR_COM' -gltCode  61   'Outcome : 1*Bad Context : 1*AL -1*PR Group : 1*COM' \
+	-gltLabel 62 'Bad_PR-SE_COM' -gltCode  62   'Outcome : 1*Bad Context : 1*PR -1*SE Group : 1*COM' \
+	-gltLabel 63 'Bad_social_vs_alone_COM' -gltCode 63  'Outcome : 1*Bad Context : 1*PR +1*SE -2*AL Group : 1*COM' \
+	-gltLabel 64 'Good_social_vs_alone_COM' -gltCode 64  'Outcome : 1*Good Context : 1*PR +1*SE -2*AL Group : 1*COM' \
+	-gltLabel 65 'Out_social_vs_alone_COM' -gltCode  65  'Outcome : 1*Good +1*Bad Context : 1*PR +1*SE -2*AL Group : 1*COM' \
+	-gltLabel 66 'Good_Bad_social_vs_alone_COM' -gltCode  66  'Outcome : 1*Good -1*Bad Context : 1*PR +1*SE -2*AL Group : 1*COM' \
+	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 Subj Outcome Context Group InputFile \
 	109	Good	AL	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0005.nii \

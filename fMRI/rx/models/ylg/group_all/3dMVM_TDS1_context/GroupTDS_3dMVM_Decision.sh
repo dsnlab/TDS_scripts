@@ -1,9 +1,9 @@
 #!/bin/bash
 #--------------------------------------------------------------
 #
-#SBATCH --job-name=TDS1_GROUP_allconds_3dMVM
-#SBATCH --output=output/TDS1_GROUP_allconds_3dMVM.log
-#SBATCH --error=output/TDS1_GROUP_allconds_3dMVM_error.log
+#SBATCH --job-name=TDS1_GROUP_dec_3dMVM
+#SBATCH --output=output/TDS1_GROUP_dec_3dMVM.log
+#SBATCH --error=output/TDS1_GROUP_dec_3dMVM_error.log
 #SBATCH --time=1-00:00:00
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1
@@ -13,11 +13,11 @@
 module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
-cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Outcomes/
-	3dMVM -prefix OutcomesXContextXGroup \
+cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Decisions/
+	3dMVM -prefix DecisionXContextXGroup \
 	-jobs 28 \
 	-bsVars "Group" \
-	-wsVars  "Outcome*Context" \
+	-wsVars  "Decision*Context" \
 	-SS_type 3 \
 	-num_glt 66 \
 	-gltLabel 1 'D_AL-SE_EA-COM' -gltCode 1  'Decision : 1*DS +1*DG Context : 1*AL -1*SE Group : 1*EA -1*COM' \
@@ -38,10 +38,10 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Outcomes/
 	-gltLabel 16 'DG_AL-SE_EA-COM' -gltCode 16  'Decision : 1*DG Context : 1*AL -1*SE Group : 1*EA -1*COM' \
 	-gltLabel 17 'DG_AL-PR_EA-COM' -gltCode 17  'Decision : 1*DG Context : 1*AL -1*PR Group : 1*EA -1*COM' \
 	-gltLabel 18 'DG_PR-SE_EA-COM' -gltCode 18  'Decision : 1*DG Context : 1*PR -1*SE Group : 1*EA -1*COM' \
-	-gltLabel 19 'DGo_social_vs_alone_EA-COM' -gltCode 19  'Decision : 1*DG Context : 1*PR + 1*SE -2*AL Group : 1*EA -1*COM' \
-	-gltLabel 20 'DStop_social_vs_alone_EA-COM' -gltCode 20  'Decision : 1*DS Context : 1*PR + 1*SE -2*AL Group : 1*EA -1*COM' \
-	-gltLabel 21 'D_social_vs_alone_EA-COM' -gltCode 21  'Decision : 1*DS +1*DG Context : 1*PR + 1*SE -2*AL Group : 1*EA -1*COM' \
-	-gltLabel 22 'DStop_DGo_social_vs_alone_EA-COM' -gltCode 22  'Decision : 1*DS -1*DG Context : 1*PR + 1*SE -2*AL Group : 1*EA -1*COM' \
+	-gltLabel 19 'DGo_social_vs_alone_EA-COM' -gltCode 19  'Decision : 1*DG Context : 1*PR +1*SE -2*AL Group : 1*EA -1*COM' \
+	-gltLabel 20 'DStop_social_vs_alone_EA-COM' -gltCode 20  'Decision : 1*DS Context : 1*PR +1*SE -2*AL Group : 1*EA -1*COM' \
+	-gltLabel 21 'D_social_vs_alone_EA-COM' -gltCode 21  'Decision : 1*DS +1*DG Context : 1*PR +1*SE -2*AL Group : 1*EA -1*COM' \
+	-gltLabel 22 'DStop_DGo_social_vs_alone_EA-COM' -gltCode 22  'Decision : 1*DS -1*DG Context : 1*PR +1*SE -2*AL Group : 1*EA -1*COM' \
 	-gltLabel 23 'D_AL-SE_EA' -gltCode 23  'Decision : 1*DS +1*DG Context : 1*AL -1*SE Group : 1*EA' \
 	-gltLabel 24 'D_AL-PR_EA' -gltCode 24  'Decision : 1*DS +1*DG Context : 1*AL -1*PR Group : 1*EA' \
 	-gltLabel 25 'D_PR-SE_EA' -gltCode 25  'Decision : 1*DS +1*DG Context : 1*PR -1*SE Group : 1*EA' \
@@ -60,10 +60,10 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Outcomes/
 	-gltLabel 38 'DG_AL-SE_EA' -gltCode 38  'Decision : 1*DG Context : 1*AL -1*SE Group : 1*EA' \
 	-gltLabel 39 'DG_AL-PR_EA' -gltCode 39  'Decision : 1*DG Context : 1*AL -1*PR Group : 1*EA' \
 	-gltLabel 40 'DG_PR-SE_EA' -gltCode 40  'Decision : 1*DG Context : 1*PR -1*SE Group : 1*EA' \
-	-gltLabel 41 'DGo_social_vs_alone_EA' -gltCode 41  'Decision : 1*DG Context : 1*PR + 1*SE -2*AL Group : 1*EA' \
-	-gltLabel 42 'DStop_social_vs_alone_EA' -gltCode 42  'Decision : 1*DS Context : 1*PR + 1*SE -2*AL Group : 1*EA' \
-	-gltLabel 43 'D_social_vs_alone_EA' -gltCode 43  'Decision : 1*DS +1*DG Context : 1*PR + 1*SE -2*AL Group : 1*EA' \
-	-gltLabel 44 'DStop_DGo_social_vs_alone_EA' -gltCode 44  'Decision : 1*DS -1*DG Context : 1*PR + 1*SE -2*AL Group : 1*EA' \
+	-gltLabel 41 'DGo_social_vs_alone_EA' -gltCode 41  'Decision : 1*DG Context : 1*PR +1*SE -2*AL Group : 1*EA' \
+	-gltLabel 42 'DStop_social_vs_alone_EA' -gltCode 42  'Decision : 1*DS Context : 1*PR +1*SE -2*AL Group : 1*EA' \
+	-gltLabel 43 'D_social_vs_alone_EA' -gltCode 43  'Decision : 1*DS +1*DG Context : 1*PR +1*SE -2*AL Group : 1*EA' \
+	-gltLabel 44 'DStop_DGo_social_vs_alone_EA' -gltCode 44  'Decision : 1*DS -1*DG Context : 1*PR +1*SE -2*AL Group : 1*EA' \
 	-gltLabel 45 'D_AL-SE_COM' -gltCode 45  'Decision : 1*DS +1*DG Context : 1*AL -1*SE Group : 1*COM' \
 	-gltLabel 46 'D_AL-PR_COM' -gltCode 46  'Decision : 1*DS +1*DG Context : 1*AL -1*PR Group : 1*COM' \
 	-gltLabel 47 'D_PR-SE_COM' -gltCode 47  'Decision : 1*DS +1*DG Context : 1*PR -1*SE Group : 1*COM' \
@@ -82,13 +82,13 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Outcomes/
 	-gltLabel 60 'DG_AL-SE_COM' -gltCode 60  'Decision : 1*DG Context : 1*AL -1*SE Group : 1*COM' \
 	-gltLabel 61 'DG_AL-PR_COM' -gltCode 61  'Decision : 1*DG Context : 1*AL -1*PR Group : 1*COM' \
 	-gltLabel 62 'DG_PR-SE_COM' -gltCode 62  'Decision : 1*DG Context : 1*PR -1*SE Group : 1*COM' \
-	-gltLabel 63 'DGo_social_vs_alone_COM' -gltCode 63  'Decision : 1*DG Context : 1*PR + 1*SE -2*AL Group : 1*COM' \
-	-gltLabel 64 'DStop_social_vs_alone_COM' -gltCode 64  'Decision : 1*DS Context : 1*PR + 1*SE -2*AL Group : 1*COM' \
-	-gltLabel 65 'D_social_vs_alone_COM' -gltCode 65  'Decision : 1*DS +1*DG Context : 1*PR + 1*SE -2*AL Group : 1*COM' \
-	-gltLabel 66 'DStop_DGo_social_vs_alone_COM' -gltCode 66  'Decision : 1*DS -1*DG Context : 1*PR + 1*SE -2*AL Group : 1*COM' \
+	-gltLabel 63 'DGo_social_vs_alone_COM' -gltCode 63  'Decision : 1*DG Context : 1*PR +1*SE -2*AL Group : 1*COM' \
+	-gltLabel 64 'DStop_social_vs_alone_COM' -gltCode 64  'Decision : 1*DS Context : 1*PR +1*SE -2*AL Group : 1*COM' \
+	-gltLabel 65 'D_social_vs_alone_COM' -gltCode 65  'Decision : 1*DS +1*DG Context : 1*PR +1*SE -2*AL Group : 1*COM' \
+	-gltLabel 66 'DStop_DGo_social_vs_alone_COM' -gltCode 66  'Decision : 1*DS -1*DG Context : 1*PR +1*SE -2*AL Group : 1*COM' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
-Subj Outcome Context Group InputFile \
+Subj Decision Context Group InputFile \
 	109	DS	AL	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0003.nii \
 	109	DS	PR	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0013.nii \
 	109	DS	SE	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0023.nii \
@@ -461,12 +461,12 @@ Subj Outcome Context Group InputFile \
 	192	DG	AL	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/192/con_0002.nii \
 	192	DG	PR	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/192/con_0012.nii \
 	192	DG	SE	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/192/con_0022.nii \
-	193	DS	AL COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0003.nii \
-	193	DS	PR COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0013.nii \
-	193	DS	SE COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0023.nii \
-	193	DG	AL COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0002.nii \
-	193	DG	PR COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0012.nii \
-	193	DG	SE COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0022.nii \
+	193	DS	AL      COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0003.nii \
+	193	DS	PR      COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0013.nii \
+	193	DS	SE      COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0023.nii \
+	193	DG	AL      COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0002.nii \
+	193	DG	PR      COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0012.nii \
+	193	DG	SE      COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/193/con_0022.nii \
 	194	DS	AL	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/194/con_0003.nii \
 	194	DS	PR	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/194/con_0013.nii \
 	194	DS	SE	COM	/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/194/con_0023.nii \
