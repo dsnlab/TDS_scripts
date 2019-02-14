@@ -12,10 +12,10 @@
 STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
 # Set subject list
-SUBJLIST=`cat subject_list_fx_allconds_nopmod_main.txt`
+SUBJLIST=`cat subject_list_fx_TDS1_san_failedfx.txt`
 
 # Which SID should be replaced?
-REPLACESID='109'
+REPLACESID='302'
 
 # Set shell script to execute
 SHELL_SCRIPT=job_fx_threshold.sh
@@ -24,7 +24,7 @@ SHELL_SCRIPT=job_fx_threshold.sh
 RESULTS_INFIX=fx_threshold
 
 # Set output dir and make it if it doesn't exist
-OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/ylg/tds2_allconds_nopmod/output
+OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/ylg/tds1_allcomds_nopmods/output/acf
 
 if [ ! -d ${OUTPUTDIR} ]; then
 	mkdir -p ${OUTPUTDIR}

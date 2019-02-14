@@ -14,8 +14,8 @@ echo "${SUB}"
 echo "Merging residuals"
 echo -------------------------------------------------------------------------------
 
-fx_dir=/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/${SUB}
-sub_dir=/projects/dsnlab/shared/tds/fMRI/subjects_tdsall/${SUB}
+fx_dir=/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/x_ylg_allconds_nonorth_nopmod_tds1/${SUB}
+sub_dir=/projects/dsnlab/shared/tds/fMRI/subjects_tds1_tds2/${SUB}
 # N runs for residual calculation
 #RUNS=(6)
 STOP=(stop3 stop4 stop5 stop6 stop7 stop8)
