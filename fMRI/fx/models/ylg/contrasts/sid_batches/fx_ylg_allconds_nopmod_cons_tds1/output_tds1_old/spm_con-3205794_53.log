@@ -1,0 +1,38 @@
+Running batch job
+   /gpfs/projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/models/ylg/contrasts/sid_batches/fx_ylg_allconds_nopmod_cons_tds1/fx_ylg_allconds_nopmod_tds1_362.mat
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2018 The MathWorks, Inc.
+                   R2018b (9.5.0.944444) 64-bit (glnxa64)
+                              August 28, 2018
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+
+
+------------------------------------------------------------------------
+Running job #1
+------------------------------------------------------------------------
+Running 'Contrast Manager'
+
+SPM12: spm_contrasts.m                             14:11:46 - 30/01/2019
+========================================================================
+Contrasts folder                        :                          ./362
+Failed  'Contrast Manager'
+Error using load
+Unable to read file '/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/362/SPM.mat'. No such file or directory.
+In file "/gpfs/projects/dsnlab/shared/SPM12/config/spm_run_con.m" (v6764), function "spm_run_con" at line 28.
+
+The following modules did not run:
+Failed: Contrast Manager
+
+{Error using MATLABbatch system
+Job execution failed. The full log of this run can be found in MATLAB command
+window, starting with the lines (look for the line showing the exact #job as
+displayed in this error message)
+------------------
+Running job #1
+------------------
+} 

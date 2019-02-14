@@ -19,20 +19,20 @@ STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 
 # Set subject list
 #SUBJLIST=`cat subject_list_fx_alone.txt`
-#SUBJLIST=`cat redofx_TDS1_sublist.txt`
 SUBJLIST=`cat subject_list_fx_TDS1_full.txt`
+#SUBJLIST=`cat subject_list_fx_allconds_redo.txt`
 
 #Which SID should be replaced?
-REPLACESID='372'
+REPLACESID='301'
 
 #SPM Path
 SPM_PATH=/projects/dsnlab/shared/SPM12
 
 # Set MATLAB script path
-SCRIPT=${STUDY}/fMRI/fx/models/ylg/fx_ylg_TDS1_I_nonorth_nopmod_redo.m
+SCRIPT=${STUDY}/fMRI/fx/models/ylg/fx_ylg_TDS1_II_nonorth_nopmod.m
 
 # Tag the results files
-RESULTS_INFIX=fx_ylg_allconds_nopmod_tds1_redo
+RESULTS_INFIX=fx_ylg_allconds_nopmod_tds1
 
 # Set output dir
 OUTPUTDIR=${STUDY}/fMRI/fx/shell/schedule_spm_jobs/ylg/tds1_allcomds_nopmods/output/
@@ -69,7 +69,7 @@ elif [ "${PROCESS}" == "local" ]; then
 	for SUB in $SUBJLIST
 	do
 	 echo "submitting locally"
-	 bash spm_job.sh ${REPLACESID} ${SCRIPT} ${SUB} > "${OUTPUTDIR}"/"${SUBJ}"_"${RESULTS_INFIX}"_output_redo.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_"${RESULTS_INFIX}"_error_redo.txt
+	 bash spm_job.sh ${REPLACESID} ${SCRIPT} ${SUB} > "${OUTPUTDIR}"/"${SUBJ}"_"${RESULTS_INFIX}"_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_"${RESULTS_INFIX}"_error.txt
 	done
 
 elif [ "${PROCESS}" == "parlocal" ]; then 

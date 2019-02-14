@@ -12,7 +12,7 @@ STUDY=/projects/dsnlab/shared/tds/TDS_scripts
 SUBJLIST=`cat /projects/dsnlab/shared/tds/TDS_scripts/fMRI/fx/shell/schedule_spm_jobs/ylg/tds2_allconds/subject_list_fx_allconds.txt`
 
 # Set shell script to execute
-SHELL_SCRIPT=extract_parameterEstimates_edited.sh
+SHELL_SCRIPT=extract_parameterEstimates_func.sh
 
 # study the results files
 RESULTS_INFIX=extract
