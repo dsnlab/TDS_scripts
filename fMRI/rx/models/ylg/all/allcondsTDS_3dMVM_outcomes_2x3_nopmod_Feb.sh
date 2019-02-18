@@ -14,35 +14,87 @@ module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/OutcomesXContext
-	3dMVM -prefix OutcomesXContextTDS2_nopmod_2 \
+	3dMVM -prefix OutcomesXContextTDS2_nopmod \
 	-jobs 28 \
 	-wsVars  "Outcome*Context" \
 	-SS_type 3 \
-	-num_glt 24 \
-	-gltLabel 1 'GoO_AL-SE' -gltCode 1  'Outcome : 1*GoGood +1*GoBad Context : 1*AL -1*SE' \
-	-gltLabel 2 'GoO_AL-PR' -gltCode 2  'Outcome : 1*GoGood +1*GoBad Context : 1*AL -1*PR' \
-	-gltLabel 3 'GoO_PR-SE' -gltCode 3  'Outcome : 1*GoGood +1*GoBad Context : 1*PR -1*SE' \
-	-gltLabel 4 'Good_AL-SE' -gltCode 4  'Outcome : 1*GoGood +1*StopGood Context : 1*AL -1*SE' \
-	-gltLabel 5 'Good_AL-PR' -gltCode 5  'Outcome : 1*GoGood +1*StopGood Context : 1*AL -1*PR' \
-	-gltLabel 6 'Good_PR-SE' -gltCode 6  'Outcome : 1*GoGood +1*StopGood Context : 1*PR -1*SE' \
-	-gltLabel 7 'Bad_AL-SE' -gltCode 7  'Outcome : 1*GoBad +1*StopBad Context : 1*AL -1*SE' \
-	-gltLabel 8 'Bad_AL-PR' -gltCode 8  'Outcome : 1*GoBad +1*StopBad Context : 1*AL -1*PR' \
-	-gltLabel 9 'Bad_PR-SE' -gltCode 9  'Outcome : 1*GoBad +1*StopBad Context : 1*PR -1*SE' \
-	-gltLabel 10 'StopO_AL-SE' -gltCode 10  'Outcome : 1*StopGood +1*StopBad Context : 1*AL -1*SE' \
-	-gltLabel 11 'StopO_AL-PR' -gltCode 11 'Outcome : 1*StopGood +1*StopBad Context : 1*AL -1*PR' \
-	-gltLabel 12 'StopO_PR-SE' -gltCode 12 'Outcome : 1*StopGood +1*StopBad Context : 1*PR -1*SE' \
-	-gltLabel 13 'GG_AL' -gltCode 13 'Outcome : 1*GoGood Context : 1*AL' \
-	-gltLabel 14 'GB_AL' -gltCode 14 'Outcome : 1*GoBad Context : 1*AL' \
-	-gltLabel 15 'SG_AL' -gltCode 15 'Outcome : 1*StopGood Context : 1*AL' \
-	-gltLabel 16 'SB_AL' -gltCode 16 'Outcome : 1*StopBad Context : 1*AL' \
-	-gltLabel 17 'GG_PR' -gltCode 17 'Outcome : 1*GoGood Context : 1*PR' \
-	-gltLabel 18 'GB_PR' -gltCode 18 'Outcome : 1*GoBad Context : 1*PR ' \
-	-gltLabel 19 'SG_PR' -gltCode 19 'Outcome : 1*StopGood Context : 1*PR' \
-	-gltLabel 20 'SB_PR' -gltCode 20 'Outcome : 1*StopBad Context : 1*PR' \
-	-gltLabel 21 'GG_SE' -gltCode 21 'Outcome : 1*GoGood Context : 1*SE' \
-	-gltLabel 22 'GB_SE' -gltCode 22 'Outcome : 1*GoBad Context : 1*SE' \
-	-gltLabel 23 'SG_SE' -gltCode 23 'Outcome : 1*StopGood Context : 1*SE' \
-	-gltLabel 24 'SB_SE' -gltCode 24 'Outcome : 1*StopBad Context : 1*SE' \
+	-num_glt 76 \
+	-gltLabel 1 'Out_AL-SE' -gltCode 1  'Outcome : 1*GoGood &1*GoBad &1*StopGood &1*StopBad Context : 1*AL -1*SE' \
+	-gltLabel 2 'Out_AL-PR' -gltCode 2  'Outcome : 1*GoGood &1*GoBad &1*StopGood &1*StopBad Context : 1*AL -1*PR' \
+	-gltLabel 3 'Out_PR-SE' -gltCode 3  'Outcome : 1*GoGood &1*GoBad &1*StopGood &1*StopBad Context : 1*PR -1*SE' \
+	-gltLabel 4 'Out_social_vs_alone' -gltCode 4  'Outcome : 1*GoGood &1*GoBad &1*StopGood &1*StopBad Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 5 'Out_all_vs_exclux' -gltCode 5  'Outcome : 1*GoGood &1*GoBad &1*StopGood &1*StopBad Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 6 'Out_all_vs_peer' -gltCode 6  'Outcome : 1*GoGood &1*GoBad &1*StopGood &1*StopBad Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 7 'GoOutcome_AL-SE' -gltCode 7  'Outcome : 1*GoGood +1*GoBad Context : 1*AL -1*SE' \
+	-gltLabel 8 'GoOutcome_AL-PR' -gltCode 8  'Outcome : 1*GoGood +1*GoBad Context : 1*AL -1*PR' \
+	-gltLabel 9 'GoOutcome_PR-SE' -gltCode 9  'Outcome : 1*GoGood +1*GoBad Context : 1*PR -1*SE' \
+	-gltLabel 10 'GoOutcome' -gltCode 10  'Outcome : 1*GoGood +1*GoBad Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 11 'GoOutcome_social_vs_alone' -gltCode 11  'Outcome : 1*GoGood +1*GoBad Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 12 'GoOutcome_all_vs_exclux' -gltCode 12  'Outcome : 1*GoGood +1*GoBad Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 13 'GoOutcome_all_vs_peer' -gltCode 13  'Outcome : 1*GoGood +1*GoBad Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 14 'StopO_AL-SE' -gltCode 14  'Outcome : 1*StopGood +1*StopBad Context : 1*AL -1*SE' \
+	-gltLabel 15 'StopO_AL-PR' -gltCode 15 'Outcome : 1*StopGood +1*StopBad Context : 1*AL -1*PR' \
+	-gltLabel 16 'StopO_PR-SE' -gltCode 16 'Outcome : 1*StopGood +1*StopBad Context : 1*PR -1*SE' \
+	-gltLabel 17 'StopOutcome' -gltCode 17 'Outcome : 1*StopGood +1*StopBad Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 18 'StopOutcome_social_vs_alone' -gltCode 18  'Outcome : 1*StopGood +1*StopBad Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 19 'StopOutcome_all_vs_exclux' -gltCode 19  'Outcome : 1*StopGood +1*StopBad Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 20 'StopOutcome_all_vs_peer' -gltCode 20  'Outcome : 1*StopGood +1*StopBad Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 21 'GoOutcome_StopOutcome_AL-SE' -gltCode 21  'Outcome :  1*GoGood &1*GoBad -1*StopGood &1*StopBad  Context : 1*AL -1*SE' \
+	-gltLabel 22 'GoOutcome_StopOutcome_AL-PR' -gltCode 22  'Outcome : 1*GoGood &1*GoBad -1*StopGood &1*StopBad Context : 1*AL -1*PR' \
+	-gltLabel 23 'GoOutcome_StopOutcome_PR-SE' -gltCode 23  'Outcome : 1*GoGood &1*GoBad -1*StopGood &1*StopBad Context : 1*PR -1*SE' \
+	-gltLabel 24 'GoOutcome_StopOutcome' -gltCode 24  'Outcome : 1*GoGood &1*GoBad -1*StopGood &1*StopBad Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 25 'GoOutcome_StopOutcome_social_vs_alone' -gltCode 25  'Outcome : 1*GoGood &1*GoBad -1*StopGood &1*StopBad Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 26 'GoOutcome_StopOutcome_all_vs_exclux' -gltCode 26  'Outcome : 1*GoGood &1*GoBad -1*StopGood &1*StopBad Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 27 'GoOutcome_StopOutcome_all_vs_peer' -gltCode 27  'Outcome : 1*GoGood &1*GoBad -1*StopGood &1*StopBad Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 28 'Good_AL-SE' -gltCode 28  'Outcome : 1*GoGood +1*StopGood Context : 1*AL -1*SE' \
+	-gltLabel 29 'Good_AL-PR' -gltCode 29  'Outcome : 1*GoGood +1*StopGood Context : 1*AL -1*PR' \
+	-gltLabel 30 'Good_PR-SE' -gltCode 30  'Outcome : 1*GoGood +1*StopGood Context : 1*PR -1*SE' \
+	-gltLabel 31 'GoodOutcome' -gltCode 31  'Outcome : 1*GoGood +1*StopGood Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 32 'GoodOutcome_social_vs_alone' -gltCode 32  'Outcome : 1*GoGood +1*StopGood Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 33 'GoodOutcome_all_vs_exclux' -gltCode 33  'Outcome : 1*GoGood +1*StopGood Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 34 'GoodOutcome_all_vs_peer' -gltCode 34  'Outcome : 1*GoGood +1*StopGood Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 35 'Bad_AL-SE' -gltCode 35  'Outcome : 1*GoBad +1*StopBad Context : 1*AL -1*SE' \
+	-gltLabel 36 'Bad_AL-PR' -gltCode 36  'Outcome : 1*GoBad +1*StopBad Context : 1*AL -1*PR' \
+	-gltLabel 37 'Bad_PR-SE' -gltCode 37  'Outcome : 1*GoBad +1*StopBad Context : 1*PR -1*SE' \
+	-gltLabel 38 'BadOutcome' -gltCode 38  'Outcome : 1*GoBad +1*StopBad Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 39 'BadOutcome_social_vs_alone' -gltCode 39  'Outcome : 1*GoBad +1*StopBad Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 40 'BadOutcome_all_vs_exclux' -gltCode 40  'Outcome : 1*GoBad +1*StopBad Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 41 'BadOutcome_all_vs_peer' -gltCode 41  'Outcome : 1*GoBad +1*StopBad Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 42 'Good_Bad_AL-SE' -gltCode 42  'Outcome : 1*StopGood &1*GoGood -1*StopBad &1*GoBad Context : 1*AL -1*SE' \
+	-gltLabel 43 'Good_Bad_AL-PR' -gltCode 43  'Outcome : 1*StopGood &1*GoGood -1*StopBad &1*GoBad Context : 1*AL -1*PR' \
+	-gltLabel 44 'Good_Bad_PR-SE' -gltCode 44  'Outcome : 1*StopGood &1*GoGood -1*StopBad &1*GoBad Context : 1*PR -1*SE' \
+	-gltLabel 45 'Good_Bad' -gltCode 45  'Outcome : 1*StopGood &1*GoGood -1*StopBad &1*GoBad Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 46 'Good_Bad_social_vs_alone' -gltCode 46  'Outcome : 1*StopGood &1*GoGood -1*StopBad &1*GoBad Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 47 'Good_Bad_all_vs_exclux' -gltCode 37  'Outcome : 1*StopGood &1*GoGood -1*StopBad &1*GoBad Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 48 'Good_Bad_all_vs_peer' -gltCode 48  'Outcome : 1*StopGood &1*GoGood -1*StopBad &1*GoBad Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 49 'GoodGoOutcome' -gltCode 49  'Outcome : 1*GoGood Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 50 'GoodGoOutcome_AL-SE' -gltCode 50  'Outcome : 1*GoGood  Context : 1*AL -1*SE' \
+	-gltLabel 51 'GoodGoOutcome_AL-PR' -gltCode 51  'Outcome : 1*GoGood Context : 1*AL -1*PR' \
+	-gltLabel 52 'GoodGoOutcome_PR-SE' -gltCode 52  'Outcome : 1*GoGood Context : 1*PR -1*SE' \
+	-gltLabel 53 'GoodGoOutcome_social_vs_alone' -gltCode 53  'Outcome : 1*GoGood Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 54 'GoodGoOutcome_all_vs_exclux' -gltCode 54  'Outcome : 1*GoGood Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 55 'GoodGoOutcome_all_vs_peer' -gltCode 55  'Outcome : 1*GoGood Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 56 'BadGoOutcome' -gltCode 56  'Outcome : 1*GoBad Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 57 'BadGoOutcome_AL-SE' -gltCode 57  'Outcome : 1*GoBad  Context : 1*AL -1*SE' \
+	-gltLabel 58 'BadGoOutcome_AL-PR' -gltCode 58 'Outcome : 1*GoBad Context : 1*AL -1*PR' \
+	-gltLabel 59 'BadGoOutcome_PR-SE' -gltCode 59  'Outcome : 1*GoBad Context : 1*PR -1*SE' \
+	-gltLabel 60 'BadGoOutcome_social_vs_alone' -gltCode 60  'Outcome : 1*GoBad Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 61 'BadGoOutcome_all_vs_exclux' -gltCode 61  'Outcome : 1*GoBad Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 62 'BadGoOutcome_all_vs_peer' -gltCode 62  'Outcome : 1*GoBad Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 63 'GoodStopOutcome' -gltCode 63  'Outcome : 1*StopGood Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 64 'GoodStopOutcome_AL-SE' -gltCode 64  'Outcome : 1*StopGood Context : 1*AL -1*SE' \
+	-gltLabel 65 'GoodStopOutcome_AL-PR' -gltCode 65 'Outcome : 1*StopGood Context : 1*AL -1*PR' \
+	-gltLabel 66 'GoodStopOutcome_PR-SE' -gltCode 66 'Outcome : 1*StopGood Context : 1*PR -1*SE' \
+	-gltLabel 67 'GoodStopOutcome_social_vs_alone' -gltCode 67  'Outcome : 1*StopGood Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 68 'GoodStopOutcome_all_vs_exclux' -gltCode 68  'Outcome : 1*StopGood Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 69 'GoodStopOutcome_all_vs_peer' -gltCode 69  'Outcome : 1*StopGood Context : 1*SE &1*AL -2*PR' \
+	-gltLabel 70 'BadStopOutcome' -gltCode 70  'Outcome : 1*StopBad Context : 1*AL +1*PR +1*SE' \
+	-gltLabel 71 'BadStopOutcome_AL-SE' -gltCode 71  'Outcome : 1*StopBad Context : 1*AL -1*SE' \
+	-gltLabel 72 'BadStopOutcome_AL-PR' -gltCode 72  'Outcome : 1*StopBad Context : 1*AL -1*PR' \
+	-gltLabel 73 'BadStopOutcome_PR-SE' -gltCode 73  'Outcome : 1*StopBad Context : 1*PR -1*SE' \
+	-gltLabel 74 'BadStopOutcome_social_vs_alone' -gltCode 74  'Outcome : 1*StopBad Context : 1*PR &1*SE -2*AL' \
+	-gltLabel 75 'BadStopOutcome_all_vs_exclux' -gltCode 75  'Outcome : 1*StopBad Context : 1*PR &1*AL -2*SE' \
+	-gltLabel 76 'BadStopOutcome_all_vs_peer' -gltCode 76  'Outcome : 1*StopBad Context : 1*SE &1*AL -2*PR' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds2/tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Outcome Context Group InputFile \
