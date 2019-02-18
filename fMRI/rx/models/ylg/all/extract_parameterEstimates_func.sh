@@ -21,7 +21,7 @@ output_dir='/projects/dsnlab/shared/tds/fMRI/analysis/roi/ylg/tds2/func' #roi ou
 roi_dir='/projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/OutcomesXContext/func_roi' #roi/parcellation atlas directory
 
 # variables
-rois=(L_STG_clust_mask R_STG_AvP_mask) #roi masks (without file format, specified below as .nii)
+rois=(dmPFC_mask r_STG_context_mask r_MFG_OxC_mask) #roi masks (without file format, specified below as .nii)
 images=`echo $(printf "con_%004d.nii\n" {06..30})` #images to extract parameter estimates from (alt. example: images=`echo $(printf "beta_%04d.nii\n" {1..36}) $(printf "beta_%04d.nii\n" {43..78})`)
 
 if [ ! -d ${output_dir} ]; then
