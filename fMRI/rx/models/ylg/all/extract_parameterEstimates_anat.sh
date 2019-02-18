@@ -22,7 +22,7 @@ roi_dir='/projects/dsnlab/shared/tds/fMRI/analysis/roi/ylg/tds2/anat_NAcc_HO' #r
 
 # variables
 rois=(R_Accumbens L_Accumbens) #roi masks (without file format, specified below as .nii)
-images=`echo $(printf "con_%004d.nii\n" {06..30})` #images to extract parameter estimates from (alt. example: images=`echo $(printf "beta_%04d.nii\n" {1..36}) $(printf "beta_%04d.nii\n" {43..78})`)
+images=`echo $(printf "con_%004d.nii\n" {1..30})` #images to extract parameter estimates from (alt. example: images=`echo $(printf "beta_%04d.nii\n" {1..36}) $(printf "beta_%04d.nii\n" {43..78})`)
 
 if [ ! -d ${output_dir} ]; then
 	mkdir -p ${output_dir}
