@@ -14,6 +14,8 @@ _Note well:_ Although this script scores and documents descriptive statistics ab
 
 This document will take a highly modular approach so that hopefully if something goes wrong, you can see more exactly where that happens. I'll try to explain every step pretty verbosely too. You should probably be reading this document in R Studio, running each chunk as you go. Make sure you're up to date with upgrades for R, R Studio, and packages.
 
+hi im jack :) 
+
 ## Setting options
 
 If you're reading the compiled HTML, you won't see the options below, because we've written `warning=F,echo=F,message=F,error=F` in the head of the chunk. You can change this by replacing the "F"s with "T"s. This chunk sets variables that will be reused to define where output goes, how it's named, what codes are used for gender in the PDS and so on.
