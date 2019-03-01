@@ -35,11 +35,12 @@ pdss_gender_mix <- 'mf' #'mf' for both M and F, 'm' for M only, 'f' for F only
 exclude_SID <- c('', '999') # subject IDs to exclude
 identifiableData <- '(DOB|Ethnicity|Work|Grade|School|TEXT|Addl_Probs|Reasons|Decribe|Concerns|BestThings|Describe|Started|Ended)' # exclude when printing duplicates
 output_file_dir <- '~/Desktop/Output /'
-tds2_wave1_rubric_dir <- '~/Desktop/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds2/wave1/'
-tds2_wave2_rubric_dir <- '~/Desktop/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds2/wave2/'
-tds1_wave1_rubric_dir <- '~/Desktop/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds1/wave1/post/'
-tds1_wave1_rubric_dir_pre <-'~/Desktop/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds1/wave1/pre/'
-tds1_wave2_rubric_dir <- '~/Desktop/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds1/wave2/'
+rubric_base <- '~/code_new/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/'
+tds2_wave1_rubric_dir <- file.path(rubric_base, 'tds2/wave1/')
+tds2_wave2_rubric_dir <- file.path(rubric_base, 'tds2/wave2/')
+tds1_wave1_rubric_dir <- file.path(rubric_base, 'tds1/wave1/post/')
+tds1_wave1_rubric_dir_pre <- file.path(rubric_base, 'tds1/wave1/pre/')
+tds1_wave2_rubric_dir <- file.path(rubric_base, 'tds1/wave2/')
 TDS1_name <- 'tds1'
 TDS2_name <- 'tds2'
 wave1_name <- 'wave1'
