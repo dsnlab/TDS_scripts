@@ -16,12 +16,12 @@ echo ---------------------------------------------------------------------------
 # Set paths and variables
 # ------------------------------------------------------------------------------------------
 # paths
-image_dir=/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth/"${SUB}" #fx contrast directory
-output_dir='/projects/dsnlab/shared/tds/fMRI/analysis/roi/ylg/tds2/func' #roi output directory
-roi_dir='/projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/OutcomesXContext/func_roi' #roi/parcellation atlas directory
+image_dir=/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/"${SUB}" #fx contrast directory
+output_dir='/projects/dsnlab/shared/tds/fMRI/analysis/roi/ylg/tds1/func' #roi output directory
+roi_dir='/projects/dsnlab/shared/tds/TDS_scripts/fMRI/rx/models/ylg/group_all/extract_ROIs' #roi/parcellation atlas directory
 
 # variables
-rois=(dmPFC_mask r_STG_context_mask r_MFG_OxC_mask) #roi masks (without file format, specified below as .nii)
+rois=(l_angular_badstop_ALvSE_mask l_declive_mask l_FFA_mask l_ITG_badstop_ALvSE_mask r_FFA_mask r_SMG_PRvAL_allout_mask thalamus_BadOut_PRvall_mask) #roi masks (without file format, specified below as .nii)
 images=`echo $(printf "con_%004d.nii\n" {1..30})` #images to extract parameter estimates from (alt. example: images=`echo $(printf "beta_%04d.nii\n" {1..36}) $(printf "beta_%04d.nii\n" {43..78})`)
 
 if [ ! -d ${output_dir} ]; then
