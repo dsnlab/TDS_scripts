@@ -1,9 +1,9 @@
 #!/bin/bash
 #--------------------------------------------------------------
 #
-#SBATCH --job-name=TDS_allconds_nopmods_3dmvm
-#SBATCH --output=output/allcons_nppmods_3dmvm.log
-#SBATCH --error=output/allcons_3dmvm_nopmods_error.log
+#SBATCH --job-name=TDS1_outcome_3dmvm
+#SBATCH --output=output/tds1_outcome_3dmvm.log
+#SBATCH --error=output/tds1_outcome_3dmvm_error.log
 #SBATCH --time=1-00:00:00
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1

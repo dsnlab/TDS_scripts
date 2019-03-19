@@ -1,13 +1,13 @@
 #!/bin/bash
 #--------------------------------------------------------------
 #
-#SBATCH --job-name=TDS_allconds_nopmods_3dmvm
-#SBATCH --output=output/allcons_nppmods_3dmvm.log
-#SBATCH --error=output/allcons_3dmvm_nopmods_error.log
+#SBATCH --job-name=TDS_out_group_3dmvm
+#SBATCH --output=output/tds_out_group_3dmvm.log
+#SBATCH --error=output/tds_out_group_3dmvm_error.log
 #SBATCH --time=1-00:00:00
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1
-#SBATCH --mem-per-cpu=4000
+#SBATCH --mem-per-cpu=10000
 #SBATCH --partition=short,fat
 
 module load prl afni/17.3.00

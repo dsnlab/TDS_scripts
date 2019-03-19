@@ -1,0 +1,317 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+***** Summary information of data structure *****
+57 subjects :  302 303 306 307 308 309 310 312 313 314 316 317 320 321 322 323 324 325 326 327 328 329 330 331 332 333 335 336 337 340 341 342 343 344 346 347 348 349 351 352 353 354 355 357 359 360 361 363 365 367 368 369 371 372 373 374 375 
+684 response values
+4 levels for factor Outcome : GoBad GoGood StopBad StopGood 
+3 levels for factor Context : AL PR SE 
+1 levels for factor Group : EA 
+76 post hoc tests
+
+Contingency tables of subject distributions among the categorical variables:
+
+          Context
+Outcome    AL PR SE
+  GoBad    57 57 57
+  GoGood   57 57 57
+  StopBad  57 57 57
+  StopGood 57 57 57
+
+Tabulation of subjects against each of the categorical variables:
+~~~~~~~~~~~~~~
+lop$nSubj vs Outcome:
+     
+      GoBad GoGood StopBad StopGood
+  302     3      3       3        3
+  303     3      3       3        3
+  306     3      3       3        3
+  307     3      3       3        3
+  308     3      3       3        3
+  309     3      3       3        3
+  310     3      3       3        3
+  312     3      3       3        3
+  313     3      3       3        3
+  314     3      3       3        3
+  316     3      3       3        3
+  317     3      3       3        3
+  320     3      3       3        3
+  321     3      3       3        3
+  322     3      3       3        3
+  323     3      3       3        3
+  324     3      3       3        3
+  325     3      3       3        3
+  326     3      3       3        3
+  327     3      3       3        3
+  328     3      3       3        3
+  329     3      3       3        3
+  330     3      3       3        3
+  331     3      3       3        3
+  332     3      3       3        3
+  333     3      3       3        3
+  335     3      3       3        3
+  336     3      3       3        3
+  337     3      3       3        3
+  340     3      3       3        3
+  341     3      3       3        3
+  342     3      3       3        3
+  343     3      3       3        3
+  344     3      3       3        3
+  346     3      3       3        3
+  347     3      3       3        3
+  348     3      3       3        3
+  349     3      3       3        3
+  351     3      3       3        3
+  352     3      3       3        3
+  353     3      3       3        3
+  354     3      3       3        3
+  355     3      3       3        3
+  357     3      3       3        3
+  359     3      3       3        3
+  360     3      3       3        3
+  361     3      3       3        3
+  363     3      3       3        3
+  365     3      3       3        3
+  367     3      3       3        3
+  368     3      3       3        3
+  369     3      3       3        3
+  371     3      3       3        3
+  372     3      3       3        3
+  373     3      3       3        3
+  374     3      3       3        3
+  375     3      3       3        3
+
+~~~~~~~~~~~~~~
+lop$nSubj vs Context:
+     
+      AL PR SE
+  302  4  4  4
+  303  4  4  4
+  306  4  4  4
+  307  4  4  4
+  308  4  4  4
+  309  4  4  4
+  310  4  4  4
+  312  4  4  4
+  313  4  4  4
+  314  4  4  4
+  316  4  4  4
+  317  4  4  4
+  320  4  4  4
+  321  4  4  4
+  322  4  4  4
+  323  4  4  4
+  324  4  4  4
+  325  4  4  4
+  326  4  4  4
+  327  4  4  4
+  328  4  4  4
+  329  4  4  4
+  330  4  4  4
+  331  4  4  4
+  332  4  4  4
+  333  4  4  4
+  335  4  4  4
+  336  4  4  4
+  337  4  4  4
+  340  4  4  4
+  341  4  4  4
+  342  4  4  4
+  343  4  4  4
+  344  4  4  4
+  346  4  4  4
+  347  4  4  4
+  348  4  4  4
+  349  4  4  4
+  351  4  4  4
+  352  4  4  4
+  353  4  4  4
+  354  4  4  4
+  355  4  4  4
+  357  4  4  4
+  359  4  4  4
+  360  4  4  4
+  361  4  4  4
+  363  4  4  4
+  365  4  4  4
+  367  4  4  4
+  368  4  4  4
+  369  4  4  4
+  371  4  4  4
+  372  4  4  4
+  373  4  4  4
+  374  4  4  4
+  375  4  4  4
+
+~~~~~~~~~~~~~~
+lop$nSubj vs Group:
+     
+      EA
+  302 12
+  303 12
+  306 12
+  307 12
+  308 12
+  309 12
+  310 12
+  312 12
+  313 12
+  314 12
+  316 12
+  317 12
+  320 12
+  321 12
+  322 12
+  323 12
+  324 12
+  325 12
+  326 12
+  327 12
+  328 12
+  329 12
+  330 12
+  331 12
+  332 12
+  333 12
+  335 12
+  336 12
+  337 12
+  340 12
+  341 12
+  342 12
+  343 12
+  344 12
+  346 12
+  347 12
+  348 12
+  349 12
+  351 12
+  352 12
+  353 12
+  354 12
+  355 12
+  357 12
+  359 12
+  360 12
+  361 12
+  363 12
+  365 12
+  367 12
+  368 12
+  369 12
+  371 12
+  372 12
+  373 12
+  374 12
+  375 12
+
+***** End of data structure information *****
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Reading input files now...
+
+Reading input files: Done!
+
+If the program hangs here for more than, for example, half an hour,
+kill the process because the model specification or the GLT coding
+is likely inappropriate.
+
+[1] "Great, test run passed at voxel (30, 54, 45)!"
+[1] "Start to compute 91 slices along Z axis. You can monitor the progress"
+[1] "and estimate the total run time as shown below."
+[1] "02/18/19 17:40:58.050"
+Package snow loaded successfully!
+
+Z slice  1 done:  02/18/19 17:41:43.257 
+Z slice  2 done:  02/18/19 17:41:57.800 
+Z slice  3 done:  02/18/19 17:42:18.887 
+Z slice  4 done:  02/18/19 17:42:41.176 
+Z slice  5 done:  02/18/19 17:43:14.041 
+Z slice  6 done:  02/18/19 17:45:12.869 
+Z slice  7 done:  02/18/19 17:47:40.234 
+Z slice  8 done:  02/18/19 17:50:20.794 
+Z slice  9 done:  02/18/19 17:53:25.026 
+Z slice  10 done:  02/18/19 17:56:34.555 
+Z slice  11 done:  02/18/19 17:59:56.822 
+Z slice  12 done:  02/18/19 18:03:26.694 
+Z slice  13 done:  02/18/19 18:07:02.596 
+Z slice  14 done:  02/18/19 18:10:29.390 
+Z slice  15 done:  02/18/19 18:14:04.971 
+Z slice  16 done:  02/18/19 18:17:47.948 
+Z slice  17 done:  02/18/19 18:21:28.936 
+Z slice  18 done:  02/18/19 18:25:22.778 
+Z slice  19 done:  02/18/19 18:29:28.529 
+Z slice  20 done:  02/18/19 18:33:19.133 
+Z slice  21 done:  02/18/19 18:37:06.699 
+Z slice  22 done:  02/18/19 18:41:23.512 
+Z slice  23 done:  02/18/19 18:46:14.199 
+Z slice  24 done:  02/18/19 18:51:00.025 
+Z slice  25 done:  02/18/19 18:55:35.993 
+Z slice  26 done:  02/18/19 19:00:29.176 
+Z slice  27 done:  02/18/19 19:05:29.718 
+Z slice  28 done:  02/18/19 19:10:11.211 
+Z slice  29 done:  02/18/19 19:15:20.760 
+Z slice  30 done:  02/18/19 19:20:21.146 
+Z slice  31 done:  02/18/19 19:25:06.084 
+Z slice  32 done:  02/18/19 19:30:23.173 
+Z slice  33 done:  02/18/19 19:35:28.251 
+Z slice  34 done:  02/18/19 19:40:30.864 
+Z slice  35 done:  02/18/19 19:45:51.414 
+Z slice  36 done:  02/18/19 19:51:01.628 
+Z slice  37 done:  02/18/19 19:55:58.225 
+Z slice  38 done:  02/18/19 20:00:58.628 
+Z slice  39 done:  02/18/19 20:05:42.335 
+Z slice  40 done:  02/18/19 20:10:40.653 
+Z slice  41 done:  02/18/19 20:15:43.362 
+Z slice  42 done:  02/18/19 20:20:28.998 
+Z slice  43 done:  02/18/19 20:25:01.736 
+Z slice  44 done:  02/18/19 20:29:40.565 
+Z slice  45 done:  02/18/19 20:34:19.320 
+Z slice  46 done:  02/18/19 20:38:37.410 
+Z slice  47 done:  02/18/19 20:42:55.896 
+Z slice  48 done:  02/18/19 20:47:09.639 
+Z slice  49 done:  02/18/19 20:51:30.915 
+Z slice  50 done:  02/18/19 20:55:48.532 
+Z slice  51 done:  02/18/19 21:00:04.372 
+Z slice  52 done:  02/18/19 21:04:28.743 
+Z slice  53 done:  02/18/19 21:08:45.584 
+Z slice  54 done:  02/18/19 21:13:03.230 
+Z slice  55 done:  02/18/19 21:17:19.383 
+Z slice  56 done:  02/18/19 21:21:29.695 
+Z slice  57 done:  02/18/19 21:25:40.379 
+Z slice  58 done:  02/18/19 21:29:44.387 
+Z slice  59 done:  02/18/19 21:33:40.671 
+Z slice  60 done:  02/18/19 21:37:47.329 
+Z slice  61 done:  02/18/19 21:41:52.452 
+Z slice  62 done:  02/18/19 21:45:48.273 
+Z slice  63 done:  02/18/19 21:49:27.418 
+Z slice  64 done:  02/18/19 21:52:58.222 
+Z slice  65 done:  02/18/19 21:56:22.570 
+Z slice  66 done:  02/18/19 21:59:36.726 
+Z slice  67 done:  02/18/19 22:02:50.102 
+Z slice  68 done:  02/18/19 22:05:50.413 
+Z slice  69 done:  02/18/19 22:08:47.124 
+Z slice  70 done:  02/18/19 22:11:25.387 
+Z slice  71 done:  02/18/19 22:13:55.895 
+Z slice  72 done:  02/18/19 22:16:18.303 
+Z slice  73 done:  02/18/19 22:18:29.335 
+Z slice  74 done:  02/18/19 22:20:23.461 
+Z slice  75 done:  02/18/19 22:21:36.182 
+Z slice  76 done:  02/18/19 22:22:30.565 
+Z slice  77 done:  02/18/19 22:23:03.238 
+Z slice  78 done:  02/18/19 22:23:04.077 
+Z slice  79 done:  02/18/19 22:23:04.661 
+Z slice  80 done:  02/18/19 22:23:05.248 
+Z slice  81 done:  02/18/19 22:23:05.903 
+Z slice  82 done:  02/18/19 22:23:06.748 
+Z slice  83 done:  02/18/19 22:23:07.316 
+Z slice  84 done:  02/18/19 22:23:07.976 
+Z slice  85 done:  02/18/19 22:23:08.521 
+Z slice  86 done:  02/18/19 22:23:09.110 
+Z slice  87 done:  02/18/19 22:23:10.259 
+Z slice  88 done:  02/18/19 22:23:11.153 
+Z slice  89 done:  02/18/19 22:23:11.971 
+Z slice  90 done:  02/18/19 22:23:12.857 
+Z slice  91 done:  02/18/19 22:23:13.663 
+
+Congratulations! You have got an output OutcomesXContextTDS1_nopmod+tlrc.
+
