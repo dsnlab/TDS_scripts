@@ -14,6 +14,7 @@ _Note well:_ Although this script scores and documents descriptive statistics ab
 
 This document will take a highly modular approach so that hopefully if something goes wrong, you can see more exactly where that happens. I'll try to explain every step pretty verbosely too. You should probably be reading this document in R Studio, running each chunk as you go. Make sure you're up to date with upgrades for R, R Studio, and packages.
 
+
 ## Setting options
 
 If you're reading the compiled HTML, you won't see the options below, because we've written `warning=F,echo=F,message=F,error=F` in the head of the chunk. You can change this by replacing the "F"s with "T"s. This chunk sets variables that will be reused to define where output goes, how it's named, what codes are used for gender in the PDS and so on.
@@ -23,7 +24,7 @@ knitr::opts_chunk$set(error = T, warning = T, message = F, fig.width = (11-3), f
 
 #Set these options for your situation:
 
-cred_file_location <- '~/.teenstudytoken'
+cred_file_location <- '~/Desktop/credentials.yaml.DEFAULT'
 pid_column_name <- 'SID'
 age_var <- 'Age'
 gender_var <- 'Gender'
@@ -33,12 +34,13 @@ pdss_gender_code <- c(m=gender_male, f=gender_female)
 pdss_gender_mix <- 'mf' #'mf' for both M and F, 'm' for M only, 'f' for F only
 exclude_SID <- c('', '999') # subject IDs to exclude
 identifiableData <- '(DOB|Ethnicity|Work|Grade|School|TEXT|Addl_Probs|Reasons|Decribe|Concerns|BestThings|Describe|Started|Ended)' # exclude when printing duplicates
-output_file_dir <- '/data/jflournoy/TDS/behavior/scored_qualtrics_data/'
-tds2_wave1_rubric_dir <- '~/code_new/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds2/wave1/'
-tds2_wave2_rubric_dir <- '~/code_new/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds2/wave2/'
-tds1_wave1_rubric_dir <- '~/code_new/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds1/wave1/post/'
-tds1_wave1_rubric_dir_pre <- '~/code_new/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds1/wave1/pre/'
-tds1_wave2_rubric_dir <- '~/code_new/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/tds1/wave2/'
+output_file_dir <- '~/Desktop/Output /'
+rubric_base <- '~/code_new/TDS_scripts/behavioral/score_qualtrics_tds/rubrics/'
+tds2_wave1_rubric_dir <- file.path(rubric_base, 'tds2/wave1/')
+tds2_wave2_rubric_dir <- file.path(rubric_base, 'tds2/wave2/')
+tds1_wave1_rubric_dir <- file.path(rubric_base, 'tds1/wave1/post/')
+tds1_wave1_rubric_dir_pre <- file.path(rubric_base, 'tds1/wave1/pre/')
+tds1_wave2_rubric_dir <- file.path(rubric_base, 'tds1/wave2/')
 TDS1_name <- 'tds1'
 TDS2_name <- 'tds2'
 wave1_name <- 'wave1'
@@ -258,7 +260,7 @@ The second option is to use `scorequaltrics::score_step_one_and_two(dataDF, rubr
 
 ```{r tds2wave1scoringdsn}
 tds2_wave1_scored <- scorequaltrics::score_step_one_and_two(tds2_wave1_long_recoded_nodupes,
-                                                            tds2_wave1_scoring_data_long)
+                                                            tds2_wave1_scoring_data_long) 
 
 set.seed(9567)
 tds2_wave1_scored %>% ungroup %>%
@@ -317,7 +319,7 @@ sample_n(select(tds2_wave1_bis_scored_wide$data_quality, -SID), size = 3)
 We can easily write these tables to a file now:
 
 ```{r writeexample, eval = F}
-write.csv(tds2_wave1_bis_scored_wide$scores, '/location/to/save/csv/file')
+write.csv(tds2_wave1_bis_scored_wide$scores, '~/Desktop/Output /')
 ```
 
 ### Scoring a single scale using `score_questionnaire` with `psych=TRUE`

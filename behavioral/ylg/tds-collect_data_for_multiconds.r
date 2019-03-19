@@ -120,6 +120,8 @@ run_ranks_data<-copy(sl_data[,
 	list(run_index=rank(unique(`when-run-started`)),
 		`when-run-started`=unique(`when-run-started`)),
 	by=`subject-name`])
+#344 does not have data for two practice runs in mock at beginning
+run_ranks_data[`subject-name`=='344', run_index := run_index + 2]
 setkey(run_ranks_data,`subject-name`,`when-run-started`)
 setkey(sl_data,`subject-name`,`when-run-started`)
 # sl_data[run_ranks_data]
