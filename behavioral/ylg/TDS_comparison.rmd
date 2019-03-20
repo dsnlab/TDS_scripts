@@ -34,7 +34,7 @@ PDS_pre <- data.frame("scores.SID" = c(301, 302, 303, 304, 305, 306, 307, 308, 3
 qualtrics_data<-full_join(PDS_pre, qualtrics_data_post)
 
 #change names to be easier to read later
-names(demo_data) <- c("scores.SID", "age", "gender", "iq")
+names(demo_data) <- c("scores.SID", "age", "gender", "iq", "")
 ## Merge qualtrics and demo data
 demo <- merge(demo_data, qualtrics_data, by.x = 'scores.SID', by.y = 'scores.SID')
 
@@ -295,9 +295,9 @@ social_df <- df_fMRI_all %>% filter(condition != "2")
 null.model <- glmer(go ~ (1|scores.SID), data=social_df, family='binomial')
 condition.model <- glmer(go ~ condition + (1|scores.SID), data=social_df, family='binomial')
 anova(null.model, condition.model)  
-#                 Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
-# null.model       2 6840.8 6854.0 -3418.4   6836.8                           
-# condition.model  3 6839.5 6859.3 -3416.7   6833.5 3.3712      1    0.06635 .
+#                Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(>Chisq)    
+# (Intercept) -0.50580    0.10248  -4.935    8e-07 ***
+# condition4  -0.10851    0.05904  -1.838   0.0661 .  
 summary(condition.model) 
 # Fixed effects:
 #             Estimate Std. Error z value Pr(>|z|)    
@@ -828,13 +828,12 @@ anova(null.model, main.model)
 #            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model  9 9745.7 9808.2 -4863.9   9727.7                           
 # main.model 10 9741.7 9811.1 -4860.8   9721.7 6.0164      1    0.01417 *
-anova(null.model, interaction.model)
-#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
-# null.model         9 9745.7 9808.2 -4863.9   9727.7                             
-# interaction.model 15 9734.6 9838.8 -4852.3   9704.6 23.137      6   0.000752 ***
+anova(main.model, interaction.model)
+#                  Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(>Chisq)   
+# main.model        10 9741.7 9811.1 -4860.8   9721.7                           
+# interaction.model 15 9734.6 9838.8 -4852.3   9704.6 17.12      5   0.004278 **
 
-
-summary(null.model)
+summary(main.model)
 # Fixed effects:
 #             Estimate Std. Error z value Pr(>|z|)    
 # (Intercept) -0.40424    0.13397  -3.018  0.00255 **
@@ -846,7 +845,24 @@ summary(null.model)
 # gender1     -0.27619    0.18593  -1.485  0.13743   
 # iq_z         0.05922    0.11388   0.520  0.60301
 
-#
+summary(interaction.model)
+# Fixed effects:
+#                   Estimate Std. Error z value Pr(>|z|)   
+# (Intercept)      -0.378174   0.129655  -2.917  0.00354 **
+# age_c             0.059983   0.062117   0.966  0.33422   
+# run_index4       -0.112238   0.085163  -1.318  0.18753   
+# run_index5        0.003444   0.084663   0.041  0.96755   
+# run_index6        0.106737   0.084469   1.264  0.20637   
+# run_index7       -0.064415   0.084867  -0.759  0.44785   
+# run_index8       -0.030203   0.085058  -0.355  0.72252   
+# gender1          -0.330383   0.179958  -1.836  0.06637 . 
+# iq_z              0.076550   0.109535   0.699  0.48464   
+# age_c:run_index4  0.072276   0.050796   1.423  0.15477   
+# age_c:run_index5  0.072671   0.050517   1.438  0.15028   
+# age_c:run_index6  0.128839   0.050443   2.554  0.01064 * 
+# age_c:run_index7 -0.004498   0.050740  -0.089  0.92936   
+# age_c:run_index8  0.159948   0.050767   3.151  0.00163 **
+
 
 # Linear Age effects on the proportion of Go decisions (by location)
 null.model <- glmer(go ~ condition + gender + iq_z + (1|scores.SID), data=df_fMRI_all, family='binomial')
@@ -857,11 +873,10 @@ anova(null.model, main.model)
 #            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model  6 10251 10293 -5119.7    10239                           
 # main.model  7 10247 10296 -5116.5    10233 6.2659      1    0.01231 *
-anova(null.model, interaction.model)
+anova(main.model, interaction.model)
 #                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model         6 10251 10293 -5119.7    10239                            
 # interaction.model  9 10246 10309 -5113.8    10228 11.707      3   0.008458 **
-
 summary(null.model)
 # Fixed effects:
 #             Estimate Std. Error z value Pr(>|z|)    
@@ -871,7 +886,18 @@ summary(null.model)
 # gender1     -0.27855    0.17447  -1.597 0.110373    
 # iq_z         0.05325    0.10015   0.532 0.594949    
 
-#
+summary(interaction.model)
+
+#Fixed effects:
+#                  Estimate Std. Error z value Pr(>|z|)    
+# (Intercept)      -0.40810    0.11426  -3.572 0.000355 ***
+# age_c             0.08316    0.05366   1.550 0.121215    
+# condition3        0.08647    0.05797   1.492 0.135805    
+# condition4       -0.01647    0.05898  -0.279 0.780045    
+# gender1          -0.34787    0.16975  -2.049 0.040434 *  
+# iq_z              0.05086    0.09606   0.529 0.596480    
+# age_c:condition3  0.08009    0.03463   2.313 0.020745 *  
+# age_c:condition4  0.04968    0.03501   1.419 0.155804    
 ```
 ###############
 ## FIGURE 4A ##
@@ -1021,7 +1047,7 @@ anova(null.model, main.model)
 #            Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
 # null.model  9 7657.1 7717.2 -3819.5   7639.1                         
 # main.model 10 7657.2 7724.0 -3818.6   7637.2 1.8437      1     0.1745
-anova(null.model, interaction.model)
+anova(main.model, interaction.model)
 #                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model         9 7657.1 7717.2 -3819.5   7639.1                         
 # interaction.model 15 7659.2 7759.3 -3814.6   7629.2 9.8938      6     0.1292
@@ -1047,10 +1073,10 @@ anova(null.model, main.model)
 #            Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
 # null.model  6 8056.8 8097.2 -4022.4   8044.8                         
 # main.model  7 8056.8 8103.9 -4021.4   8042.8 2.0619      1      0.151
-anova(null.model, interaction.model)
-#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
-# null.model         6 8056.8 8097.2 -4022.4   8044.8                        
-# interaction.model  9 8057.2 8117.8 -4019.6   8039.2 5.628      3     0.1312
+anova(main.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# main.model         7 8056.8 8103.9 -4021.4   8042.8                         
+# interaction.model  9 8057.2 8117.8 -4019.6   8039.2 3.5662      2     0.1681
 
 
 summary(null.model)
@@ -1075,10 +1101,10 @@ anova(null.model, main.model)
 #            Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model  9 5924.0 5984.1 -2953.0   5906.0                         
 # main.model 10 5925.3 5992.1 -2952.7   5905.3 0.6343      1     0.4258
-anova(null.model, interaction.model)
+anova(main.model, interaction.model)
 #                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
-# null.model         9 5924.0 5984.1 -2953.0   5906.0                         
-# interaction.model 15 5932.7 6032.9 -2951.3   5902.7 3.2779      6     0.7733
+# main.model        10 5925.3 5992.1 -2952.7   5905.3                         
+# interaction.model 15 5932.7 6032.9 -2951.3   5902.7 2.6435      5     0.7547
 
 
 summary(null.model)
@@ -1102,10 +1128,10 @@ anova(null.model, main.model)
 #            Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model  6 6196.1 6236.5 -3092.1   6184.1                         
 # main.model  7 6197.2 6244.3 -3091.6   6183.2 0.9113      1     0.3398
-anova(null.model, interaction.model)
-#                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
-# null.model         6 6196.1 6236.5 -3092.1   6184.1                         
-# interaction.model  9 6200.4 6261.0 -3091.2   6182.4 1.7063      3     0.6355
+anova(main.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
+# main.model         7 6197.2 6244.3 -3091.6   6183.2                        
+# interaction.model  9 6200.4 6261.0 -3091.2   6182.4 0.795      2      0.672
 
 summary(null.model) 
 # Fixed effects:
@@ -1172,8 +1198,6 @@ summary(null.model)
 
 ```
 
-
-
 ##################################
 # Group comparisons 
 ##################################
@@ -1202,7 +1226,7 @@ demo_data_TDS2<-demo_data%>% filter(scores.SID < 300) %>%
   filter(!scores.SID %in% motion_dropout)
  
 #change names to be easier to read later
-names(demo_data) <- c("SID", "age", "gender", "iq")
+names(demo_data) <- c("scores.SID", "age", "gender", "iq")
 ## Merge qualtrics and demo data
 demo_TDS2 <- merge(demo_data_TDS2, qualtrics_data_TDS2, by.x = 'scores.SID', by.y = 'scores.SID')
 
@@ -1289,6 +1313,8 @@ df_fMRI_all_TDS2$scores.female_height = NULL
 df_fMRI_all_TDS2$scores.female_weight = NULL
 df_fMRI_all_TDS2$scores.male_height = NULL
 df_fMRI_all_TDS2$scores.male_weight = NULL
+df_fMRI_all$pred_go = NULL
+
 
 allTDSfMRI <- rbind(df_fMRI_all, df_fMRI_all_TDS2)
 
@@ -1303,104 +1329,68 @@ allTDSfMRI <- rbind(df_fMRI_all, df_fMRI_all_TDS2)
 null.model <- glmer(go ~ (1|scores.SID), data=allTDSfMRI, family='binomial')
 run.model <- glmer(go ~ run_index + (1|scores.SID), data=allTDSfMRI, family='binomial')
 interaction.model <- glmer(go ~ Group*run_index + (1|scores.SID), data= allTDSfMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(run.model, interaction.model)
+#                   Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# run.model          7 21109 21163 -10547    21095                             
+# interaction.model 13 21094 21194 -10534    21068 27.155      6  0.0001355 ***
 anova(null.model, run.model)
 #            Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
 # null.model  2 21122 21138 -10559    21118                             
 # run.model   7 21109 21163 -10547    21095 23.357      5  0.0002885 ***
-anova(run.model, interaction.model)
-# run.model: go ~ run_index + (1 | scores.SID)
-# interaction.model: go ~ Group * run_index + (1 | scores.SID)
-#                   Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
-# run.model          7 21109 21163 -10547    21095                             
-# interaction.model 13 21094 21194 -10534    21068 27.155      6  0.0001355 ***
 
 summary(interaction.model) 
+
 # Fixed effects:
 #                  Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -0.49759    0.22800  -2.182 0.029077 *  
-# Group            -0.05989    0.14386  -0.416 0.677186    
-# run_index4       -0.16450    0.18287  -0.900 0.368366    
-# run_index5       -0.19893    0.18210  -1.092 0.274652    
-# run_index6        0.06604    0.18161   0.364 0.716148    
-# run_index7       -0.44658    0.18466  -2.418 0.015591 *  
-# run_index8       -0.49337    0.18357  -2.688 0.007197 ** 
-# Group:run_index4  0.08048    0.11548   0.697 0.485869    
-# Group:run_index5  0.19258    0.11480   1.677 0.093445 .  
-# Group:run_index6  0.04393    0.11469   0.383 0.701670    
-# Group:run_index7  0.38166    0.11566   3.300 0.000967 ***
-# Group:run_index8  0.44914    0.11513   3.901 9.57e-05 ***
-
-### hmm this was my output
-# Random effects:
-#  Groups     Name        Variance Std.Dev.
-#  scores.SID (Intercept) 0.4871   0.698   
-# Number of obs: 16580, groups:  scores.SID, 139
-# 
-# Fixed effects:
-#                   Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -0.703994   0.195614  -3.599  0.00032 ***
-# Group             0.131534   0.123246   1.067  0.28586    
-# run_index1        0.207143   0.118022   1.755  0.07924 .  
-# run_index2        0.041734   0.118676   0.352  0.72509    
-# run_index3        0.007274   0.117751   0.062  0.95074    
-# run_index4        0.271856   0.117130   2.321  0.02029 *  
-# run_index5       -0.240859   0.120136  -2.005  0.04497 *  
-# Group:run_index1 -0.191869   0.074497  -2.576  0.01001 *  
-# Group:run_index2 -0.110835   0.074768  -1.482  0.13824    
-# Group:run_index3  0.001304   0.073985   0.018  0.98594    
-# Group:run_index4 -0.147107   0.073799  -1.993  0.04622 *  
-# Group:run_index5  0.190668   0.074749   2.551  0.01075 * 
+# (Intercept)      -0.49678    0.22789  -2.180 0.029264 *  
+# Group            -0.06038    0.14379  -0.420 0.674555    
+# run_index4       -0.16541    0.18263  -0.906 0.365091    
+# run_index5       -0.19989    0.18168  -1.100 0.271218    
+# run_index6        0.06471    0.18111   0.357 0.720871    
+# run_index7       -0.44800    0.18426  -2.431 0.015042 *  
+# run_index8       -0.49432    0.18330  -2.697 0.007000 ** 
+# Group:run_index4  0.08104    0.11534   0.703 0.482310    
+# Group:run_index5  0.19319    0.11455   1.687 0.091691 .  
+# Group:run_index6  0.04477    0.11439   0.391 0.695545    
+# Group:run_index7  0.38254    0.11543   3.314 0.000919 ***
+# Group:run_index8  0.44973    0.11497   3.912 9.16e-05 ***
 
 # condition effects on the proportion of Go decisions
 
 null.model <- glmer(go ~ (1|scores.SID), data=allTDSfMRI, family='binomial')
 condition.model <- glmer(go ~ condition + (1|scores.SID), data=allTDSfMRI, family='binomial')
-interaction.model <- glmer(go ~ Group*condition + (1|scores.SID), data= allTDSfMRI, family='binomial')
+interaction.model <- glmer(go ~ Group*condition + (1|scores.SID), data= allTDSfMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(condition.model, interaction.model)
+
+#                   Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# condition.model    4 21105 21136 -10548    21097                             
+# interaction.model  7 21086 21140 -10536    21072 24.602      3   1.87e-05 ***
+
 anova(null.model, condition.model)
 #                 Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
 # null.model       2 21122 21138 -10559    21118                             
 # condition.model  4 21105 21136 -10548    21097 21.365      2  2.294e-05 ***
-anova(condition.model, interaction.model)
 
-# condition.model: go ~ condition + (1 | scores.SID)
-# interaction.model: go ~ Group * condition + (1 | scores.SID)
-#                   Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
-# condition.model    4 21105 21136 -10548    21097                             
-# interaction.model  7 21086 21140 -10536    21072 24.602      3   1.87e-05 ***
 summary(interaction.model)
 # Fixed effects:
 #                  Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -0.57912    0.20946  -2.765  0.00570 ** 
-# Group            -0.02002    0.13207  -0.152  0.87953    
-# condition3        0.01531    0.12893   0.119  0.90550    
-# condition4       -0.38861    0.13072  -2.973  0.00295 ** 
-# Group:condition3  0.07836    0.08130   0.964  0.33512    
-# Group:condition4  0.37571    0.08185   4.590 4.43e-06 ***
+# (Intercept)      -0.57910    0.20907  -2.770  0.00561 ** 
+# Group            -0.02004    0.13184  -0.152  0.87919    
+# condition3        0.01529    0.12890   0.119  0.90560    
+# condition4       -0.38863    0.13072  -2.973  0.00295 ** 
+# Group:condition3  0.07838    0.08129   0.964  0.33496    
+# Group:condition4  0.37574    0.08185   4.591 4.42e-06 ***
 
-#### These are the results I'm getting... I'm not understanding right now why it's giving us different results-- both aren't giving full results.
-
-#  Groups     Name        Variance Std.Dev.
-#  scores.SID (Intercept) 0.4869   0.6977  
-# Number of obs: 16580, groups:  scores.SID, 139
-# 
-# Fixed effects:
-#                  Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -0.70353    0.19586  -3.592 0.000328 ***
-# Group             0.13132    0.12340   1.064 0.287243    
-# condition1        0.12445    0.07496   1.660 0.096865 .  
-# condition2        0.13973    0.07458   1.873 0.061008 .  
-# Group:condition1 -0.15137    0.04718  -3.208 0.001335 ** 
-# Group:condition2 -0.07299    0.04687  -1.557 0.119430   
 
 social_df_TDSall <- allTDSfMRI %>% filter(condition != "2")
 
 null.model <- glmer(go ~ (1|scores.SID), data=social_df_TDSall, family='binomial')
 condition.model <- glmer(go ~ condition + (1|scores.SID), data=social_df_TDSall, family='binomial')
-interaction.model <- glmer(go ~ Group*condition + (1|scores.SID), data= social_df_TDSall, family='binomial')
-anova(null.model, interaction.model)  
+interaction.model <- glmer(go ~ Group*condition + (1|scores.SID), data= social_df_TDSall, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(condition.model, interaction.model)  
 #                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
-# null.model         2 14192 14207 -7094.0    14188                             
-# interaction.model  5 14181 14217 -7085.3    14171 17.449      3  0.0005713 ***
+# condition.model    3 14193 14214 -7093.3    14187                             
+# interaction.model  5 14181 14217 -7085.3    14171 16.045      2  0.0003279 ***
 
 anova(null.model, condition.model)  
 #                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
@@ -1410,21 +1400,21 @@ anova(null.model, condition.model)
 summary(interaction.model) 
 # Fixed effects:
 #                  Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -0.55162    0.20556  -2.684 0.007285 ** 
-# Group             0.05357    0.12952   0.414 0.679157    
-# condition4       -0.40660    0.13052  -3.115 0.001838 ** 
-# Group:condition4  0.29853    0.08148   3.664 0.000248 ***
+# (Intercept)      -0.55162    0.20538  -2.686 0.007236 ** 
+# Group             0.05357    0.12942   0.414 0.678920    
+# condition4       -0.40660    0.13051  -3.116 0.001836 ** 
+# Group:condition4  0.29853    0.08147   3.664 0.000248 ***
 
 
 
 # Run effects on the proportion of Go decisions that resulted in Crashes
 null.model <- glmer(go_cr ~ (1|scores.SID), data=allTDSfMRI, family='binomial')
 run.model <- glmer(go_cr ~ run_index + (1|scores.SID), data=allTDSfMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
-interaction.model <- glmer(go_cr ~ Group*run_index + (1|scores.SID), data= allTDSfMRI, family='binomial')
-anova(null.model, interaction.model) 
-#                   Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
-# null.model         2 16232 16247 -8114.0    16228                        
-# interaction.model 13 16238 16338 -8105.8    16212 16.32     11     0.1297
+interaction.model <- glmer(go_cr ~ Group*run_index + (1|scores.SID), data= allTDSfMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(run.model, interaction.model) 
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+# run.model          7 16239 16293 -8112.3    16225                           
+# interaction.model 13 16238 16338 -8105.8    16212 12.949      6    0.04385 *
 anova(null.model, run.model) 
 #            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model  2 16232 16247 -8114.0    16228                         
@@ -1434,29 +1424,29 @@ summary(interaction.model)
 
 # Fixed effects:
 #                  Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -1.39240    0.20336  -6.847 7.54e-12 ***
-# Group            -0.08620    0.12886  -0.669  0.50351    
-# run_index4       -0.18635    0.21792  -0.855  0.39248    
-# run_index5       -0.21901    0.21746  -1.007  0.31386    
-# run_index6        0.01615    0.21509   0.075  0.94015    
-# run_index7       -0.37692    0.21948  -1.717  0.08592 .  
-# run_index8       -0.50320    0.21989  -2.288  0.02211 *  
-# Group:run_index4  0.13868    0.13783   1.006  0.31434    
-# Group:run_index5  0.17125    0.13736   1.247  0.21250    
-# Group:run_index6  0.04436    0.13661   0.325  0.74537    
-# Group:run_index7  0.31196    0.13741   2.270  0.02319 *  
-# Group:run_index8  0.38798    0.13742   2.823  0.00475 ** 
+# (Intercept)      -1.39188    0.20365  -6.835 8.22e-12 ***
+# Group            -0.08651    0.12904  -0.670  0.50263    
+# run_index4       -0.18694    0.21795  -0.858  0.39104    
+# run_index5       -0.21926    0.21796  -1.006  0.31444    
+# run_index6        0.01569    0.21512   0.073  0.94186    
+# run_index7       -0.37825    0.21977  -1.721  0.08523 .  
+# run_index8       -0.50380    0.22002  -2.290  0.02203 *  
+# Group:run_index4  0.13898    0.13787   1.008  0.31341    
+# Group:run_index5  0.17131    0.13768   1.244  0.21340    
+# roup:run_index6  0.04463    0.13663   0.327  0.74393    
+# Group:run_index7  0.31277    0.13759   2.273  0.02302 *  
+# Group:run_index8  0.38831    0.13752   2.824  0.00475 ** 
 
 
 
 # Condition effects on the proportion of Go decisions that resulted in Crashes
 null.model <- glmer(go_cr ~ (1|scores.SID), data=allTDSfMRI, family='binomial')
 condition.model <- glmer(go_cr ~ condition + (1|scores.SID), data=allTDSfMRI, family='binomial')
-interaction.model <- glmer(go_cr ~ Group*condition + (1|scores.SID), data= allTDSfMRI, family='binomial')
-anova(null.model, interaction.model)         
-#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
-# null.model         2 16232 16247 -8114.0    16228                           
-# interaction.model  7 16228 16282 -8107.2    16214 13.614      5    0.01826 *
+interaction.model <- glmer(go_cr ~ Group*condition + (1|scores.SID), data= allTDSfMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(condition.model, interaction.model)         
+#                   Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)  
+# condition.model    4 16233 16264 -8112.5    16225                          
+# interaction.model  7 16228 16282 -8107.2    16214 10.78      3    0.01297 *
 anova(null.model, condition.model)         
 #                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model       2 16232 16247 -8114.0    16228                         
@@ -1464,20 +1454,20 @@ anova(null.model, condition.model)
 summary(interaction.model) 
 # Fixed effects:
 #                   Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -1.485697   0.172326  -8.621  < 2e-16 ***
-# Group            -0.016515   0.108732  -0.152  0.87928    
-# condition3       -0.006365   0.153219  -0.042  0.96687    
-# condition4       -0.347296   0.155792  -2.229  0.02580 *  
-# Group:condition3  0.037212   0.096759   0.385  0.70055    
-# Group:condition4  0.280623   0.097130   2.889  0.00386 ** 
+# (Intercept)      -1.485622   0.172274  -8.624  < 2e-16 ***
+# Group            -0.016561   0.108696  -0.152  0.87890    
+# condition3       -0.006357   0.153019  -0.042  0.96686    
+# condition4       -0.347322   0.155694  -2.231  0.02569 *  
+# Group:condition3  0.037206   0.096632   0.385  0.70022    
+# Group:condition4  0.280643   0.097068   2.891  0.00384 ** 
 
 null.model <- glmer(go_cr ~ (1|scores.SID), data=social_df_TDSall, family='binomial')
 condition.model <- glmer(go_cr ~ condition + (1|scores.SID), data=social_df_TDSall, family='binomial')
-interaction.model <- glmer(go_cr ~ Group*condition + (1|scores.SID), data= social_df_TDSall, family='binomial')
-anova(null.model, interaction.model)         
-#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
-# null.model         2 10941 10956 -5468.5    10937                           
-# interaction.model  5 10938 10974 -5463.9    10928 9.1116      3    0.02784 *
+interaction.model <- glmer(go_cr ~ Group*condition + (1|scores.SID), data= social_df_TDSall, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(condition.model, interaction.model)         
+#                   Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)  
+# condition.model    3 10942 10964 -5468.3    10936                          
+# interaction.model  5 10938 10974 -5463.9    10928 8.696      2    0.01293 *
 anova(null.model, condition.model)         
 #                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model       2 10941 10956 -5468.5    10937                         
@@ -1485,22 +1475,21 @@ anova(null.model, condition.model)
 summary(interaction.model) 
 # Fixed effects:
 #                  Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -1.48135    0.16371  -9.049   <2e-16 ***
-# Group             0.01980    0.10309   0.192   0.8477    
-# condition4       -0.34153    0.15491  -2.205   0.0275 *  
-# Group:condition4  0.24349    0.09636   2.527   0.0115 *    
-
+# (Intercept)      -1.48133    0.16382  -9.043   <2e-16 ***
+# Group             0.01979    0.10316   0.192   0.8479    
+# condition4       -0.34155    0.15503  -2.203   0.0276 *  
+# Group:condition4  0.24350    0.09643   2.525   0.0116 *    
 
 
 # Run effects on the proportion of Stop decisions
 null.model <- glmer(stop ~ (1|scores.SID), data=allTDSfMRI, family='binomial')
 run.model <- glmer(stop ~ run_index + (1|scores.SID), data=allTDSfMRI, family='binomial')
-interaction.model <- glmer(stop ~ Group*run_index + (1|scores.SID), data= allTDSfMRI, family='binomial')
+interaction.model <- glmer(stop ~ Group*run_index + (1|scores.SID), data= allTDSfMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
 
-anova(null.model, interaction.model)
+anova(run.model, interaction.model)
 #                   Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
-# null.model         2 21608 21623 -10802    21604                             
-# interaction.model 13 21586 21686 -10780    21560 44.277     11    6.5e-06 ***
+# run.model          7 21610 21664 -10798    21596                             
+# interaction.model 13 21586 21686 -10780    21560 36.719      6  1.997e-06 ***
 
 anova(null.model, run.model)
 #            Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)
@@ -1510,28 +1499,28 @@ anova(null.model, run.model)
 summary(interaction.model)
 # Fixed effects:
 #                  Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)       0.02875    0.21679   0.133 0.894510    
-# Group             0.20803    0.13697   1.519 0.128820    
-# run_index4        0.26257    0.17893   1.467 0.142252    
-# run_index5        0.43554    0.17883   2.435 0.014872 *  
-# run_index6        0.13767    0.17841   0.772 0.440307    
-# run_index7        0.64884    0.18102   3.584 0.000338 ***
-# run_index8        0.77646    0.18032   4.306 1.66e-05 ***
-# Group:run_index4 -0.13450    0.11332  -1.187 0.235251    
-# Group:run_index5 -0.29133    0.11308  -2.576 0.009985 ** 
-# Group:run_index6 -0.12493    0.11295  -1.106 0.268699    
-# Group:run_index7 -0.46407    0.11382  -4.077 4.56e-05 ***
-# Group:run_index8 -0.56375    0.11349  -4.967 6.79e-07 ***
+# (Intercept)       0.02895    0.21632   0.134 0.893527    
+# Group             0.20793    0.13669   1.521 0.128218    
+# run_index4        0.26261    0.17877   1.469 0.141850    
+# run_index5        0.43553    0.17866   2.438 0.014777 *  
+# run_index6        0.13771    0.17830   0.772 0.439908    
+# run_index7        0.64869    0.18093   3.585 0.000337 ***
+# run_index8        0.77648    0.18023   4.308 1.64e-05 ***
+# Group:run_index4 -0.13454    0.11322  -1.188 0.234723    
+# Group:run_index5 -0.29133    0.11296  -2.579 0.009910 ** 
+# Group:run_index6 -0.12497    0.11288  -1.107 0.268261    
+# Group:run_index7 -0.46398    0.11376  -4.079 4.53e-05 ***
+# Group:run_index8 -0.56379    0.11343  -4.970 6.69e-07 ***
 
 
 ## Condition effects on the proportion of Stop decisions
 null.model <- glmer(stop ~ (1|scores.SID), data=allTDSfMRI, family='binomial')
 condition.model <- glmer(stop ~ condition + (1|scores.SID), data=allTDSfMRI, family='binomial')
-interaction.model <- glmer(stop ~ Group*condition + (1|scores.SID), data= allTDSfMRI, family='binomial')
-anova(null.model, interaction.model)
+interaction.model <- glmer(stop ~ Group*condition + (1|scores.SID), data= allTDSfMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(condition.model, interaction.model)
 #                   Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
-# null.model         2 21608 21623 -10802    21604                             
-# interaction.model  7 21580 21634 -10783    21566 37.881      5  3.986e-07 ***
+# condition.model    4 21606 21637 -10799    21598                             
+# interaction.model  7 21580 21634 -10783    21566 32.358      3  4.399e-07 ***
 
 anova(null.model, condition.model)
 #                 Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)  
@@ -1541,39 +1530,39 @@ anova(null.model, condition.model)
 summary(interaction.model) 
 # Fixed effects:
 #                  Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)       0.15977    0.19790   0.807   0.4195    
-# Group             0.14090    0.12491   1.128   0.2593    
-# condition3        0.15528    0.12666   1.226   0.2202    
-# condition4        0.58189    0.12832   4.535 5.77e-06 ***
-# Group:condition3 -0.14087    0.08011  -1.759   0.0787 .  
-# Group:condition4 -0.44693    0.08065  -5.542 3.00e-08 *** 
+# (Intercept)       0.15979    0.19723   0.810    0.418    
+# Group             0.14089    0.12451   1.132    0.258    
+# condition3        0.15529    0.12639   1.229    0.219    
+# condition4        0.58188    0.12809   4.543 5.55e-06 ***
+# Group:condition3 -0.14087    0.07994  -1.762    0.078 .  
+# Group:condition4 -0.44692    0.08051  -5.551 2.84e-08 ***
 
 null.model <- glmer(stop ~ (1|scores.SID), data=social_df_TDSall, family='binomial')
 condition.model <- glmer(stop ~ condition + (1|scores.SID), data=social_df_TDSall, family='binomial')
-interaction.model <- glmer(stop ~ Group*condition + (1|scores.SID), data= social_df_TDSall, family='binomial')
-anova(null.model, interaction.model)
+interaction.model <- glmer(stop ~ Group*condition + (1|scores.SID), data= social_df_TDSall, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(condition.model, interaction.model)
 #                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
-# null.model         2 14425 14440 -7210.6    14421                             
-# interaction.model  5 14414 14451 -7202.2    14404 16.836      3  0.0007638 ***
+# condition.model    3 14426 14448 -7210.1    14420                             
+# interaction.model  5 14414 14451 -7202.2    14404 15.933      2  0.0003469 ***
 anova(null.model, condition.model)
 #                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model       2 14425 14440 -7210.6    14421                         
 # condition.model  3 14426 14448 -7210.1    14420 0.9029      1      0.342
 summary(interaction.model)
 # Fixed effects:
-#                   Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)       0.320859   0.200960   1.597 0.110349    
-# Group            -0.003696   0.126710  -0.029 0.976728    
-# condition4        0.424400   0.128728   3.297 0.000978 ***
-# Group:condition4 -0.304933   0.080637  -3.782 0.000156 ***
+#                  Estimate Std. Error z value Pr(>|z|)    
+# (Intercept)       0.32087    0.20042   1.601 0.109371    
+# Group            -0.00370    0.12638  -0.029 0.976644    
+# condition4        0.42439    0.12860   3.300 0.000966 ***
+# Group:condition4 -0.30493    0.08056  -3.785 0.000154 ***
 
 
 # Run effects on the proportion of Bad Stop decisions
 null.model <- glmer(stop_nocar ~ (1|scores.SID), data=allTDSfMRI, family='binomial')
 run.model <- glmer(stop_nocar ~ run_index + (1|scores.SID), data=allTDSfMRI, family='binomial')
-interaction.model <- glmer(stop_nocar ~ Group*run_index + (1|scores.SID), data= allTDSfMRI, family='binomial')
+interaction.model <- glmer(stop_nocar ~ Group*run_index + (1|scores.SID), data= allTDSfMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
 
-anova(null.model, interaction.model)
+anova(run.model, interaction.model)
 #                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
 # null.model         2 19499 19514 -9747.5    19495                         
 # interaction.model 13 19506 19606 -9739.9    19480 15.316     11     0.1685
@@ -1601,12 +1590,12 @@ summary(interaction.model)
 # Condition effects on the proportion of Stop decisions
 null.model <- glmer(stop_nocar ~ (1|scores.SID), data=allTDSfMRI, family='binomial')
 condition.model <- glmer(stop_nocar ~ condition + (1|scores.SID), data=allTDSfMRI, family='binomial')
-interaction.model <- glmer(stop_nocar ~ Group*condition + (1|scores.SID), data= allTDSfMRI, family='binomial')
+interaction.model <- glmer(stop_nocar ~ Group*condition + (1|scores.SID), data= allTDSfMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
 
-anova(null.model, interaction.model)
-#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
-# null.model         2 19499 19514 -9747.5    19495                           
-# interaction.model  7 19496 19550 -9741.1    19482 12.859      5    0.02473 *
+anova(condition.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)  
+# condition.model    4 19498 19529 -9745.1    19490                          
+# interaction.model  7 19496 19550 -9741.1    19482 7.963      3    0.04678 *
 anova(null.model, condition.model)
 #                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
 # null.model       2 19499 19514 -9747.5    19495                           
@@ -1614,23 +1603,23 @@ anova(null.model, condition.model)
 summary(interaction.model) 
 # Fixed effects:
 #                  Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -1.06958    0.12820  -8.343   <2e-16 ***
-# Group             0.09956    0.08061   1.235   0.2168    
-# condition3        0.08070    0.13513   0.597   0.5504    
-# condition4        0.26823    0.13615   1.970   0.0488 *  
-# Group:condition3 -0.09177    0.08499  -1.080   0.2802    
-# Group:condition4 -0.24024    0.08578  -2.801   0.0051 **    
+# (Intercept)      -1.06957    0.12797  -8.358  < 2e-16 ***
+# Group             0.09954    0.08048   1.237  0.21612    
+# condition3        0.08065    0.13497   0.598  0.55014    
+# condition4        0.26822    0.13604   1.972  0.04865 *  
+# Group:condition3 -0.09173    0.08489  -1.081  0.27989    
+# Group:condition4 -0.24023    0.08571  -2.803  0.00507 ** 
 
 
 #within social bad stops 
 null.model <- glmer(stop_nocar ~ (1|scores.SID), data=social_df_TDSall, family='binomial')
 condition.model <- glmer(stop_nocar ~ condition + (1|scores.SID), data=social_df_TDSall, family='binomial')
-interaction.model <- glmer(stop_nocar ~ Group*condition + (1|scores.SID), data= social_df_TDSall, family='binomial')
+interaction.model <- glmer(stop_nocar ~ Group*condition + (1|scores.SID), data= social_df_TDSall, family='binomial', control=glmerControl(optimizer="bobyqa"))
 
-anova(null.model, interaction.model)
+anova(condition.model, interaction.model)
 #                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
-# null.model         2 12871 12886 -6433.6    12867                         
-# interaction.model  5 12873 12909 -6431.4    12863 4.4709      3     0.2149
+# condition.model    3 12873 12894 -6433.3    12867                         
+# interaction.model  5 12873 12909 -6431.4    12863 3.7764      2     0.1513
 
 anova(null.model, condition.model)
 #                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
@@ -1641,10 +1630,11 @@ summary(interaction.model)
 
 # Fixed effects:
 #                   Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)      -0.991314   0.130152  -7.617 2.61e-14 ***
-# Group             0.008613   0.082071   0.105   0.9164    
-# condition4        0.187341   0.136711   1.370   0.1706    
-# Group:condition4 -0.148420   0.086326  -1.719   0.0856 .  
+# (Intercept)      -0.991326   0.130025  -7.624 2.46e-14 ***
+# Group             0.008618   0.081998   0.105   0.9163    
+# condition4        0.187353   0.136582   1.372   0.1701    
+# Group:condition4 -0.148427   0.086250  -1.721   0.0853 .  
+
 
 ```
 
@@ -1708,14 +1698,14 @@ anova(null.model, main.model)
 #   Res.Df    RSS Df Sum of Sq      F Pr(>F)
 # 1  15978 3238.8                           
 # 2  15976 3238.1  2   0.70703 1.7442 0.1748
-anova(null.model, interaction.model)
+anova(main.model, interaction.model)
 #   Res.Df    RSS Df Sum of Sq      F Pr(>F)
-# 1  15978 3238.8                           
-# 2  15974 3237.9  4   0.93759 1.1564  0.328
-anova(null.model, group.model)
+# 1  15976 3238.1                           
+# 2  15974 3237.9  2   0.23056 0.5687 0.5662
+anova(interaction.model, group.model)
 #   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
-# 1  15978 3238.8                                  
-# 2  15968 3199.3 10    39.532 19.731 < 2.2e-16 ***
+# 1  15974 3237.9                                  
+# 2  15968 3199.3  6    38.595 32.105 < 2.2e-16 ***
 
 summary(group.model)
 #                       Df Sum Sq Mean Sq F value   Pr(>F)    
