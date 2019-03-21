@@ -17,38 +17,34 @@ qualtrics_folder<-paste(tds_folder, 'Qualtrics/', sep='')
 
 ##Collect data
 ylg_data<-read.csv(paste(ylg_folder,'tds_trial_by_trial_20180124.csv',sep=''))
-demo_data<-read.csv(paste(demo_folder,'age_gender_iq.csv',sep=''))
+demo_data<-read.csv(paste(demo_folder,'age_gender_iq_2019.csv',sep=''))
 qualtrics_data_post<-read.csv(paste(qualtrics_folder, 'scoring_script_output/tds1-wave1-PDS.csv', sep='')) %>% select(scores.SID, scores.female_comparison, scores.female_height_feet, scores.female_height_inches, scores.female_mean_score, scores.female_menses, scores.female_weight, scores.female_weight_text, scores.male_comparison, scores.male_height_feet, scores.male_height_feet_text, scores.male_height_inches, scores.male_height_inches_text, scores.male_mean_score, scores.male_weight, scores.male_weight_text, scores.pds_gender)
 ```
-#######################
-## Demographics N=--- ##
-#######################
+############################
+## Demographics TDS 1 N=69##
+############################
 
 ```{r}
 
 # add rows for PRE
-
 PDS_pre <- data.frame("scores.SID" = c(301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 314, 315, 316, 317, 318, 319, 320)) 
-                     
-                     
-qualtrics_data<-full_join(PDS_pre, qualtrics_data_post)
 
+qualtrics_data<-full_join(PDS_pre, qualtrics_data_post)
 #change names to be easier to read later
-names(demo_data) <- c("scores.SID", "age", "gender", "iq", "")
+names(demo_data) <- c("scores.SID", "s2_age", "gender", "s2_iq", "wave2_yn", "s3_age", "s3_iq")
 ## Merge qualtrics and demo data
 demo <- merge(demo_data, qualtrics_data, by.x = 'scores.SID', by.y = 'scores.SID')
-
 ## Add variables
 demo <- demo %>%
-  mutate(age_group = ifelse(age < 14.0, 1, 2)) %>% # age groups based on median split
-  mutate(age_c = age-14.1, age_rnd = floor(age), age_sq = age_c^2) %>%   # age variables
-  mutate(iq_c = iq-100, iq_z = iq_c/15) %>%                   # iq variables
+  mutate(age_group = ifelse(s2_age < 14.0, 1, 2)) %>% # age groups based on median split
+  mutate(age_c = s2_age-14.1, age_rnd = floor(s2_age), age_sq = age_c^2) %>%   # age variables
+  mutate(iq_c = s2_iq-100, iq_z = iq_c/15) %>%                   # iq variables
   mutate(PDS_mean_score=ifelse(                               # pds variables
     is.na(scores.female_mean_score)==TRUE, scores.male_mean_score, scores.female_mean_score)) %>%
   mutate(PDS_stage = ceiling(PDS_mean_score), pds_group = ifelse(PDS_mean_score < 2.9, 1, 2)) %>%
   mutate(gender_flip = ifelse(gender==0, 'Male', 'Female'))   # flip gender for correct colors in graph
 
-## Filter demo_data (N=66, but only 54 with PDS data)
+## Filter demo_data (N=69, but only 53 with PDS data)
 no_session2 = c(311, 338, 358)
 behaviorals = c(305, 318, 319)
 ylg_failed = c(339, 345)
@@ -59,76 +55,199 @@ demo_filtered_context <- demo %>% filter(scores.SID > 300) %>%
   filter(!scores.SID %in% behaviorals) %>% 
   filter(!scores.SID %in% ylg_failed)
 
- demo_filtered_context_allstop <- demo %>% filter(scores.SID > 300) %>% 
-  filter(!scores.SID %in% no_session2) %>% 
-  filter(!scores.SID %in% behaviorals)%>%
-  filter(!scores.SID %in% ylg_failed) %>% 
-  filter(!scores.SID %in% missing_stops) 
 
-  
-# demo_filtered_context %>% group_by(age_group) %>% summarize(n=n()) # n for each age group
-# demo_filtered_context %>% group_by(pds_group) %>% summarize(n=n())
+age<-demo_filtered_context %>% filter(!is.na(s2_age)) %>%
+  summarize(mean = mean(s2_age, na.rm=T), sd = sd(s2_age, na.rm=T), 
+            min = min(s2_age, na.rm=T), max = max(s2_age, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) # n=29 females 40 males
+t.test(demo_filtered_context$s2_age~demo_filtered_context$gender) 
 
-PDS_mean_scores <- demo_filtered_context %>% distinct(scores.SID, gender, scores.pds_gender, PDS_mean_score) %>% filter(!grepl("338|358|339|345", scores.SID)) 
-write.csv(PDS_mean_scores, file = 'tds1_PDS_mean_score_n54.csv')
 
+iq<-demo_filtered_context %>% filter(!is.na(s2_iq)) %>% 
+  summarize(mean = mean(s2_iq, na.rm=T), sd = sd(s2_iq, na.rm=T), 
+            min = min(s2_iq, na.rm=T), max = max(s2_iq, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) # n=29 females 38 males
+t.test(demo_filtered_context$s2_iq~demo_filtered_context$gender) 
+
+
+pds<-demo_filtered_context %>% filter(!is.na(PDS_mean_score)) %>%  
+  summarize(mean = mean(PDS_mean_score, na.rm=T), sd = sd(PDS_mean_score, na.rm=T),
+            min = min(PDS_mean_score, na.rm=T), max = max(PDS_mean_score, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) # n=21 females 32 males
+t.test(demo_filtered_context$PDS_mean_score~demo_filtered_context$gender) 
 
 
 ```
-#############
-## TABLE 1 ##
-#############
+
+############################
+## Demographics TDS 2 N=70##
+############################
+
+
 ```{r}
-# Age by gender
-age_by_sex<-demo_filtered_context %>% filter(!is.na(age)) %>% group_by(gender) %>% 
-  summarize(mean = mean(age, na.rm=T), sd = sd(age, na.rm=T), 
-            min = min(age, na.rm=T), max = max(age, na.rm=T),
-            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) # n=29 females
-t.test(demo_filtered_context$age~demo_filtered_context$gender) 
-      # t = -1.3229, df = 53.951, p-value = 0.1915
-      # alternative hypothesis: true difference in means is not equal to 0
-      # 95 percent confidence interval:
-      #   -1.4034873  0.2876425
-      # sample estimates:
-      # mean in group 0 mean in group 1 
-      #         13.86725        14.42517 
+# Load data
 
-#no sig age difference by sex.
+qualtrics_data_TDS2<-read.csv(paste(qualtrics_folder, 'scoring_script_output/tds2-wave1-PDS.csv', sep='')) %>%  
+  select(scores.SID, scores.female_comparison, scores.female_height, scores.female_mean_score, scores.female_menses, scores.female_weight, scores.male_comparison, scores.male_height, scores.male_mean_score, scores.male_weight, scores.pds_gender)  
 
-# IQ by gender
-iq_by_sex<-demo_filtered_context %>% filter(!is.na(iq)) %>% group_by(gender) %>% 
-  summarize(mean = mean(iq, na.rm=T), sd = sd(iq, na.rm=T), 
-            min = min(iq, na.rm=T), max = max(iq, na.rm=T),
+#change names to be easier to read later
+names(demo_data) <- c("scores.SID", "s2_age", "gender", "s2_iq", "wave2_yn", "s3_age", "s3_iq")
+
+# filter
+no_session2 = c(118, 123, 147, 148, 149, 153, 154, 166, 180)
+behaviorals = c(103, 107, 112, 138, 143, 176, 191)
+pilot_cyberball = c(101, 102, 104, 105, 106, 108, 110, 111)
+motion_dropout = c(189, 158, 139)
+
+demo_data_TDS2<-demo_data%>% filter(scores.SID < 300) %>% 
+  filter(!scores.SID %in% no_session2) %>% 
+  filter(!scores.SID %in% behaviorals) %>%
+  filter(!scores.SID %in% pilot_cyberball) %>%
+  filter(!scores.SID %in% motion_dropout)
+
+## Merge qualtrics and demo data
+demo_TDS2 <- merge(demo_data_TDS2, qualtrics_data_TDS2, by.x = 'scores.SID', by.y = 'scores.SID')
+
+## Add variables
+
+demo_TDS2 <- demo_TDS2 %>%
+  mutate(age_group = ifelse(s2_age < 14.0, 1, 2)) %>% # age groups based on median split
+  mutate(age_c = s2_age-14.1, age_rnd = floor(s2_age), age_sq = age_c^2) %>%   # age variables
+  mutate(iq_c = s2_iq-100, iq_z = iq_c/15) %>%                   # iq variables
+  mutate(PDS_mean_score=ifelse(                               # pds variables
+    is.na(scores.female_mean_score)==TRUE, scores.male_mean_score, scores.female_mean_score)) %>%
+  mutate(PDS_stage = ceiling(PDS_mean_score), pds_group = ifelse(PDS_mean_score < 2.9, 1, 2)) %>%
+  mutate(gender_flip = ifelse(gender==0, 'Male', 'Female'))   # flip gender for correct colors in graph
+
+TDS2_age<-demo_TDS2 %>% filter(!is.na(s2_age)) %>% 
+  summarize(mean = mean(s2_age, na.rm=T), sd = sd(s2_age, na.rm=T), 
+            min = min(s2_age, na.rm=T), max = max(s2_age, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) 
+
+
+TDS2_iq<-demo_TDS2 %>% filter(!is.na(s2_iq)) %>% 
+  summarize(mean = mean(s2_iq, na.rm=T), sd = sd(s2_iq, na.rm=T), 
+            min = min(s2_iq, na.rm=T), max = max(s2_iq, na.rm=T),
             n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
-t.test(demo_filtered_context$iq~demo_filtered_context$gender) 
-      # t = -0.1792, df = 49.513, p-value = 0.8585
-      # alternative hypothesis: true difference in means is not equal to 0
-      # 95 percent confidence interval:
-      #   -7.341820  6.139344
-      # sample estimates:
-      # mean in group 0 mean in group 1 
-      #     99.74359       100.34483 
-#no signficance sex difference in IQ.
 
-# PDS score by gender
-pds_by_sex<-demo_filtered_context %>% filter(!is.na(PDS_mean_score)) %>% group_by(gender) %>% 
+
+TDS2<-demo_TDS2 %>% filter(!is.na(PDS_mean_score)) %>% 
+  summarize(mean = mean(PDS_mean_score, na.rm=T), sd = sd(PDS_mean_score, na.rm=T),
+            min = min(PDS_mean_score, na.rm=T), max = max(PDS_mean_score, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+
+
+# compare between TDS I and TDS II
+
+t.test(demo_filtered_context$s2_age, demo_TDS2$s2_age) 
+
+# t = -0.12783, df = 135.16, p-value = 0.8985
+# alternative hypothesis: true difference in means is not equal to 0
+# 95 percent confidence interval:
+#   -0.5760935  0.5061432
+# sample estimates:
+#   mean of x mean of y 
+# 14.10174  14.13671 
+
+t.test(demo_filtered_context$s2_iq, demo_TDS2$s2_iq)
+
+# t = -3.6377, df = 131.87, p-value = 0.0003935
+# alternative hypothesis: true difference in means is not equal to 0
+# 95 percent confidence interval:
+#   -11.87694  -3.50984
+# sample estimates:
+#   mean of x mean of y 
+# 99.8209  107.5143
+
+t.test(demo_filtered_context$PDS_mean_score, demo_TDS2$PDS_mean_score) 
+
+# t = -0.90112, df = 110.37, p-value = 0.3695
+# alternative hypothesis: true difference in means is not equal to 0
+# 95 percent confidence interval:
+#   -0.3800670  0.1424606
+# sample estimates:
+#   mean of x mean of y 
+# 2.716981  2.835784 
+```
+############################
+## Chi Square             ##
+############################
+
+```{r} 
+
+# add group label
+
+demo_filtered_context$group=0
+demo_TDS2$group = 1
+# combine groups
+chisq.data<- rbind(select(demo_filtered_context, scores.SID, group, gender), select(demo_TDS2, scores.SID, group, gender))
+# make table
+chisq_table<-table(chisq.data$group, chisq.data$gender)
+chisq.test(chisq_table)
+
+# data:  chisq_table
+# X-squared = 1.2284, df = 1, p-value = 0.2677
+
+PDS_mean_scores <- demo_filtered_context %>% distinct(scores.SID, gender, scores.pds_gender, PDS_mean_score) %>% filter(!grepl("338|358|339|345", scores.SID)) 
+write.csv(PDS_mean_scores, file = 'tds1_PDS_mean_score_n69.csv')
+
+```
+
+############################
+## Supplemental Tables   ##
+############################
+
+```{r}
+
+TDS1_age_by_sex<-demo_filtered_context %>% filter(!is.na(s2_age)) %>% group_by(gender)%>%
+  summarize(mean = mean(s2_age, na.rm=T), sd = sd(s2_age, na.rm=T), 
+            min = min(s2_age, na.rm=T), max = max(s2_age, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) 
+t.test(demo_filtered_context$s2_age~demo_filtered_context$gender) 
+
+# t = -1.3229, df = 53.951, p-value = 0.1915
+# alternative hypothesis: true difference in means is not equal to 0
+# 95 percent confidence interval:
+#  -1.4034873  0.2876425
+# sample estimates:
+# mean in group 0 mean in group 1 
+#        13.86725        14.42517 
+
+TDS1_iq_by_sex<-demo_filtered_context %>% filter(!is.na(s2_iq)) %>% group_by(gender) %>%
+  summarize(mean = mean(s2_iq, na.rm=T), sd = sd(s2_iq, na.rm=T), 
+            min = min(s2_iq, na.rm=T), max = max(s2_iq, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+t.test(demo_filtered_context$s2_iq~demo_filtered_context$gender) 
+
+# t = -0.27452, df = 49.725, p-value = 0.7848
+# alternative hypothesis: true difference in means is not equal to 0
+# 95 percent confidence interval:
+#  -7.683712  5.836162
+# sample estimates:
+# mean in group 0 mean in group 1 
+#        99.42105       100.34483 
+
+TDS1_pds_by_sex<-demo_filtered_context %>% filter(!is.na(PDS_mean_score)) %>% group_by(gender) %>%
   summarize(mean = mean(PDS_mean_score, na.rm=T), sd = sd(PDS_mean_score, na.rm=T),
             min = min(PDS_mean_score, na.rm=T), max = max(PDS_mean_score, na.rm=T),
             n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
 t.test(demo_filtered_context$PDS_mean_score~demo_filtered_context$gender) 
-      # t = -2.5333, df = 40.516, p-value = 0.01527
-      # alternative hypothesis: true difference in means is not equal to 0
-      # 95 percent confidence interval:
-      #  -0.8992840 -0.1013113
-      # sample estimates:
-      # mean in group 0 mean in group 1 
-      #        2.518750        3.019048 
 
-#signif difference in PDS by sex (female more advanced--as expected)
+# t = -2.5333, df = 40.516, p-value = 0.01527
+# alternative hypothesis: true difference in means is not equal to 0
+# 95 percent confidence interval:
+#  -0.8992840 -0.1013113
+# sample estimates:
+# mean in group 0 mean in group 1 
+#        2.518750        3.019048 
+
 ```
+
+
 #############################
 ## SUPPLEMENTARY FIGURE S1 ##
 #############################
+
 ```{r}
 # Part A: Gender by age distribution
 fig_s1a <- ggplot(demo_filtered_context, aes(x = age_rnd, fill = gender_flip)) +
@@ -228,6 +347,8 @@ df_all$gender_flip <- as.factor(df_all$gender_flip)
 df_all_stops$gender <- as.factor(df_all_stops$gender)
 df_all_stops$gender_flip <- as.factor(df_all_stops$gender_flip)
 
+countTDS1<-df_all %>% group_by(scores.SID, gender) %>% summarize(n()) 
+
 
 ```
 #############################################
@@ -306,6 +427,7 @@ summary(condition.model)
 
 #no sig difference between social runs-- which is expected given we didn't see diff above for social.
 ```
+
 #################################################
 ## Social Context effects on CRASHES (BAD GO) ##
 #Do CWI teens engage in more maladaptive go decisions in social contexts? (no)#
@@ -906,7 +1028,7 @@ summary(interaction.model)
 #Part A: Go decisions plotted against Age
 df_fMRI_all$pred_go <- predict(interaction.model, newdata=df_fMRI_all, re.form=NA, type='response')
 
-fig_4a <- ggplot(data=df_fMRI_all, aes(x=age, y=pred_go, color=condition)) +
+fig_4a <- ggplot(data=df_fMRI_all, aes(x=s2_age, y=pred_go, color=condition)) +
   geom_line(aes(group=condition), size=1) +
   labs(x='Age', y='Predicted probability of Go decisions', color='Condition') +
   theme(text = element_text(size=16)) +
@@ -916,7 +1038,7 @@ ggsave('fig_4a.png', fig_4a)
 pGo <- df_fMRI_all %>% group_by(scores.SID, condition) %>% summarize(pGo = mean(go))
 pGo_by_age <- merge(pGo, demo, by = 'scores.SID')
 
-ggplot(pGo_by_age, aes(x = age, y = pGo, color=condition), stat_smooth(method = loess)) +
+ggplot(pGo_by_age, aes(x = s2_age, y = pGo, color=condition), stat_smooth(method = loess)) +
   geom_point() +
   geom_line(aes(group=condition), size=1) +
   #geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci), width=0.5, position=position_dodge(.2)) +
@@ -1219,22 +1341,24 @@ behaviorals = c(103, 107, 112, 138, 143, 176, 191)
 pilot_cyberball = c(101, 102, 104, 105, 106, 108, 110, 111)
 motion_dropout = c(189, 158, 139)
 
+#change names to be easier to read later
+names(demo_data) <- c("scores.SID", "s2_age", "gender", "s2_iq", "wave2_yn", "s3_age", "s3_iq")
+
 demo_data_TDS2<-demo_data%>% filter(scores.SID < 300) %>% 
   filter(!scores.SID %in% no_session2) %>% 
   filter(!scores.SID %in% behaviorals) %>%
   filter(!scores.SID %in% pilot_cyberball) %>%
   filter(!scores.SID %in% motion_dropout)
  
-#change names to be easier to read later
-names(demo_data) <- c("scores.SID", "age", "gender", "iq")
+
 ## Merge qualtrics and demo data
 demo_TDS2 <- merge(demo_data_TDS2, qualtrics_data_TDS2, by.x = 'scores.SID', by.y = 'scores.SID')
 
 
 demo_TDS2 <- demo_TDS2 %>%
-  mutate(age_group = ifelse(age < 14.0, 1, 2)) %>% # age groups based on median split
-  mutate(age_c = age-14.1, age_rnd = floor(age), age_sq = age_c^2) %>%   # age variables
-  mutate(iq_c = iq-100, iq_z = iq_c/15) %>%                   # iq variables
+  mutate(age_group = ifelse(s2_age < 14.0, 1, 2)) %>% # age groups based on median split
+  mutate(age_c = s2_age-14.1, age_rnd = floor(s2_age), age_sq = age_c^2) %>%   # age variables
+  mutate(iq_c = s2_iq-100, iq_z = iq_c/15) %>%                   # iq variables
   mutate(PDS_mean_score=ifelse(                               # pds variables
     is.na(scores.female_mean_score)==TRUE, scores.male_mean_score, scores.female_mean_score)) %>%
   mutate(PDS_stage = ceiling(PDS_mean_score), pds_group = ifelse(PDS_mean_score < 2.9, 1, 2)) %>%
@@ -1242,8 +1366,53 @@ demo_TDS2 <- demo_TDS2 %>%
 
 
 PDS_mean_scores_TDS2 <- demo_TDS2 %>% distinct(scores.SID, gender, scores.pds_gender, PDS_mean_score) %>% filter(!grepl("189|158|160|174", scores.SID)) 
-write.csv(PDS_mean_scores_TDS2, file = 'tds2_PDS_mean_score_n77.csv')
+write.csv(PDS_mean_scores_TDS2, file = 'tds2_PDS_mean_score_n70.csv')
 
+
+
+TDS2_age_by_sex<-demo_TDS2 %>% filter(!is.na(s2_age)) %>% group_by(gender) %>% 
+  summarize(mean = mean(s2_age, na.rm=T), sd = sd(s2_age, na.rm=T), 
+            min = min(s2_age, na.rm=T), max = max(s2_age, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) 
+t.test(demo_TDS2$s2_age~demo_TDS2$gender) 
+
+# t = -0.43967, df = 67.653, p-value = 0.6616
+# alternative hypothesis: true difference in means is not equal to 0
+# 95 percent confidence interval:
+#  -0.8864616  0.5663797
+# sample estimates:
+# mean in group 0 mean in group 1 
+#        14.05212        14.21216 
+
+TDS2_iq_by_sex<-demo_TDS2 %>% filter(!is.na(s2_iq)) %>% group_by(gender) %>% 
+  summarize(mean = mean(s2_iq, na.rm=T), sd = sd(s2_iq, na.rm=T), 
+            min = min(s2_iq, na.rm=T), max = max(s2_iq, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+
+t.test(demo_TDS2$s2_iq~demo_TDS2$gender) 
+
+# t = -0.74177, df = 67.989, p-value = 0.4608
+# alternative hypothesis: true difference in means is not equal to 0
+# 95 percent confidence interval:
+#  -7.609971  3.485483
+# sample estimates:
+# mean in group 0 mean in group 1 
+#        106.4242        108.4865 
+
+pds_by_sex<-demo_TDS2 %>% filter(!is.na(PDS_mean_score)) %>% group_by(gender) %>% 
+  summarize(mean = mean(PDS_mean_score, na.rm=T), sd = sd(PDS_mean_score, na.rm=T),
+            min = min(PDS_mean_score, na.rm=T), max = max(PDS_mean_score, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+
+t.test(demo_TDS2$PDS_mean_score~demo_TDS2$gender) 
+
+# t = -4.6755, df = 65.396, p-value = 1.514e-05
+# alternative hypothesis: true difference in means is not equal to 0
+# 95 percent confidence interval:
+#  -0.9991348 -0.4010977
+# sample estimates:
+# mean in group 0 mean in group 1 
+#        2.454839        3.154955 
 
 
 ylg = ylg_data %>% 
@@ -1308,17 +1477,18 @@ df_TDS2<-mutate(df_TDS2, Group =  2)
 
 df_fMRI_all_TDS2<-df_TDS2 %>% filter(condition != "1")
 
+countTDS2<-df_TDS2 %>% group_by(scores.SID, gender) %>% summarize(n()) 
+
+
 # Remove columns that are not congruent between TDS 1 and TDS 2
 df_fMRI_all_TDS2$scores.female_height = NULL
 df_fMRI_all_TDS2$scores.female_weight = NULL
 df_fMRI_all_TDS2$scores.male_height = NULL
 df_fMRI_all_TDS2$scores.male_weight = NULL
 df_fMRI_all$pred_go = NULL
-
+df_fMRI_all$group = NULL
 
 allTDSfMRI <- rbind(df_fMRI_all, df_fMRI_all_TDS2)
-
-
 
 ```
 
@@ -1679,6 +1849,9 @@ colnames(df_RWR_fMRI_TDS2)[which(names(df_RWR_fMRI_TDS2) == "scores.sensitivity_
 
 colnames(df_RWR_fMRI_TDS2)[which(names(df_RWR_fMRI_TDS2) == "scores.sensitivity_reward_mean")] <- "scores.sensitivity_reward"
 
+# Remove columns that are not congruent between TDS 1 and TDS 2
+df_RWR_fMRI$group = NULL
+
 df_RWR_fMRI_TDS_ALL <- rbind(df_RWR_fMRI, df_RWR_fMRI_TDS2)
 
 
@@ -1995,7 +2168,7 @@ summary(interaction.model)
 #Part A: Go decisions plotted against Age
 allTDSfMRI$pred_go <- predict(interaction.model, newdata=allTDSfMRI, re.form=NA, type='response')
 
-fig_4a <- ggplot(data=allTDSfMRI, aes(x=age, y=pred_go, color=condition)) +
+fig_4a <- ggplot(data=allTDSfMRI, aes(x=s2_age, y=pred_go, color=condition)) +
   geom_line(aes(group=condition), size=1) +
   labs(x='Age', y='Predicted probability of Go decisions', color='Condition') +
   theme(text = element_text(size=16)) +
@@ -2005,7 +2178,7 @@ ggsave('fig_4a.png', fig_4a)
 pGo <- allTDSfMRI %>% group_by(scores.SID, condition) %>% summarize(pGo = mean(go))
 pGo_by_age <- merge(pGo, demo, by = 'scores.SID')
 
-ggplot(pGo_by_age, aes(x = age, y = pGo, color=condition), stat_smooth(method = loess)) +
+ggplot(pGo_by_age, aes(x = s2_age, y = pGo, color=condition), stat_smooth(method = loess)) +
   geom_point() +
   geom_line(aes(group=condition), size=1) +
   #geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci), width=0.5, position=position_dodge(.2)) +
@@ -2855,9 +3028,9 @@ summary(null.model)
 ###########################################################
 ```{r}
 # Age effects on the proportion of Go decisions that resulted in Crashes (by run_index)
-null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|SID), data=df, family='binomial')
-main.model <- glmer(go_cr ~ age_c + run_index + gender + iq_z + (1|SID), data=df, family='binomial')
-interaction.model <- glmer(go_cr ~ age_c * run_index + gender + iq_z + (1|SID), data=df, family='binomial', control=glmerControl(optimizer="bobyqa"))
+null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|SID), data=df_all, family='binomial')
+main.model <- glmer(go_cr ~ age_c + run_index + gender + iq_z + (1|SID), data=df_all, family='binomial')
+interaction.model <- glmer(go_cr ~ age_c * run_index + gender + iq_z + (1|SID), data=df_all, family='binomial', control=glmerControl(optimizer="bobyqa"))
 
 anova(null.model, main.model)
 #            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
