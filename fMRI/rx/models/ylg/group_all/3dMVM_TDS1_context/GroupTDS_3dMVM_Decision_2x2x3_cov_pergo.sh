@@ -1,9 +1,9 @@
 #!/bin/bash
 #--------------------------------------------------------------
 #
-#SBATCH --job-name=TDS1v2_covbehav_dec_3dMVM
-#SBATCH --output=output/TDS1v2_covbehav_dec_3dMVM.log
-#SBATCH --error=output/TDS1v2_covbehav_dec_3dMVM_error.log
+#SBATCH --job-name=TDS1v2_covbehav_dec_3dlme
+#SBATCH --output=output/TDS1v2_covbehav_dec_3dlme.log
+#SBATCH --error=output/TDS1v2_covbehav_dec_3dlme_error.log
 #SBATCH --time=1-00:00:00
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1
@@ -14,12 +14,12 @@ module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Decisions/
-	3dMVM -prefix DecisionXContextXGroup_cov \
+	3dlme -prefix DecisionXContextXGroup_cov \
 	-jobs 28 \
-	-bsVars "Group*Per_Go" \
-	-wsVars  "Decision*Context" \
-	-qVars "Per_Go" \
+	-model  "Decision*Context*PerGo" \
+	-ranEff "~1" \
 	-SS_type 3 \
+	-qVars "PerGo" \
 	-num_glt 27 \
 	-gltLabel 1 'D_AL-SE_EA-COM' -gltCode 1  'Decision : 1*DS +1*DG Context : 1*AL -1*SE Group : 1*EA -1*COM Per_Go: ' \
 	-gltLabel 2 'D_AL-PR_EA-COM' -gltCode 2  'Decision : 1*DS +1*DG Context : 1*AL -1*PR Group : 1*EA -1*COM Per_Go: ' \
