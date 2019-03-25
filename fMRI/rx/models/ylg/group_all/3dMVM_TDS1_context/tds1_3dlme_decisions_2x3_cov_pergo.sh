@@ -1,9 +1,9 @@
 #!/bin/bash
 #--------------------------------------------------------------
 #
-#SBATCH --job-name=TDS_allconds_nopmods_3dmvm
-#SBATCH --output=output/allcons_nppmods_3dmvm.log
-#SBATCH --error=output/allcons_3dmvm_nopmods_error.log
+#SBATCH --job-name=TDS1_cov_3dlme
+#SBATCH --output=output/tds1_cov_3dlme.log
+#SBATCH --error=output/tds1_cov_3dlme_error.log
 #SBATCH --time=1-00:00:00
 #SBATCH --cpus-per-task=28
 #SBATCH --ntasks=1
@@ -14,46 +14,16 @@ module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Decisions/
-	3dMVM -prefix DecisionsXContext_TDS1_covbehav \
+	3dLME -prefix DecisionsXContext_TDS1_covbehav \
 	-jobs 28 \
-	-bsVars "Per_Go" \
-	-wsVars  "Decision*Context" \
-	-qVars "Per_Go" \
+	-model  "Decision*Context*PerGo" \
+	-ranEff "~1" \
 	-SS_type 3 \
-	-num_glt 30 \
-	-gltLabel 1 'D_AL-SE_EA' -gltCode 1  'Decision : 1*DS +1*DG Context : 1*AL -1*SE Per_Go: ' \
-	-gltLabel 2 'D_AL-PR_EA' -gltCode 2  'Decision : 1*DS +1*DG Context : 1*AL -1*PR Per_Go: ' \
-	-gltLabel 3 'D_PR-SE_EA' -gltCode 3  'Decision : 1*DS +1*DG Context : 1*PR -1*SE Per_Go: ' \
-	-gltLabel 4 'DS_DG_AL-SE_EA' -gltCode 4  'Decision : 1*DS -1*DG Context : 1*AL -1*SE Per_Go: ' \
-	-gltLabel 5 'DS_DG_AL-PR_EA' -gltCode 5  'Decision : 1*DS -1*DG Context : 1*AL -1*PR Per_Go: ' \
-	-gltLabel 6 'DS_DG_PR-SE_EA' -gltCode 6  'Decision : 1*DS -1*DG Context : 1*PR -1*SE Per_Go: ' \
-	-gltLabel 7 'DS_AL_EA' -gltCode 7 'Decision : 1*DS Context : 1*AL Per_Go: ' \
-	-gltLabel 8 'DG_AL_EA' -gltCode 8 'Decision : 1*DG Context : 1*AL Per_Go: ' \
-	-gltLabel 9 'DS_PR_EA' -gltCode 9 'Decision : 1*DS Context : 1*PR Per_Go: ' \
-	-gltLabel 10 'DG_PR_EA' -gltCode 10 'Decision : 1*DG Context : 1*PR Per_Go: ' \
-	-gltLabel 11 'DS_SE_EA' -gltCode 11 'Decision : 1*DS Context : 1*SE Per_Go: ' \
-	-gltLabel 12 'DG_SE_EA' -gltCode 12 'Decision : 1*DG Context : 1*SE Per_Go: ' \
-	-gltLabel 13 'DS_AL-SE_EA' -gltCode 13  'Decision : 1*DS Context : 1*AL -1*SE Per_Go: ' \
-	-gltLabel 14 'DS_AL-PR_EA' -gltCode 14  'Decision : 1*DS Context : 1*AL -1*PR Per_Go: ' \
-	-gltLabel 15 'DS_PR-SE_EA' -gltCode 15  'Decision : 1*DS Context : 1*PR -1*SE Per_Go: ' \
-	-gltLabel 16 'DG_AL-SE_EA' -gltCode 16  'Decision : 1*DG Context : 1*AL -1*SE Per_Go: ' \
-	-gltLabel 17 'DG_AL-PR_EA' -gltCode 17  'Decision : 1*DG Context : 1*AL -1*PR Per_Go: ' \
-	-gltLabel 18 'DG_PR-SE_EA' -gltCode 18  'Decision : 1*DG Context : 1*PR -1*SE Per_Go: ' \
-	-gltLabel 19 'DGo_AL-Social_EA' -gltCode 19  'Decision : 1*DG Context : 2*AL -1*PR +1*SE Per_Go: ' \
-	-gltLabel 20 'DStop_AL-Social_EA' -gltCode 20  'Decision : 1*DS Context : 2*AL -1*PR +1*SE Per_Go: ' \
-	-gltLabel 21 'D_AL-Social_EA' -gltCode 21  'Decision : 1*DS +1*DG Context : 2*AL -1*PR +1*SE Per_Go: ' \
-	-gltLabel 22 'DStop_DGo_AL-Social_EA' -gltCode 22  'Decision : 1*DS -1*DG Context : 2*AL -1*PR +1*SE Per_Go: ' \
-	-gltLabel 23 'D_PRspecific_EA' -gltCode 23  'Decision : 1*DS +1*DG Context : 2*PR -1*AL +1*SE Per_Go: ' \
-	-gltLabel 24 'DGo_PRspecific_EA' -gltCode 24  'Decision : 1*DG Context : 2*PR -1*AL +1*SE Per_Go: ' \
-	-gltLabel 25 'DStop_PRspecific_EA' -gltCode 25  'Decision : 1*DS Context : 2*PR -1*AL +1*SE Per_Go: ' \
-	-gltLabel 26 'DStop_DGo_PRspecific_EA' -gltCode 26  'Decision : 1*DS -1*DG Context : 2*PR -1*AL +1*SE Per_Go: ' \
-	-gltLabel 27 'D_SEspecific_EA' -gltCode 27 'Decision : 1*DS +1*DG Context : 2*SE -1*AL +1*PR Per_Go: ' \
-	-gltLabel 28 'DGo_SEspecific_EA' -gltCode 28  'Decision : 1*DG Context : 2*SE -1*AL +1*PR Per_Go: ' \
-	-gltLabel 29 'DStop_SEspecific_EA' -gltCode 29  'Decision : 1*DS Context : 2*SE -1*AL +1*PR Per_Go: ' \
-	-gltLabel 30 'DStop_DGo_SEspecific_EA' -gltCode 30  'Decision : 1*DS -1*DG Context : 2*SE -1*AL +1*PR Per_Go: ' \
+        -qVars "PerGo" \
+	-resid tds1_cov_residual \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
-	Subj Decision Context Group Per_Go InputFile \
+	Subj Decision Context Group PerGo InputFile \
 	302	DS	AL	EA	33 /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0003.nii \
 	302	DS	PR	EA	58 /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0013.nii \
 	302	DS	SE	EA	50 /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0023.nii \

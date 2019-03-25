@@ -1,0 +1,411 @@
+
+
+Note that the PRL tree is NOT supported by RACS.
+
+Please contact user at sameer@cs.uoregon.edu for questions regarding this tree.
+
+Loading required package: lme4
+Loading required package: Matrix
+Loading required package: lsmeans
+The 'lsmeans' package is being deprecated.
+Users are encouraged to switch to 'emmeans'.
+See help('transition') for more information, including how
+to convert 'lsmeans' objects and scripts to work with 'emmeans'.
+************
+Welcome to afex. For support visit: http://afex.singmann.science/
+- Functions for ANOVAs: aov_car(), aov_ez(), and aov_4()
+- Methods for calculating p-values with mixed(): 'KR', 'S', 'LRT', and 'PB'
+- 'afex_aov' and 'mixed' objects can be passed to lsmeans() for follow-up tests
+- Get and set global package options with: afex_options()
+- Set orthogonal sum-to-zero contrasts globally: set_sum_contrasts()
+- For example analyses see: browseVignettes("afex")
+************
+
+Attaching package: ‘afex’
+
+The following object is masked from ‘package:lme4’:
+
+    lmer
+
+Loading required package: car
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/302/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/303/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/303/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/303/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/303/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/303/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/303/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/306/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/306/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/306/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/306/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/306/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/306/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/307/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/307/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/307/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/307/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/307/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/307/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/308/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/308/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/308/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/308/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/308/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/308/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/309/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/309/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/309/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/309/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/309/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/309/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/310/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/310/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/310/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/310/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/310/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/310/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/312/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/312/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/312/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/312/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/312/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/312/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/313/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/313/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/313/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/313/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/313/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/313/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/314/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/314/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/314/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/314/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/314/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/314/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/316/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/316/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/316/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/316/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/316/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/316/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/317/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/317/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/317/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/317/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/317/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/317/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/320/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/320/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/320/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/320/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/320/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/320/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/321/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/321/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/321/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/321/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/321/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/321/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/322/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/322/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/322/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/322/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/322/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/322/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/323/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/323/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/323/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/323/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/323/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/323/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/324/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/324/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/324/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/324/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/324/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/324/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/325/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/325/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/325/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/325/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/325/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/325/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/326/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/326/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/326/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/326/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/326/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/326/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/327/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/327/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/327/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/327/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/327/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/327/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/328/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/328/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/328/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/328/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/328/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/328/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/329/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/329/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/329/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/329/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/329/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/329/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/330/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/330/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/330/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/330/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/330/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/330/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/331/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/331/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/331/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/331/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/331/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/331/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/332/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/332/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/332/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/332/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/332/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/332/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/333/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/333/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/333/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/333/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/333/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/333/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/335/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/335/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/335/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/335/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/335/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/335/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/336/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/336/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/336/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/336/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/336/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/336/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/337/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/337/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/337/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/337/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/337/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/337/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/340/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/340/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/340/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/340/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/340/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/340/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/341/con_0003.nii: corrected 682422 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/341/con_0013.nii: corrected 682422 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/341/con_0023.nii: corrected 682422 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/341/con_0002.nii: corrected 682422 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/341/con_0012.nii: corrected 682422 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/341/con_0022.nii: corrected 682422 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/342/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/342/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/342/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/342/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/342/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/342/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/343/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/343/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/343/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/343/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/343/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/343/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/344/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/344/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/344/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/344/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/344/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/344/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/346/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/346/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/346/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/346/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/346/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/346/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/347/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/347/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/347/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/347/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/347/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/347/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/348/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/348/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/348/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/348/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/348/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/348/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/349/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/349/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/349/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/349/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/349/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/349/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/351/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/351/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/351/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/351/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/351/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/351/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/352/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/352/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/352/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/352/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/352/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/352/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/353/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/353/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/353/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/353/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/353/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/353/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/354/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/354/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/354/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/354/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/354/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/354/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/355/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/355/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/355/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/355/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/355/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/355/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/357/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/357/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/357/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/357/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/357/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/357/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/359/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/359/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/359/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/359/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/359/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/359/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/360/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/360/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/360/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/360/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/360/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/360/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/361/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/361/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/361/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/361/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/361/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/361/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/363/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/363/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/363/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/363/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/363/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/363/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/365/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/365/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/365/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/365/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/365/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/365/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/367/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/367/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/367/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/367/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/367/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/367/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/368/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/368/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/368/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/368/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/368/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/368/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/369/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/369/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/369/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/369/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/369/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/369/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/371/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/371/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/371/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/371/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/371/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/371/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/372/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/372/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/372/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/372/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/372/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/372/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/373/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/373/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/373/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/373/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/373/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/373/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/374/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/374/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/374/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/374/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/374/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/374/con_0022.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/375/con_0003.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/375/con_0013.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/375/con_0023.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/375/con_0002.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/375/con_0012.nii: corrected 682415 float errors
+[7m*+ WARNING:[0m file /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod_tds1/375/con_0022.nii: corrected 682415 float errors
+
+** Error: 
+   Quitting due to model test failure...
+There were 50 or more warnings (use warnings() to see the first 50)
+++ Smallest FDR q [0 (Intercept) F] = 7.74507e-13
+++ Smallest FDR q [1 Decision F] = 2.08483e-11
+++ Smallest FDR q [2 Context F] = 2.12159e-05
+[7m*+ WARNING:[0m Smallest FDR q [3 Decision:Context F] = 0.568342 ==> few true single voxel detections
+++ Smallest FDR q [5 D_AL-SE_EA t] = 7.7255e-05
+[7m*+ WARNING:[0m Smallest FDR q [7 D_AL-PR_EA t] = 0.15942 ==> few true single voxel detections
+++ Smallest FDR q [9 D_PR-SE_EA t] = 0.0849065
+[7m*+ WARNING:[0m Smallest FDR q [11 DS_DG_AL-SE_EA t] = 0.999889 ==> few true single voxel detections
+++ Smallest FDR q [13 DS_DG_AL-PR_EA t] = 0.000815294
+[7m*+ WARNING:[0m Smallest FDR q [15 DS_DG_PR-SE_EA t] = 0.795491 ==> few true single voxel detections
+++ Smallest FDR q [17 DS_AL_EA t] = 1.27269e-13
+++ Smallest FDR q [19 DG_AL_EA t] = 2.57364e-13
+++ Smallest FDR q [21 DS_PR_EA t] = 1.28183e-12
+++ Smallest FDR q [23 DG_PR_EA t] = 1.75853e-13
+++ Smallest FDR q [25 DS_SE_EA t] = 3.2978e-10
+++ Smallest FDR q [27 DG_SE_EA t] = 7.08277e-13
+++ Smallest FDR q [29 DS_AL-SE_EA t] = 8.20568e-05
+++ Smallest FDR q [31 DS_AL-PR_EA t] = 0.00248972
+[7m*+ WARNING:[0m Smallest FDR q [33 DS_PR-SE_EA t] = 0.659113 ==> few true single voxel detections
+++ Smallest FDR q [35 DG_AL-SE_EA t] = 0.00207008
+[7m*+ WARNING:[0m Smallest FDR q [37 DG_AL-PR_EA t] = 0.12485 ==> few true single voxel detections
+++ Smallest FDR q [39 DG_PR-SE_EA t] = 0.0725497
+++ Smallest FDR q [41 DGo_AL-Social_EA t] = 6.85607e-13
+++ Smallest FDR q [43 DStop_AL-Social_EA t] = 6.42457e-13
+++ Smallest FDR q [45 D_AL-Social_EA t] = 3.49699e-13
+++ Smallest FDR q [47 DStop_DGo_AL-Social_EA t] = 1.66236e-09
+++ Smallest FDR q [49 D_PRspecific_EA t] = 6.98103e-13
+++ Smallest FDR q [51 DGo_PRspecific_EA t] = 6.15305e-13
+++ Smallest FDR q [53 DStop_PRspecific_EA t] = 1.32238e-10
+++ Smallest FDR q [55 DStop_DGo_PRspecific_EA t] = 5.98963e-10
+++ Smallest FDR q [57 D_SEspecific_EA t] = 1.90581e-12
+++ Smallest FDR q [59 DGo_SEspecific_EA t] = 1.21781e-12
+++ Smallest FDR q [61 DStop_SEspecific_EA t] = 2.25928e-10
+++ Smallest FDR q [63 DStop_DGo_SEspecific_EA t] = 3.60164e-07
