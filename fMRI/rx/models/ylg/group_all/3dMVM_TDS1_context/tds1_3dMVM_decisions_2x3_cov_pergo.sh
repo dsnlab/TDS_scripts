@@ -41,7 +41,7 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Decisions/
 	-gltLabel 18 'DG_PR-SE_EA' -gltCode 18  'Decision : 1*DG Context : 1*PR -1*SE Per_Go: ' \
 	-gltLabel 19 'DGo_AL-Social_EA' -gltCode 19  'Decision : 1*DG Context : 2*AL -1*PR +1*SE Per_Go: ' \
 	-gltLabel 20 'DStop_AL-Social_EA' -gltCode 20  'Decision : 1*DS Context : 2*AL -1*PR +1*SE Per_Go: ' \
-	-gltLabel 21 'D_AL-Social_EA' -gltCode 21  'Decision : 1*DS +1*DG Context : 2*AL -1*PR +1*SEL Per_Go: ' \
+	-gltLabel 21 'D_AL-Social_EA' -gltCode 21  'Decision : 1*DS +1*DG Context : 2*AL -1*PR +1*SE Per_Go: ' \
 	-gltLabel 22 'DStop_DGo_AL-Social_EA' -gltCode 22  'Decision : 1*DS -1*DG Context : 2*AL -1*PR +1*SE Per_Go: ' \
 	-gltLabel 23 'D_PRspecific_EA' -gltCode 23  'Decision : 1*DS +1*DG Context : 2*PR -1*AL +1*SE Per_Go: ' \
 	-gltLabel 24 'DGo_PRspecific_EA' -gltCode 24  'Decision : 1*DG Context : 2*PR -1*AL +1*SE Per_Go: ' \
