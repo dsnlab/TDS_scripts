@@ -39,7 +39,7 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds2/3dMVM_nopmod/Decisi
 	-gltLabel 18 'DG_PR-SE_COM' -gltCode 18  'Decision : 1*DG Context : 1*PR -1*SE ' \
 	-gltLabel 19 'DGo_AL-Social_COM' -gltCode 19  'Decision : 1*DG Context : 2*AL -1*PR +1*SE ' \
 	-gltLabel 20 'DStop_AL-Social_COM' -gltCode 20  'Decision : 1*DS Context : 2*AL -1*PR +1*SE ' \
-	-gltLabel 21 'D_AL-Social_COM' -gltCode 21  'Decision : 1*DS +1*DG Context : 2*AL -1*PR +1*SEL ' \
+	-gltLabel 21 'D_AL-Social_COM' -gltCode 21  'Decision : 1*DS +1*DG Context : 2*AL -1*PR +1*SE ' \
 	-gltLabel 22 'DStop_DGo_AL-Social_COM' -gltCode 22  'Decision : 1*DS -1*DG Context : 2*AL -1*PR +1*SE ' \
 	-gltLabel 23 'D_PRspecific_COM' -gltCode 23  'Decision : 1*DS +1*DG Context : 2*PR -1*AL +1*SE ' \
 	-gltLabel 24 'DGo_PRspecific_COM' -gltCode 24  'Decision : 1*DG Context : 2*PR -1*AL +1*SE ' \
