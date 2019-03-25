@@ -14,11 +14,11 @@ module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Decisions/
-	3dMVM -prefix DecisionsXContext_nopmod_TDS1 \
+	3dMVM -prefix DecisionsXContext_TDS1 \
 	-jobs 28 \
 	-wsVars  "Decision*Context" \
 	-SS_type 3 \
-	-num_glt 22 \
+	-num_glt 30 \
 	-gltLabel 1 'D_AL-SE_EA' -gltCode 1  'Decision : 1*DS +1*DG Context : 1*AL -1*SE' \
 	-gltLabel 2 'D_AL-PR_EA' -gltCode 2  'Decision : 1*DS +1*DG Context : 1*AL -1*PR' \
 	-gltLabel 3 'D_PR-SE_EA' -gltCode 3  'Decision : 1*DS +1*DG Context : 1*PR -1*SE' \
@@ -37,10 +37,18 @@ cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Decisions/
 	-gltLabel 16 'DG_AL-SE_EA' -gltCode 16  'Decision : 1*DG Context : 1*AL -1*SE' \
 	-gltLabel 17 'DG_AL-PR_EA' -gltCode 17  'Decision : 1*DG Context : 1*AL -1*PR' \
 	-gltLabel 18 'DG_PR-SE_EA' -gltCode 18  'Decision : 1*DG Context : 1*PR -1*SE' \
-	-gltLabel 19 'DGo_social_vs_alone_EA' -gltCode 19  'Decision : 1*DG Context : 1*PR +1*SE -2*AL' \
-	-gltLabel 20 'DStop_social_vs_alone_EA' -gltCode 20  'Decision : 1*DS Context : 1*PR +1*SE -2*AL' \
-	-gltLabel 21 'D_social_vs_alone_EA' -gltCode 21  'Decision : 1*DS +1*DG Context : 1*PR +1*SE -2*AL' \
-	-gltLabel 22 'DStop_DGo_social_vs_alone_EA' -gltCode 22  'Decision : 1*DS -1*DG Context : 1*PR +1*SE -2*AL' \
+	-gltLabel 19 'DGo_AL-Social_EA' -gltCode 19  'Decision : 1*DG Context : 2*AL -1*PR +1*SE' \
+	-gltLabel 20 'DStop_AL-Social_EA' -gltCode 20  'Decision : 1*DS Context : 2*AL -1*PR +1*SE' \
+	-gltLabel 21 'D_AL-Social_EA' -gltCode 21  'Decision : 1*DS +1*DG Context : 2*AL -1*PR +1*SEL' \
+	-gltLabel 22 'DStop_DGo_AL-Social_EA' -gltCode 22  'Decision : 1*DS -1*DG Context : 2*AL -1*PR +1*SE' \
+	-gltLabel 23 'D_PRspecific_EA' -gltCode 23  'Decision : 1*DS +1*DG Context : 2*PR -1*AL +1*SE' \
+	-gltLabel 24 'DGo_PRspecific_EA' -gltCode 24  'Decision : 1*DG Context : 2*PR -1*AL +1*SE' \
+	-gltLabel 25 'DStop_PRspecific_EA' -gltCode 25  'Decision : 1*DS Context : 2*PR -1*AL +1*SE' \
+	-gltLabel 26 'DStop_DGo_PRspecific_EA' -gltCode 26  'Decision : 1*DS -1*DG Context : 2*PR -1*AL +1*SE' \
+	-gltLabel 27 'D_SEspecific_EA' -gltCode 27 'Decision : 1*DS +1*DG Context : 2*SE -1*AL +1*PR' \
+	-gltLabel 28 'DGo_SEspecific_EA' -gltCode 28  'Decision : 1*DG Context : 2*SE -1*AL +1*PR' \
+	-gltLabel 29 'DStop_SEspecific_EA' -gltCode 29  'Decision : 1*DS Context : 2*SE -1*AL +1*PR' \
+	-gltLabel 30 'DStop_DGo_SEspecific_EA' -gltCode 30  'Decision : 1*DS -1*DG Context : 2*SE -1*AL +1*PR' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
 	Subj Decision Context Group InputFile \
