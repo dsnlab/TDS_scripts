@@ -14,43 +14,15 @@ module load prl afni/17.3.00
 export LD_PRELOAD=/packages/gcc/7.2/lib64/libstdc++.so
 
 cd /projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Decisions/
-	3dlme -prefix DecisionXContextXGroup_cov \
+	3dLME -prefix DecisionXContextXGroup_cov \
 	-jobs 28 \
 	-model  "Decision*Context*PerGo" \
 	-ranEff "~1" \
 	-SS_type 3 \
 	-qVars "PerGo" \
-	-num_glt 27 \
-	-gltLabel 1 'D_AL-SE_EA-COM' -gltCode 1  'Decision : 1*DS +1*DG Context : 1*AL -1*SE Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 2 'D_AL-PR_EA-COM' -gltCode 2  'Decision : 1*DS +1*DG Context : 1*AL -1*PR Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 3 'D_PR-SE_EA-COM' -gltCode 3  'Decision : 1*DS +1*DG Context : 1*PR -1*SE Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 4 'D_AL_EA-COM' -gltCode 4  'Decision : 1*DS +1*DG Context : 1*AL  Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 5 'D_PR_EA-COM' -gltCode 5  'Decision : 1*DS +1*DG Context : 1*PR Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 6 'D_SE_EA-COM' -gltCode 6  'Decision : 1*DS +1*DG Context : 1*SE Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 7 'DS_AL_EA-COM' -gltCode 7 'Decision : 1*DS Context : 1*AL Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 8 'DG_AL_EA-COM' -gltCode 8 'Decision : 1*DG Context : 1*AL Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 9 'DS_PR_EA-COM' -gltCode 9 'Decision : 1*DS Context : 1*PR Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 10 'DG_PR_EA-COM' -gltCode 10 'Decision : 1*DG Context : 1*PR Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 11 'DS_SE_EA-COM' -gltCode 11 'Decision : 1*DS Context : 1*SE Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 12 'DG_SE_EA-COM' -gltCode 12 'Decision : 1*DG Context : 1*SE Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 13 'DS_AL-PR_EA-COM' -gltCode 13  'Decision : 1*DS Context : 1*AL -1*PR Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 14 'DG_AL-PR_EA-COM' -gltCode 14  'Decision : 1*DG Context : 1*AL -1*PR Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 15 'DS_AL-SE_EA-COM' -gltCode 15  'Decision : 1*DS Context : 1*AL -1*SE Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 16 'DG_AL-SE_EA-COM' -gltCode 16  'Decision : 1*DG Context : 1*AL -1*SE Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 17 'DS_PR-SE_EA-COM' -gltCode 17  'Decision : 1*DS Context : 1*PR -1*SE Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 18 'DG_PR-SE_EA-COM' -gltCode 18  'Decision : 1*DG Context : 1*PR -1*SE Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 19 'D_AL_vs_Social_EA-COM' -gltCode 19  'Decision : 1*DS +1*DG Context : 2*AL -1*PR +1*SE  Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 20 'DGo_AL_vs_Social_EA-COM' -gltCode 20  'Decision : 1*DG Context : 2*AL -1*PR +1*SE  Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 21 'DStop_AL_vs_Social_EA-COM' -gltCode 21  'Decision : 1*DS Context : 2*AL -1*PR +1*SE  Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 22 'D_PRspecific_EA-COM' -gltCode 22  'Decision : 1*DS +1*DG Context : 2*PR -1*AL +1*SE  Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 23 'DGo_PRspecific_EA-COM' -gltCode 23  'Decision : 1*DG Context : 2*PR -1*AL +1*SE  Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 24 'DStop_PRspecific_EA-COM' -gltCode 24  'Decision : 1*DS Context : 2*PR -1*AL +1*SE  Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 25 'D_SEspecific_EA-COM' -gltCode 25 'Decision : 1*DS +1*DG Context : 2*SE -1*AL +1*PR  Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 26 'DGo_SEspecific_EA-COM' -gltCode 26  'Decision : 1*DG Context : 2*SE -1*AL +1*PR  Group : 1*EA -1*COM Per_Go: ' \
-	-gltLabel 27 'DStop_SEspecific_EA-COM' -gltCode 27  'Decision : 1*DS Context : 2*SE -1*AL +1*PR  Group : 1*EA -1*COM Per_Go: ' \
 	-mask /projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average_optthr_2mm.nii \
 	-dataTable 				\
-Subj Decision Context Group Per_Go InputFile \
+Subj Decision Context Group PerGo InputFile \
 	109	DS	AL	COM	38 /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0003.nii \
 	109	DS	PR	COM	24 /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0013.nii \
 	109	DS	SE	COM	33 /projects/dsnlab/shared/tds/fMRI/analysis/fx/models/ylg/fx_ylg_allconds_nonorth_nopmod/109/con_0023.nii \
