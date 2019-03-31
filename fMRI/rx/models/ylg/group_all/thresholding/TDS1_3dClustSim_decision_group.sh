@@ -19,4 +19,4 @@ rx_path=/projects/dsnlab/shared/tds/fMRI/analysis/rx/ylg/all/tds1/Decisions/Grou
 mask=/projects/dsnlab/shared/tds/fMRI/analysis/masks/tds1_tds2/tds1_tds2_gw_smoothed_group_average_optthr_2mm.nii
 
 # Run 3dClustSim using the average acf outputs from the script "calcualte_average_ACF.Rmd"
-3dClustSim -mask $mask -acf 0.670713842105263 4.57508543859649 9.21131210526316 > ${rx_path}/threshold.txt
+3dClustSim -mask $mask -acf 0.670713842105263 4.57508543859649 9.21131210526316 > ${rx_path}/TDS1_group_threshold.txt

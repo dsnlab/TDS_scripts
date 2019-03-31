@@ -4,20 +4,16 @@ Note that the PRL tree is NOT supported by RACS.
 
 Please contact user at sameer@cs.uoregon.edu for questions regarding this tree.
 
-++ WARNING: file /home/jpfeifer/.afni.log is now 414384078 (414 million [mega]) bytes long!
+++ WARNING: file /home/jpfeifer/.afni.log is now 417333248 (417 million [mega]) bytes long!
 ++ 3dClustSim: AFNI version=AFNI_18.2.04 (Jul  6 2018) [64-bit]
 ++ Authored by: RW Cox and BD Ward
 ++ 220214 voxels in mask (24.40% of total)
 ++ Kernel function radius = 25.80 mm
 ++ ACF(0.67,4.58,9.21) => FWHM=11.13 => 91x109x91 pads to 120x160x120
  + Kernel image dimensions 59 x 79 x 59
-++ Startup clock time = 0.5 s
+++ Startup clock time = 0.2 s
 ++ Using 15 OpenMP threads
-Simulating:1018212329.334404551566627778839.89.409.0150121623234734584659.576608779.81809.9.120023113224435354466575768689.779.088019.9.1203024516317!
-++ Clock time now = 745.4 s
-242353464575869.67708819.9.2003114225336744!
-++ Clock time now = 604.6 s
-55676!
-++ Clock time now = 616.5 s
-7!
-++ Clock time now = 731.5 s
+Simulating:011223344556677889.9.001122334456576879.809.1023142536475869.701829.3041526374859.6071829.3041562374567!
+++ Clock time now = 711.9 s
+!
+++ Clock time now = 717.5 s
