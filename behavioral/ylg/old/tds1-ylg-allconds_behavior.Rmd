@@ -1,0 +1,1963 @@
+
+
+###############
+## Data prep ##
+###############
+```{r}
+##Check if the packages we need are installed, and if not, install them
+packages<-c('dplyr', 'tidyr', 'data.table', 'R.matlab', 'ggplot2', 'lme4')
+if(length(setdiff(packages, rownames(installed.packages())))>0) {
+  install.packages(setdiff(packages, rownames(installed.packages())))
+}
+lapply(packages, library, character.only=TRUE)
+
+##Set paths (data is located on CAS)
+tds_folder<-'/Volumes/psy-ctn/psy-ctn/TDS/behavior/'
+ylg_folder<-paste(tds_folder, 'YLG/processed/', sep='')
+demo_folder<-paste(tds_folder, 'Redcap/', sep='')
+qualtrics_folder<-paste(tds_folder, 'Qualtrics/', sep='')
+
+##Collect data
+ylg_data<-read.csv(paste(ylg_folder,'tds_trial_by_trial_20180124.csv',sep=''))
+demo_data<-read.csv(paste(demo_folder,'age_gender_iq_2019.csv',sep=''))
+#deleted empty columns
+demo_data <- demo_data[,-c(5:7)]
+qualtrics_data_post<-read.csv(paste(qualtrics_folder, 'scoring_script_output/tds1-wave1-PDS.csv', sep='')) %>% select(scores.SID, scores.female_comparison, scores.female_height_feet, scores.female_height_inches, scores.female_mean_score, scores.female_menses, scores.female_weight, scores.female_weight_text, scores.male_comparison, scores.male_height_feet, scores.male_height_feet_text, scores.male_height_inches, scores.male_height_inches_text, scores.male_mean_score, scores.male_weight, scores.male_weight_text, scores.pds_gender)
+```
+#######################
+## Demographics N=--- ##
+#######################
+
+```{r}
+
+# add rows for PRE
+
+PDS_pre <- data.frame("scores.SID" = c(301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 314, 315, 316, 317, 318, 319, 320)) 
+                     
+                     
+qualtrics_data<-full_join(PDS_pre, qualtrics_data_post)
+
+#change names to be easier to read later
+names(demo_data) <- c("scores.SID", "age", "gender", "iq")
+## Merge qualtrics and demo data
+demo <- merge(demo_data, qualtrics_data, by.x = 'scores.SID', by.y = 'scores.SID')
+
+## Add variables
+demo <- demo %>%
+  mutate(age_group = ifelse(age < 14.0, 1, 2)) %>% # age groups based on median split
+  mutate(age_c = age-14.1, age_rnd = floor(age), age_sq = age_c^2) %>%   # age variables
+  mutate(iq_c = iq-100, iq_z = iq_c/15) %>%                   # iq variables
+  mutate(PDS_mean_score=ifelse(                               # pds variables
+    is.na(scores.female_mean_score)==TRUE, scores.male_mean_score, scores.female_mean_score)) %>%
+  mutate(PDS_stage = ceiling(PDS_mean_score), pds_group = ifelse(PDS_mean_score < 2.9, 1, 2)) %>%
+  mutate(gender_flip = ifelse(gender==0, 'Male', 'Female'))   # flip gender for correct colors in graph
+
+## Filter demo_data (N=66, but only 54 with PDS data)
+no_session2 = c(311, 338, 358)
+behaviorals = c(305, 318, 319)
+ylg_failed = c(339, 345)
+missing_stops = c(350, 356, 366, 370)
+
+demo_filtered_context <- demo %>% filter(scores.SID > 300) %>% 
+  filter(!scores.SID %in% no_session2) %>% 
+  filter(!scores.SID %in% behaviorals) %>% 
+  filter(!scores.SID %in% ylg_failed)
+
+ demo_filtered_context_allstop <- demo %>% filter(scores.SID > 300) %>% 
+  filter(!scores.SID %in% no_session2) %>% 
+  filter(!scores.SID %in% behaviorals)%>%
+  filter(!scores.SID %in% ylg_failed) %>% 
+  filter(!scores.SID %in% missing_stops) 
+
+  
+# demo_filtered_context %>% group_by(age_group) %>% summarize(n=n()) # n for each age group
+# demo_filtered_context %>% group_by(pds_group) %>% summarize(n=n())
+
+PDS_mean_scores <- demo_filtered_context %>% distinct(scores.SID, gender, scores.pds_gender, PDS_mean_score) %>% filter(!grepl("338|358|339|345", scores.SID)) 
+write.csv(PDS_mean_scores, file = 'tds1_PDS_mean_score_n54.csv')
+
+
+
+```
+#############
+## TABLE 1 ##
+#############
+```{r}
+# Age by gender
+age_by_sex<-demo_filtered_context %>% filter(!is.na(age)) %>% group_by(gender) %>% 
+  summarize(mean = mean(age, na.rm=T), sd = sd(age, na.rm=T), 
+            min = min(age, na.rm=T), max = max(age, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se) # n=29 females
+t.test(demo_filtered_context$age~demo_filtered_context$gender) 
+      # t = -1.3229, df = 53.951, p-value = 0.1915
+      # alternative hypothesis: true difference in means is not equal to 0
+      # 95 percent confidence interval:
+      #   -1.4034873  0.2876425
+      # sample estimates:
+      # mean in group 0 mean in group 1 
+      #         13.86725        14.42517 
+
+#no sig age difference by sex.
+
+# IQ by gender
+iq_by_sex<-demo_filtered_context %>% filter(!is.na(iq)) %>% group_by(gender) %>% 
+  summarize(mean = mean(iq, na.rm=T), sd = sd(iq, na.rm=T), 
+            min = min(iq, na.rm=T), max = max(iq, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+t.test(demo_filtered_context$iq~demo_filtered_context$gender) 
+      # t = -0.1792, df = 49.513, p-value = 0.8585
+      # alternative hypothesis: true difference in means is not equal to 0
+      # 95 percent confidence interval:
+      #   -7.341820  6.139344
+      # sample estimates:
+      # mean in group 0 mean in group 1 
+      #     99.74359       100.34483 
+#no signficance sex difference in IQ.
+
+# PDS score by gender
+pds_by_sex<-demo_filtered_context %>% filter(!is.na(PDS_mean_score)) %>% group_by(gender) %>% 
+  summarize(mean = mean(PDS_mean_score, na.rm=T), sd = sd(PDS_mean_score, na.rm=T),
+            min = min(PDS_mean_score, na.rm=T), max = max(PDS_mean_score, na.rm=T),
+            n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+t.test(demo_filtered_context$PDS_mean_score~demo_filtered_context$gender) 
+      # t = -2.5333, df = 40.516, p-value = 0.01527
+      # alternative hypothesis: true difference in means is not equal to 0
+      # 95 percent confidence interval:
+      #  -0.8992840 -0.1013113
+      # sample estimates:
+      # mean in group 0 mean in group 1 
+      #        2.518750        3.019048 
+
+#signif difference in PDS by sex (female more advanced--as expected)
+```
+#############################
+## SUPPLEMENTARY FIGURE S1 ##
+#############################
+```{r}
+# Part A: Gender by age distribution
+fig_s1a <- ggplot(demo_filtered_context, aes(x = age_rnd, fill = gender_flip)) +
+  geom_bar(position = 'dodge') +
+  #facet_grid(.~tds_group, scales='free', labeller=as_labeller(group_labels)) +
+  labs(x='Age', y='Number of participants', fill='Sex') +
+  coord_cartesian(x=c(10.5,17.5)) + theme(text = element_text(size=16)) +
+  scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+ggsave('fig_s1a.png', fig_s1a)
+
+# Part B: Gender by pubertal stage distribution
+fig_s1b <- ggplot(demo_filtered_context, aes(x = PDS_stage, fill = gender_flip)) +
+  geom_bar(position = 'dodge') +
+  #facet_grid(.~tds_group, scales='free', labeller=as_labeller(group_labels)) +
+  labs(x='Mean PDS score', y='Number of participants', fill='Sex') +
+  theme(text = element_text(size=16)) +
+  scale_y_continuous(breaks = c(0, 4, 8, 12, 16, 20, 24, 28)) + scale_x_continuous(breaks = c(1, 2, 3, 4))
+ggsave('fig_s1b.png', fig_s1b)
+```
+##################
+## YLG behavior ##
+##################
+```{r}
+# Add variables
+
+ylg = ylg_data %>% 
+  mutate(condition = ifelse(grepl('1|2', run_index), 1,
+                     ifelse(grepl('3|4', run_index), 2,
+                     ifelse(grepl('5|6', run_index), 3, 
+                     ifelse(grepl('7|8', run_index), 4, NA))))) %>%
+  mutate(time=run_time_ms/60000) %>%
+  mutate(go = ifelse(decision=='GO', 1, 0)) %>%
+  mutate(crash = ifelse(scenario=='CRASH', 1, 0)) %>%
+  mutate(go_cr = ifelse(decision=='GO' & scenario=='CRASH', 1, 0)) %>%
+  mutate(stop = ifelse(decision=='STOP', 1, 0)) %>%
+  mutate(stop_nocar = ifelse(decision=='STOP' & scenario=='SAFE', 1, 0)) %>%
+  mutate(event = ifelse(decision=='GO' & scenario=='SAFE', 1,
+                 ifelse(decision=='GO' & scenario=='CRASH', 2,
+                 ifelse(decision=='STOP' & scenario=='CROSSCAR', 3,
+                 ifelse(decision=='STOP' & scenario=='SAFE', 4, NA))))) %>%
+  mutate(count1 = ifelse(event==1, 1, 0)) %>%
+  mutate(count2 = ifelse(event==2, 1, 0)) %>%
+  mutate(count3 = ifelse(event==3, 1, 0)) %>%
+  mutate(count4 = ifelse(event==4, 1, 0))
+
+ylg$SID <- ylg$subject_name
+
+# Check if events are present for all subjects
+events_by_sid <- ylg %>% group_by(subject_name, condition) %>%
+  summarize(n_good.go = sum(count1, na.rm=TRUE),
+            n_bad.go = sum(count2, na.rm=TRUE),
+            n_good.stop = sum(count3, na.rm=TRUE),
+            n_bad.stop = sum(count4, na.rm=TRUE))
+
+# Convert to factors
+ylg$run_index <- as.factor(ylg$run_index)
+ylg$condition <- as.factor(ylg$condition)
+
+# Filter out subjects for imaging results (N=66)
+# 201-299 = TDS-2
+# 401-499 = TDS-3
+# >500 = YADS
+# no_session2 = c(311, 338, 358)
+# behaviorals = c(305, 318, 319)
+
+exclude = c(311, 338, 358, 305, 318, 319,
+            401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411)
+ylg_filtered = ylg %>% filter(subject_name > 300) %>% 
+  filter(!subject_name %in% exclude)
+count_trials_per_sub<-ylg_filtered %>% group_by(subject_name) %>% summarize(n()) 
+# 315 only has 120 trials (practice runs missing) 
+# 344 only has 120 trials (practice runs missing) 
+# 377 only has 120 trials (practice runs missing) 
+
+# Set labels
+condition_labels = c(`1`='Mock', `2`='Alone', `3`='Peer Incl', `4`='Peer Excl')
+
+colnames(ylg_filtered)[which(names(ylg_filtered) == "subject_name")] <- "scores.SID"
+
+# Dataset for behavioral analyses (incomplete and complete runs)
+df_all <- merge(demo_filtered_context, ylg_filtered, by = 'scores.SID')
+
+missing_stops = c(350, 356, 366, 370)
+
+# Dataset for behavioral analyses (only complete runs)
+df_all_stops<- df_all %>% filter(scores.SID > 300) %>% 
+  filter(!scores.SID %in% no_session2) %>% 
+  filter(!scores.SID %in% behaviorals)%>%
+  filter(!scores.SID %in% ylg_failed) %>% 
+  filter(!scores.SID %in% missing_stops) 
+# Set as factors for all data (incomplete and complete runs)
+df_all$gender <- as.factor(df_all$gender)
+df_all$gender_flip <- as.factor(df_all$gender_flip)
+# Set as factors for all data (only complete runs)
+df_all_stops$gender <- as.factor(df_all_stops$gender)
+df_all_stops$gender_flip <- as.factor(df_all_stops$gender_flip)
+
+
+```
+#############################################
+## Social Context effects on GO DECISIONS ##
+#Do CWI teens engage in more Go decisions in social contexts? (no)#
+###########################################
+```{r}
+
+#to compare within scanner social contexts
+df_fMRI_all_stops <- df_all_stops %>% filter(condition != "1")
+
+df_fMRI_all <- df_all %>% filter(condition != "1")
+
+# Run effects on the proportion of Go decisions
+#changed this to "df_fMRI_all" since not looking at stops here, so can use bigger sample :) 
+null.model <- glmer(go ~ (1|scores.SID), data=df_fMRI_all, family='binomial')
+run.model <- glmer(go ~ run_index + (1|scores.SID), data=df_fMRI_all, family='binomial')
+anova(null.model, run.model)     
+#            Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
+# null.model  2 10274 10288 -5134.8    10270                        
+# run.model   7 10276 10326 -5131.2    10262 7.162      5     0.2089
+
+#I pick which one to show summary for based on which is sig-- so here I would do summary of null model
+summary(null.model) 
+#  scores.SID (Intercept) 0.6281   0.7925  
+# Number of obs: 8180, groups:  scores.SID, 69
+# 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.57876    0.09893   -5.85 4.91e-09 ***  
+
+#CWI teens did not take sig more go risks across social runs.
+
+# Condition effects on the proportion of Go decisions
+null.model <- glmer(go ~ (1|scores.SID), data=df_fMRI_all, family='binomial')
+condition.model <- glmer(go ~ condition + (1|scores.SID), data=df_fMRI_all, family='binomial')
+anova(null.model, condition.model)  
+#                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# null.model       2 10274 10288 -5134.8    10270                         
+# condition.model  4 10274 10302 -5132.8    10266 4.0031      2     0.1351
+summary(condition.model)  
+#  Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.60673    0.10446  -5.808 6.32e-09 ***
+# condition3   0.09396    0.05788   1.623    0.105    
+# condition4  -0.01289    0.05898  -0.219    0.827 
+
+#CWI teens did not take sig more go risks across social conditions.
+
+social_df <- df_fMRI_all %>% filter(condition != "2")
+null.model <- glmer(go ~ (1|scores.SID), data=social_df, family='binomial')
+condition.model <- glmer(go ~ condition + (1|scores.SID), data=social_df, family='binomial')
+anova(null.model, condition.model)  
+#                Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(>Chisq)    
+# (Intercept) -0.50580    0.10248  -4.935    8e-07 ***
+# condition4  -0.10851    0.05904  -1.838   0.0661 .  
+summary(condition.model) 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.50580    0.10248  -4.935    8e-07 ***
+# condition4  -0.10851    0.05904  -1.838   0.0661 . 
+
+#no sig difference between social runs-- which is expected given we didn't see diff above for social.
+```
+#################################################
+## Social Context effects on CRASHES (BAD GO) ##
+#Do CWI teens engage in more maladaptive go decisions in social contexts? (no)#
+################################################
+```{r}
+# Run effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ (1|scores.SID), data=df_fMRI_all, family='binomial')
+run.model <- glmer(go_cr ~ run_index + (1|scores.SID), data=df_fMRI_all, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(null.model, run.model) 
+#            Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  2 7861.5 7875.5 -3928.7   7857.5                         
+# run.model   7 7867.8 7916.8 -3926.9   7853.8 3.7447      5     0.5867
+summary(run.model) 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.47411    0.09841 -14.979   <2e-16 ***
+# run_index4  -0.07646    0.10063  -0.760    0.447    
+# run_index5  -0.04036    0.10010  -0.403    0.687    
+# run_index6   0.06852    0.09861   0.695    0.487    
+# run_index7  -0.06089    0.10040  -0.607    0.544    
+# run_index8  -0.10271    0.10103  -1.017    0.309    
+
+#
+
+# Condition effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ (1|scores.SID), data=df_fMRI_all, family='binomial')
+condition.model <- glmer(go_cr ~ condition + (1|scores.SID), data=df_fMRI_all, family='binomial')
+anova(null.model, condition.model)         
+#                 Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
+# null.model       2 7861.5 7875.5 -3928.7   7857.5                         
+# condition.model  4 7863.5 7891.5 -3927.7   7855.5 2.0141      2     0.3653
+summary(condition.model) 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.50732    0.08110 -18.585   <2e-16 ***
+# condition3   0.03090    0.06871   0.450    0.653    
+# condition4  -0.06709    0.07043  -0.953    0.341     
+
+#similarly, we did not see a difference in bad go decisions across social context for CWI teens.
+
+
+null.model <- glmer(go_cr ~ (1|scores.SID), data=social_df, family='binomial')
+condition.model <- glmer(go_cr ~ condition + (1|scores.SID), data=social_df, family='binomial')
+anova(null.model, condition.model)         
+#                 Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+# null.model       2 5221.2 5234.4 -2608.6   5217.2                         
+# condition.model  3 5221.2 5241.0 -2607.6   5215.2 1.9773      1     0.1597
+summary(condition.model) 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.46868    0.07809 -18.808   <2e-16 ***
+# condition4  -0.09902    0.07016  -1.411    0.158    
+
+#
+```
+###############################################
+## Social Context effects on STOP DECISIONS ##
+#Do CWI teens engage in more stop decisions in social contexts? (YES- stop more following SE than alone or PR)#
+###############################################
+```{r}
+# Run effects on the proportion of Stop decisions
+null.model <- glmer(stop ~ (1|scores.SID), data=df_fMRI_all, family='binomial')
+run.model <- glmer(stop ~ run_index + (1|scores.SID), data=df_fMRI_all, family='binomial')
+anova(null.model, run.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+# null.model  2 10630 10644 -5312.9    10626                           
+# run.model   7 10628 10677 -5306.9    10614 11.953      5    0.03544 *
+summary(run.model)
+# Number of obs: 8180, groups:  scores.SID, 69
+# 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)   
+# (Intercept)  0.23884    0.10122   2.360   0.0183 * 
+# run_index4   0.12829    0.08007   1.602   0.1091   
+# run_index5   0.14444    0.08010   1.803   0.0714 . 
+# run_index6   0.01277    0.07985   0.160   0.8730   
+# run_index7   0.18500    0.08139   2.273   0.0230 * 
+# run_index8   0.21305    0.08108   2.628   0.0086 **
+
+#However, CWI do appear to engage in sig more stop decisions across runs (in exlusion)
+
+## Condition effects on the proportion of Stop decisions
+null.model <- glmer(stop ~ (1|scores.SID), data=df_fMRI_all, family='binomial')
+condition.model <- glmer(stop ~ condition + (1|scores.SID), data=df_fMRI_all, family='binomial')
+anova(null.model, condition.model)
+#                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# null.model       2 10630 10644 -5312.9    10626                           
+# condition.model  4 10627 10655 -5309.6    10619 6.5727      2    0.03739 *
+summary(condition.model) 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept)  0.30274    0.09304   3.254  0.00114 **
+# condition3   0.01444    0.05661   0.255  0.79869   
+# condition4   0.13517    0.05761   2.346  0.01896 *  
+
+#This is confirmed if we collapse across runs to conditions. (sig increase in stops from alone to SE)
+
+
+null.model <- glmer(stop ~ (1|scores.SID), data=social_df, family='binomial')
+condition.model <- glmer(stop ~ condition + (1|scores.SID), data=social_df, family='binomial')
+anova(null.model, condition.model)
+#                 Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# null.model       2 7023.9 7037.1 -3510.0   7019.9                           
+# condition.model  3 7021.7 7041.4 -3507.8   7015.7 4.2543      1    0.03915 *
+
+summary(condition.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept)  0.32145    0.09704   3.312 0.000925 ***
+# condition4   0.11976    0.05802   2.064 0.039011 *  
+
+#Confirmed-- sig more stops SE from peer as well for CWI teens
+```
+#######################################################################################
+## Social Context effects on Stop decisions when there was no crossing car (BAD STOP)##
+#Do CWI teens engage in more maladatpive stop decisions in social contexts? (no)#
+#######################################################################################
+```{r}
+# Run effects on the proportion of Bad Stop decisions
+null.model <- glmer(stop_nocar ~ (1|scores.SID), data=df_fMRI_all, family='binomial')
+run.model <- glmer(stop_nocar ~ run_index + (1|scores.SID), data=df_fMRI_all, family='binomial')
+anova(null.model, run.model)
+#            Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  2 9632.4 9646.4 -4814.2   9628.4                         
+# run.model   7 9641.0 9690.1 -4813.5   9627.0 1.3975      5     0.9246
+summary(run.model)
+# Number of obs: 8180, groups:  scores.SID, 69
+# 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.99838    0.07261 -13.749   <2e-16 ***
+# run_index4   0.05516    0.08568   0.644    0.520    
+# run_index5   0.04787    0.08575   0.558    0.577    
+# run_index6  -0.01494    0.08632  -0.173    0.863    
+# run_index7   0.06205    0.08663   0.716    0.474    
+# run_index8   0.04922    0.08638   0.570    0.569     
+
+#did this mean they had sig more bad stops? No!
+
+# Condition effects on the proportion of Stop decisions
+null.model <- glmer(stop_nocar ~ (1|scores.SID), data=df_fMRI_all, family='binomial')
+condition.model <- glmer(stop_nocar ~ condition + (1|scores.SID), data=df_fMRI_all, family='binomial')
+anova(null.model, condition.model)
+#                 Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(>Chisq)   
+# null.model       2 9632.4 9646.4 -4814.2   9628.4                        
+# condition.model  4 9636.0 9664.0 -4814.0   9628.0 0.428      2     0.8073
+
+summary(condition.model) 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.97064    0.05825 -16.664   <2e-16 ***
+# condition3  -0.01106    0.06065  -0.182    0.855    
+# condition4   0.02786    0.06105   0.456    0.648     
+
+#confirmed collapsed across conditions
+
+#within social bad stops 
+null.model <- glmer(stop_nocar ~ (1|scores.SID), data=social_df, family='binomial')
+condition.model <- glmer(stop_nocar ~ condition + (1|scores.SID), data=social_df, family='binomial')
+anova(null.model, condition.model)
+#                 Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+# null.model       2 6395.4 6408.6 -3195.7   6391.4                         
+# condition.model  3 6397.0 6416.8 -3195.5   6391.0 0.3948      1     0.5298
+
+summary(null.model) 
+
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.96550    0.05187  -18.61   <2e-16 ***
+
+#this is confirmed that doesn't change between social conditions either
+```
+
+
+#####################################################################
+## FIGURE 1: Social Context by run effects on Task Behavior ##
+#####################################################################
+```{r}
+# Part A: Run and Condition effects on Go decisions
+go_by_sid = df_fMRI_all %>% group_by(SID, run_index, condition) %>% summarize(mean_go = mean(go))
+plot_group_go = go_by_sid %>% group_by(run_index, condition) %>% summarize(mean=mean(mean_go), 
+                                                                    sd=sd(mean_go), 
+                                                                    n=69, 
+                                                                    se=sd/sqrt(n), 
+                                                                    ci=qt(0.975, df=n-1)*se) 
+  
+fig_2a <- ggplot(plot_group_go, aes(x = run_index, y = mean, group=1)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = mean-ci, ymax = mean+ci)) +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Go decisions') 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) 
+ggsave('fig_2a.png', fig_2a)
+
+# Part B: Run and Location effects on Crashes
+go_cr_by_sid = df_fMRI_all %>% group_by(SID, run_index, condition) %>% summarize(mean_go_cr = mean(go_cr))
+plot_group_go_cr = go_cr_by_sid %>% group_by(run_index, condition) %>% summarize(mean = mean(mean_go_cr), 
+                                                                    sd = sd(mean_go_cr), 
+                                                                    n=69, # entered manually (could not be calculated because 127 has 140 trials, whereas all other subjects have 160 trials)
+                                                                    se=sd/sqrt(n), 
+                                                                    ci=qt(0.975, df=n-1)*se) 
+
+fig_2b <- ggplot(plot_group_go_cr, aes(x = run_index, y = mean, group=1)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = mean-ci, ymax = mean+ci)) +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Go decisions\nthat resulted in Crashes') 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) 
+ggsave('fig_2b.png', fig_2b)
+
+# Part C: Run and Location effects on Stop decisions
+stop_by_sid = df_fMRI_all %>% group_by(SID, run_index, condition) %>% summarize(mean_stop = mean(stop))
+plot_group_stop = stop_by_sid %>% group_by(run_index, condition) %>% summarize(mean = mean(mean_stop), 
+                                                                    sd = sd(mean_stop), 
+                                                                    n=69, # entered manually (could not be calculated because 127 has 140 trials, whereas all other subjects have 160 trials)
+                                                                    se=sd/sqrt(n), 
+                                                                    ci=qt(0.975, df=n-1)*se) 
+
+fig_2c <- ggplot(plot_group_stop, aes(x = run_index, y = mean, group=1)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = mean-ci, ymax = mean+ci)) +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Stop decisions') 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) 
+ggsave('fig_2c.png', fig_2c)
+
+# Part d: Run and Location effects on Bad Stop decisions
+stop_nocar_by_sid = df_fMRI_all %>% group_by(SID, run_index, condition) %>% summarize(mean_stop_nocar = mean(stop_nocar))
+plot_group_stop_nocar = stop_nocar_by_sid %>% group_by(run_index, condition) %>% summarize(mean = mean(mean_stop_nocar), 
+                                                                    sd = sd(mean_stop_nocar), 
+                                                                    n=69, # entered manually (could not be calculated because 127 has 140 trials, whereas all other subjects have 160 trials)
+                                                                    se=sd/sqrt(n), 
+                                                                    ci=qt(0.975, df=n-1)*se) 
+
+fig_2d <- ggplot(plot_group_stop_nocar, aes(x = run_index, y = mean, group=1)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = mean-ci, ymax = mean+ci)) +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Bad Stop decisions') 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) 
+ggsave('fig_2d.png', fig_2d)
+```
+
+
+######################
+Task Manipulation Test
+######################
+
+```{r}
+manipulation_test <- qualtrics_data %>% select(SID, TES)
+
+```
+
+###############################################################
+## Social Context effects on GO DECISIONS W/ RW RISK BEHAVIOR##
+###############################################################
+```{r}
+
+# qualtrics data
+RPI <- read.csv(paste(qualtrics_folder,'scoring_script_output/tds1-wave1-RPI_part2.csv', sep='') )
+NTS <- read.csv(paste(qualtrics_folder,'scoring_script_output/tds1-wave1-NTS.csv' , sep=''))                               
+BIS <- read.csv(paste(qualtrics_folder,'scoring_script_output/tds1-wave1-BIS_15.csv' , sep=''))                               
+BSSS <- read.csv(paste(qualtrics_folder,'scoring_script_output/tds1-wave1-BSSS.csv' , sep=''))                               
+SPSRQ <- read.csv(paste(qualtrics_folder,'scoring_script_output/tds1-wave1-SPSRQ_S.csv' , sep='')) %>% select(scores.SID, scores.sensitivity_punishment, scores.sensitivity_reward)
+
+
+# merge qualtrics data
+
+qualtrics_merge1<-merge(RPI, NTS, by = 'scores.SID') %>% select(scores.SID, scores.rpi_mean, scores.belongingness, scores.control, scores.meaningful_existence, scores.self_esteem, scores.total_score)
+
+qualtrics_merge2<-merge(BIS, BSSS, by = 'scores.SID') %>% select(scores.SID, scores.bis_attentional_impulsivity, scores.bis_motor_impulsivity, scores.bis_nonplanning_impulsivity, scores.bis_total,
+                                                                 scores.sss_boredom_susceptibility, scores.sss_disinhibition, scores.sss_experience_seeking, scores.sss_thrill_adventure_seeking, scores.sss_total)
+qualtrics_merge3<-merge(qualtrics_merge1, qualtrics_merge2, by = 'scores.SID')
+
+RWR_qualtrics_data <- merge(qualtrics_merge3, SPSRQ, by = 'scores.SID')
+
+no_session2 = c(311, 338, 358)
+behaviorals = c(305, 318, 319)
+ylg_failed = c(339, 345)
+
+RWR_filtered <- RWR_qualtrics_data %>% filter(scores.SID > 300) %>% 
+  filter(!scores.SID %in% no_session2) %>% 
+  filter(!scores.SID %in% behaviorals)%>%
+  filter(!scores.SID %in% ylg_failed)
+
+install.packages("summarytools")
+library(summarytools)
+#check ranges of variables first
+view(dfSummary(RWR_filtered))
+
+df_RWR_fMRI <- left_join(df_fMRI_all, RWR_filtered, by= "scores.SID")
+write.csv(df_RWR_fMRI, file = 'df_RWR_fMRI.csv')
+
+
+```
+
+
+##################################
+# TASK CORRELATIONS RISK WITH RWB
+##################################
+```{r}
+#are risk decisions in the scanner correlated with impuslivity and sensation seeking out of the scanner?
+null.model <- aov(scores.bis_total ~ go + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.bis_total ~ go + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.bis_total ~ go*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#  Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+# 1   7938 1492.4                              
+# 2   7936 1491.0  2    1.3893 3.6973 0.02483 *
+#since main was sig, compare main to interaction model
+anova(main.model, interaction.model)
+#   Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+# 1   7936 1491.0                              
+# 2   7934 1489.5  2    1.5721 4.1872 0.01522 *
+#therefore was to look at summary of interaction model
+summary(interaction.model)
+
+#                Df Sum Sq Mean Sq F value Pr(>F)  
+# go              1    0.2  0.2106   1.122 0.2896  
+# condition       2    1.4  0.6946   3.700 0.0248 *
+# go:condition    2    1.6  0.7861   4.187 0.0152 *
+# Residuals    7934 1489.5  0.1877             
+
+
+#performance on go decisions across conditions has is significantly associated with self reported impulsivity -- need to look at it to disentangle 
+
+null.model <- aov(scores.sss_total ~ go + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.sss_total ~ go + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.sss_total ~ go*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+# 1   7938 485.31                           
+# 2   7936 485.29  2  0.022797 0.1864 0.8299
+#no need to really look at interaction if main was sig better than null, but for posterity..
+anova(main.model, interaction.model)
+summary(null.model)
+#   Res.Df    RSS Df Sum of Sq     F Pr(>F)
+# 1   7936 485.29                          
+# 2   7934 485.23  2  0.058961 0.482 0.6175  
+
+#performance on go decisions across conditions has no relationship with sensation seeking
+
+
+#do individual differences in sensitivity to reward, punishment correlated with changes in risk decisions across contexts?
+null.model <- aov(scores.sensitivity_reward ~ go + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.sensitivity_reward ~ go + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.sensitivity_reward ~ go*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq     F Pr(>F)
+# 1   7938 540.24                          
+# 2   7936 540.10  2   0.14796 1.087 0.3373
+anova(main.model, interaction.model)
+#   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+# 1   7936 540.10                           
+# 2   7934 540.04  2  0.057101 0.4195 0.6574
+#again, no need to do this one if null/main ns
+summary(null.model)
+#              Df Sum Sq Mean Sq F value Pr(>F)   
+# go             1    0.6  0.6444   9.469 0.0021 **
+# Residuals   7938  540.2  0.0681 
+#nice work-yes, since not sig, look at null summary
+
+null.model <- aov(scores.sensitivity_punishment ~ go + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.sensitivity_punishment ~ go + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.sensitivity_punishment ~ go*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+# 1   8058 536.62                           
+# 2   8056 536.47  2   0.14297 1.0735 0.3419
+#anova(null.model, interaction.model)
+summary(null.model)
+#               Df Sum Sq Mean Sq F value Pr(>F)  
+# go             1    2.6  2.5834   38.79 4.95e-10 ***
+# Residuals   8058  536.6  0.0666            
+
+#go decisons across decision are not related to sensitivity to reward or punishment
+
+null.model <- aov(scores.total_score ~ go + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.total_score ~ go + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.total_score ~ go*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+# 1   8058 3422.1                           
+# 2   8056 3422.1  2  0.042147 0.0496 0.9516
+#anova(null.model, interaction.model)
+summary(null.model)
+#               Df Sum Sq Mean Sq F value   Pr(>F)    
+# go             1      1  1.0130   2.385  0.123
+# Residuals   8058   3422  0.4247                    
+
+#
+
+null.model <- aov(scores.rpi_mean ~ go + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.rpi_mean ~ go + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.rpi_mean ~ go*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+# 1   8058 2644.8                           
+# 2   8056 2644.6  2   0.18214 0.2774 0.7577
+#anova(null.model, interaction.model)
+summary(null.model)
+
+#               Df Sum Sq Mean Sq F value Pr(>F)  
+# go             1    0.8  0.8499    2.59  0.108
+# Residuals   8058 2644.8  0.3282  
+
+#
+
+```
+
+##################################
+# TASK CORRELATIONS RISK WITH RWB
+#-- this is post hoc- but given most interesting behaviors are occurring for stops, not gos- let's see how this associates with our RWR behaviors. #
+##################################
+```{r}
+#are risk decisions in the scanner correlated with impuslivity and sensation seeking out of the scanner?
+null.model <- aov(scores.bis_total ~ stop + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.bis_total ~ stop  + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.bis_total ~ stop*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+# 1   7938 1492.5                              
+# 2   7936 1491.2  2     1.355 3.6055 0.02722 *
+#since main was sig, compare main to interaction model
+anova(main.model, interaction.model)
+#   Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+# 1   7936 1491.2                              
+# 2   7934 1489.8  2    1.3286 3.5376 0.02913 *
+#therefore was to look at summary of interaction model
+summary(interaction.model)
+
+#                  Df Sum Sq Mean Sq F value Pr(>F)  
+# stop              1    0.1  0.0993   0.529 0.4672  
+# condition         2    1.4  0.6775   3.608 0.0272 *
+# stop:condition    2    1.3  0.6643   3.538 0.0291 *
+# Residuals      7934 1489.9  0.1878  
+
+#performance on stop decisions across conditions has is significantly associated with self reported impulsivity -- need to look at it to disentangle 
+
+null.model <- aov(scores.sss_total ~ stop  + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.sss_total ~ stop  + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.sss_total ~ stop*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+# Model 1: scores.sss_total ~ stop + (1 | scores.SID)
+# Model 2: scores.sss_total ~ stop + condition + (1 | scores.SID)
+#   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+# 1   7938 485.31                           
+# 2   7936 485.29  2   0.02359 0.1929 0.8246
+#no need to really look at interaction if main was sig better than null, but for posterity..
+anova(main.model, interaction.model)
+summary(null.model)
+#               Df Sum Sq Mean Sq F value Pr(>F)
+# stop           1    0.0 0.03130   0.512  0.474
+# Residuals   7938  485.3 0.06114 
+
+#performance on stop decisions across conditions has no relationship with sensation seeking
+
+
+#do individual differences in sensitivity to reward, punishment correlated with changes in risk decisions across contexts?
+null.model <- aov(scores.sensitivity_reward ~ stop  + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.sensitivity_reward ~ stop  + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.sensitivity_reward ~ stop*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+# 1   7938 540.55                           
+# 2   7936 540.39  2   0.15217 1.1173 0.3272
+anova(main.model, interaction.model)
+#again, no need to do this one if null/main ns
+summary(null.model)
+#               Df Sum Sq Mean Sq F value Pr(>F)  
+# stop           1    0.3  0.3425    5.03 0.0249 *
+# Residuals   7938  540.5  0.0681 
+
+#also no difference in sensitivity to punishment
+
+null.model <- aov(scores.sensitivity_punishment ~ stop  + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.sensitivity_punishment ~ stop  + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.sensitivity_punishment ~ stop*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq     F Pr(>F)
+# 1   8058 536.59                          
+# 2   8056 536.47  2   0.12479 0.937 0.3918
+#anova(null.model, interaction.model)
+summary(null.model)
+#               Df Sum Sq Mean Sq F value   Pr(>F)    
+# stop           1    2.6  2.6095   39.19 4.05e-10 ***
+# Residuals   8058  536.6  0.0666            
+
+#stop decisons across decision are not related to sensitivity to reward or punishment
+
+null.model <- aov(scores.total_score ~ stop + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.total_score ~ stop  + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.total_score ~ stop*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+# 1   8058 3421.2                           
+# 2   8056 3421.1  2  0.053176 0.0626 0.9393
+#anova(null.model, interaction.model)
+summary(null.model)
+#               Df Sum Sq Mean Sq F value Pr(>F)  
+# stop           1      2  1.9438   4.578 0.0324 *
+# Residuals   8058   3421  0.4246                    
+
+#
+
+null.model <- aov(scores.rpi_mean ~ stop  + (1|scores.SID), data=df_RWR_fMRI)
+main.model <- aov(scores.rpi_mean ~ stop  + condition + (1|scores.SID), data=df_RWR_fMRI)
+interaction.model <- aov(scores.rpi_mean ~ stop*condition + (1|scores.SID), data=df_RWR_fMRI)
+anova(null.model, main.model)
+#   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+# 1   8058 2644.3                           
+# 2   8056 2644.2  2   0.16569 0.2524 0.7769
+#anova(null.model, interaction.model)
+summary(null.model)
+
+#               Df Sum Sq Mean Sq F value Pr(>F)  
+# stop           1    1.3  1.2859   3.918 0.0478 *
+# Residuals   8058 2644.3  0.3282  
+
+#
+```
+
+```
+
+
+##################################
+# Group comparisons 
+##################################
+```{r}
+#example for Garrett
+##need to change data frame
+##need data frame to to include GROUP
+## we want these comparisions for our main analyses-- 
+###first gender, age, puberty, and iq 
+###then go through prior analyses this time testing for group differences. 
+null.model <- glmer(go ~ (1|SID), data=social_df, family='binomial')
+condition.model <- glmer(go ~ condition + (1|SID), data=social_df, family='binomial')
+interaction.model <- glmer(go ~ GROUP*condition + (1|SID), data= social_df, family='binomial')
+anova(null.model, main.model)
+anova(null.model, interaction.model)
+summary(null.model)
+```
+
+
+###########################################################################################################
+SUPPLEMENTAL 
+###########################################################################################################
+
+
+################################################################
+## Age effects on GO DECISIONS while controlling for Sex & IQ ##
+################################################################
+```{r}
+# Linear Age effects on the proportion of Go decisions (by run_index)
+null.model <- glmer(go ~ run_index + gender + iq_z + (1|scores.SID), data=df_fMRI_all_stops, family='binomial')
+main.model <- glmer(go ~ age_c + run_index + gender + iq_z + (1|scores.SID), data=df_fMRI_all_stops, family='binomial')
+interaction.model <- glmer(go ~ age_c * run_index + gender + iq_z + (1|scores.SID), data=df_fMRI_all_stops, family='binomial')
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  9 9745.7 9808.2 -4863.9   9727.7                           
+# main.model 10 9741.7 9811.1 -4860.8   9721.7 6.0164      1    0.01417 *
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         9 9745.7 9808.2 -4863.9   9727.7                             
+# interaction.model 15 9734.6 9838.8 -4852.3   9704.6 23.137      6   0.000752 ***
+
+
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.40424    0.13397  -3.018  0.00255 **
+# run_index4  -0.10496    0.08502  -1.234  0.21702   
+# run_index5   0.01074    0.08455   0.127  0.89890   
+# run_index6   0.12067    0.08420   1.433  0.15183   
+# run_index7  -0.06489    0.08484  -0.765  0.44439   
+# run_index8  -0.01076    0.08462  -0.127  0.89883   
+# gender1     -0.27619    0.18593  -1.485  0.13743   
+# iq_z         0.05922    0.11388   0.520  0.60301
+
+#
+
+# Linear Age effects on the proportion of Go decisions (by location)
+null.model <- glmer(go ~ condition + gender + iq_z + (1|scores.SID), data=df_fMRI_all, family='binomial')
+main.model <- glmer(go ~ age_c + condition + gender + iq_z + (1|scores.SID), data=df_fMRI_all, family='binomial')
+interaction.model <- glmer(go ~ age_c * condition + gender + iq_z + (1|scores.SID), data=df_fMRI_all, family='binomial')
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  6 10251 10293 -5119.7    10239                           
+# main.model  7 10247 10296 -5116.5    10233 6.2659      1    0.01231 *
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         6 10251 10293 -5119.7    10239                            
+# interaction.model  9 10246 10309 -5113.8    10228 11.707      3   0.008458 **
+
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.43928    0.11829  -3.714 0.000204 ***
+# condition3   0.09386    0.05786   1.622 0.104756    
+# condition4  -0.01267    0.05895  -0.215 0.829800    
+# gender1     -0.27855    0.17447  -1.597 0.110373    
+# iq_z         0.05325    0.10015   0.532 0.594949    
+
+#
+```
+###############
+## FIGURE 4A ##
+###############
+```{r}
+#Part A: Go decisions plotted against Age
+df_fMRI_all$pred_go <- predict(interaction.model, newdata=df_fMRI_all, re.form=NA, type='response')
+
+fig_4a <- ggplot(data=df_fMRI_all, aes(x=age, y=pred_go, color=condition)) +
+  geom_line(aes(group=condition), size=1) +
+  labs(x='Age', y='Predicted probability of Go decisions', color='Condition') +
+  theme(text = element_text(size=16)) +
+  scale_colour_discrete(labels=condition_labels)
+ggsave('fig_4a.png', fig_4a)
+
+pGo <- df_fMRI_all %>% group_by(scores.SID, condition) %>% summarize(pGo = mean(go))
+pGo_by_age <- merge(pGo, demo, by = 'scores.SID')
+
+ggplot(pGo_by_age, aes(x = age, y = pGo, color=condition), stat_smooth(method = loess)) +
+  geom_point() +
+  geom_line(aes(group=condition), size=1) +
+  #geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci), width=0.5, position=position_dodge(.2)) +
+  #facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Age (mean-centered)', y='Proportion of Go decisions', color='Social Context')
+```
+######################################################################
+## Age Group effects on GO DECISIONS while controlling for Sex & IQ ##
+######################################################################
+```{r}
+# Age group effects on the proportion of Go decisions (by run_index)
+# null.model <- glmer(go ~ run_index + gender + iq_z + (1|SID), data=df_fMRI, family='binomial')
+# main.model <- glmer(go ~ age_group + run_index + gender + iq_z + (1|SID), data=df_fMRI, family='binomial')
+# interaction.model <- glmer(go ~ age_group * run_index + gender + iq_z + (1|SID), data=df_fMRI, family='binomial', control=glmerControl(optimizer="bobyqa"))
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+# 
+# # Age group effects on the proportion of Go decisions (by location)
+# null.model <- glmer(go ~ condition + gender + iq_z + (1|SID), data=df_fMRI, family='binomial')
+# main.model <- glmer(go ~ age_group + condition + gender + iq_z + (1|SID), data=df_fMRI, family='binomial')
+# interaction.model <- glmer(go ~ age_group * condition + gender + iq_z + (1|SID), data=df_fMRI, family='binomial')
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+```
+###########################################################
+## Age effects on CRASHES while controlling for Sex & IQ ##
+###########################################################
+```{r}
+# Age effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|scores.SID), data=df_fMRI_all_stops, family='binomial')
+main.model <- glmer(go_cr ~ age_c + run_index + gender + iq_z + (1|scores.SID), data=df_fMRI_all_stops, family='binomial')
+interaction.model <- glmer(go_cr ~ age_c * run_index + gender + iq_z + (1|scores.SID), data=df_fMRI_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  9 7512.2 7574.8 -3747.1   7494.2                           
+# main.model 10 7509.6 7579.0 -3744.8   7489.6 4.6917      1    0.03031 *
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         9 7512.2 7574.8 -3747.1   7494.2                           
+# interaction.model 15 7513.5 7617.7 -3741.8   7483.5 10.726      6    0.09721 .
+anova(main.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# main.model        10 7509.6 7579.0 -3744.8   7489.6                         
+# interaction.model 15 7513.5 7617.7 -3741.8   7483.5 6.0346      5     0.3029
+
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.36294    0.10837 -12.577   <2e-16 ***
+# run_index4  -0.07641    0.10063  -0.759    0.448    
+# run_index5  -0.04032    0.10010  -0.403    0.687    
+# run_index6   0.06847    0.09862   0.694    0.487    
+# run_index7  -0.06087    0.10040  -0.606    0.544    
+# run_index8  -0.10264    0.10103  -1.016    0.310    
+# gender1     -0.16883    0.13296  -1.270    0.204    
+# iq_z         0.05595    0.08174   0.685    0.494 
+
+# Age effects on the proportion of Go decisions that resulted in Crashes (by location)
+null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|scores.SID), data=df_fMRI_all, family='binomial')
+main.model <- glmer(go_cr ~ age_c + condition + gender + iq_z + (1|scores.SID), data=df_fMRI_all, family='binomial')
+interaction.model <- glmer(go_cr ~ age_c * condition + gender + iq_z + (1|scores.SID), data=df_fMRI_all, family='binomial')
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  6 7843.7 7885.7 -3915.9   7831.7                           
+# main.model  7 7841.4 7890.3 -3913.7   7827.4 4.3431      1    0.03716 *
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         6 7843.7 7885.7 -3915.9   7831.7                         
+# interaction.model  9 7843.7 7906.6 -3912.8   7825.7 6.0286      3     0.1102
+anova(main.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# main.model         7 7841.4 7890.3 -3913.7   7827.4                         
+# interaction.model  9 7843.7 7906.6 -3912.8   7825.7 1.6855      2     0.4305
+
+summary(null.model)
+#Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.39740    0.09149 -15.274   <2e-16 ***
+# condition3   0.03088    0.06871   0.449    0.653    
+# condition4  -0.06596    0.07042  -0.937    0.349    
+# gender1     -0.17542    0.12710  -1.380    0.168    
+# iq_z         0.03877    0.07361   0.527    0.598  
+```
+###############
+## FIGURE 4B ##
+###############
+```{r}
+# Part B: Crashes
+crashes <- df_fMRI_all %>% distinct(scores.SID, gender_flip, condition, run_index, crash_count)
+
+
+plot.crashes <- crashes %>% group_by(gender_flip, condition, run_index) %>%
+  summarize(mean = mean(crash_count), sd = sd(crash_count), n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+
+ggplot(plot.crashes, aes(x = run_index, y = mean, color=gender_flip)) +
+  geom_point(position=position_dodge(.1), size=3) +
+  geom_line(aes(group=gender_flip), size=1) +
+  # geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci), width=0.5, position=position_dodge(.2)) +
+  # facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Crashes', color='Sex') +
+  scale_y_continuous(breaks = c(3, 4, 5))
+```
+
+####################################################################
+## Puberty effects on GO DECISIONS while controlling for Sex & IQ ##
+####################################################################
+```{r}
+df_pds_all_stops <- df_fMRI_all_stops %>% filter(!is.na(PDS_mean_score))
+df_pds_all <- df_fMRI_all %>% filter(!is.na(PDS_mean_score))
+
+
+# Puberty effects on the proportion of Go decisions (by run_index)
+null.model <- glmer(go ~ run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial')
+main.model <- glmer(go ~ PDS_mean_score + run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+interaction.model <- glmer(go ~ PDS_mean_score * run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
+# null.model  9 7657.1 7717.2 -3819.5   7639.1                         
+# main.model 10 7657.2 7724.0 -3818.6   7637.2 1.8437      1     0.1745
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         9 7657.1 7717.2 -3819.5   7639.1                         
+# interaction.model 15 7659.2 7759.3 -3814.6   7629.2 9.8938      6     0.1292
+
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.352238   0.140899  -2.500   0.0124 *
+# run_index4  -0.063843   0.095454  -0.669   0.5036  
+# run_index5   0.009071   0.095173   0.095   0.9241  
+# run_index6   0.121519   0.094851   1.281   0.2001  
+# run_index7  -0.040963   0.095361  -0.430   0.6675  
+# run_index8   0.036203   0.095081   0.381   0.7034  
+# gender1     -0.164995   0.194959  -0.846   0.3974  
+# iq_z         0.126348   0.113606   1.112   0.2661 
+
+# Puberty effects on the proportion of Go decisions (by social context)
+null.model <- glmer(go ~ condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial')
+main.model <- glmer(go ~ PDS_mean_score + condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial', control=glmerControl(optimizer="bobyqa"))
+interaction.model <- glmer(go ~ PDS_mean_score * condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
+# null.model  6 8056.8 8097.2 -4022.4   8044.8                         
+# main.model  7 8056.8 8103.9 -4021.4   8042.8 2.0619      1      0.151
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         6 8056.8 8097.2 -4022.4   8044.8                        
+# interaction.model  9 8057.2 8117.8 -4019.6   8039.2 5.628      3     0.1312
+
+
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.35621    0.12262  -2.905  0.00367 **
+# condition3   0.05524    0.06515   0.848  0.39655   
+# condition4  -0.01144    0.06601  -0.173  0.86238   
+# gender1     -0.16248    0.18389  -0.884  0.37693   
+# iq_z         0.12709    0.10543   1.206  0.22802  
+```
+###############################################################
+## Puberty effects on CRASHES while controlling for Sex & IQ ##
+###############################################################
+```{r}
+# Puberty effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+main.model <- glmer(go_cr ~ PDS_mean_score + run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+interaction.model <- glmer(go_cr ~ PDS_mean_score * run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  9 5924.0 5984.1 -2953.0   5906.0                         
+# main.model 10 5925.3 5992.1 -2952.7   5905.3 0.6343      1     0.4258
+anova(null.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         9 5924.0 5984.1 -2953.0   5906.0                         
+# interaction.model 15 5932.7 6032.9 -2951.3   5902.7 3.2779      6     0.7733
+
+
+summary(null.model)
+# Fixed effects:
+#              Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.378e+00  1.169e-01 -11.789   <2e-16 ***
+# run_index4   5.740e-02  1.127e-01   0.509    0.610    
+# run_index5  -1.301e-02  1.138e-01  -0.114    0.909    
+# run_index6   1.191e-01  1.118e-01   1.066    0.286    
+# run_index7   2.302e-06  1.136e-01   0.000    1.000    
+# run_index8  -1.301e-02  1.138e-01  -0.114    0.909    
+# gender1     -1.040e-01  1.398e-01  -0.744    0.457    
+# iq_z         8.902e-02  8.186e-02   1.087    0.277
+
+# Puberty effects on the proportion of Go decisions that resulted in Crashes (by social context)
+null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial')
+main.model <- glmer(go_cr ~ PDS_mean_score + condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial')
+interaction.model <- glmer(go_cr ~ PDS_mean_score * condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  6 6196.1 6236.5 -3092.1   6184.1                         
+# main.model  7 6197.2 6244.3 -3091.6   6183.2 0.9113      1     0.3398
+anova(null.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         6 6196.1 6236.5 -3092.1   6184.1                         
+# interaction.model  9 6200.4 6261.0 -3091.2   6182.4 1.7063      3     0.6355
+
+summary(null.model) 
+# Fixed effects:
+#              Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.342636   0.095337 -14.083   <2e-16 ***
+# condition3  -0.002993   0.077171  -0.039    0.969    
+# condition4  -0.066925   0.078541  -0.852    0.394    
+# gender1     -0.087042   0.132924  -0.655    0.513    
+# iq_z         0.100483   0.076606   1.312    0.190   
+```
+
+#####################################################################
+## Social Context on Game Time ##
+#####################################################################
+```{r}
+# Run effects on the proportion of Go decisions
+null.model <- lm(time ~ (1|scores.SID), data=df_fMRI_all_stops)
+run.model <- lm(time ~ run_index + (1|scores.SID), data=df_fMRI_all_stops)
+anova(null.model, run.model)     
+#   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+# 1   7799 211.04                                  
+# 2   7794 204.37  5    6.6687 50.864 < 2.2e-16 ***
+summary(run.model) 
+# Fixed effects:
+#              Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)         2.382660   0.004491 530.524  < 2e-16 ***
+# run_index4         -0.028698   0.006351  -4.518 6.32e-06 ***
+# run_index5         -0.066829   0.006351 -10.522  < 2e-16 ***
+# run_index6         -0.049695   0.006351  -7.824 5.78e-15 ***
+# run_index7         -0.046582   0.006351  -7.334 2.46e-13 ***
+# run_index8         -0.093768   0.006351 -14.763  < 2e-16 ***
+
+#
+
+# Condition effects on the proportion of Go decisions
+null.model <- lm(time ~ (1|scores.SID), data=df_fMRI_all)
+condition.model <- lm(time ~ condition + (1|scores.SID), data=df_fMRI_all)
+anova(null.model, condition.model)  
+#   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+# 1   8179 233.32                                  
+# 2   8177 228.02  2    5.3064 95.147 < 2.2e-16 ***
+summary(condition.model)  
+#  Fixed effects:
+#              Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)         2.368729   0.003179  745.22   <2e-16 ***
+# condition3         -0.048613   0.004495  -10.81   <2e-16 ***
+# condition4         -0.058061   0.004537  -12.80   <2e-16 ***
+
+#
+
+social_df <- df_fMRI_all %>% filter(condition != "2")
+null.model <- lm(time ~ (1|scores.SID), data=social_df)
+condition.model <- lm(time ~ condition + (1|scores.SID), data=social_df)
+anova(null.model, condition.model)  
+#   Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+# 1   5419 120.36                              
+# 2   5418 120.24  1   0.12089 5.4474 0.01963 *
+summary(null.model) 
+# Fixed effects:
+#            Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)        2.315480   0.002024    1144   <2e-16 ***
+
+# 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#########################################################################################################
+##If requested Compared to MOCK trials
+#########################################################################################################
+###############################################
+## Run and Location effects on GO DECISIONS ##
+###############################################
+```{r}
+# Run effects on the proportion of Go decisions
+null.model <- glmer(go ~ (1|scores.SID), data=df_all_stops, family='binomial')
+run.model <- glmer(go ~ run_index + (1|scores.SID), data=df_all_stops, family='binomial')
+anova(null.model, run.model)         
+summary(run.model) 
+
+# Fixed effects:
+#            Estimate Std. Error z value Pr(>|z|)    
+
+# (Intercept) -0.41217    0.11343  -3.634  0.00028 ***
+# run_index2  -0.13063    0.08517  -1.534  0.12509    
+# run_index3  -0.15226    0.08460  -1.800  0.07191 .  
+# run_index4  -0.25618    0.08505  -3.012  0.00259 ** 
+# run_index5  -0.14163    0.08456  -1.675  0.09397 .  
+# run_index6  -0.03287    0.08421  -0.390  0.69632    
+# run_index7  -0.21650    0.08486  -2.551  0.01073 *  
+# run_index8  -0.16291    0.08465  -1.925  0.05428 . 
+
+#
+
+# Condition effects on the proportion of Go decisions
+null.model <- glmer(go ~ (1|scores.SID), data=df_all, family='binomial')
+condition.model <- glmer(go ~ condition + (1|scores.SID), data=df_all, family='binomial')
+anova(null.model, condition.model)        
+summary(condition.model) 
+
+# Fixed effects:
+#            Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.48567    0.09966  -4.873  1.1e-06 ***
+# condition2  -0.11030    0.05839  -1.889   0.0589 .  
+# condition3  -0.01718    0.05815  -0.295   0.7677    
+# condition4  -0.12643    0.05912  -2.138   0.0325 * 
+
+#
+
+```
+#########################################
+## Social Context effects on CRASHES ##
+#########################################
+```{r}
+# Run effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ (1|scores.SID), data=df_all_stops, family='binomial')
+run.model <- glmer(go_cr ~ run_index + (1|scores.SID), data=df_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+anova(null.model, run.model) 
+summary(run.model) 
+
+# Fixed effects:
+#              Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.4653402  0.0969203 -15.119   <2e-16 ***
+# run_index2   0.0606754  0.1002940   0.605    0.545    
+# run_index3  -0.0005661  0.1003993  -0.006    0.996    
+# run_index4  -0.0767261  0.1014819  -0.756    0.450    
+# run_index5  -0.0407681  0.1009544  -0.404    0.686    
+# run_index6   0.0676768  0.0994757   0.680    0.496    
+# run_index7  -0.0612230  0.1012456  -0.605    0.545    
+# run_index8  -0.1028824  0.1018746  -1.010    0.313   
+
+#
+
+# Condition effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ (1|scores.SID), data=df_all, family='binomial')
+condition.model <- glmer(go_cr ~ condition + (1|scores.SID), data=df_all, family='binomial')
+anova(null.model, condition.model)        
+summary(condition.model) 
+
+# Fixed effects:
+#            Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.43798    0.07888 -18.229   <2e-16 ***
+# condition2  -0.06217    0.06922  -0.898   0.3691    
+# condition3  -0.03138    0.06892  -0.455   0.6489    
+# condition4  -0.12761    0.07055  -1.809   0.0705 .
+
+```
+################################################
+## Run and Location effects on STOP DECISIONS ##
+################################################
+```{r}
+# Run effects on the proportion of Stop decisions
+null.model <- glmer(stop ~ (1|scores.SID), data=df_all_stops, family='binomial')
+run.model <- glmer(stop ~ run_index + (1|scores.SID), data=df_all_stops, family='binomial')
+anova(null.model, run.model)
+#            Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)    
+# null.model  2 13494 13509 -6745.2    13490                            
+# run.model   9 13424 13489 -6703.0    13406 84.44      7  1.707e-15 ***
+summary(run.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.20410    0.09958  -2.050   0.0404 *  
+# run_index2   0.42431    0.08401   5.051 4.41e-07 ***
+# run_index3   0.43216    0.08329   5.189 2.12e-07 ***
+# run_index4   0.60846    0.08368   7.271 3.56e-13 ***
+# run_index5   0.57088    0.08358   6.831 8.45e-12 ***
+# run_index6   0.43552    0.08329   5.229 1.71e-07 ***
+# run_index7   0.61532    0.08370   7.352 1.96e-13 ***
+# run_index8   0.61189    0.08369   7.311 2.65e-13 ***
+
+# Condition effects on the proportion of Stop decisions
+null.model <- glmer(stop ~ (1|scores.SID), data=df_all, family='binomial')
+condition.model <- glmer(stop ~ condition + (1|scores.SID), data=df_all, family='binomial')
+anova(null.model, condition.model)
+#                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# null.model       2 14211 14225 -7103.4    14207                             
+# condition.model  5 14162 14199 -7076.2    14152 54.483      3   8.85e-12 ***
+summary(condition.model) 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept)  0.01340    0.08535   0.157    0.875    
+# condition2   0.27586    0.05704   4.836 1.32e-06 ***
+# condition3   0.29015    0.05706   5.085 3.68e-07 ***
+# condition4   0.41202    0.05796   7.108 1.18e-12 *** 
+```
+###############################################################################
+## Run and Location effects on Stop decisions when there was no crossing car ##
+###############################################################################
+```{r}
+# Run effects on the proportion of Bad Stop decisions
+null.model <- glmer(stop_nocar ~ (1|scores.SID), data=df_all_stops, family='binomial')
+run.model <- glmer(stop_nocar ~ run_index + (1|scores.SID), data=df_all_stops, family='binomial')
+anova(null.model, run.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
+# null.model  2 11944 11959 -5970.2    11940                            
+# run.model   9 11934 12000 -5958.2    11916 23.951      7   0.001162 **
+summary(run.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.29533    0.08069 -16.054  < 2e-16 ***
+# run_index2   0.28642    0.09478   3.022 0.002512 ** 
+# run_index3   0.31583    0.09351   3.377 0.000732 ***
+# run_index4   0.38151    0.09296   4.104 4.06e-05 ***
+# run_index5   0.35853    0.09315   3.849 0.000119 ***
+# run_index6   0.28825    0.09376   3.074 0.002111 ** 
+# run_index7   0.37387    0.09301   4.020 5.83e-05 ***
+# run_index8   0.33145    0.09338   3.549 0.000386 ***
+
+# Condition effects on the proportion of Stop decisions
+null.model <- glmer(stop_nocar ~ (1|scores.SID), data=df_all, family='binomial')
+condition.model <- glmer(stop_nocar ~ condition + (1|scores.SID), data=df_all, family='binomial')
+anova(null.model, condition.model)
+#                 Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
+# null.model       2 12527 12541 -6261.3    12523                            
+# condition.model  5 12520 12557 -6255.1    12510 12.387      3    0.00617 **
+summary(condition.model) 
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.14380    0.06033 -18.960  < 2e-16 ***
+# condition2   0.17365    0.06292   2.760  0.00578 ** 
+# condition3   0.16260    0.06299   2.581  0.00984 ** 
+# condition4   0.20336    0.06334   3.210  0.00133 ** 
+```
+#########################################################
+## FIGURE 2: Run and Location effects on Task Behavior ##
+#########################################################
+```{r}
+# # Part A: Run and Location effects on Go decisions
+# plot_go = df %>% group_by(SID, run_index, condition) %>% summarize(mean_go = mean(go), sd_go = sd(go))
+#   
+# fig_2a <- ggplot(plot_go, aes(x = run_index, y = mean_go)) +
+#   geom_boxplot() +
+#   facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+#   labs(x='Run number', y='Propotion of Go decisions') +
+#   #coord_cartesian(x=c(10.5,17.5)) + 
+#   theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+#         axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
+#   #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+# ggsave('fig_2a.png', fig_2a)
+# 
+# # Part B: Run and Location effects on Crashes
+# plot_go_cr = df %>% group_by(SID, run_index, condition) %>% summarize(mean_go_cr = mean(go_cr), sd_go_cr = sd(go_cr))
+#   
+# fig_2b <- ggplot(plot_go_cr, aes(x = run_index, y = mean_go_cr)) +
+#   geom_boxplot() +
+#   facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+#   labs(x='Run number', y='Propotion of Go decisions\nthat resulted in Crashes') +
+#   #coord_cartesian(x=c(10.5,17.5)) + 
+#   theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+#         axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
+#   #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+# ggsave('fig_2b.png', fig_2b)
+```
+#####################################################################
+## FIGURE 2 ALTERNATIVE: Run and Location effects on Task Behavior ##
+#####################################################################
+```{r}
+# Part A: Run and Condition effects on Go decisions
+go_by_sid = df_all %>% group_by(scores.SID, run_index, condition) %>% summarize(mean_go = mean(go))
+plot_group_go = go_by_sid %>% group_by(run_index, condition) %>% summarize(mean=mean(mean_go), 
+                                                                    sd=sd(mean_go), 
+                                                                    n=70, # entered manually (could not be calculated because 127 has 140 trials, whereas all other subjects have 160 trials)
+                                                                    se=sd/sqrt(n), 
+                                                                    ci=qt(0.975, df=n-1)*se) 
+  
+fig_2a <- ggplot(plot_group_go, aes(x = run_index, y = mean, group=1)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = mean-ci, ymax = mean+ci)) +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Go decisions') #+
+  #coord_cartesian(x=c(10.5,17.5)) + 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
+  #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+ggsave('fig_2a.png', fig_2a)
+
+# Part B: Run and Location effects on Crashes
+go_cr_by_sid = df_all %>% group_by(scores.SID, run_index, condition) %>% summarize(mean_go_cr = mean(go_cr))
+plot_group_go_cr = go_cr_by_sid %>% group_by(run_index, condition) %>% summarize(mean = mean(mean_go_cr), 
+                                                                    sd = sd(mean_go_cr), 
+                                                                    n=70, # entered manually (could not be calculated because 127 has 140 trials, whereas all other subjects have 160 trials)
+                                                                    se=sd/sqrt(n), 
+                                                                    ci=qt(0.975, df=n-1)*se) 
+
+fig_2b <- ggplot(plot_group_go_cr, aes(x = run_index, y = mean, group=1)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = mean-ci, ymax = mean+ci)) +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Go decisions\nthat resulted in Crashes') #+
+  #coord_cartesian(x=c(10.5,17.5)) + 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
+  #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+ggsave('fig_2b.png', fig_2b)
+
+# Part C: Run and Location effects on Stop decisions
+stop_by_sid = df_all %>% group_by(scores.SID, run_index, condition) %>% summarize(mean_stop = mean(stop))
+plot_group_stop = stop_by_sid %>% group_by(run_index, condition) %>% summarize(mean = mean(mean_stop), 
+                                                                    sd = sd(mean_stop), 
+                                                                    n=70, # entered manually (could not be calculated because 127 has 140 trials, whereas all other subjects have 160 trials)
+                                                                    se=sd/sqrt(n), 
+                                                                    ci=qt(0.975, df=n-1)*se) 
+
+fig_2c <- ggplot(plot_group_stop, aes(x = run_index, y = mean, group=1)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = mean-ci, ymax = mean+ci)) +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Stop decisions') #+
+  #coord_cartesian(x=c(10.5,17.5)) + 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
+  #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+ggsave('fig_2c.png', fig_2c)
+
+# Part d: Run and Location effects on Bad Stop decisions
+stop_nocar_by_sid = df_all %>% group_by(scores.SID, run_index, condition) %>% summarize(mean_stop_nocar = mean(stop_nocar))
+plot_group_stop_nocar = stop_nocar_by_sid %>% group_by(run_index, condition) %>% summarize(mean = mean(mean_stop_nocar), 
+                                                                    sd = sd(mean_stop_nocar), 
+                                                                    n=70, # entered manually (could not be calculated because 127 has 140 trials, whereas all other subjects have 160 trials)
+                                                                    se=sd/sqrt(n), 
+                                                                    ci=qt(0.975, df=n-1)*se) 
+
+fig_2d <- ggplot(plot_group_stop_nocar, aes(x = run_index, y = mean, group=1)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = mean-ci, ymax = mean+ci)) +
+  facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+  labs(x='Run number', y='Propotion of Bad Stop decisions') #+
+  #coord_cartesian(x=c(10.5,17.5)) + 
+  theme(text = element_text(size=18), axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14), strip.text.x = element_text(size=18)) #+
+  #scale_y_continuous(breaks = c(0, 2, 4, 6, 8, 10)) + scale_x_continuous(breaks = 11:17) 
+ggsave('fig_2d.png', fig_2d)
+```
+##############################################
+## Run and Location effects on GO DECISIONS ##
+##############################################
+```{r}
+# Run effects on the proportion of Go decisions
+null.model <- glmer(go ~ (1|scores.SID), data=df_all_stops, family='binomial')
+run.model <- glmer(go ~ run_index + (1|scores.SID), data=df_all_stops, family='binomial')
+anova(null.model, run.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# null.model  2 13008 13022 -6501.9    13004                           
+# run.model   9 13008 13073 -6494.8    12990 14.251      7    0.04689 *
+summary(run.model)
+# Fixed effects:
+#              Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.41217    0.11343  -3.634  0.00028 ***
+# run_index2  -0.13063    0.08517  -1.534  0.12509    
+# run_index3  -0.15226    0.08460  -1.800  0.07191 .  
+# run_index4  -0.25618    0.08505  -3.012  0.00259 ** 
+# run_index5  -0.14163    0.08456  -1.675  0.09397 .  
+# run_index6  -0.03287    0.08421  -0.390  0.69632    
+# run_index7  -0.21650    0.08486  -2.551  0.01073 *  
+# run_index8  -0.16291    0.08465  -1.925  0.05428 . 
+
+# Location effects on the proportion of Go decisions
+null.model <- glmer(go ~ (1|scores.SID), data=df_all, family='binomial')
+location.model <- glmer(go ~ condition + (1|scores.SID), data=df_all, family='binomial')
+anova(null.model, location.model)
+#                Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# null.model      2 13683 13698 -6839.5    13679                           
+# location.model  5 13682 13718 -6836.0    13672 7.1755      3    0.06651 .
+summary(location.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.48567    0.09966  -4.873  1.1e-06 ***
+# condition2  -0.11030    0.05839  -1.889   0.0589 .  
+# condition3  -0.01718    0.05815  -0.295   0.7677    
+# condition4  -0.12643    0.05912  -2.138   0.0325 *  
+```
+#########################################
+## Run and Location effects on CRASHES ##
+#########################################
+```{r}
+# Run effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ (1|scores.SID), data=df_all_stops, family='binomial')
+run.model <- glmer(go_cr ~ run_index + (1|scores.SID), data=df_all_stops, family='binomial')
+anova(null.model, run.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+# null.model  2 10020 10034 -5007.8    10016                         
+# run.model   9 10028 10093 -5005.1    10010 5.3826      7     0.6134
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.48432    0.06984  -21.25   <2e-16 ***
+
+# Location effects on the proportion of Go decisions that resulted in Crashes
+null.model <- glmer(go_cr ~ (1|scores.SID), data=df_all, family='binomial')
+location.model <- glmer(go_cr ~ condition + (1|scores.SID), data=df_all, family='binomial')
+anova(null.model, location.model)
+#                Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
+# null.model      2 10485 10500 -5240.5    10481                         
+# location.model  5 10487 10524 -5238.7    10477 3.5656      3     0.3124
+summary(location.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.43798    0.07888 -18.229   <2e-16 ***
+# condition2  -0.06217    0.06922  -0.898   0.3691    
+# condition3  -0.03138    0.06892  -0.455   0.6489    
+# condition4  -0.12761    0.07055  -1.809   0.0705 .  
+```
+################################################################
+## Age effects on GO DECISIONS while controlling for Sex & IQ ##
+################################################################
+```{r}
+# Linear Age effects on the proportion of Go decisions (by run_index)
+null.model <- glmer(go ~ run_index + gender + iq_z + (1|scores.SID), data=df_all_stops, family='binomial')
+main.model <- glmer(go ~ age_c + run_index + gender + iq_z + (1|scores.SID), data=df_all_stops, family='binomial')
+interaction.model <- glmer(go ~ age_c * run_index + gender + iq_z + (1|scores.SID), data=df_all_stops, family='binomial')
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model 11 12975 13054 -6476.4    12953                           
+# main.model 12 12972 13059 -6474.0    12948 4.7881      1    0.02866 *
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model        11 12975 13054 -6476.4    12953                             
+# interaction.model 19 12964 13101 -6462.8    12926 27.329      8  0.0006202 ***
+anova(main.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
+# main.model        12 12972 13059 -6474.0    12948                            
+# interaction.model 19 12964 13101 -6462.8    12926 22.541      7   0.002048 **
+summary(null.model)
+# Fixed effects:
+#              Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.26194    0.12564  -2.085  0.03708 * 
+# run_index2  -0.12701    0.08518  -1.491  0.13592   
+# run_index3  -0.14908    0.08459  -1.762  0.07802 . 
+# run_index4  -0.25293    0.08504  -2.974  0.00294 **
+# run_index5  -0.13846    0.08456  -1.637  0.10155   
+# run_index6  -0.02976    0.08421  -0.353  0.72379   
+# run_index7  -0.21328    0.08485  -2.514  0.01195 * 
+# run_index8  -0.15973    0.08464  -1.887  0.05913 . 
+# gender1     -0.23520    0.17103  -1.375  0.16907   
+# iq_z         0.06539    0.10481   0.624  0.53272  
+
+# Linear Age effects on the proportion of Go decisions (by location)
+null.model <- glmer(go ~ condition + gender + iq_z + (1|scores.SID), data=df_all, family='binomial')
+main.model <- glmer(go ~ age_c + condition + gender + iq_z + (1|scores.SID), data=df_all, family='binomial')
+interaction.model <- glmer(go ~ age_c * condition + gender + iq_z + (1|scores.SID), data=df_all, family='binomial')
+
+anova(null.model, main.model)
+#            Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  7 13648 13699 -6817.1    13634                           
+# main.model  8 13645 13704 -6814.6    13629 4.8882      1    0.02704 *
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         7 13648 13699 -6817.1    13634                            
+# interaction.model 11 13641 13721 -6809.4    13619 15.389      4   0.003959 **
+anova(main.model, interaction.model)
+
+#                  Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+# main.model         8 13645 13704 -6814.6    13629                           
+# interaction.model 11 13641 13721 -6809.4    13619 10.501      3    0.01476 *
+
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.33301    0.11128  -2.992  0.00277 **
+# condition2  -0.10890    0.05839  -1.865  0.06217 . 
+# condition3  -0.01583    0.05815  -0.272  0.78540   
+# condition4  -0.12477    0.05912  -2.111  0.03481 * 
+# gender1     -0.24969    0.16212  -1.540  0.12352   
+# iq_z         0.04382    0.09308   0.471  0.63782  
+```
+###############
+## FIGURE 4A ##
+###############
+```{r}
+# Part A: Go decisions plotted against Age
+# df$pred_go <- predict(interaction.model, newdata=df, re.form=NA, type='response')
+# 
+# fig_4a <- ggplot(data=df, aes(x=age, y=pred_go, color=condition)) +
+#   geom_line(aes(group=condition), size=1) +
+#   #facet_grid(.~tds_group, scales='free', labeller=as_labeller(group_labels)) +
+#   labs(x='Age', y='Predicted probability of Go decisions', color='Location') +
+#   theme(text = element_text(size=16)) +
+#   #coord_cartesian(x=c(-3, 4)) +
+#   scale_colour_discrete(labels=condition_labels)
+# ggsave('fig_4a.png', fig_4a)
+
+# pGo <- df %>% group_by(SID, condition) %>% summarize(pGo = mean(go))
+# pGo_by_age <- merge(pGo, demo, by = 'SID')
+
+# ggplot(pGo_by_age, aes(x = age, y = pGo, color=condition), stat_smooth(method = loess)) +
+#   geom_point() +
+#   geom_line(aes(group=condition), size=1) +
+#   #geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci), width=0.5, position=position_dodge(.2)) +
+#   #facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+#   labs(x='Age (mean-centered)', y='Proportion of Go decisions', color='Location')
+```
+######################################################################
+## Age Group effects on GO DECISIONS while controlling for Sex & IQ ##
+######################################################################
+```{r}
+# Age group effects on the proportion of Go decisions (by run_index)
+# null.model <- glmer(go ~ run_index + gender + iq_z + (1|SID), data=df, family='binomial')
+# main.model <- glmer(go ~ age_group + run_index + gender + iq_z + (1|SID), data=df, family='binomial')
+# interaction.model <- glmer(go ~ age_group * run_index + gender + iq_z + (1|SID), data=df, family='binomial', control=glmerControl(optimizer="bobyqa"))
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+# 
+# # Age group effects on the proportion of Go decisions (by location)
+# null.model <- glmer(go ~ condition + gender + iq_z + (1|SID), data=df, family='binomial')
+# main.model <- glmer(go ~ age_group + condition + gender + iq_z + (1|SID), data=df, family='binomial')
+# interaction.model <- glmer(go ~ age_group * condition + gender + iq_z + (1|SID), data=df, family='binomial')
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+```
+###########################################################
+## Age effects on CRASHES while controlling for Sex & IQ ##
+###########################################################
+```{r}
+# Age effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|SID), data=df, family='binomial')
+main.model <- glmer(go_cr ~ age_c + run_index + gender + iq_z + (1|SID), data=df, family='binomial')
+interaction.model <- glmer(go_cr ~ age_c * run_index + gender + iq_z + (1|SID), data=df, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model 11 11111 11191 -5544.3    11089                         
+# main.model 12 11113 11200 -5544.3    11089 0.0121      1     0.9124
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model        11 11111 11191 -5544.3    11089                         
+# interaction.model 19 11114 11253 -5538.0    11076 12.617      8     0.1257
+#anova(main.model, interaction.model)
+
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.43537    0.10940 -13.121   <2e-16 ***
+# run_index2   0.02410    0.09631   0.250   0.8024    
+# run_index3  -0.07655    0.09762  -0.784   0.4329    
+# run_index4   0.01396    0.09631   0.145   0.8847    
+# run_index5   0.04615    0.09588   0.481   0.6303    
+# run_index6   0.02783    0.09612   0.290   0.7721    
+# run_index7   0.16941    0.09433   1.796   0.0725 .  
+# run_index8   0.19479    0.09404   2.071   0.0383 *  
+# gender1     -0.09179    0.11380  -0.807   0.4199    
+# iq_z         0.01449    0.07332   0.198   0.8433  
+
+# Age effects on the proportion of Go decisions that resulted in Crashes (by location)
+null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|scores.SID), data=df_all, family='binomial')
+main.model <- glmer(go_cr ~ age_c + condition + gender + iq_z + (1|scores.SID), data=df_all, family='binomial')
+interaction.model <- glmer(go_cr ~ age_c * condition + gender + iq_z + (1|scores.SID), data=df_all, family='binomial')
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  7 10457 10508 -5221.3    10443                           
+# main.model  8 10455 10513 -5219.3    10439 4.1071      1     0.0427 *
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         7 10457 10508 -5221.3    10443                         
+# interaction.model 11 10459 10539 -5218.3    10437 6.1145      4     0.1908
+anova(main.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# main.model         8 10455 10513 -5219.3    10439                         
+# interaction.model 11 10459 10539 -5218.3    10437 2.0074      3     0.5709
+
+
+summary(null.model)
+#Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.34344    0.08766 -15.326   <2e-16 ***
+# condition2  -0.06020    0.06925  -0.869   0.3847    
+# condition3  -0.02943    0.06895  -0.427   0.6695    
+# condition4  -0.12479    0.07059  -1.768   0.0771 .  
+# gender1     -0.14601    0.11857  -1.231   0.2182    
+# iq_z         0.04487    0.06855   0.655   0.5128 
+```
+###############
+## FIGURE 4B ##
+###############
+```{r}
+# Part B: Crashes
+# crashes <- df %>% distinct(SID, gender_flip, condition, run_index, crash.count)
+# # new.row = c(127, 'Male', 1, 2, NA)
+# # crashes <- rbind(crashes, new.row)
+# 
+# plot.crashes <- crashes %>% group_by(gender_flip, condition, run_index) %>%
+#   summarize(mean = mean(crash.count), sd = sd(crash.count), n = n(), se = sd/sqrt(n), ci=qt(0.975, df=n-1)*se)
+# 
+# ggplot(plot.crashes, aes(x = run_index, y = mean, color=gender_flip)) +
+#   geom_point(position=position_dodge(.1), size=3) +
+#   geom_line(aes(group=gender_flip), size=1) +
+#   geom_errorbar(aes(ymax=mean + ci, ymin=mean - ci), width=0.5, position=position_dodge(.2)) +
+#   facet_grid(.~condition, scales='free', labeller=as_labeller(condition_labels)) +
+#   labs(x='Run number', y='Crashes', color='Sex') +
+#   scale_y_continuous(breaks = c(3, 4, 5))
+```
+#################################################################
+## Age Group effects on CRASHES while controlling for Sex & IQ ##
+#################################################################
+```{r}
+# # Age group effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+# null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|SID), data=df, family='binomial')
+# main.model <- glmer(go_cr ~ age_group + run_index + gender + iq_z + (1|SID), data=df, family='binomial')
+# interaction.model <- glmer(go_cr ~ age_group * run_index + gender + iq_z + (1|SID), data=df, family='binomial', control=glmerControl(optimizer="bobyqa"))
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+# 
+# # Age group effects on the proportion of Go decisions that resulted in Crashes (by location)
+# null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|SID), data=df, family='binomial')
+# main.model <- glmer(go_cr ~ age_group + condition + gender + iq_z + (1|SID), data=df, family='binomial')
+# interaction.model <- glmer(go_cr ~ age_group * condition + gender + iq_z + (1|SID), data=df, family='binomial')
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+```
+####################################################################
+## Puberty effects on GO DECISIONS while controlling for Sex & IQ ##
+####################################################################
+```{r}
+# Puberty effects on the proportion of Go decisions (by run_index)
+null.model <- glmer(go ~ run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial')
+main.model <- glmer(go ~ PDS_mean_score + run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+interaction.model <- glmer(go ~ PDS_mean_score * run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  9 7657.1 7717.2 -3819.5   7639.1                         
+# main.model 10 7657.2 7724.0 -3818.6   7637.2 1.8437      1     0.1745
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
+# null.model         9 7657.1 7717.2 -3819.5   7639.1                         
+# interaction.model 15 7659.2 7759.3 -3814.6   7629.2 9.8938      6     0.1292
+anova(main.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# main.model        10 7657.2 7724.0 -3818.6   7637.2                         
+# interaction.model 15 7659.2 7759.3 -3814.6   7629.2 8.0501      5     0.1535
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.352238   0.140899  -2.500   0.0124 *
+# run_index4  -0.063843   0.095454  -0.669   0.5036  
+# run_index5   0.009071   0.095173   0.095   0.9241  
+# run_index6   0.121519   0.094851   1.281   0.2001  
+# run_index7  -0.040963   0.095361  -0.430   0.6675  
+# run_index8   0.036203   0.095081   0.381   0.7034  
+# gender1     -0.164995   0.194959  -0.846   0.3974  
+# iq_z         0.126348   0.113606   1.112   0.2661
+
+# Puberty effects on the proportion of Go decisions (by location)
+null.model <- glmer(go ~ condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial')
+main.model <- glmer(go ~ PDS_mean_score + condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial', control=glmerControl(optimizer="bobyqa"))
+interaction.model <- glmer(go ~ PDS_mean_score * condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  6 8056.8 8097.2 -4022.4   8044.8                         
+# main.model  7 8056.8 8103.9 -4021.4   8042.8 2.0619      1      0.151
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         6 8056.8 8097.2 -4022.4   8044.8                        
+# interaction.model  9 8057.2 8117.8 -4019.6   8039.2 5.628      3     0.1312
+anova(main.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# main.model         7 8056.8 8103.9 -4021.4   8042.8                         
+# interaction.model  9 8057.2 8117.8 -4019.6   8039.2 3.5662      2     0.1681
+summary(null.model)
+# Fixed effects:
+#             Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -0.35621    0.12262  -2.905  0.00367 **
+# condition3   0.05524    0.06515   0.848  0.39655   
+# condition4  -0.01144    0.06601  -0.173  0.86238   
+# gender1     -0.16248    0.18389  -0.884  0.37693   
+# iq_z         0.12709    0.10543   1.206  0.22802  
+```
+###############################################################
+## Puberty effects on CRASHES while controlling for Sex & IQ ##
+###############################################################
+```{r}
+# Puberty effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+main.model <- glmer(go_cr ~ PDS_mean_score + run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+interaction.model <- glmer(go_cr ~ PDS_mean_score * run_index + gender + iq_z + (1|scores.SID), data=df_pds_all_stops, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  9 5924.0 5984.1 -2953.0   5906.0                         
+# main.model 10 5925.3 5992.1 -2952.7   5905.3 0.6343      1     0.4258
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         9 5924.0 5984.1 -2953.0   5906.0                         
+# interaction.model 15 5932.7 6032.9 -2951.3   5902.7 3.2779      6     0.7733
+anova(main.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# main.model        10 5925.3 5992.1 -2952.7   5905.3                         
+# interaction.model 15 5932.7 6032.9 -2951.3   5902.7 2.6435      5     0.7547
+summary(null.model)
+# Fixed effects:
+#               Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.378e+00  1.169e-01 -11.789   <2e-16 ***
+# run_index4   5.740e-02  1.127e-01   0.509    0.610    
+# run_index5  -1.301e-02  1.138e-01  -0.114    0.909    
+# run_index6   1.191e-01  1.118e-01   1.066    0.286    
+# run_index7   2.302e-06  1.136e-01   0.000    1.000    
+# run_index8  -1.301e-02  1.138e-01  -0.114    0.909    
+# gender1     -1.040e-01  1.398e-01  -0.744    0.457    
+# iq_z         8.902e-02  8.186e-02   1.087    0.277 
+
+# Puberty effects on the proportion of Go decisions that resulted in Crashes (by location)
+null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial')
+main.model <- glmer(go_cr ~ PDS_mean_score + condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial')
+interaction.model <- glmer(go_cr ~ PDS_mean_score * condition + gender + iq_z + (1|scores.SID), data=df_pds_all, family='binomial', control=glmerControl(optimizer="bobyqa"))
+
+anova(null.model, main.model)
+#            Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model  6 6196.1 6236.5 -3092.1   6184.1                         
+# main.model  7 6197.2 6244.3 -3091.6   6183.2 0.9113      1     0.3398
+anova(null.model, interaction.model)
+#                   Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+# null.model         6 6196.1 6236.5 -3092.1   6184.1                         
+# interaction.model  9 6200.4 6261.0 -3091.2   6182.4 1.7063      3     0.6355
+anova(main.model, interaction.model)
+#                   Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
+# main.model         7 6197.2 6244.3 -3091.6   6183.2                        
+# interaction.model  9 6200.4 6261.0 -3091.2   6182.4 0.795      2      0.672
+summary(null.model) 
+# Fixed effects:
+#              Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -1.342636   0.095337 -14.083   <2e-16 ***
+# condition3  -0.002993   0.077171  -0.039    0.969    
+# condition4  -0.066925   0.078541  -0.852    0.394    
+# gender1     -0.087042   0.132924  -0.655    0.513    
+# iq_z         0.100483   0.076606   1.312    0.190 
+```
+######################################################################
+## PDS Group effects on GO DECISIONS while controlling for Sex & IQ ##
+######################################################################
+```{r}
+# # PDS group effects on the proportion of Go decisions (by run_index)
+# null.model <- glmer(go ~ run_index + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# main.model <- glmer(go ~ pds_group + run_index + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# interaction.model <- glmer(go ~ pds_group * run_index + gender + iq_z + (1|SID), data=df_pds, family='binomial', control=glmerControl(optimizer="bobyqa"))
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+# 
+# # Age group effects on the proportion of Go decisions (by location)
+# null.model <- glmer(go ~ condition + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# main.model <- glmer(go ~ pds_group + condition + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# interaction.model <- glmer(go ~ pds_group * condition + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+```
+#################################################################
+## PDS Group effects on CRASHES while controlling for Sex & IQ ##
+#################################################################
+```{r}
+# PDS group effects on the proportion of Go decisions that resulted in Crashes (by run_index)
+# null.model <- glmer(go_cr ~ run_index + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# main.model <- glmer(go_cr ~ pds_group + run_index + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# interaction.model <- glmer(go_cr ~ pds_group * run_index + gender + iq_z + (1|SID), data=df_pds, family='binomial', control=glmerControl(optimizer="bobyqa"))
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+# 
+# # PDS group effects on the proportion of Go decisions that resulted in Crashes (by location)
+# null.model <- glmer(go_cr ~ condition + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# main.model <- glmer(go_cr ~ pds_group + condition + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# interaction.model <- glmer(go_cr ~ pds_group * condition + gender + iq_z + (1|SID), data=df_pds, family='binomial')
+# 
+# anova(null.model, main.model)
+# anova(null.model, interaction.model)
+# anova(main.model, interaction.model)
+# 
+# summary(null.model)
+```
