@@ -1,5 +1,5 @@
 %-----------------------------------------------------------------------
-% Job saved on 01-Dec-2019 15:40:40 by cfg_util (rev $Rev: 6460 $)
+% Job saved on 01-Dec-2019 15:52:03 by cfg_util (rev $Rev: 6460 $)
 % spm SPM - SPM12 (6470)
 % cfg_basicio BasicIO - Unknown
 %-----------------------------------------------------------------------
@@ -11,7 +11,7 @@ matlabbatch{2}.cfg_basicio.file_dir.file_ops.file_fplist.filter = '^swrucyb2.*ni
 matlabbatch{2}.cfg_basicio.file_dir.file_ops.file_fplist.rec = 'FPList';
 matlabbatch{3}.cfg_basicio.file_dir.dir_ops.cfg_mkdir.parent = {'/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/cyb/tds2_quad'};
 matlabbatch{3}.cfg_basicio.file_dir.dir_ops.cfg_mkdir.name = '109';
-matlabbatch{4}.spm.stats.fmri_spec.dir = {'/projects/dsnlab/tds/fMRI/analysis/fx/models/cyb/tds2_quad/109'};
+matlabbatch{4}.spm.stats.fmri_spec.dir = {'/projects/dsnlab/shared/tds/fMRI/analysis/fx/models/cyb/tds2_quad/109'};
 matlabbatch{4}.spm.stats.fmri_spec.timing.units = 'secs';
 matlabbatch{4}.spm.stats.fmri_spec.timing.RT = 2;
 matlabbatch{4}.spm.stats.fmri_spec.timing.fmri_t = 72;
