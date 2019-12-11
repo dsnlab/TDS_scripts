@@ -3,9 +3,9 @@
 module load afni
 #export PATH=/usr/local/packages/afni/17.1.01/:${PATH} # set path to latest AFNI version
 
-rx_path=/projects/dsnlab/shared/tds/fMRI/analysis/rx/cyb/group_comp
+rx_path=/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/rx/cyb/tds2_quad_N69 
 
-declare -a rx_list=("flexi_pmod_demo" "flexi_2x2x2_demo")
+declare -a rx_list=("F_conj_pmod_flexi_excQuad")
 
 echo "${rx_list[@]}"
 
