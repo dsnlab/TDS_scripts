@@ -1,0 +1,233 @@
+---
+title: "plot_ROIs_cyb_groupComp"
+author: "Theresa Cheng"
+date: "2/19/2020"
+output: html_document
+---
+
+Make plots of parameter estimates for inclusion and exclusion pmods for the TDS Cyberball Group Comparisons paper.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# load packages, install as needed
+packages = c("tidyr", "dplyr", "ggplot2", "plyr", "data.table")
+
+package.check <- lapply(packages, FUN = function(x) {
+  if (!require(x, character.only = TRUE)) {
+    install.packages(x, dependencies = TRUE)
+    library(x, character.only = TRUE) }})
+
+theme_black = function(base_size = 12, base_family = "") {
+ 
+  theme_grey(base_size = base_size, base_family = base_family) %+replace%
+ 
+    theme(
+      # Specify axis options
+      text = element_text(family = "Helvetica") +
+      axis.line = element_blank(),  
+      axis.text.x = element_text(size = base_size*0.8, color = "white", lineheight = 0.9),
+      axis.text.y = element_text(size = base_size*0.8, color = "white", lineheight = 0.9),  
+      axis.ticks = element_line(color = "white", size  =  0.2),  
+      axis.title.x = element_text(size = base_size, color = "white", margin = margin(0, 10, 0, 0)),  
+      axis.title.y = element_text(size = base_size, color = "white", angle = 90, margin = margin(0, 10, 0, 0)),  
+      axis.ticks.length = unit(0.3, "lines"),   
+      # Specify legend options
+      legend.background = element_rect(color = NA, fill = "black"),  
+      legend.key = element_rect(fill = "black"),  
+      legend.key.size = unit(1.2, "lines"),  
+      legend.key.height = NULL,  
+      legend.key.width = NULL,      
+      legend.text = element_text(size = base_size, color = "white"),  
+      legend.title = element_text(size = base_size, face = "bold", hjust = 0, color = "white"),  
+      legend.position = "right",  
+      legend.text.align = NULL,  
+      legend.title.align = NULL,  
+      legend.direction = "vertical",  
+      legend.box = NULL, 
+      # Specify panel options
+      panel.background = element_rect(fill = "gray15", color  =  NA),  
+      panel.border = element_rect(fill = NA, color = "white"),  
+      panel.grid.major = element_line(color = "grey35"),  
+      panel.grid.minor = element_line(color = "grey20"),  
+      #panel.spacing = unit(0.5, "lines"),   
+      # Specify facetting options
+      strip.background = element_rect(fill = "grey30", color = "grey10"),  
+      strip.text.x = element_text(size = base_size*0.8, color = "white"),  
+      strip.text.y = element_text(size = base_size*0.8, color = "white",angle = -90),  
+      # Specify plot options
+      plot.background = element_rect(color = "black", fill = "black"),  
+      plot.title = element_text(size = base_size*1.2, color = "white"),  
+      panel.spacing = unit(rep(1, 4), "lines")
+    )
+ 
+}
+```
+
+# Figure 2
+Group and condition in IPS and midoccipital gyrus
+
+```{r}
+#### PARAMETERS ####
+inputFileDir <- "/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/rx/cyb/group_comp/roi/"
+inputFilename <- "roi_flexi_pmod.csv" #include .csv
+
+roi_df <- read.csv(paste0(inputFileDir, inputFilename)) #/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/subject_list.txt", header = FALSE) 
+subjectList <- unique(roi_df$SID)
+
+# ROIs in the order they appear in the .csv file (with no spaces)
+roiList <- c("R_inf_occ", "R_ant_lat_PFC", "L_inf_occ", "L_lOFC", "R_dlPFC", "R_cerebellum", "R_IPS", "R_temp_occ", "R_prec", "L_premotor", "R_prec_2", "R_temp_occ_2") # list ROIs in order (names of additional columns in your raw dataframe)
+conditionNames <- c("Increasing Inclusion","Increasing Exclusion") # list condition names in your design in order (names of repeating conditions extending additional rows of your raw dataframe)
+groupNames <- c("Foster Care Group","Control Group")
+contrastName <- "pmod_by_group" 
+
+#### OTHER OPTIONS ####
+
+pmods <- 1 # are your conditions pmods? if yes, select 1. if no, select 0. note that your condition names should be your pmod names
+pmodRange <- 1:12 # set pmod_lowerlim:pmod_upperlim, ignore if pmods=0
+totalPmods <- 2 # how many pmods are you using? ignore if pmods=0
+
+export <- 0 # Do you want to export a .csv file with the raw data labeled by subject ID, condition, and ROI to your "input" directory? 1 if yes, 0 if no
+
+# label the rows and columns
+colnames(roi_df)[1:length(roiList)] <- roiList # label each column with the ROI
+
+# create group column
+roi_df$group <- ifelse(roi_df$SID > 200, groupNames[1], groupNames[2])
+roi_df$subject_id <- rep(subjectList, each = 2)
+roi_df$condition <- rep(conditionNames, nrow(roi_df)/2)
+#roi_df$condition <- c(rep(conditionNames[1], nrow(roi_df)/2), rep(conditionNames[2], nrow(roi_df)/2)) #if NOT flexifactorial
+
+roi_df_long <- roi_df %>% 
+  pivot_longer(cols = roiList[1]:roiList[length(roiList)], 
+               names_to = "roi", 
+               values_to = "beta") 
+
+roi_df_long$roi <- factor(roi_df_long$roi)
+roi_df_long$group <- factor(roi_df_long$group)
+roi_df_long$condition <- factor(roi_df_long$condition)
+roi_df_long$subject_id <- factor(roi_df_long$subject_id )
+
+# summarize the data 
+roi_avg <- roi_df_long %>% 
+  group_by(roi, group, condition) %>% 
+  dplyr::summarise(mean = mean(beta), 
+            sd = sd(beta))
+
+df_graph_all = data.frame(
+  subject_id = rep(subjectList, each=(totalPmods*length(pmodRange))),
+  condition = rep(conditionNames, each = length(pmodRange)),
+  pmod_num = rep(pmodRange, length(subjectList)*totalPmods)
+)
+
+df_graph_all = merge(roi_df_long, df_graph_all, by = c("subject_id", "condition"))
+df_graph_all$pmod_value = df_graph_all$pmod_num*df_graph_all$beta
+
+df_graph_avg = data.frame(
+  roi = rep(roiList, each = 2*length(pmodRange)),
+  condition = rep(rep(conditionNames, each = length(pmodRange)), length(roiList)),
+  pmod_num = rep(pmodRange, totalPmods*length(roiList)),
+  group = rep(groupNames, each = length(roiList)*length(pmodRange)*length(conditionNames))
+)
+
+df_graph_avg = merge(roi_avg, df_graph_avg, by = c("group", "roi", "condition"))
+df_graph_avg$pmod_value = df_graph_avg$pmod_num*df_graph_avg$mean
+
+df_graph_all_selectedROIs <- filter(df_graph_all, (roi == "R_IPS" | roi == "R_temp_occ" | roi == "R_prec"))
+df_graph_avg_selectedROIs <- filter(df_graph_avg, (roi == "R_IPS" | roi == "R_temp_occ" | roi == "R_prec"))
+
+# plot with individual lines 
+ggplot(df_graph_all_selectedROIs, aes(x=pmod_num, y= pmod_value, color = condition)) + #note: not sure if R_temp_occ is what Nandi wants  
+  geom_line(size=.5, alpha=.3, aes(group = interaction(subject_id, condition)), show.legend = FALSE) +
+  facet_wrap(roi ~ group) +
+  geom_line(data = df_graph_avg_selectedROIs, size = 2, aes(x=pmod_num, y= pmod_value), show.legend = FALSE) + 
+  scale_y_continuous(expand = c(0, 0),
+                     limits = c(-15, 10),
+                     breaks = c(6, 3, 0, -3, -6, -9)) +
+  scale_x_continuous(expand = c(0, 0), 
+                     breaks = 1:11) +
+  theme(text = element_text(family = "Helvetica")) +
+  #scale_color_discrete(name="pmod", labels=conditionNames) +
+  theme_grey() + 
+  scale_color_manual(values = c("#48A5E4", "#E18F0A"),
+                     name = "Condition",
+                     labels = c("Increasing Exclusion", "Increasing Inclusion")) #+ # pick colors for excl and inc
+  #theme(axis.text.x = element_text(size= 16), axis.text.y = element_text(size= 16), axis.title.x = element_blank(), axis.title.y =element_blank()) 
+
+# Cleaner plot
+ggplot(df_graph_all_selectedROIs, aes(x=pmod_num, y= pmod_value, color = condition)) + #note: not sure if R_temp_occ is what Nandi wants  
+  #geom_line(size=.5, alpha=.3, aes(group = interaction(subject_id, condition)), show.legend = FALSE) +
+  facet_wrap(roi ~ group) +
+  geom_smooth(method = "lm", se = TRUE) +
+  #geom_line(data = df_graph_avg_selectedROIs, size = 2, aes(x=pmod_num, y= pmod_value), show.legend = FALSE) + 
+  scale_y_continuous(expand = c(0, 0),
+                     limits = c(-3, 3),
+                     breaks = c(6, 3, 0, -3, -6, -9)) +
+  scale_x_continuous(expand = c(0, 0), 
+                     breaks = 1:11) +
+  theme(text = element_text(family = "Helvetica")) +
+  #scale_color_discrete(name="pmod", labels=conditionNames) +
+  theme_grey() + 
+  scale_color_manual(values = c("#48A5E4", "#E18F0A"),
+                     name = "Condition",
+                     labels = c("Increasing Exclusion", "Increasing Inclusion"))
+
+
+ggplot(roi_df_long, aes(x = age , y = right_hippocampus, color = study)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_black() + 
+  scale_color_manual(values = c("#9999CC", "#66CC99"),
+                    name="Group",
+                    labels=c("Control", "Foster Care")) +
+  xlab("Age") +
+  ylab("Relative BOLD signal change")
+```
+
+# Supplementary Figure
+age_excP in the right hippocampus
+```{r}
+#### PARAMETERS ####
+inputFileDir <- "/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/rx/cyb/group_comp/roi"
+inputFilename <- "/roi_excP_age.csv" #include .csv
+
+roi_df <- read.csv(paste0(inputFileDir, inputFilename)) #/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/subject_list.txt", header = FALSE) 
+subjectList <- roi_df$SID
+
+# ROIs in the order they appear in the .csv file (with no spaces)
+roiList <- "right_hippocampus" # list ROIs in order (names of additional columns in your raw dataframe)
+conditionNames <- c("Foster Care Group","Control Group") # list condition names in your design in order (names of repeating conditions extending additional rows of your raw dataframe)
+contrastName <- "Increasing Exc" 
+
+#### OTHER OPTIONS ####
+
+pmods <- 1 # are your conditions pmods? if yes, select 1. if no, select 0. note that your condition names should be your pmod names
+pmodRange <- 1:12 # set pmod_lowerlim:pmod_upperlim, ignore if pmods=0
+totalPmods <- 1 # how many pmods are you using? ignore if pmods=0
+
+export <- 0 # Do you want to export a .csv file with the raw data labeled by subject ID, condition, and ROI to your "input" directory? 1 if yes, 0 if no
+
+# label the rows and columns
+colnames(roi_df)[1] <- roiList[1] # label each column with the ROI
+
+# create study column
+roi_df$study <- ifelse(roi_df$SID > 200, conditionNames[1], conditionNames[2])
+
+# summarize the data 
+roi_avg <- roi_df %>% 
+  group_by(study) %>% 
+  summarise(mean = mean(right_hippocampus), sd = sd(right_hippocampus))
+
+# what's up with age
+sd_age <- sd(roi_df$age) # 1.6 is the standard deviation of age -- if we were to plot high and low ages
+
+ggplot(roi_df, aes(x = age , y = right_hippocampus, color = study)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_black() + 
+  scale_color_manual(values = c("#9999CC", "#66CC99"),
+                    name="Group",
+                    labels=c("Control", "Foster Care")) +
+  xlab("Age") +
+  ylab("Relative BOLD signal change")
+```
