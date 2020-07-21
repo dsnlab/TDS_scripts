@@ -1,7 +1,7 @@
 ---
 title: "plot_ROIs_cyb_groupComp"
-author: "Theresa Cheng"
-date: "2/19/2020"
+author: "Nandi Vijayakumar, Theresa Cheng"
+date: "Jul 21 2020"
 output: html_document
 ---
 
@@ -11,20 +11,18 @@ Make plots of parameter estimates for inclusion and exclusion pmods for the TDS 
 knitr::opts_chunk$set(echo = TRUE)
 
 # load packages, install as needed
-packages = c("tidyr", "dplyr", "ggplot2", "plyr", "data.table")
+packages = c("tidyr", "dplyr", "ggplot2", "plyr", "data.table","nlme")
 
 package.check <- lapply(packages, FUN = function(x) {
   if (!require(x, character.only = TRUE)) {
     install.packages(x, dependencies = TRUE)
     library(x, character.only = TRUE) }})
 
-theme_black = function(base_size = 12, base_family = "") {
+theme_black = function(base_size = 20, base_family = "") {
  
   theme_grey(base_size = base_size, base_family = base_family) %+replace%
  
     theme(
-      # Specify axis options
-      text = element_text(family = "Helvetica") +
       axis.line = element_blank(),  
       axis.text.x = element_text(size = base_size*0.8, color = "white", lineheight = 0.9),
       axis.text.y = element_text(size = base_size*0.8, color = "white", lineheight = 0.9),  
@@ -33,40 +31,36 @@ theme_black = function(base_size = 12, base_family = "") {
       axis.title.y = element_text(size = base_size, color = "white", angle = 90, margin = margin(0, 10, 0, 0)),  
       axis.ticks.length = unit(0.3, "lines"),   
       # Specify legend options
-      legend.background = element_rect(color = NA, fill = "black"),  
+      legend.background = element_rect(color = 0, fill = 0),  
       legend.key = element_rect(fill = "black"),  
       legend.key.size = unit(1.2, "lines"),  
       legend.key.height = NULL,  
       legend.key.width = NULL,      
       legend.text = element_text(size = base_size, color = "white"),  
-      legend.title = element_text(size = base_size, face = "bold", hjust = 0, color = "white"),  
-      legend.position = "right",  
+      legend.title = NULL,  
+      legend.position = "top",  
       legend.text.align = NULL,  
       legend.title.align = NULL,  
       legend.direction = "vertical",  
       legend.box = NULL, 
       # Specify panel options
       panel.background = element_rect(fill = "gray15", color  =  NA),  
-      panel.border = element_rect(fill = NA, color = "white"),  
-      panel.grid.major = element_line(color = "grey35"),  
-      panel.grid.minor = element_line(color = "grey20"),  
+      panel.border = element_rect(fill = NA, color = NA),  
+      panel.grid.major = element_line(color = NA),  
+      panel.grid.minor = element_line(color = NA),  
       #panel.spacing = unit(0.5, "lines"),   
       # Specify facetting options
       strip.background = element_rect(fill = "grey30", color = "grey10"),  
-      strip.text.x = element_text(size = base_size*0.8, color = "white"),  
-      strip.text.y = element_text(size = base_size*0.8, color = "white",angle = -90),  
+      strip.text.x = element_text(size = base_size, color = "white"),  
+      strip.text.y = element_text(size = base_size, color = "white",angle = -90),  
       # Specify plot options
       plot.background = element_rect(color = "black", fill = "black"),  
-      plot.title = element_text(size = base_size*1.2, color = "white"),  
-      panel.spacing = unit(rep(1, 4), "lines")
-    )
+      plot.title = element_text(size = base_size*1.2, color = "white"))
  
 }
 ```
 
-# Figure 2
-Group and condition in IPS and midoccipital gyrus
-
+#Figure 1: group X exclusion pmod
 ```{r}
 #### PARAMETERS ####
 inputFileDir <- "/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/rx/cyb/group_comp/roi/"
@@ -78,17 +72,16 @@ subjectList <- unique(roi_df$SID)
 # ROIs in the order they appear in the .csv file (with no spaces)
 roiList <- c("R_inf_occ", "R_ant_lat_PFC", "L_inf_occ", "L_lOFC", "R_dlPFC", "R_cerebellum", "R_IPS", "R_temp_occ", "R_prec", "L_premotor", "R_prec_2", "R_temp_occ_2") # list ROIs in order (names of additional columns in your raw dataframe)
 conditionNames <- c("Increasing Inclusion","Increasing Exclusion") # list condition names in your design in order (names of repeating conditions extending additional rows of your raw dataframe)
-groupNames <- c("Foster Care Group","Control Group")
-contrastName <- "pmod_by_group" 
+groupNames <- c("Foster Care","Control")
+contrastName <- "exc_by_group" 
 
 #### OTHER OPTIONS ####
-
 pmods <- 1 # are your conditions pmods? if yes, select 1. if no, select 0. note that your condition names should be your pmod names
 pmodRange <- 1:12 # set pmod_lowerlim:pmod_upperlim, ignore if pmods=0
 totalPmods <- 2 # how many pmods are you using? ignore if pmods=0
-
 export <- 0 # Do you want to export a .csv file with the raw data labeled by subject ID, condition, and ROI to your "input" directory? 1 if yes, 0 if no
 
+### CREATE DF ###
 # label the rows and columns
 colnames(roi_df)[1:length(roiList)] <- roiList # label each column with the ROI
 
@@ -102,7 +95,6 @@ roi_df_long <- roi_df %>%
   pivot_longer(cols = roiList[1]:roiList[length(roiList)], 
                names_to = "roi", 
                values_to = "beta") 
-
 roi_df_long$roi <- factor(roi_df_long$roi)
 roi_df_long$group <- factor(roi_df_long$group)
 roi_df_long$condition <- factor(roi_df_long$condition)
@@ -119,77 +111,351 @@ df_graph_all = data.frame(
   condition = rep(conditionNames, each = length(pmodRange)),
   pmod_num = rep(pmodRange, length(subjectList)*totalPmods)
 )
-
 df_graph_all = merge(roi_df_long, df_graph_all, by = c("subject_id", "condition"))
 df_graph_all$pmod_value = df_graph_all$pmod_num*df_graph_all$beta
 
-df_graph_avg = data.frame(
-  roi = rep(roiList, each = 2*length(pmodRange)),
-  condition = rep(rep(conditionNames, each = length(pmodRange)), length(roiList)),
-  pmod_num = rep(pmodRange, totalPmods*length(roiList)),
-  group = rep(groupNames, each = length(roiList)*length(pmodRange)*length(conditionNames))
-)
+### PLOT ###
+#model & predict lOFC
+mod <- lme(pmod_value ~ group*pmod_num, random = ~ 1 |SID, data=subset(df_graph_all,df_graph_all$roi=="L_lOFC" & df_graph_all$condition=="Increasing Exclusion"), method="ML")
+pmod_num=seq(0,12,1)
+group=levels(df_plot$group)
+data.pred <- data.frame(pmod_num=rep(pmod_num,4),
+                     group=c(rep("Control",length(pmod_num)),rep("Foster Care",length(pmod_num))))
+y.pred <- predict(mod,data.pred,level=0)
+scale=1.96
+designmat<-model.matrix(eval(eval(mod$call$fixed)[-2]), data.pred)
+SDvalue<-sqrt(diag(designmat %*% mod$varFix %*% t(designmat)))
+y.lower<-y.pred-(scale*SDvalue)
+y.upper<-y.pred+(scale*SDvalue)
+data.pred<-cbind.data.frame(data.pred,y.pred,y.lower,y.upper)
+data.pred$roi<-'Left Lateral OFC'
+data.pred$condition <- 'Increasing Exclusion'
 
-df_graph_avg = merge(roi_avg, df_graph_avg, by = c("group", "roi", "condition"))
-df_graph_avg$pmod_value = df_graph_avg$pmod_num*df_graph_avg$mean
-
-df_graph_all_selectedROIs <- filter(df_graph_all, (roi == "R_IPS" | roi == "R_temp_occ" | roi == "R_prec"))
-df_graph_avg_selectedROIs <- filter(df_graph_avg, (roi == "R_IPS" | roi == "R_temp_occ" | roi == "R_prec"))
-
-# plot with individual lines 
-ggplot(df_graph_all_selectedROIs, aes(x=pmod_num, y= pmod_value, color = condition)) + #note: not sure if R_temp_occ is what Nandi wants  
-  geom_line(size=.5, alpha=.3, aes(group = interaction(subject_id, condition)), show.legend = FALSE) +
-  facet_wrap(roi ~ group) +
-  geom_line(data = df_graph_avg_selectedROIs, size = 2, aes(x=pmod_num, y= pmod_value), show.legend = FALSE) + 
+#plot groupXcondition interaction:
+fig1 <- ggplot(data.pred, aes(x=pmod_num, y= y.pred, fill=group)) + #note: not sure if R_temp_occ is what Nandi wants  
+  geom_line(aes(colour=group),size=1.5) +
+  geom_ribbon(aes(ymin=y.lower,ymax=y.upper),alpha=0.5) +
+  ylab("BOLD Response") +
+  xlab("Number of continuous throws") +
   scale_y_continuous(expand = c(0, 0),
-                     limits = c(-15, 10),
-                     breaks = c(6, 3, 0, -3, -6, -9)) +
+                     limits = c(-2, 2),
+                     breaks = c(4, 2, 0, -2, -4, -6)) +
   scale_x_continuous(expand = c(0, 0), 
-                     breaks = 1:11) +
-  theme(text = element_text(family = "Helvetica")) +
-  #scale_color_discrete(name="pmod", labels=conditionNames) +
-  theme_grey() + 
-  scale_color_manual(values = c("#48A5E4", "#E18F0A"),
-                     name = "Condition",
-                     labels = c("Increasing Exclusion", "Increasing Inclusion")) #+ # pick colors for excl and inc
-  #theme(axis.text.x = element_text(size= 16), axis.text.y = element_text(size= 16), axis.title.x = element_blank(), axis.title.y =element_blank()) 
-
-# Cleaner plot
-ggplot(df_graph_all_selectedROIs, aes(x=pmod_num, y= pmod_value, color = condition)) + #note: not sure if R_temp_occ is what Nandi wants  
-  #geom_line(size=.5, alpha=.3, aes(group = interaction(subject_id, condition)), show.legend = FALSE) +
-  facet_wrap(roi ~ group) +
-  geom_smooth(method = "lm", se = TRUE) +
-  #geom_line(data = df_graph_avg_selectedROIs, size = 2, aes(x=pmod_num, y= pmod_value), show.legend = FALSE) + 
-  scale_y_continuous(expand = c(0, 0),
-                     limits = c(-3, 3),
-                     breaks = c(6, 3, 0, -3, -6, -9)) +
-  scale_x_continuous(expand = c(0, 0), 
-                     breaks = 1:11) +
-  theme(text = element_text(family = "Helvetica")) +
-  #scale_color_discrete(name="pmod", labels=conditionNames) +
-  theme_grey() + 
-  scale_color_manual(values = c("#48A5E4", "#E18F0A"),
-                     name = "Condition",
-                     labels = c("Increasing Exclusion", "Increasing Inclusion"))
-
-
-ggplot(roi_df_long, aes(x = age , y = right_hippocampus, color = study)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  theme_black() + 
-  scale_color_manual(values = c("#9999CC", "#66CC99"),
-                    name="Group",
-                    labels=c("Control", "Foster Care")) +
-  xlab("Age") +
-  ylab("Relative BOLD signal change")
+                     limits = c(0, 12),
+                     breaks = c(2,4,6,8,10)) +
+  scale_color_manual(values = c("#1B9E77", "#7570B3")) +
+  scale_fill_manual(values=c("#1B9E77", "#7570B3")) +
+  facet_grid(. ~ condition) +
+  theme_black() 
+ggsave(filename=paste0(inputFileDir,'fig1.png'), plot=fig1, width=5, height=6, units='in', dpi=300)
 ```
 
-# Supplementary Figure
-age_excP in the right hippocampus
+#Figure 2: group X condition for pmods
 ```{r}
 #### PARAMETERS ####
-inputFileDir <- "/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/rx/cyb/group_comp/roi"
-inputFilename <- "/roi_excP_age.csv" #include .csv
+inputFileDir <- "/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/rx/cyb/group_comp/roi/"
+inputFilename <- "roi_flexi_pmod.csv" #include .csv
+
+roi_df <- read.csv(paste0(inputFileDir, inputFilename)) 
+subjectList <- unique(roi_df$SID)
+
+# ROIs in the order they appear in the .csv file (with no spaces)
+roiList <- c("R_inf_occ", "R_ant_lat_PFC", "L_inf_occ", "L_lOFC", "R_dlPFC", "R_cerebellum", "R_IPS", "R_temp_occ", "R_prec", "L_premotor", "R_prec_2", "R_temp_occ_2") 
+# list ROIs in order (names of additional columns in your raw dataframe)
+conditionNames <- c("Increasing Inclusion","Increasing Exclusion") # list condition names in your design in order (names of repeating conditions extending additional rows of your raw dataframe)
+GroupNames <- c("Foster Care","Control")
+contrastName <- "condition_by_group"
+
+#### OTHER OPTIONS ####
+pmods <- 1 # are your conditions pmods? if yes, select 1. if no, select 0. note that your condition names should be your pmod names
+pmodRange <- 1:12 # set pmod_lowerlim:pmod_upperlim, ignore if pmods=0
+totalPmods <- 2 # how many pmods are you using? ignore if pmods=0
+export <- 0 # Do you want to export a .csv file with the raw data labeled by subject ID, condition, and ROI to your "input" directory? 1 if yes, 0 if no
+
+### CREATE DF ###
+# label the rows and columns
+colnames(roi_df)[1:length(roiList)] <- roiList # label each column with the ROI
+
+# create group column
+roi_df$Group <- ifelse(roi_df$SID > 200, GroupNames[1], GroupNames[2])
+roi_df$subject_id <- rep(subjectList, each = 2)
+roi_df$condition <- rep(conditionNames, nrow(roi_df)/2)
+#roi_df$condition <- c(rep(conditionNames[1], nrow(roi_df)/2), rep(conditionNames[2], nrow(roi_df)/2)) #if NOT flexifactorial
+
+roi_df_long <- roi_df %>% 
+  pivot_longer(cols = roiList[1]:roiList[length(roiList)], 
+               names_to = "roi", 
+               values_to = "beta") 
+roi_df_long$roi <- factor(roi_df_long$roi)
+roi_df_long$Group <- factor(roi_df_long$Group)
+roi_df_long$condition <- factor(roi_df_long$condition)
+roi_df_long$subject_id <- factor(roi_df_long$subject_id )
+
+# summarize the data 
+roi_avg <- roi_df_long %>% 
+  group_by(roi, Group, condition) %>% 
+  dplyr::summarise(mean = mean(beta), 
+            sd = sd(beta))
+
+df_graph_all = data.frame(
+  subject_id = rep(subjectList, each=(totalPmods*length(pmodRange))),
+  condition = rep(conditionNames, each = length(pmodRange)),
+  pmod_num = rep(pmodRange, length(subjectList)*totalPmods)
+)
+df_graph_all = merge(roi_df_long, df_graph_all, by = c("subject_id", "condition"))
+df_graph_all$pmod_value = df_graph_all$pmod_num*df_graph_all$beta
+
+### PLOT ###
+#model & predict IPS
+mod <- lme(pmod_value ~ Group*condition*pmod_num, random = ~ 1 |SID, data=subset(df_graph_all,df_graph_all$roi=="R_IPS"), method="ML")
+pmod_num=seq(0,12,1)
+condition=levels(df_graph_all$condition)
+Group=levels(df_graph_all$Group)
+data.pred2 <- data.frame(pmod_num=rep(pmod_num,4),
+                        condition=c(rep("Increasing Inclusion",length(pmod_num)),rep("Increasing Exclusion",length(pmod_num))),
+                        Group=c(rep("Control",length(pmod_num)*2),rep("Foster Care",length(pmod_num)*2)))
+y.pred <- predict(mod,data.pred,level=0)
+scale=1.96
+designmat<-model.matrix(eval(eval(mod$call$fixed)[-2]), data.pred)
+SDvalue<-sqrt(diag(designmat %*% mod$varFix %*% t(designmat)))
+y.lower<-y.pred-(scale*SDvalue)
+y.upper<-y.pred+(scale*SDvalue)
+data.pred2<-cbind.data.frame(data.pred2,y.pred,y.lower,y.upper)
+data.pred2$roi<-'Right Intraparietal Sulcus'
+
+#plot groupXcondition interaction:
+fig2 <- ggplot(data.pred2, aes(x=pmod_num, y= y.pred, group=interaction(Group,condition))) + 
+  geom_line(aes(colour=Group),size=1.5) +
+  geom_ribbon(aes(ymin=y.lower,ymax=y.upper,fill=Group),alpha=0.5) +
+  facet_wrap(~condition) +
+  ylab("BOLD Response") +
+  xlab("Number of continuous throws") +
+  scale_y_continuous(expand = c(0, 0),
+                     limits = c(-5, 1),
+                     breaks = c(4, 2, 0, -2, -4, -6)) +
+  scale_x_continuous(expand = c(0, 0), 
+                     limits = c(0, 12),
+                     breaks = c(2,4,6,8,10)) +
+  scale_color_manual(values = c("#1B9E77", "#7570B3")) +
+  scale_fill_manual(values=c("#1B9E77", "#7570B3")) + 
+  theme_black() 
+ggsave(filename=paste0(inputFileDir,'fig2.png'), plot=fig2, width=7, height=6, units='in', dpi=300)
+
+```
+
+#Figure 3: 
+```{r}
+#### PARAMETERS ####
+inputFileDir <- "/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/rx/cyb/group_comp/roi/"
+inputFilename <- "roi_flexi_2x2x2.csv" #include .csv
+
+roi_df <- read.csv(paste0(inputFileDir, inputFilename)) #/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/subject_list.txt", header = FALSE) 
+subjectList <- unique(roi_df$SID)
+
+# ROIs in the order they appear in the .csv file (with no spaces)
+roiList <- c("R_post_ins", "L_dACC", "R_MCC", "R_subACC", "L_mOFC", "R_post_ins2", "R_somato", "R_post_ins3") # list ROIs in order (names of additional columns in your raw dataframe)
+eventNames <- c("Exclusion Throw","Inclusion Throw")
+contextNames <- c("Inclusion Run","Exclusion Run") # list condition names in your design in order (names of repeating conditions extending additional rows of your raw dataframe)
+groupNames <- c("Foster Care","Control")
+contrastName <- "2x2_by_group" 
+
+#### OTHER OPTIONS ####
+export <- 0 # Do you want to export a .csv file with the raw data labeled by subject ID, condition, and ROI to your "input" directory? 1 if yes, 0 if no
+
+### CREATE DF ###
+# label the rows and columns
+colnames(roi_df)[1:length(roiList)] <- roiList # label each column with the ROI
+
+# create group column
+roi_df$group <- ifelse(roi_df$SID > 200, groupNames[1], groupNames[2])
+roi_df$subject_id <- rep(subjectList, each = 4)
+roi_df$event <- rep(eventNames, nrow(roi_df)/2)
+roi_df$context <- rep(c(rep("Inclusion Run",2),rep("Exclusion Run",2)), nrow(roi_df)/4)
+
+roi_df_long <- roi_df %>% 
+  pivot_longer(cols = roiList[1]:roiList[length(roiList)], 
+               names_to = "roi", 
+               values_to = "beta") 
+roi_df_long$roi <- factor(roi_df_long$roi)
+roi_df_long$group <- factor(roi_df_long$group)
+roi_df_long$context <- factor(roi_df_long$context)
+roi_df_long$event <- factor(roi_df_long$event)
+roi_df_long$subject_id <- factor(roi_df_long$subject_id )
+
+# summarize the data 
+roi_avg <- roi_df_long %>% 
+  group_by(roi, group, event, context) %>% 
+  dplyr::summarise(mean = mean(beta), 
+            sd = sd(beta))
+
+df_graph_all <- roi_df_long
+
+### PLOT ###
+#model & predict mOFC
+mod <- lm(beta ~ group*context, data=subset(df_graph_all,df_graph_all$roi=="L_mOFC"))
+context=levels(df_graph_all$context)
+group=levels(df_graph_all$group)
+data.pred <- data.frame(context=rep(context,2),
+                        group=c(rep("Control",2),rep("Foster Care",2)))
+y.pred <- as.data.frame(predict(mod,data.pred,interval = 'confidence'))
+data.pred$y.pred <- y.pred$fit
+data.pred$y.lower <- y.pred$lwr
+data.pred$y.upper <- y.pred$upr
+data.pred$roi<-'Left mOFC'
+
+#model & predict dACC
+mod <- lm(beta ~ group*context, data=subset(df_graph_all,df_graph_all$roi=="L_dACC"))
+context=levels(df_graph_all$context)
+group=levels(df_graph_all$group)
+data.pred2 <- data.frame(context=rep(context,2),
+                        group=c(rep("Control",2),rep("Foster Care",2)))
+y.pred <- as.data.frame(predict(mod,data.pred2,interval = 'confidence'))
+data.pred2$y.pred <- y.pred$fit
+data.pred2$y.lower <- y.pred$lwr
+data.pred2$y.upper <- y.pred$upr
+data.pred2$roi<-'Left dACC'
+
+#model & predict subACC
+mod <- lm(beta ~ group*context, data=subset(df_graph_all,df_graph_all$roi=="R_subACC"))
+context=levels(df_graph_all$context)
+group=levels(df_graph_all$group)
+data.pred3 <- data.frame(context=rep(context,2),
+                        group=c(rep("Control",2),rep("Foster Care",2)))
+y.pred <- as.data.frame(predict(mod,data.pred3,interval = 'confidence'))
+data.pred3$y.pred <- y.pred$fit
+data.pred3$y.lower <- y.pred$lwr
+data.pred3$y.upper <- y.pred$upr
+data.pred3$roi<-'Right subACC'
+
+#combine data for precuneus & IPS:
+data.pred <- data.pred2 %>% rbind(data.pred3)
+data.pred$context <- factor(data.pred$context)
+
+#plot groupXcondition interaction:
+fig3 <- ggplot(data.pred, aes(x=roi, y= y.pred, fill=context)) +
+  geom_col(position=position_dodge(),alpha=0.8) +
+  geom_errorbar(aes(ymin=y.lower,ymax=y.upper,colour=context),position=position_dodge(width=0.9))+
+  facet_wrap(~ group) +
+  scale_fill_manual(values=c("#FB9A99","#A6761D")) +
+  scale_colour_manual(values=c("#FB9A99","#A6761D")) +
+  ylab("BOLD Response") +
+  xlab(NULL) +   
+  theme_black() +
+  theme(axis.text.x = element_text(angle = 45))
+ggsave(filename=paste0(inputFileDir,'fig3.png'), plot=fig3, width=6, height=6, units='in', dpi=300)
+
+fig3_v2 <- ggplot(data.pred, aes(x=roi, y= y.pred, fill=group)) +
+  geom_col(position=position_dodge(),alpha=0.8) +
+  geom_errorbar(aes(ymin=y.lower,ymax=y.upper,colour=group),position=position_dodge(width=0.9))+
+  facet_wrap(~ context) +
+  scale_color_manual(values = c("#1B9E77", "#7570B3")) +
+  scale_fill_manual(values=c("#1B9E77","#7570B3")) +
+  ylab("BOLD Response") +
+  xlab(NULL) +   
+  theme_black() +
+  theme(axis.text.x = element_text(angle = 45))
+ggsave(filename=paste0(inputFileDir,'fig3_v2.png'), plot=fig3_v2, width=6, height=6, units='in', dpi=300)
+
+```
+
+#Figure 4: 
+```{r}
+#### PARAMETERS ####
+inputFileDir <- "/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/rx/cyb/group_comp/roi/"
+inputFilename <- "roi_flexi_2x2x2.csv" #include .csv
+
+roi_df <- read.csv(paste0(inputFileDir, inputFilename)) #/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/subject_list.txt", header = FALSE) 
+subjectList <- unique(roi_df$SID)
+
+# ROIs in the order they appear in the .csv file (with no spaces)
+roiList <- c("R_post_ins", "L_dACC", "R_MCC", "R_subACC", "L_mOFC", "R_post_ins2", "R_somato", "R_post_ins3") # list ROIs in order (names of additional columns in your raw dataframe)
+eventNames <- c("ExcThrow","IncThrow")
+contextNames <- c("Inclusion Run","Exclusion Run") # list condition names in your design in order (names of repeating conditions extending additional rows of your raw dataframe)
+groupNames <- c("Foster Care","Control")
+contrastName <- "2x2_by_group" 
+
+#### OTHER OPTIONS ####
+export <- 0 # Do you want to export a .csv file with the raw data labeled by subject ID, condition, and ROI to your "input" directory? 1 if yes, 0 if no
+
+### CREATE DF ###
+# label the rows and columns
+colnames(roi_df)[1:length(roiList)] <- roiList # label each column with the ROI
+
+# create group column
+roi_df$group <- ifelse(roi_df$SID > 200, groupNames[1], groupNames[2])
+roi_df$subject_id <- rep(subjectList, each = 4)
+roi_df$event <- rep(eventNames, nrow(roi_df)/2)
+roi_df$context <- rep(c(rep("Inclusion Run",2),rep("Exclusion Run",2)), nrow(roi_df)/4)
+
+roi_df_long <- roi_df %>% 
+  pivot_longer(cols = roiList[1]:roiList[length(roiList)], 
+               names_to = "roi", 
+               values_to = "beta") 
+roi_df_long$roi <- factor(roi_df_long$roi)
+roi_df_long$group <- factor(roi_df_long$group)
+roi_df_long$context <- factor(roi_df_long$context)
+roi_df_long$event <- factor(roi_df_long$event)
+roi_df_long$subject_id <- factor(roi_df_long$subject_id )
+
+# summarize the data 
+roi_avg <- roi_df_long %>% 
+  group_by(roi, group, event, context) %>% 
+  dplyr::summarise(mean = mean(beta), 
+            sd = sd(beta))
+
+df_graph_all <- roi_df_long
+
+### PLOT ###
+#model & predict mOFC
+rm(data.pred)
+mod <- lm(beta ~ group*context*event, data=subset(df_graph_all,df_graph_all$roi=="R_post_ins2"))
+context=levels(df_graph_all$context)
+event=levels(df_graph_all$event)
+group=levels(df_graph_all$group)
+data.pred <- data.frame(event=rep(event,4),
+                        context=rep(c(rep("Inclusion Run",2),rep("Exclusion Run",2)),2),
+                        group=c(rep("Control",4),rep("Foster Care",4)))
+y.pred <- as.data.frame(predict(mod,data.pred,interval = 'confidence'))
+data.pred$y.pred <- y.pred$fit
+data.pred$y.lower <- y.pred$lwr
+data.pred$y.upper <- y.pred$upr
+data.pred$roi<-'Right Posterior Insula'
+
+#plot groupXcondition interaction:
+fig4 <- ggplot(data.pred, aes(x=event, y= y.pred, fill=context)) +
+  geom_col(position=position_dodge(),alpha=0.8) +
+  geom_errorbar(aes(ymin=y.lower,ymax=y.upper,colour=context),position=position_dodge(width=0.9))+
+  facet_wrap(~ group) + 
+  scale_colour_manual(values=c("#FB9A99","#A6761D","#FB9A99","#A6761D")) +
+  scale_fill_manual(values=c("#FB9A99","#A6761D")) +
+  ylab("BOLD Response") +
+  xlab(NULL) +   
+  theme_black() +
+  theme(axis.text.x = element_text(angle = 45))
+
+ggsave(filename=paste0(inputFileDir,'fig4.png'), plot=fig4, width=7, height=6, units='in', dpi=300)
+
+#plot groupXcondition interaction:
+fig4_v2 <- ggplot(data.pred, aes(x=event, y= y.pred, fill=group)) +
+  geom_col(position=position_dodge(),alpha=0.8) +
+  geom_errorbar(aes(ymin=y.lower,ymax=y.upper,colour=group),position=position_dodge(width=0.9))+
+  facet_wrap(~ context) + 
+  scale_color_manual(values = c("#1B9E77", "#7570B3","#1B9E77", "#7570B3")) +
+  scale_fill_manual(values=c("#1B9E77","#7570B3")) +
+  ylab("BOLD Response") +
+  xlab(NULL) +   
+  theme_black() +
+  theme(axis.text.x = element_text(angle = 45))
+ggsave(filename=paste0(inputFileDir,'fig4_v2.png'), plot=fig4_v2, width=7, height=6, units='in', dpi=300)
+
+```
+
+# Supplementary Figure 4
+# age_excP in the right hippocampus
+```{r}
+#### PARAMETERS ####
+inputFileDir <- "/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/rx/cyb/group_comp/roi/"
+inputFilename <- "roi_excP_age.csv" #include .csv
 
 roi_df <- read.csv(paste0(inputFileDir, inputFilename)) #/Volumes/psy-ctn/psy-ctn/TDS/nonbids_data/derivatives/fMRI/fx/models/cyb/tds2/subject_list.txt", header = FALSE) 
 subjectList <- roi_df$SID
@@ -220,14 +486,20 @@ roi_avg <- roi_df %>%
 
 # what's up with age
 sd_age <- sd(roi_df$age) # 1.6 is the standard deviation of age -- if we were to plot high and low ages
+roi_df$condition <- 'Increasing Exclusion'
 
-ggplot(roi_df, aes(x = age , y = right_hippocampus, color = study)) +
+fig5 <- ggplot(roi_df, aes(x = age , y = right_hippocampus, color = study)) +
   geom_point() +
+  ylim(-0.5,0.4)+
   geom_smooth(method = "lm") +
   theme_black() + 
-  scale_color_manual(values = c("#9999CC", "#66CC99"),
-                    name="Group",
+  scale_color_manual(values = c("#E69F00", "#56B4E9"), name="Group",
                     labels=c("Control", "Foster Care")) +
+  theme(legend.position = "top") +
   xlab("Age") +
-  ylab("Relative BOLD signal change")
+  ylab("BOLD response") +
+  facet_grid(. ~ condition)
+
+
+ggsave(filename=paste0(inputFileDir,'fig5.png'), plot=fig5, width=6, height=6, units='in', dpi=300)
 ```
