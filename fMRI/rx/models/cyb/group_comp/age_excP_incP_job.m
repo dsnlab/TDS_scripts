@@ -1,0 +1,309 @@
+%-----------------------------------------------------------------------
+% Job saved on 18-Feb-2020 17:27:05 by cfg_util (rev $Rev: 7345 $)
+% spm SPM - SPM12 (7771)
+% cfg_basicio BasicIO - Unknown
+%-----------------------------------------------------------------------
+matlabbatch{1}.spm.stats.factorial_design.dir = {'/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/age_excP_incP'};
+%%
+matlabbatch{1}.spm.stats.factorial_design.des.t2.scans1 = {
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/109/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/113/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/114/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/115/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/116/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/117/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/119/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/120/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/121/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/122/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/124/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/125/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/126/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/127/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/128/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/129/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/130/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/131/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/132/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/133/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/134/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/135/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/136/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/137/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/139/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/140/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/141/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/142/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/144/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/145/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/146/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/150/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/151/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/152/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/155/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/156/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/157/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/159/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/160/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/162/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/163/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/164/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/165/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/167/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/168/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/169/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/170/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/171/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/172/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/173/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/174/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/175/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/177/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/179/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/181/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/182/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/183/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/184/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/185/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/186/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/187/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/188/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/190/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/192/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/193/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/194/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/195/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/196/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/197/con_0016.nii'
+                                                           };
+%%
+%%
+matlabbatch{1}.spm.stats.factorial_design.des.t2.scans2 = {
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/301/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/302/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/303/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/304/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/306/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/307/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/308/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/309/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/310/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/312/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/313/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/314/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/315/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/316/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/317/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/320/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/321/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/322/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/323/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/324/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/325/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/326/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/327/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/328/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/329/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/330/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/331/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/332/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/333/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/334/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/335/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/336/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/337/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/340/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/341/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/342/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/343/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/344/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/346/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/347/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/348/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/349/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/350/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/351/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/352/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/353/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/354/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/355/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/357/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/359/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/360/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/361/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/362/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/363/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/364/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/365/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/366/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/367/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/368/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/369/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/370/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/371/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/372/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/373/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/374/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/375/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/376/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/377/con_0016.nii'
+                                                           '/Users/nvijaya/Documents/PROJECTS/TDS/CYB_groupcomp/data/tds1_tds2/378/con_0016.nii'
+                                                           };
+%%
+matlabbatch{1}.spm.stats.factorial_design.des.t2.dept = 0;
+matlabbatch{1}.spm.stats.factorial_design.des.t2.variance = 1;
+matlabbatch{1}.spm.stats.factorial_design.des.t2.gmsca = 0;
+matlabbatch{1}.spm.stats.factorial_design.des.t2.ancova = 0;
+%%
+matlabbatch{1}.spm.stats.factorial_design.cov.c = [-1.240217391
+                                                   0.529782609
+                                                   0.649782609
+                                                   2.009782609
+                                                   -0.670217391
+                                                   1.259782609
+                                                   0.339782609
+                                                   -1.210217391
+                                                   -1.790217391
+                                                   0.449782609
+                                                   -2.280217391
+                                                   1.459782609
+                                                   -0.240217391
+                                                   -0.320217391
+                                                   -0.300217391
+                                                   0.289782609
+                                                   -0.000217391
+                                                   -1.390217391
+                                                   -2.340217391
+                                                   0.829782609
+                                                   -3.080217391
+                                                   -0.160217391
+                                                   3.189782609
+                                                   1.029782609
+                                                   2.229782609
+                                                   2.609782609
+                                                   -0.040217391
+                                                   0.949782609
+                                                   3.469782609
+                                                   -2.490217391
+                                                   0.329782609
+                                                   0.649782609
+                                                   2.349782609
+                                                   1.429782609
+                                                   -1.420217391
+                                                   0.059782609
+                                                   -0.190217391
+                                                   -0.020217391
+                                                   -0.600217391
+                                                   1.719782609
+                                                   1.599782609
+                                                   1.539782609
+                                                   -0.780217391
+                                                   3.449782609
+                                                   -1.800217391
+                                                   1.719782609
+                                                   -1.340217391
+                                                   -0.830217391
+                                                   -1.100217391
+                                                   3.499782609
+                                                   1.779782609
+                                                   -0.820217391
+                                                   -0.690217391
+                                                   -0.890217391
+                                                   -0.690217391
+                                                   -1.260217391
+                                                   -0.520217391
+                                                   -2.200217391
+                                                   -2.550217391
+                                                   0.329782609
+                                                   -0.500217391
+                                                   -1.540217391
+                                                   -1.490217391
+                                                   -0.690217391
+                                                   0.399782609
+                                                   0.239782609
+                                                   0.129782609
+                                                   1.119782609
+                                                   0.039782609
+                                                   -2.570217391
+                                                   -0.010217391
+                                                   -0.610217391
+                                                   -2.030217391
+                                                   1.339782609
+                                                   1.779782609
+                                                   1.259782609
+                                                   1.389782609
+                                                   -1.040217391
+                                                   1.829782609
+                                                   1.089782609
+                                                   -1.250217391
+                                                   0.439782609
+                                                   0.799782609
+                                                   1.479782609
+                                                   0.739782609
+                                                   1.109782609
+                                                   0.539782609
+                                                   -0.250217391
+                                                   -0.520217391
+                                                   -2.560217391
+                                                   0.159782609
+                                                   2.379782609
+                                                   2.179782609
+                                                   -0.740217391
+                                                   1.629782609
+                                                   -1.410217391
+                                                   -1.770217391
+                                                   0.619782609
+                                                   -0.410217391
+                                                   3.799782609
+                                                   -0.070217391
+                                                   -2.170217391
+                                                   3.119782609
+                                                   -1.340217391
+                                                   1.129782609
+                                                   3.039782609
+                                                   -1.630217391
+                                                   0.069782609
+                                                   -2.080217391
+                                                   0.569782609
+                                                   -1.630217391
+                                                   -0.240217391
+                                                   -1.700217391
+                                                   0.329782609
+                                                   -2.510217391
+                                                   -0.450217391
+                                                   2.599782609
+                                                   1.199782609
+                                                   0.499782609
+                                                   -1.590217391
+                                                   -1.590217391
+                                                   1.049782609
+                                                   -2.580217391
+                                                   -2.750217391
+                                                   -0.860217391
+                                                   -2.680217391
+                                                   1.589782609
+                                                   -2.120217391
+                                                   -0.160217391
+                                                   -0.230217391
+                                                   0.629782609
+                                                   3.719782609
+                                                   -0.080217391
+                                                   -1.520217391
+                                                   1.709782609
+                                                   -0.730217391
+                                                   -1.310217391
+                                                   -2.830217391];
+%%
+matlabbatch{1}.spm.stats.factorial_design.cov.cname = 'age';
+matlabbatch{1}.spm.stats.factorial_design.cov.iCFI = 2;
+matlabbatch{1}.spm.stats.factorial_design.cov.iCC = 5;
+matlabbatch{1}.spm.stats.factorial_design.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
+matlabbatch{1}.spm.stats.factorial_design.masking.tm.tm_none = 1;
+matlabbatch{1}.spm.stats.factorial_design.masking.im = 0;
+matlabbatch{1}.spm.stats.factorial_design.masking.em = {''};
+matlabbatch{1}.spm.stats.factorial_design.globalc.g_omit = 1;
+matlabbatch{1}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
+matlabbatch{1}.spm.stats.factorial_design.globalm.glonorm = 1;
+matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep('Factorial design specification: SPM.mat File', substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','spmmat'));
+matlabbatch{2}.spm.stats.fmri_est.write_residuals = 0;
+matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
